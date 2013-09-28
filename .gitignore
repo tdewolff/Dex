@@ -1,0 +1,4 @@
+/logs/
+/resources/cache/
+/include/libs/smarty/templates_c/
+sqlite.db

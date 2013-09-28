@@ -1,0 +1,157 @@
+@import "_normalize.less";
+@import "_mixins.less";
+
+body {
+    background:#326482;
+    color:@light;
+    font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
+    font-size:100%;
+}
+
+header {
+    background:white;
+    color:black;
+}
+
+.tinynav {
+    display:block;
+    width:80%;
+    margin:1em auto;
+}
+
+#nav {
+    display:none;
+}
+
+.main {
+    background-color:white;
+    color:@text-black;
+
+    padding:1em 2em;
+}
+
+@media only screen and (min-width: 481px) {
+    @font-face {
+        .fontface("EBGaramond", "../../themes/groningenbijles/resources/fonts/ebgaramond12-regular-webfont");
+    }
+
+    @font-face {
+        .fontface("EBGaramond", "../../themes/groningenbijles/resources/fonts/ebgaramond12-italic-webfont");
+        font-style: italic;
+    }
+
+    body {
+        background:#326482 url("../../themes/groningenbijles/resources/images/background.png");
+    }
+
+    .page-wrapper {
+        margin:0 5em;
+    }
+
+    header {
+        margin:0;
+        font-size:100%;
+        padding:1em 0;
+    }
+
+    header h1 {
+        margin:0;
+        font-family:EBGaramond;
+        font-size:600%;
+        padding-left:0.5em;
+    }
+
+    header h2 {
+        margin:0;
+        font-family:EBGaramond;
+        font-size:120%;
+        font-style:italic;
+        padding-left:10em;
+        color:#808080;
+    }
+
+    .header-contact {
+        font-family:EBGaramond;
+        font-size:100%;
+        font-style:italic;
+        color:#404040;
+    }
+
+    .tinynav {
+        display:none;
+    }
+
+    #nav {
+        display:block;
+        margin:0;
+        padding:0.8em;
+
+        background:#F8F8F8;
+        border-top:8px #843733 solid;
+        border-bottom:1px #E0E0E0 solid;
+
+        list-style-type:none;
+    }
+
+    #nav a {
+        text-decoration:none;
+    }
+
+    .main {
+        padding:3em 6em;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    header {
+        position:relative;
+    }
+
+    header:before {
+        content: " ";
+        position: absolute;
+        top:0;
+        right:0;
+
+        background: url("../../themes/groningenbijles/resources/images/slant.png");
+
+        display: block;
+        height: 47px;
+        width: 47px;
+    }
+
+    header:after {
+        content: " ";
+        position: absolute;
+        top:3em;
+        right:10em;
+
+        background: url("../../themes/groningenbijles/resources/images/owl.png");
+        border-right:2px #404040 solid;
+
+        display: block;
+        height: 80px;
+        width: 76px;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    body {
+    }
+
+	.page-wrapper {
+        margin:0 auto;
+		width:1000px;
+	}
+
+    header {
+        position: relative;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    h1 {
+        font-family: Arial, Verdana, San-Serif;
+    }
+}
+

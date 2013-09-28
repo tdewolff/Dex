@@ -1,0 +1,86 @@
+@import "_normalize.less";
+@import "_mixins.less";
+
+
+/******************/
+/* general layout */
+/******************/
+
+body {
+    line-height:1.250em;
+    text-align:justify;
+}
+
+header > h1 {
+	display:none;
+}
+
+.tinynav {
+	display:none;
+}
+
+@media only screen and (max-width: 480px) {
+	header {
+		background-image:url("../images/dexterous.png?s=0.5");
+		width:200px;
+		height:50px;
+		margin:10px auto;
+	}
+
+	.main {
+		padding:10px 15px;
+
+		font-size:1em;
+	}
+
+    .tinynav {
+    	display:block;
+    	width:80%;
+    	margin:5px auto;
+    }
+
+    #nav {
+    	display:none;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 1024px) {
+}
+
+@media only screen and (min-width: 1025px) {
+	.page-wrapper {
+		margin:0 auto;
+		width:700px;
+	}
+
+	header {
+		background-image:url("../images/dexterous.png");
+		width:400px;
+		height:100px;
+		margin:20px auto;
+	}
+
+	.main {
+		padding:40px 60px;
+		margin:8px 0;
+
+		font-size:1em;
+	}
+}
+
+
+/***********/
+/* styling */
+/***********/
+
+body {
+	background:@dark;
+	color:@light;
+	font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
+    font-size:100%;
+}
+
+.main {
+	background-color:@light;
+	color:@dark;
+}
