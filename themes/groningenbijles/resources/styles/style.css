@@ -811,13 +811,45 @@ body {
   font-size: 100%;
 }
 header {
+  position: relative;
   background: white;
   color: black;
+}
+header h1 {
+  margin: 0;
+  text-align: center;
+  padding: 0.3em 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+header h2 {
+  display: none;
+}
+header:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: url("../../themes/groningenbijles/resources/images/slant.png?w=30") no-repeat top right;
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+.vcard a {
+  color: inherit;
+  text-decoration: none;
+}
+.header-contact {
+  display: none;
+}
+.navigation {
+  background: #F8F8F8;
+  border-top: 10px #843733 solid;
+  border-bottom: 1px #E0E0E0 solid;
 }
 .tinynav {
   display: block;
   width: 80%;
-  margin: 1em auto;
+  margin: 0.5em auto;
 }
 #nav {
   display: none;
@@ -825,7 +857,18 @@ header {
 .main {
   background-color: white;
   color: #303030;
+  line-height: 150%;
+  text-align: justify;
   padding: 1em 2em;
+}
+.main p {
+  padding: 0.3em 0;
+}
+footer {
+  background: #E0E0E0;
+  border-top: 1px #C0C0C0 solid;
+  min-height: 1em;
+  color: #808080;
 }
 @media only screen and (min-width: 481px) {
   @font-face {
@@ -843,80 +886,123 @@ header {
     font-style: normal;
     font-style: italic;
   }
+  @font-face {
+    font-family: "EBGaramond";
+    src: url('../../themes/groningenbijles/resources/fonts/ebgaramond12-sc-webfont.eot');
+    src: url('../../themes/groningenbijles/resources/fonts/ebgaramond12-sc-webfont.eot?#iefix') format('embedded-opentype'), url('../../themes/groningenbijles/resources/fonts/ebgaramond12-sc-webfont.svg') format('svg'), url('../../themes/groningenbijles/resources/fonts/ebgaramond12-sc-webfont.woff') format('woff'), url('../../themes/groningenbijles/resources/fonts/ebgaramond12-sc-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-variant: small-caps;
+  }
   body {
     background: #326482 url("../../themes/groningenbijles/resources/images/background.png");
   }
   .page-wrapper {
-    margin: 0 5em;
+    margin: 0;
   }
   header {
-    margin: 0;
     font-size: 100%;
     padding: 1em 0;
+    height: 10em;
   }
   header h1 {
-    margin: 0;
+    text-align: left;
     font-family: EBGaramond;
-    font-size: 600%;
+    font-size: 400%;
     padding-left: 0.5em;
+    padding-bottom: 0;
   }
   header h2 {
+    display: block;
     margin: 0;
-    font-family: EBGaramond;
-    font-size: 120%;
-    font-style: italic;
-    padding-left: 10em;
-    color: #808080;
-  }
-  header-contact {
     font-family: EBGaramond;
     font-size: 100%;
     font-style: italic;
-    color: #404040;
-  }
-  .tinynav {
-    display: none;
-  }
-  #nav {
-    display: block;
-    margin: 0;
-    padding: 0.8em;
-    background: #F8F8F8;
-    border-top: 8px #843733 solid;
-    border-bottom: 1px #E0E0E0 solid;
-    list-style-type: none;
-  }
-  #nav a {
-    text-decoration: none;
-  }
-  .main {
-    padding: 3em 6em;
-  }
-}
-@media only screen and (min-width: 700px) {
-  header {
-    position: relative;
+    padding-left: 5em;
+    color: #808080;
   }
   header:before {
     content: " ";
     position: absolute;
     top: 0;
     right: 0;
-    background: url("../../themes/groningenbijles/resources/images/slant.png");
+    background: url("../../themes/groningenbijles/resources/images/slant.png") no-repeat top right;
     display: block;
-    height: 47px;
     width: 47px;
+    height: 47px;
   }
+  .tinynav {
+    display: none;
+  }
+  #nav {
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+    list-style-type: none;
+  }
+  #nav li {
+    float: left;
+  }
+  #nav a {
+    display: block;
+    text-decoration: none;
+    color: #113C56;
+    letter-spacing: 1px;
+    border-left: 1px #F0F0F0 solid;
+    border-right: 1px #F0F0F0 solid;
+    font-size: 110%;
+    padding: 0 1.6em;
+    line-height: 200%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+  }
+  #nav a:hover {
+    background: #FFFFFF;
+  }
+  #nav .selected {
+    border-bottom: 1px #113C56 solid;
+    margin-bottom: -1px;
+  }
+  #nav .selected a {
+    background: #164d6f;
+    color: #FFFFFF;
+    font-weight: bold;
+    border-left: 1px #113C56 solid;
+    border-right: 1px #113C56 solid;
+  }
+  .main {
+    padding: 1em 4em;
+  }
+}
+@media only screen and (min-width: 41em) {
+  .header-contact {
+    display: block;
+    font-family: EBGaramond;
+    font-size: 100%;
+    line-height: 150%;
+    color: #404040;
+    position: absolute;
+    top: 1.1em;
+    right: 2em;
+    border-left: 2px #808080 solid;
+    padding-left: 0.5em;
+  }
+  .header-contact .org {
+    font-variant: small-caps;
+  }
+}
+@media only screen and (min-width: 46em) {
   header:after {
     content: " ";
     position: absolute;
-    top: 3em;
-    right: 10em;
-    background: url("../../themes/groningenbijles/resources/images/owl.png");
-    border-right: 2px #404040 solid;
+    top: 0;
+    right: 12em;
+    background: url("../../themes/groningenbijles/resources/images/owl.png") no-repeat center center;
     display: block;
-    height: 80px;
     width: 76px;
+    height: 100%;
+  }
+  .main {
+    padding: 3em 6em;
   }
 }
 @media only screen and (min-width: 1025px) {
@@ -926,6 +1012,13 @@ header {
   }
   header {
     position: relative;
+  }
+  header h1 {
+    font-size: 500%;
+    padding-top: 0;
+  }
+  header h2 {
+    margin-top: -1em;
   }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
