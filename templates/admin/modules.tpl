@@ -10,12 +10,12 @@
   <tr>
 	<td class="no_wrap centered">
 	 <div class="dropdown">
-	  <a href="<?php echo $_['base_url']; ?>admin/module/<?php echo $module['name']; ?>/" class="dropdown-select small-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle small-button"><i class="icon-caret-down"></i></a>
+	  <a href="/<?php echo $_['base_url']; ?>admin/module/<?php echo $module['name']; ?>/" class="dropdown-select small-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle small-button"><i class="icon-caret-down"></i></a>
       <ul class="dropdown-menu" role="menu">
 	   <?php if ($module['enabled'] == 0): ?>
-	    <li><a href="<?php echo $_['base_url']; ?>admin/modules/enable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a></li>
+	    <li><a href="/<?php echo $_['base_url']; ?>admin/modules/enable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a></li>
 	   <?php else: ?>
-	    <li><a href="<?php echo $_['base_url']; ?>admin/modules/disable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a></li>
+	    <li><a href="/<?php echo $_['base_url']; ?>admin/modules/disable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a></li>
 	   <?php endif; ?>
 	   <li class="popbox">
 	    <a href="#" class="open"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
@@ -24,7 +24,7 @@
 	     <div class="arrow-border"></div>
 
 	     <p class="no_wrap">Do you really want to clean this module?<br />This removes all database entries of this plugin and reinstall it!</p>
-	     <p class="centered"><a href="<?php echo $_['base_url']; ?>admin/modules/destroy/<?php echo $module['name']; ?>/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
+	     <p class="centered"><a href="/<?php echo $_['base_url']; ?>admin/modules/destroy/<?php echo $module['name']; ?>/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
 	    </div>
 	   </li>
 	  </ul>

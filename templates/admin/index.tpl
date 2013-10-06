@@ -17,12 +17,12 @@
           <div class="arrow-border"></div>
 
           <p class="no_wrap">Do you really want to clear all log data?</p>
-          <p class="centered"><a href="<?php echo $_['base_url']; ?>admin/index/logs/clear/" class="small-alert-button">Clear</a><a href="#" class="close small-button">Cancel</a></p>
+          <p class="centered"><a href="/<?php echo $_['base_url']; ?>admin/index/logs/clear/" class="small-alert-button">Clear</a><a href="#" class="close small-button">Cancel</a></p>
         </div>
       </span>
       <?php endif; ?>
     </div>
-    <div><a href="<?php echo $_['base_url']; ?>admin/index/logs/view/" class="small-button"><i class="icon-list-alt"></i>&ensp;View <?php echo $_['log_name_current']; ?></a></div>
+    <div><a href="/<?php echo $_['base_url']; ?>admin/index/logs/view/" class="small-button"><i class="icon-list-alt"></i>&ensp;View <?php echo $_['log_name_current']; ?></a></div>
   </div>
 </div>
 
@@ -44,7 +44,7 @@
           <div class="arrow-border"></div>
 
           <p class="no_wrap">Do you really want to clear all cache data?</p>
-          <p class="centered"><a href="<?php echo $_['base_url']; ?>admin/index/cache/clear/" class="small-alert-button">Clear</a><a href="#" class="close small-button">Cancel</a></p>
+          <p class="centered"><a href="/<?php echo $_['base_url']; ?>admin/index/cache/clear/" class="small-alert-button">Clear</a><a href="#" class="close small-button">Cancel</a></p>
         </div>
       </span>
       <?php endif; ?>

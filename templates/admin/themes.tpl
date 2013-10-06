@@ -4,10 +4,10 @@
   <?php if ($i % 3 == 0) { echo '<tr>'; } ?>
 	<td class="no_wrap centered vertical_top <?php if ($item['name'] == $_['current_theme']) { echo 'theme_current'; } ?>">
 	 <div class="theme_caption"><strong><?php echo $item['title']; ?></strong><br />(<?php echo $item['author']; ?>)</div>
-	 <img src="<?php echo $_['base_url']; ?>themes/<?php echo $item['name']; ?>/preview.png" alt="<?php echo $item['name']; ?>" class="theme_image" /><br />
+	 <img src="/<?php echo $_['base_url']; ?>themes/<?php echo $item['name']; ?>/preview.png" alt="<?php echo $item['name']; ?>" class="theme_image" /><br />
 
      <?php if ($item['name'] != $_['current_theme']): ?>
-	  <a href="<?php echo $_['base_url']; ?>admin/themes/use/<?php echo $item['name']; ?>/" class="small-button"><i class="icon-check"></i>&ensp;Use</a>
+	  <a href="/<?php echo $_['base_url']; ?>admin/themes/use/<?php echo $item['name']; ?>/" class="small-button"><i class="icon-check"></i>&ensp;Use</a>
 	 <?php endif; ?>
 
 	 <span class="popbox">
@@ -17,7 +17,7 @@
 	   <div class="arrow-border"></div>
 
 	   <p class="centered no_wrap">Do you really want to destroy this theme?<br />This removes all files of this theme!</p>
-	   <p class="centered"><a href="<?php echo $_['base_url']; ?>admin/themes/destroy/<?php echo $item['name']; ?>/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
+	   <p class="centered"><a href="/<?php echo $_['base_url']; ?>admin/themes/destroy/<?php echo $item['name']; ?>/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
 	  </div>
 	 </span>
 	</td>

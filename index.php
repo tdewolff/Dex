@@ -21,12 +21,8 @@ if (ErrorHandler::getLevel() == DISCREET)
 
 
 // form the request URI
-$base_url = substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/') + 1); // remove filename
-
-$request_uri = $_SERVER['REQUEST_URI'];
-if (strpos($request_uri, '/') !== false)
-	substr($request_uri, 0, strpos($request_uri, '?')); // remove query string
-
+$base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
+$request_uri = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp($base_url, $request_uri, strlen($base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
