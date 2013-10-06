@@ -1,6 +1,6 @@
 <?php
 
-Hooks::attach('module', function() {
+Hooks::attach('main', 0, function() {
     global $db, $link;
 
     $content = '';
@@ -9,7 +9,7 @@ Hooks::attach('module', function() {
             $content = $page['parsed_content'];
 
     Dexterous::assign('content', $content);
-    Dexterous::renderModule('pages', 'main', 'index.tpl');
+    Dexterous::renderModule('pages', 'index.tpl');
 });
 
 ?>

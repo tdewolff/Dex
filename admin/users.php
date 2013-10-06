@@ -6,10 +6,10 @@ if (!Session::isAdmin())
 if (!isset($uri[2]) || $uri[2] == 'remove')
 {
 	if (isset($uri[2]) && $uri[2] == 'remove' && isset($uri[3]))
-		$db->exec("DELETE FROM `accounts` WHERE id = '" . $db->escape($uri[3]) . "';");
+		$db->exec("DELETE FROM accounts WHERE id = '" . $db->escape($uri[3]) . "';");
 
 	$users = array();
-	$table = $db->query("SELECT id, username, userlevel FROM `accounts`;");
+	$table = $db->query("SELECT id, username, userlevel FROM accounts;");
 	while ($row = $table->fetch())
 	{
 		$row['userlevel'] = $row['userlevel'] == '0' ? 'Admin' : 'User';
@@ -21,12 +21,12 @@ if (!isset($uri[2]) || $uri[2] == 'remove')
 	Dexterous::addDeferredScript('resources/scripts/popbox.js');
 	Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	Dexterous::assign('users', $users);
 	Dexterous::render('admin/users.tpl');
 
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 else
@@ -46,7 +46,7 @@ else
 	{
 		if ($form->verifyPost())
 		{
-            if ($db->querySingle("SELECT * FROM `accounts` WHERE username = '" . $db->escape($form->get('username')) . "' AND id != '" . $db->escape($uri[2]) . "' LIMIT 1;"))
+            if ($db->querySingle("SELECT * FROM accounts WHERE username = '" . $db->escape($form->get('username')) . "' AND id != '" . $db->escape($uri[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
             else
             {
@@ -54,14 +54,14 @@ else
 				{
 					if ($form->get('password') != '')
 						$db->exec("
-						UPDATE `accounts` SET
+						UPDATE accounts SET
 							username = '" . $db->escape($form->get('username')) . "',
 							password = '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
 							userlevel = '" . $db->escape($form->get('userlevel')) . "'
 						WHERE id = '" . $db->escape($uri[2]) . "';");
 					else
 						$db->exec("
-						UPDATE `accounts` SET
+						UPDATE accounts SET
 							username = '" . $db->escape($form->get('username')) . "',
 							userlevel = '" . $db->escape($form->get('userlevel')) . "'
 						WHERE id = '" . $db->escape($uri[2]) . "';");
@@ -69,7 +69,7 @@ else
 				else
 				{
 					$db->exec("
-					INSERT INTO `accounts` (username, password, userlevel) VALUES (
+					INSERT INTO accounts (username, password, userlevel) VALUES (
 						'" . $db->escape($form->get('username')) . "',
 						'" . $db->escape($bcrypt->hash($form->get('password'))) . "',
 						'" . $db->escape($form->get('userlevel')) . "'
@@ -87,7 +87,7 @@ else
 	{
 		if ($uri[2] != 'new')
 		{
-			$account = $db->querySingle("SELECT * FROM `accounts` WHERE id = '" . $db->escape($uri[2]) . "' LIMIT 1;");
+			$account = $db->querySingle("SELECT * FROM accounts WHERE id = '" . $db->escape($uri[2]) . "' LIMIT 1;");
 			if ($account === false)
 				Hooks::emit('error', 404);
 
@@ -96,14 +96,14 @@ else
 		}
 	}
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	$form->sessionToForm();
-	$form->setupForm($smarty);
 
+	Dexterous::assign('user', $form);
 	Dexterous::render('admin/user.tpl');
 
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 

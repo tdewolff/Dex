@@ -24,12 +24,12 @@ while (($media_name = readdir($handle)) !== false)
 Dexterous::addStyle('resources/styles/fancybox.css');
 Dexterous::addDeferredScript('resources/scripts/fancybox.js');
 
-Hooks::emit('header');
+Hooks::emit('admin_header');
 
 Dexterous::assign('media', $media);
 Dexterous::render('admin/media.tpl');
 
-Hooks::emit('footer');
+Hooks::emit('admin_footer');
 exit;
 
 ?>

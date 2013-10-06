@@ -1,6 +1,4 @@
-  {if isset($admin_links)}
-   </div>
-  {/if}
-  {if isset($footer_script)}<script type="text/javascript" src="{$base_url}{$footer_script}"></script>{/if}
+  <?php if (isset($_['admin_links'])): ?></div><?php endif; ?>
+  <?php if (isset($_['footer_script'])): ?><script type="text/javascript" src="<?php echo $_['base_url'] . $_['footer_script']; ?>"></script><?php endif; ?>
  </body>
 </html>

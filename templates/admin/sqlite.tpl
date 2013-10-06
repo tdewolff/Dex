@@ -1,18 +1,18 @@
-{foreach from=$database item=table_data}
- <h2>{$table_data.name}</h2>
+<?php foreach ($_['database'] as $data): ?>
+ <h2><?php echo $data['name']; ?></h2>
  <table class="database">
   <tr>
-   {foreach from=$table_data.columns item=column}
-    <td><strong>{$column}</strong></td>
-   {/foreach}
+   <?php foreach ($data['columns'] as $column): ?>
+    <td><strong><?php echo $column; ?></strong></td>
+   <?php endforeach; ?>
   </tr>
 
-  {foreach from=$table_data.rows item=row}
+  <?php foreach ($data['rows'] as $row): ?>
    <tr>
-    {foreach from=$row item=item}
-	 <td>{$item|truncate:100}</td>
-    {/foreach}
+    <?php foreach ($row as $item): ?>
+	   <td><?php echo (strlen($item) > 100 ? substr($item, 0, 100) . '...' : $item); ?></td>
+    <?php endforeach; ?>
    </tr>
-  {/foreach}
+  <?php endforeach; ?>
  </table>
-{/foreach}
+<?php endforeach; ?>

@@ -56,8 +56,8 @@ $(function() {
         $('.popbox').popbox();
     }
 
-    if ($('.markitup').length > 0) {
-        $('.markitup').markItUp(mySettings);
+    if ($('.markdown').length > 0) {
+        $('.markdown').markItUp(mySettings);
     }
 
     $('textarea.bottom').each(function () {

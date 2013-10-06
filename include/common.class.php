@@ -1,6 +1,6 @@
 <?php
 
-require_once('include/libs/minify/jsmin.php');
+require_once('include/libs/jsmin.php');
 
 class Common
 {
@@ -38,8 +38,8 @@ class Common
 	public static function padIpAddress($ip)
 	{
 		$bytes = explode('.', $ip);
-		foreach ($bytes as &$byte)
-			$byte = str_pad($byte, 3, '0', STR_PAD_LEFT);
+		foreach ($bytes as $k => $byte)
+			$bytes[$k] = str_pad($byte, 3, '0', STR_PAD_LEFT);
 		return implode('.', $bytes);
 	}
 
@@ -66,6 +66,7 @@ class Common
 
 	public static function minifyCss($filenames)
 	{
+        $starttime_local = explode(' ', microtime());
 		$cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.css');
 		if (!file_exists($cache_filename) || self::$caching == false)
 		{
@@ -78,13 +79,16 @@ class Common
 			fwrite($f, $cache_content);
 			fclose($f);
 
-			Log::caching($cache_filename . ' (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
+            $endtime_local = explode(' ', microtime());
+            $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
+			Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
 		}
 		return $cache_filename;
 	}
 
 	public static function minifyJs($filenames)
 	{
+        $starttime_local = explode(' ', microtime());
 		$cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.js');
 		if (!file_exists($cache_filename) || self::$caching == false)
 		{
@@ -97,15 +101,17 @@ class Common
 			fwrite($f, $cache_content);
 			fclose($f);
 
-			Log::caching($cache_filename . ' (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
+            $endtime_local = explode(' ', microtime());
+            $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
+			Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
 		}
 		return $cache_filename;
 	}
 
 	public static function imageResize($filename, $max_width, $max_height, $scale)
 	{
+        $starttime_local = explode(' ', microtime());
 		$cache_filename = 'resources/cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
-		Log::information($cache_filename);
 		if (!file_exists($cache_filename))
 		{
 			list($width, $height, $mime_type, $attribute) = getimagesize($filename);
@@ -140,8 +146,6 @@ class Common
 			else
 				return $filename;
 
-			Log::information('Resizing "' . $filename . '" from ' . $width . 'x' . $height . ' to ' . $new_width . 'x' . $new_height);
-
 			switch (image_type_to_mime_type($mime_type))
 			{
 				case 'image/jpeg':
@@ -174,6 +178,10 @@ class Common
 			imagepng($resizedImage, $cache_filename);
 			imagedestroy($resizedImage);
 			imagedestroy($image);
+
+            $endtime_local = explode(' ', microtime());
+            $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
+            Log::caching($cache_filename . ' resize took ' . number_format($totaltime, 4) . 's (' . $width . 'x' . $height . ' to ' . $new_width . 'x' . $new_height . ')');
 		}
 		return $cache_filename;
 	}

@@ -6,17 +6,17 @@
 	<th>Author</th>
 	<th>Description</th>
   </tr>
- {foreach from=$modules item=module}
+ <?php foreach ($_['modules'] as $module): ?>
   <tr>
 	<td class="no_wrap centered">
 	 <div class="dropdown">
-	  <a href="{$base_url}admin/module/{$module.name}/" class="dropdown-select small-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle small-button"><i class="icon-caret-down"></i></a>
+	  <a href="<?php echo $_['base_url']; ?>admin/module/<?php echo $module['name']; ?>/" class="dropdown-select small-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle small-button"><i class="icon-caret-down"></i></a>
       <ul class="dropdown-menu" role="menu">
-	   {if $module.enabled == 0}
-	    <li><a href="{$base_url}admin/modules/enable/{$module.name}/"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a></li>
-	   {else}
-	    <li><a href="{$base_url}admin/modules/disable/{$module.name}/"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a></li>
-	   {/if}
+	   <?php if ($module['enabled'] == 0): ?>
+	    <li><a href="<?php echo $_['base_url']; ?>admin/modules/enable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a></li>
+	   <?php else: ?>
+	    <li><a href="<?php echo $_['base_url']; ?>admin/modules/disable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a></li>
+	   <?php endif; ?>
 	   <li class="popbox">
 	    <a href="#" class="open"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
 	    <div class="box">
@@ -24,25 +24,29 @@
 	     <div class="arrow-border"></div>
 
 	     <p class="no_wrap">Do you really want to clean this module?<br />This removes all database entries of this plugin and reinstall it!</p>
-	     <p class="centered"><a href="{$base_url}admin/modules/destroy/{$module.name}/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
+	     <p class="centered"><a href="<?php echo $_['base_url']; ?>admin/modules/destroy/<?php echo $module['name']; ?>/" class="small-alert-button">Remove</a><a href="#" class="close small-button">Cancel</a></p>
 	    </div>
 	   </li>
 	  </ul>
 	 </div>
 	</td>
-	<td class="no_wrap {if $module.enabled == 0}disabled{/if}">{$module.title} {if $module.enabled == 0}(disabled){/if}</td>
-	<td class="no_wrap {if $module.enabled == 0}disabled{/if}">{$module.author}</td>
-	<td {if $module.enabled == 0}class="disabled"{/if}>
+	<td class="no_wrap <?php if ($module['enabled'] == 0) { echo 'disabled'; } ?>"><?php echo $module['title']; if ($module['enabled'] == 0) { echo ' (disabled)'; } ?></td>
+	<td class="no_wrap <?php if ($module['enabled'] == 0) { echo 'disabled'; } ?>"><?php echo $module['author']; ?></td>
+	<td <?php if ($module['enabled'] == 0) { echo 'class="disabled"'; } ?>>
 	 <span class="popbox">
-	  {if $module.description|strlen > 80}<a href="#" class="open">{/if}{$module.description|truncate:80}{if $module.description|strlen > 80}</a>{/if}
+	  <?php if (strlen($module['description']) > 80): ?>
+	   <a href="#" class="open"><?php echo substr($module['description'], 0, 80) . '...'; ?></a>
+	  <?php else: ?>
+	  	<?php echo $module['description']; ?>
+	  <?php endif; ?>
 	  <div class="box">
 	   <div class="arrow"></div>
 	   <div class="arrow-border"></div>
 
-	   <p class="pre_wrap">{$module.description}</p>
+	   <p class="pre_wrap"><?php echo $module['description']; ?></p>
 	  </div>
 	 </span>
 	</td>
   </tr>
- {/foreach}
+ <?php endforeach; ?>
 </table>

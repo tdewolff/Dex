@@ -9,7 +9,6 @@ $form->addSeparator();
 $form->addSubmit('login', '<i class="icon-signin"></i>&ensp;Login');
 
 if ($form->submittedBy('login'))
-{
 	if ($form->verifyPost())
 	{
 		$account = $db->querySingle('SELECT * FROM accounts WHERE username = "' . $db->escape($form->get('username')) . '" LIMIT 1;');
@@ -19,29 +18,25 @@ if ($form->submittedBy('login'))
 			$form->unsetSession();
 		}
 		else
-		{
 			$form->appendError('Login username and password combination is incorrect');
-		}
 	}
 	else
 		$form->postToSession();
-}
 
 if (!Session::isUser())
 {
 	Dexterous::addTitle('Admin panel');
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	$form->sessionToForm();
-	$form->setupForm($smarty);
 
+	Dexterous::assign('login', $form);
 	if ($request_uri == 'admin/logout/')
 		Dexterous::assign('form_action', $base_url . 'admin/');
-
 	Dexterous::render('admin/login.tpl');
 
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 

@@ -14,8 +14,12 @@ class Form
 
 	public function __construct($name, $title, $text = '')
 	{
-		// so it includes scripts after jquery gets loaded
-		Hooks::preAttach('header', function() {
+		Hooks::attach('header', -1, function() {
+			Dexterous::addDeferredScript('resources/scripts/sha1.js');
+			Dexterous::addDeferredScript('resources/scripts/form.js');
+		});
+
+		Hooks::attach('admin_header', -1, function() {
 			Dexterous::addDeferredScript('resources/scripts/sha1.js');
 			Dexterous::addDeferredScript('resources/scripts/form.js');
 		});
@@ -63,10 +67,10 @@ class Form
 		);
 	}
 
-	public function addWYSIWYG($name, $title, $subtitle)
+	public function addMarkdown($name, $title, $subtitle)
 	{
 		$this->items[] = array(
-			'type' => 'wysiwyg',
+			'type' => 'markdown',
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
@@ -148,16 +152,16 @@ class Form
 
 	public function allowEmptyTogether($names)
 	{
-		foreach ($names as &$name)
+		foreach ($names as $k => $name)
 		{
-			$name = $this->name . '_' . $name;
+			$names[$k] = $this->name . '_' . $name;
 		}
 
-		foreach ($this->items as &$item)
+		foreach ($this->items as $k => $item)
 		{
 			if (isset($item['value']) && in_array($item['name'], $names))
 			{
-				$item['emptyTogether'] = $names;
+				$this->items[$k]['emptyTogether'] = $names;
 			}
 		}
 	}
@@ -181,7 +185,7 @@ class Form
 	public function verifyPost()
 	{
 		$valid = true;
-		foreach ($this->items as &$item)
+		foreach ($this->items as $k => $item)
 		{
 			if (isset($item['value']))
 			{
@@ -211,27 +215,27 @@ class Form
 
 					if ($value != $value_confirm)
 					{
-						$item['error'] = 'Does not confirm';
+						$this->items[$k]['error'] = 'Does not confirm';
 					}
 				}
 				else if ($item['preg']['min'] > 0 && !strlen($value))
 				{
 					if (!$allowEmpty)
 					{
-						$item['error'] = 'Cannot be empty';
+						$this->items[$k]['error'] = 'Cannot be empty';
 					}
 				}
 				else if (strlen($value) < $item['preg']['min'])
 				{
-					$item['error'] = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
+					$this->items[$k]['error'] = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
 				}
 				else if (strlen($value) > $item['preg']['max'])
 				{
-					$item['error'] = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
+					$this->items[$k]['error'] = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
 				}
 				else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
 				{
-					$item['error'] = $item['preg']['error'];
+					$this->items[$k]['error'] = $item['preg']['error'];
 				}
 
 				if (isset($item['error']))
@@ -264,9 +268,9 @@ class Form
 
 	public function setError($name, $error)
 	{
-		foreach ($this->items as &$item)
+		foreach ($this->items as $k => $item)
 			if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
-				$item['error'] = $error;
+				$this->items[$k]['error'] = $error;
 	}
 
 	public function setResponse($response)
@@ -284,45 +288,45 @@ class Form
 
 	public function sessionToForm()
 	{
-		foreach ($this->items as &$item)
+		foreach ($this->items as $k => $item)
 			if (isset($item['value']))
-				$item['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
+				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
 	}
 
-	public function setupForm($smarty)
+	public function renderForm()
 	{
 		$_SESSION[$this->name . '_salt'] = random(8);
 
 		// make handy variables for js and css
-		foreach ($this->items as &$item)
+		foreach ($this->items as $k => $item)
 		{
-			$item['jsEmptyTogether'] = '[]';
-			$item['cssEmptyTogether'] = false;
+			$this->items[$k]['jsEmptyTogether'] = '[]';
+			$this->items[$k]['cssEmptyTogether'] = false;
 
 			if (isset($item['emptyTogether']) && count($item['emptyTogether']))
 			{
 				$js_empty_together = $item['emptyTogether'];
-				foreach ($js_empty_together as &$js_empty)
+				foreach ($js_empty_together as $k_js_empty => $v_js_empty)
 				{
-					$js_empty .= '_' . $_SESSION[$this->name . '_salt'];
+					$js_empty_together[$k_js_empty] .= '_' . $_SESSION[$this->name . '_salt'];
 				}
-				$item['jsEmptyTogether'] = '[\'' . implode('\', \'', $js_empty_together) . '\']';
+				$this->items[$k]['jsEmptyTogether'] = '[\'' . implode('\', \'', $js_empty_together) . '\']';
 
-				$item['cssEmptyTogether'] = true;
+				$this->items[$k]['cssEmptyTogether'] = true;
 				if (strlen($item['value']))
-					$item['cssEmptyTogether'] = false;
+					$this->items[$k]['cssEmptyTogether'] = false;
 				else
 					foreach ($item['emptyTogether'] as $name) // go over all items this one is grouped with for emptyness
 					{
-						foreach ($this->items as $item2) // go over all items
+						foreach ($this->items as $k2 => $item2) // go over all items
 							if (isset($item2['emptyTogether']) && $item2['name'] == $name) // to find one with a 'name' from the group
 								if (strlen($item2['value']))
 								{
-									$item['cssEmptyTogether'] = false;
+									$this->items[$k]['cssEmptyTogether'] = false;
 									break;
 								}
 
-						if ($item['cssEmptyTogether'] == false)
+						if (isset($item['cssEmptyTogether']) && $item['cssEmptyTogether'] == false)
 							break;
 					}
 			}
@@ -339,7 +343,7 @@ class Form
 			'mode' => $this->mode
 		);
 
-		$smarty->assign($this->name, $form);
+		include('templates/form.tpl');
 	}
 }
 

@@ -45,7 +45,7 @@ form h2 {
 	line-height: 16px;
 	letter-spacing: 0.1em;
 	font-weight:bold;
-	color:@alert;
+	color:#c7254e;
 	margin-top:15px;
 	margin-left:10px;
 }
@@ -55,9 +55,8 @@ form h2 {
 	font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
 	font-size: 12px;
 	line-height: 14px;
-	letter-spacing: 0.1em;
 	font-weight:bold;
-	color:@alert;
+	color:#c7254e;
 	margin-bottom:25px;
 	margin-left:215px;
 }
@@ -92,13 +91,17 @@ label > .small {
 input[type="text"], input[type="password"], select {
 	background-color:#ffffff;
 	border:1px solid #c0c0c0;
-	.border-radius(2px);
+	.border-radius(4px);
 	float:left;
 	font-size:16px;
 	letter-spacing: 0.1em;
-	padding:4px;
+	padding:4px 6px;
 	margin:-2px 0 15px 10px;
 	width:250px;
+}
+
+textarea {
+	.border-radius(4px);
 }
 
 input.unused {
@@ -106,8 +109,9 @@ input.unused {
 }
 
 input.invalid {
-	border-color:lighten(@alert, 25%);
-	background-color:lighten(@alert, 50%);
+	color:#c7254e;
+	border-color:#c7254e;
+	background-color:#f9f2f4;
 }
 
 input[data-type="parameter_key"] {

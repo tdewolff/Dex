@@ -1,6 +1,6 @@
 <div id="main">
  <div class="title auto"></div>
  <div class="content">
-  {form data=$setup}
+  <?php $_['setup']->renderForm(); ?>
  </div>
 </div>

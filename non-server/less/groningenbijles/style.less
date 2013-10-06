@@ -1,4 +1,3 @@
-@import "_normalize.less";
 @import "_mixins.less";
 
 body {
@@ -47,7 +46,7 @@ header:before {
     text-decoration:none;
 }
 
-.header-contact {
+header .contact {
     display:none;
 }
 
@@ -87,7 +86,7 @@ footer {
     color:#808080;
 }
 
-.footer-contact {
+footer .contact {
 }
 
 @media only screen and (min-width: 481px) {
@@ -117,12 +116,14 @@ footer {
         font-size:100%;
         padding:1em 0;
         height:10em;
+        border-top:8px solid #F0F0F0;
     }
 
     header h1 {
         text-align:left;
         font-family:EBGaramond;
         font-size:400%;
+        padding-top:0.1em;
         padding-left:0.5em;
         padding-bottom: 0;
     }
@@ -134,13 +135,13 @@ footer {
         font-size:100%;
         font-style:italic;
         padding-left:5em;
-        color:#808080;
+        color:#606060;
     }
 
     header:before {
         content: " ";
         position: absolute;
-        top:0;
+        top:-8px;
         right:0;
 
         background: url("../../themes/groningenbijles/resources/images/slant.png") no-repeat top right;
@@ -202,7 +203,7 @@ footer {
 }
 
 @media only screen and (min-width: 41em) {
-    .header-contact {
+    header .contact {
         display:block;
         font-family:EBGaramond;
         font-size:100%;
@@ -210,13 +211,13 @@ footer {
         color:#404040;
 
         position: absolute;
-        top:1.1em;
+        top:2.3em;
         right:2em;
-        border-left:2px #808080 solid;
+        border-left:2px #404040 solid;
         padding-left:0.5em;
     }
 
-    .header-contact .org {
+    header .contact .org {
         font-variant: small-caps;
     }
 }
@@ -225,18 +226,25 @@ footer {
     header:after {
         content: " ";
         position: absolute;
-        top:0;
+        top:2.7em;
         right:12em;
 
         background: url("../../themes/groningenbijles/resources/images/owl.png") no-repeat center center;
 
         display: block;
         width:76px;
-        height:100%;
+        height:80px;
     }
 
     .main {
         padding:3em 6em;
+    }
+}
+
+@media only screen and (min-width: 52em) {
+    header h1 {
+        font-size:500%;
+        padding-top:0;
     }
 }
 
@@ -248,19 +256,6 @@ footer {
         margin:0 auto;
 		width:1000px;
 	}
-
-    header {
-        position: relative;
-    }
-
-    header h1 {
-        font-size:500%;
-        padding-top:0;
-    }
-
-    header h2 {
-        margin-top:-1em;
-    }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {

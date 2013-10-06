@@ -6,14 +6,14 @@ if (!Session::isAdmin())
 if (!isset($uri[2]) || $uri[2] == 'remove')
 {
 	if (isset($uri[2]) && $uri[2] == 'remove' && isset($uri[3]))
-		$db->exec("DELETE FROM `links` WHERE id = '" . $db->escape($uri[3]) . "';");
+		$db->exec("DELETE FROM links WHERE id = '" . $db->escape($uri[3]) . "';");
 
 	$links = array();
-	$table = $db->query("SELECT * FROM `links`;");
+	$table = $db->query("SELECT * FROM links;");
 	while ($row = $table->fetch())
 	{
 		$module_names = array();
-		$table_link_module = $db->query("SELECT * FROM `link_modules` WHERE link_id = '" . $db->escape($row['id']) . "';");
+		$table_link_module = $db->query("SELECT * FROM link_modules WHERE link_id = '" . $db->escape($row['id']) . "';");
 		while ($row_link_module = $table_link_module->fetch())
 		{
 			$ini_filename = "modules/" . $row_link_module['module_name'] . "/" . $row_link_module['module_name'] . ".ini";
@@ -34,18 +34,18 @@ if (!isset($uri[2]) || $uri[2] == 'remove')
 	Dexterous::addDeferredScript('resources/scripts/popbox.js');
 	Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	Dexterous::assign('links', $links);
 	Dexterous::render('admin/links.tpl');
 
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 else
 {
 	$dropbox_modules = array('0' => '- None -');
-	$modules = $db->query("SELECT * FROM `modules`;");
+	$modules = $db->query("SELECT * FROM modules;");
 	while ($module = $modules->fetch()) {
 		$ini_filename = "modules/" . $module['name'] . "/" . $module['name'] . ".ini";
 		if (file_exists($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
@@ -68,7 +68,7 @@ else
 	{
 		if ($form->verifyPost())
 		{
-            if ($db->querySingle("SELECT * FROM `links` WHERE link = '" . $db->escape($form->get('page_link')) . "' AND id != '" . $db->escape($uri[2]) . "' LIMIT 1;"))
+            if ($db->querySingle("SELECT * FROM links WHERE link = '" . $db->escape($form->get('page_link')) . "' AND id != '" . $db->escape($uri[2]) . "' LIMIT 1;"))
                 $form->setError('page_link', 'Already used');
             else if (substr($form->get('link'), 0, 6) == 'admin/')
                 $form->setError('link', 'Cannot start with "admin/"');
@@ -77,7 +77,7 @@ else
 				if ($uri[2] != 'new')
 				{
 					$db->exec("
-					UPDATE `links` SET
+					UPDATE links SET
 						link = '" . $db->escape($form->get('page_link')) . "',
 						title = '" . $db->escape($form->get('page_title')) . "'
 					WHERE id = '" . $db->escape($uri[2]) . "';");
@@ -85,7 +85,7 @@ else
 				else
 				{
 					$db->exec("
-					INSERT INTO `links` (link, title, module_name, module_params) VALUES (
+					INSERT INTO links (link, title, module_name, module_params) VALUES (
 						'" . $db->escape($form->get('page_link')) . "',
 						'" . $db->escape($form->get('page_title')) . "'
 					);");
@@ -105,7 +105,7 @@ else
 	{
 		if ($uri[2] != 'new')
 		{
-			$link = $db->querySingle("SELECT * FROM `links` WHERE id = '" . $db->escape($uri[2]) . "' LIMIT 1;");
+			$link = $db->querySingle("SELECT * FROM links WHERE id = '" . $db->escape($uri[2]) . "' LIMIT 1;");
 			if ($link === false)
 				Hooks::emit('error', 404);
 
@@ -116,14 +116,14 @@ else
 		}
 	}
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	$form->sessionToForm();
-	$form->setupForm($smarty);
 
+	Dexterous::assign('link', $form);
 	Dexterous::render('admin/link.tpl');
 
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 

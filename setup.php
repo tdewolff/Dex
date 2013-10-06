@@ -3,7 +3,7 @@
 $form = new Form('setup', 'Setting up Dexterous', 'Your site has not been setup yet. Fill out the forms below, any value can later on be change in the admin panel.');
 $form->addSection('Settings', 'General site settings');
 $form->addText('site_title', 'Site title', 'Displayed in the titlebar', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
-$form->addText('site_subtitle', 'Site subtitle', 'Displayed in the header', array('[a-zA-Z0-9\s]*', 1, 50, 'May contain alphanumeric characters and spaces'));
+$form->addText('site_subtitle', 'Site subtitle', 'Displayed in the header', array('[a-zA-Z0-9\s<>\?!]*', 1, 200, 'May contain alphanumeric characters and spaces'));
 $form->addText('site_description', 'Site description', 'Describe the site concisely', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 $form->addText('site_keywords', 'Site keywords', 'Comma-separate tags', array('[a-zA-Z0-9\s,\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 
@@ -31,7 +31,7 @@ if ($form->submittedBy('setup'))
 		CREATE TABLE settings (
 			id INTEGER PRIMARY KEY,
 			key VARCHAR(20),
-			value VARCHAR(50)
+			value VARCHAR(200)
 		);
 
 		DROP TABLE IF EXISTS accounts;
@@ -123,7 +123,7 @@ if (!$isSetup)
 	Hooks::emit('header');
 
 	$form->sessionToForm();
-	$form->setupForm($smarty);
+	Dexterous::assign('setup', $form);
 
 	Dexterous::render('setup.tpl');
 

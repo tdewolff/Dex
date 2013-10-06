@@ -29,13 +29,13 @@ Dexterous::addStyle('resources/styles/dropdown.css');
 Dexterous::addDeferredScript('resources/scripts/popbox.js');
 Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
-Hooks::emit('header');
+Hooks::emit('admin_header');
 
 Dexterous::assign('current_theme', $current_theme);
 Dexterous::assign('themes', $themes);
 Dexterous::render('admin/themes.tpl');
 
-Hooks::emit('footer');
+Hooks::emit('admin_footer');
 exit;
 
 ?>

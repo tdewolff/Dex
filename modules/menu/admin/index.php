@@ -1,25 +1,23 @@
 <?php
 
-Dexterous::setModule('menu');
-
 if (isset($uri[3]) && $uri[3] == 'remove' && isset($uri[4]) && is_numeric($uri[4]))
 {
     $db->exec("
-    UPDATE `module_menu` SET
+    UPDATE module_menu SET
         position = position - 1
-    WHERE position >= (SELECT position FROM `module_menu` WHERE id = '" . $db->escape($uri[4]) . "' LIMIT 1);
+    WHERE position >= (SELECT position FROM module_menu WHERE id = '" . $db->escape($uri[4]) . "' LIMIT 1);
 
-    DELETE FROM `module_menu` WHERE id = '" . $db->escape($uri[4]) . "';");
+    DELETE FROM module_menu WHERE id = '" . $db->escape($uri[4]) . "';");
 }
 
 $dropbox_links = array();
-$links = $db->query("SELECT * FROM `links` ORDER BY link ASC;");
+$links = $db->query("SELECT * FROM links ORDER BY link ASC;");
 while ($link = $links->fetch())
     $dropbox_links[$link['id']] = $link['title'] . ' (/' . $link['link'] . ')';
 
 $dropbox_action = array('after' => 'After:', 'before' => 'Before:', 'under' => 'Under:');
 $dropbox_nodes = array();
-$table = $db->query("SELECT id, name FROM `module_menu` ORDER BY position ASC;");
+$table = $db->query("SELECT id, name FROM module_menu ORDER BY position ASC;");
 while ($row = $table->fetch())
     $dropbox_nodes[$row['id']] = $row['name'];
 
@@ -39,7 +37,7 @@ if ($form->submittedBy('menu'))
 {
     if ($form->verifyPost())
     {
-        $menu_item = $db->querySingle("SELECT * FROM `module_menu` WHERE id = '" . $db->escape($form->get('action_item')) . "' LIMIT 1;");
+        $menu_item = $db->querySingle("SELECT * FROM module_menu WHERE id = '" . $db->escape($form->get('action_item')) . "' LIMIT 1;");
         if (!$menu_item)
             $form->setError('action_item', 'Could not find menu item');
         else
@@ -56,11 +54,11 @@ if ($form->submittedBy('menu'))
             // TODO: add new menu item to action_item dropdown...
 
             $db->exec("
-            UPDATE `module_menu` SET
+            UPDATE module_menu SET
                 position = position + 1
             WHERE position >= '" . $db->escape($position) . "';
 
-            INSERT INTO `module_menu` (parent_id, link_id, name, position) VALUES (
+            INSERT INTO module_menu (parent_id, link_id, name, position) VALUES (
                 '" . $db->escape($parent) . "',
                 '" . $db->escape($form->get('link')) . "',
                 '" . $db->escape($form->get('name')) . "',
@@ -72,9 +70,9 @@ if ($form->submittedBy('menu'))
 }
 
 $menu = array();
-$table = $db->query("SELECT * FROM `module_menu` ORDER BY position ASC;");
+$table = $db->query("SELECT * FROM module_menu ORDER BY position ASC;");
 while ($row = $table->fetch())
-    if ($link = $db->querySingle("SELECT * FROM `links` WHERE id = '" . $db->escape($row['link_id']) . "' LIMIT 1;"))
+    if ($link = $db->querySingle("SELECT * FROM links WHERE id = '" . $db->escape($row['link_id']) . "' LIMIT 1;"))
     {
         $level = 0;
         $parent_id = $row['parent_id'];
@@ -97,16 +95,16 @@ while ($row = $table->fetch())
 Dexterous::addStyle('resources/styles/popbox.css');
 Dexterous::addDeferredScript('resources/scripts/popbox.js');
 
-Hooks::emit('header');
+Hooks::emit('admin_header');
 
 $form->sessionToForm();
-$form->setupForm($smarty);
 
 Dexterous::assign('form_action', $base_url . 'admin/module/menu/');
+Dexterous::assign('menu', $form);
 Dexterous::assign('menu_items', $menu);
-Dexterous::render('admin/menu.tpl');
+Dexterous::renderModule('menu', 'admin/menu.tpl');
 
-Hooks::emit('footer');
+Hooks::emit('admin_footer');
 exit;
 
 ?>

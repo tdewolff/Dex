@@ -1,20 +1,6 @@
 <?php
 
-Hooks::attach('error', function() {
-	global $uri;
-	Dexterous::addTitle('Error');
-
-	Hooks::emit('header');
-
-	Dexterous::render(($uri[0] == 'admin' ? 'admin/' : '') . 'error.tpl');
-
-	Hooks::emit('footer');
-	exit;
-});
-
-Hooks::attach('header', function() {
-	global $uri;
-
+function main_header() {
 	$titles = Dexterous::getTitles();
 	$styles = Dexterous::getStyles();
 	$scripts = Dexterous::getScripts('header');
@@ -25,31 +11,51 @@ Hooks::attach('header', function() {
 		Dexterous::assign('header_style', Common::minifyCss($styles));
 	if (count($scripts))
 		Dexterous::assign('header_script', Common::minifyJs($scripts));
+}
 
-	Dexterous::render(($uri[0] == 'admin' ? 'admin/' : '') . 'header.tpl');
-});
-
-Hooks::attach('index', function() {
-	global $uri;
-
-	$contents = Dexterous::getContents();
-
-	if (isset($contents['navigation']))
-		Dexterous::assign('navigation', implode($contents['navigation']));
-	if (isset($contents['main']))
-		Dexterous::assign('main', implode($contents['main']));
-
-	Dexterous::render(($uri[0] == 'admin' ? 'admin/' : '') . 'index.tpl');
-});
-
-Hooks::attach('footer', function() {
-	global $uri;
-
+function main_footer() {
 	$scripts = Dexterous::getScripts('footer');
 	if (count($scripts))
 		Dexterous::assign('footer_script', Common::minifyJs($scripts));
+}
 
-	Dexterous::render(($uri[0] == 'admin' ? 'admin/' : '') . 'footer.tpl');
+Hooks::attach('error', 0, function() {
+	global $uri;
+
+	Dexterous::addTitle('Error');
+	if ($uri[0] == 'admin')
+	{
+		Hooks::emit('admin_header');
+		Dexterous::render('admin/error.tpl');
+		Hooks::emit('admin_footer');
+	}
+	else
+	{
+		Hooks::emit('header');
+		Dexterous::render('error.tpl');
+		Hooks::emit('footer');
+	}
+	exit;
+});
+
+Hooks::attach('header', 0, function() {
+	main_header();
+	Dexterous::render('header.tpl');
+});
+
+Hooks::attach('footer', 0, function() {
+	main_footer();
+	Dexterous::render('footer.tpl');
+});
+
+Hooks::attach('admin_header', 0, function() {
+	main_header();
+	Dexterous::render('admin/header.tpl');
+});
+
+Hooks::attach('admin_footer', 0, function() {
+	main_footer();
+	Dexterous::render('admin/footer.tpl');
 });
 
 ?>

@@ -11,7 +11,7 @@ while ($table = $tables->fetch())
 	$table_rows = array();
 
 	$first = true;
-	$rows = $db->query("SELECT * FROM `" . $db->escape($table['name']) . "`;");
+	$rows = $db->query("SELECT * FROM " . $db->escape($table['name']) . ";");
 	while ($row = $rows->fetch())
 	{
 		if ($first)
@@ -34,12 +34,12 @@ while ($table = $tables->fetch())
 	);
 }
 
-Hooks::emit('header');
+Hooks::emit('admin_header');
 
 Dexterous::assign('database', $database);
 Dexterous::render('admin/sqlite.tpl');
 
-Hooks::emit('footer');
+Hooks::emit('admin_footer');
 exit;
 
 ?>

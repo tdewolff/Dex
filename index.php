@@ -1,7 +1,6 @@
 <?php
 // preliminaries
-$mtime = explode(' ', microtime());
-$starttime = $mtime[1] + $mtime[0];
+$starttime = explode(' ', microtime());
 
 require_once('include/errorhandler.class.php');
 require_once('include/log.class.php');
@@ -67,7 +66,6 @@ if (strpos($request_uri, 'resources/') === 0 ||
 	$extension = strtolower(substr($request_uri, $extension_position + 1));
 	if ($extension_position !== false && array_key_exists($extension, $extensions_mime) && file_exists($request_uri))
 	{
-		Log::information('resource ' . $request_uri);
 		if ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg')
 		{
 			$w = isset($_GET['w']) ? $_GET['w'] : 0;
@@ -88,45 +86,27 @@ if (strpos($request_uri, 'resources/') === 0 ||
 	exit;
 }
 
-$mtime = explode(' ', microtime());
-$endtime = $mtime[1] + $mtime[0];
-$totaltime = ($endtime - $starttime);
-Log::information('point A, common area: ' . number_format($endtime - $starttime, 4) . 's');
-
 
 // not a resource, so start loading more stuff
 session_start();
+ob_start("minify_html");
 
 require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/session.class.php');
 require_once('include/form.class.php');
-require_once('include/libs/smarty/Smarty.class.php');
 
 $db = new Database('sqlite.db');
 $bcrypt = new Bcrypt(8);
 
-$smarty = new Smarty();
-$smarty->setCompileDir('include/libs/smarty/templates_c/');
-$smarty->setCacheDir('include/libs/smarty/cache/');
-$smarty->setConfigDir('include/libs/smarty/configs/');
-$smarty->addPluginsDir('include/smarty_plugins/');
-$smarty->registerFilter('output', 'minify_html');
-
 register_shutdown_function(function() {
 	global $starttime, $db;
 
-	$mtime = explode(' ', microtime());
-	$endtime = $mtime[1] + $mtime[0];
-	$totaltime = ($endtime - $starttime);
+	$endtime = explode(' ', microtime());
+	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
-	Log::information('script took ' . number_format($endtime - $starttime, 4) . 's and ' . $db->queries() . ' queries');
+	Log::information('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
 });
-
-$mtime = explode(' ', microtime());
-$endtime = $mtime[1] + $mtime[0];
-$totaltime = ($endtime - $starttime);
-Log::information('point B, loading area: ' . number_format($endtime - $starttime, 4) . 's');
 
 
 // setting more stuff
@@ -139,10 +119,10 @@ $domain_url = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos(strtolow
 $domain_url .= ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : ''); // s in https
 $domain_url .= '://' . $_SERVER['SERVER_NAME'];
 $domain_url .= ($_SERVER['SERVER_PORT'] == '80') ? '' : (':' . $_SERVER['SERVER_PORT']); // port
+$domain_url .= '/';
 
-Dexterous::assign('uri', $uri);
-Dexterous::assign('base_url', $base_url);
 Dexterous::assign('domain_url', $domain_url);
+Dexterous::assign('base_url', $base_url);
 
 
 // check whether database needs to be set up
@@ -152,14 +132,7 @@ else if (filesize($db->filename) == 0)
 	require_once('setup.php'); // until site is setup, this will exit!
 
 
-$mtime = explode(' ', microtime());
-$endtime = $mtime[1] + $mtime[0];
-$totaltime = ($endtime - $starttime);
-Log::information('point C, setting area: ' . number_format($endtime - $starttime, 4) . 's');
-
-
 // start loading page
-
 if ($uri[0] == 'admin' && Session::isUser()) {
 	// ugly way to make sure that destroying modules has direct effect
 	if (preg_match('/^admin\/modules\/(destroy\/|enable\/|disable\/)[a-zA-Z_][a-zA-Z0-9_]*\/$/', $request_uri))
@@ -193,57 +166,26 @@ while ($module = $modules->fetch())
 		include_once($module_hooks_filename);
 }
 
-$mtime = explode(' ', microtime());
-$endtime = $mtime[1] + $mtime[0];
-$totaltime = ($endtime - $starttime);
-Log::information('point D, module area: ' . number_format($endtime - $starttime, 4) . 's');
 
-
-// set meta data
-$theme_hooks_filename = '';
-$header_settings = $db->query("SELECT * FROM settings;");
-while ($header_setting = $header_settings->fetch())
-	switch ($header_setting['key'])
-	{
-		case 'title':
-			Dexterous::addTitle($header_setting['value']);
-			if (strlen($header_setting['value']))
-				Dexterous::assign('page_title', $header_setting['value']);
-			break;
-		case 'subtitle':
-			if (strlen($header_setting['value']))
-				Dexterous::assign('page_subtitle', $header_setting['value']);
-			break;
-		case 'description':
-			if (strlen($header_setting['value']))
-				Dexterous::assign('header_description', $header_setting['value']);
-			break;
-		case 'keywords':
-			if (strlen($header_setting['value']))
-				Dexterous::assign('header_keywords', $header_setting['value']);
-			break;
-		case 'theme':
-			if ($theme = $db->querySingle("SELECT * FROM settings WHERE key = 'theme';"))
-				$theme_hooks_filename = 'themes/' . $theme['value'] . '/hooks.php';
-			break;
-
-	}
+// load all settings
+$site_settings = array();
+$settings = $db->query("SELECT * FROM settings;");
+while ($setting = $settings->fetch())
+{
+	$site_settings[$setting['key']] = $setting['value'];
+	Dexterous::assign('settings_' . $setting['key'], $setting['value']);
+}
 
 
 // handle admin area
 if ($uri[0] == 'admin')
 	require_once('admin/admin.php'); // always exits
 
-$mtime = explode(' ', microtime());
-$endtime = $mtime[1] + $mtime[0];
-$totaltime = ($endtime - $starttime);
-Log::information('point E, pre-page: ' . number_format($endtime - $starttime, 4) . 's');
-
 
 // show page
 if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($request_uri) . "' REGEXP link LIMIT 1;"))
 {
-	$table = $db->query("SELECT * FROM `link_modules` WHERE link_id = '0' OR link_id = '" . $db->escape($link['id']) . "';");
+	$table = $db->query("SELECT * FROM link_modules WHERE link_id = '0' OR link_id = '" . $db->escape($link['id']) . "';");
 	while ($row = $table->fetch())
 	{
 		$module_filename = 'modules/' . $row['module_name'] . '/index.php';
@@ -251,6 +193,7 @@ if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($reques
 			include_once($module_filename);
 	}
 
+	$theme_hooks_filename = 'themes/' . $site_settings['theme'] . '/hooks.php';
 	if (file_exists($theme_hooks_filename) !== false)
 		include_once($theme_hooks_filename);
 
@@ -258,10 +201,17 @@ if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($reques
 	Dexterous::addDeferredScript('resources/scripts/common.js');
 
 	Hooks::emit('header');
+	echo '</header>';
 
-	Hooks::emit('module'); // get all module contents
+	echo '<nav class="navigation" role="navigation">';
+	Hooks::emit('navigation');
+	echo '</nav>';
 
-	Hooks::emit('index');
+	echo '<article class="main" role="main">';
+	Hooks::emit('main');
+	echo '</article>';
+
+	echo '<footer>';
 	Hooks::emit('footer');
 }
 else

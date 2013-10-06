@@ -2,44 +2,31 @@
 
 class Dexterous
 {
+	private static $vars = array();
 	private static $titles = array();
 	private static $styles = array();
 	private static $scripts = array();
-	private static $contents = array();
 
-	public function __construct()
-	{
-		global $smarty;
-		$smarty->setTemplateDir('templates/');
+	public function __construct() {
 	}
 
 	////////////////
 
-	public static function assign($key, $value)
-	{
-		global $smarty;
-		$smarty->assign($key, $value);
+	public static function assign($key, $value) {
+		self::$vars[$key] = $value;
 	}
 
-	public static function render($template)
-	{
-		global $smarty;
-		$smarty->display($template);
+	public static function render($_template) {
+		$_ = self::$vars;
+		include('templates/' . $_template);
 	}
 
-	public static function renderModule($module, $role, $template)
-	{
-		global $smarty;
-		self::$contents[$role][] = $smarty->fetch('modules/' . $module . '/templates/' . $template);
+	public static function renderModule($_module, $_template) {
+		$_ = self::$vars;
+		include('modules/' . $_module . '/templates/' . $_template);
 	}
 
 	////////////////
-
-	public static function setModule($module)
-	{
-		global $smarty;
-		$smarty->setTemplateDir(array('templates/', 'modules/' . $module . '/templates/'));
-	}
 
 	public static function addTitle($title) {
 		self::$titles[] = $title;

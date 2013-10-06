@@ -1,37 +1,35 @@
 <?php
 
 use \Michelf\Markdown;
-require_once('include/libs/michelf/markdown.php');
-require_once('include/libs/michelf/smartypants.php');
-
-Dexterous::setModule('pages');
+require_once('include/libs/markdown.php');
+require_once('include/libs/smartypants.php');
 
 if (!isset($uri[3]) || $uri[3] == 'remove')
 {
     if (isset($uri[3]) && $uri[3] == 'remove' && isset($uri[4]) && is_numeric($uri[4]))
     {
-        $page = $db->querySingle("SELECT * FROM `module_pages` WHERE id = '" . $db->escape($uri[3]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE id = '" . $db->escape($uri[3]) . "' LIMIT 1;");
         if ($page)
         {
-            $link_module = $db->query("SELECT COUNT(*) AS rows, link_id FROM `link_modules` WHERE link_id IN (SELECT link_id FROM `link_modules` WHERE id = '" . $db->escape($page['link_module_id']) . "' LIMIT 1);");
+            $link_module = $db->query("SELECT COUNT(*) AS rows, link_id FROM link_modules WHERE link_id IN (SELECT link_id FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "' LIMIT 1);");
             if ($link_module && $link_module['rows'] == 1)
                 $db->exec("
-                DELETE FROM `links` WHERE id = '" . $db->escape($link_module['link_id']) . "';");
+                DELETE FROM links WHERE id = '" . $db->escape($link_module['link_id']) . "';");
 
             $db->exec("
-            DELETE FROM `link_modules` WHERE id = '" . $db->escape($page['link_module_id']) . "';");
+            DELETE FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "';");
         }
 
         $db->exec("
-        DELETE FROM `module_pages` WHERE id = '" . $db->escape($uri[4]) . "';
-        DELETE FROM `link_modules` WHERE module_name = 'pages' AND id = '" . $db->escape($uri[4]) . "';");
+        DELETE FROM module_pages WHERE id = '" . $db->escape($uri[4]) . "';
+        DELETE FROM link_modules WHERE module_name = 'pages' AND id = '" . $db->escape($uri[4]) . "';");
     }
 
     $pages = array();
-    $table = $db->query("SELECT * FROM `module_pages`;");
+    $table = $db->query("SELECT * FROM module_pages;");
     while ($row = $table->fetch())
-        if ($link_module = $db->querySingle("SELECT * FROM `link_modules` WHERE id = '" . $db->escape($row['link_module_id']) . "' LIMIT 1;"))
-            if ($link = $db->querySingle("SELECT * FROM `links` WHERE id = '" . $db->escape($link_module['link_id']) . "' LIMIT 1;"))
+        if ($link_module = $db->querySingle("SELECT * FROM link_modules WHERE id = '" . $db->escape($row['link_module_id']) . "' LIMIT 1;"))
+            if ($link = $db->querySingle("SELECT * FROM links WHERE id = '" . $db->escape($link_module['link_id']) . "' LIMIT 1;"))
                 $pages[] = array(
                     'id' => $row['id'],
                     'link' => $link['link'],
@@ -44,47 +42,47 @@ if (!isset($uri[3]) || $uri[3] == 'remove')
     Dexterous::addDeferredScript('resources/scripts/popbox.js');
     Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
-    Hooks::emit('header');
+    Hooks::emit('admin_header');
 
     Dexterous::assign('pages', $pages);
-    Dexterous::render('admin/pages.tpl');
+    Dexterous::renderModule('pages', 'admin/pages.tpl');
 
-    Hooks::emit('footer');
+    Hooks::emit('admin_footer');
     exit;
 }
 else
 {
     if ($uri[3] != 'new')
     {
-        $page = $db->querySingle("SELECT * FROM `module_pages` WHERE id = '" . $db->escape($uri[3]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE id = '" . $db->escape($uri[3]) . "' LIMIT 1;");
         if (!$page)
             user_error('Page with id "' . $uri[3] . '" doesn\'t exist');
 
-        $link_module = $db->querySingle("SELECT * FROM `link_modules` WHERE id = '" . $db->escape($page['link_module_id']) . "' LIMIT 1;");
+        $link_module = $db->querySingle("SELECT * FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "' LIMIT 1;");
         if (!$link_module)
             user_error('Link-module relation with id "' . $page['link_module_id'] . '" doesn\'t exist');
 
-        $link = $db->querySingle("SELECT * FROM `links` WHERE id = '" . $db->escape($link_module['link_id']) . "' LIMIT 1;");
+        $link = $db->querySingle("SELECT * FROM links WHERE id = '" . $db->escape($link_module['link_id']) . "' LIMIT 1;");
         if (!$link)
             user_error('Link to page with link id "' . $link_module['link_id'] . '" doesn\'t exist');
     }
 
-    $form = new Form('pages', 'Pages');
+    $form = new Form('page', 'Page');
 
     $form->addSection('Page', '');
     $form->addText('title', 'Title', 'As displayed in the titlebar', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
     $form->addText('link', 'Link', $domain_url . $base_url, array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid link and end with /'));
-    $form->addWYSIWYG('content', 'Content', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
+    $form->addMarkdown('content', 'Content', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 
     $form->addSeparator();
-    $form->addSubmit('pages', '<i class="icon-save"></i>&ensp;Save');
+    $form->addSubmit('page', '<i class="icon-save"></i>&ensp;Save');
 
-    if ($form->submittedBy('pages'))
+    if ($form->submittedBy('page'))
     {
         if ($form->verifyPost())
         {
             $link_base = substr($form->get('link'), 0, strpos($form->get('link'), '/') + 1);
-            if ($db->querySingle("SELECT * FROM `links` WHERE link = '" . $db->escape($form->get('link')) . "' AND id IN (SELECT link_id FROM link_modules WHERE module_name = 'pages')" . (isset($link) ? " AND id != '" . $db->escape($link['id']) . "'" : "") . " LIMIT 1;"))
+            if ($db->querySingle("SELECT * FROM links WHERE link = '" . $db->escape($form->get('link')) . "' AND id IN (SELECT link_id FROM link_modules WHERE module_name = 'pages')" . (isset($link) ? " AND id != '" . $db->escape($link['id']) . "'" : "") . " LIMIT 1;"))
                 $form->setError('link', 'Already used');
             else if ($link_base == 'admin/' ||
                      $link_base == 'resources/' ||
@@ -100,8 +98,8 @@ else
                 if ($uri[3] != 'new')
                 {
                     $db->exec("
-                    UPDATE `links` SET link = '" . $db->escape($form->get('link')) . "', title = '" . $db->escape($form->get('title')) . "' WHERE id = '" . $db->escape($link_module['link_id']) . "';
-                    UPDATE `module_pages` SET
+                    UPDATE links SET link = '" . $db->escape($form->get('link')) . "', title = '" . $db->escape($form->get('title')) . "' WHERE id = '" . $db->escape($link_module['link_id']) . "';
+                    UPDATE module_pages SET
                         content = '" . $db->escape($form->get('content')) . "',
                         parsed_content = '" . $db->escape($parsed_content) . "'
                     WHERE id = '" . $db->escape($uri[3]) . "';");
@@ -109,17 +107,17 @@ else
                 else
                 {
                     $db->exec("
-                    INSERT INTO `links` (link, title) VALUES (
+                    INSERT INTO links (link, title) VALUES (
                         '" . $db->escape($form->get('link')) . "',
                         '" . $db->escape($form->get('title')) . "'
                     );
 
-                    INSERT INTO `link_modules` (link_id, module_name) VALUES (
+                    INSERT INTO link_modules (link_id, module_name) VALUES (
                         last_insert_rowid(),
                         'pages'
                     );
 
-                    INSERT INTO `module_pages` (link_module_id, content, parsed_content) VALUES (
+                    INSERT INTO module_pages (link_module_id, content, parsed_content) VALUES (
                         last_insert_rowid(),
                         '" . $db->escape($form->get('content')) . "',
                         '" . $db->escape($parsed_content) . "'
@@ -154,14 +152,14 @@ else
     Dexterous::addDeferredScript('resources/scripts/jquery.markitup.js');
     Dexterous::addDeferredScript('resources/scripts/jquery.markitup.markdown.js');
 
-    Hooks::emit('header');
+    Hooks::emit('admin_header');
 
     $form->sessionToForm();
-    $form->setupForm($smarty);
 
-    Dexterous::render('admin/page.tpl');
+    Dexterous::assign('page', $form);
+    Dexterous::renderModule('pages', 'admin/page.tpl');
 
-    Hooks::emit('footer');
+    Hooks::emit('admin_footer');
     exit;
 }
 

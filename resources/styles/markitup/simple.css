@@ -41,7 +41,7 @@
 	width:22px; height:5px;
 	margin-left:auto;
 	margin-right:auto;
-	background-image:url(../resources/images/markitup/handle.png);
+	background-image:url(../images/markitup/handle.png);
 	cursor:n-resize;
 }
 /***************************************************************************************/
@@ -55,7 +55,7 @@
 	display:block;
 }
 .markItUpHeader ul .markItUpDropMenu {
-	background:transparent url(../resources/images/markitup/menu.png) no-repeat 115% 50%;
+	background:transparent url(../images/markitup/menu.png) no-repeat 115% 50%;
 	margin-right:5px;
 }
 .markItUpHeader ul .markItUpDropMenu li {
@@ -74,7 +74,7 @@
 	border-bottom:1px solid #000;
 }
 .markItUpHeader ul ul .markItUpDropMenu {
-	background:#FFF url(../resources/images/markitup/submenu.png) no-repeat 100% 50%;
+	background:#FFF url(../images/markitup/submenu.png) no-repeat 100% 50%;
 }
 .markItUpHeader ul .markItUpSeparator {
 	margin:0 10px;

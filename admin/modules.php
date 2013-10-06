@@ -6,7 +6,7 @@ if (!Session::isAdmin())
 // enable/disable/deinstall links get handled in index.php so that they have direct effect
 
 $modules = array();
-$table = $db->query("SELECT * FROM `modules`;");
+$table = $db->query("SELECT * FROM modules;");
 while ($row = $table->fetch())
 {
 	$ini_filename = 'modules/' . $row['name'] . '/config.ini';
@@ -30,12 +30,12 @@ Dexterous::addStyle('resources/styles/dropdown.css');
 Dexterous::addDeferredScript('resources/scripts/popbox.js');
 Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
-Hooks::emit('header');
+Hooks::emit('admin_header');
 
 Dexterous::assign('modules', $modules);
 Dexterous::render('admin/modules.tpl');
 
-Hooks::emit('footer');
+Hooks::emit('admin_footer');
 exit;
 
 ?>

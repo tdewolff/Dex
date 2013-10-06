@@ -1,1 +1,1 @@
-{form data=$settings}
+<?php $_['settings']->renderForm(); ?>
