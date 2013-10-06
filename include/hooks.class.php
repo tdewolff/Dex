@@ -22,7 +22,7 @@ class Hooks
 	{
 		if (isset(self::$hooks[$event]))
 			foreach (self::$hooks[$event] as $item)
-				call_user_func_array($item['callback'], $args);
+				call_user_func($item['callback'], $args);
 	}
 
 	public static function clear($event)

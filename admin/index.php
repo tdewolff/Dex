@@ -6,12 +6,12 @@ if (isset($uri[2]) && $uri[2] == 'logs' && isset($uri[3]))
 	{
 		$log = file_get_contents('logs/' . Log::getCurrentFilename());
 
-		Hooks::emit('header');
+		Hooks::emit('admin_header');
 
 		Dexterous::assign('log', $log);
 		Dexterous::render('admin/log.tpl');
 
-		Hooks::emit('footer');
+		Hooks::emit('admin_footer');
 		exit;
 	}
 	else if ($uri[3] == 'clear' && Session::isAdmin())

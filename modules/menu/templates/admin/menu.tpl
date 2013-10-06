@@ -23,7 +23,7 @@
 	</td>
 	<td class="no_wrap"><?php for ($i = 0; $i < $item['level']; $i++) { echo '&#8211;'; } echo $item['name']; ?></td>
 	<td class="no_wrap"><?php echo $item['title']; ?></td>
-	<td><a href="/<?php echo $_['base_url'] . $item['link']; ?>"><?php echo $_['domain_url'] . $_['base_url'] . $item['link']; ?></a></td>
+	<td><a href="/<?php echo $_['base_url'] . $item['link']; ?>">/<?php echo $_['domain_url'] . $_['base_url'] . $item['link']; ?></a></td>
   </tr>
  <?php endforeach; ?>
 </table>

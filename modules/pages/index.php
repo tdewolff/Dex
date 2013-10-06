@@ -26,7 +26,7 @@ function pages_setup() {
     INSERT INTO module_pages (link_module_id, content, parsed_content) VALUES (
         last_insert_rowid(),
         'Lorem ipsum',
-        'Lorem ipsum'
+        '<p>Lorem ipsum</p>'
     );");
 }
 

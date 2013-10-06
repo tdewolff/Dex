@@ -1,8 +1,8 @@
 <?php
 
-Hooks::attach('navigation', 0, function() {
-    global $db, $link;
-    $current_link = $link['id'];
+Hooks::attach('navigation', 0, function($p) {
+    global $db;
+    $current_link = $p['link_id'];
 
     $menu = array();
     $table = $db->query("SELECT * FROM module_menu ORDER BY position ASC;");

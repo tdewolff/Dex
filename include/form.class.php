@@ -238,7 +238,7 @@ class Form
 					$this->items[$k]['error'] = $item['preg']['error'];
 				}
 
-				if (isset($item['error']))
+				if (isset($this->items[$k]['error']))
 				{
 					$valid = false;
 				}

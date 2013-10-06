@@ -152,15 +152,15 @@ if ($uri[0] == 'admin' && Session::isUser()) {
 }
 
 // load all modules
-$module_names = array(); // is filled with enabled module (id => name) pairs
+/*$module_names = array(); // is filled with enabled module (id => name) pairs
 $modules = $db->query("SELECT * FROM modules WHERE enabled = 1;");
 while ($module = $modules->fetch())
 {
 	$module_names[] = $module['name'];
-	$module_hooks_filename = 'modules/' . $module['name'] . '/hooks.php';
-	if (file_exists($module_hooks_filename) !== false)
-		include_once($module_hooks_filename);
-}
+	$module_filename = 'modules/' . $module['name'] . '/index.php';
+	if (file_exists($module_filename) !== false)
+		include_once($module_filename);
+}*/
 
 
 // load all settings
@@ -184,9 +184,10 @@ if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($reques
 	$table = $db->query("SELECT * FROM link_modules WHERE link_id = '0' OR link_id = '" . $db->escape($link['id']) . "';");
 	while ($row = $table->fetch())
 	{
-		$module_filename = 'modules/' . $row['module_name'] . '/index.php';
-		if (in_array($row['module_name'], $module_names) && file_exists($module_filename) !== false)
-			include_once($module_filename);
+		$module_hooks_filename = 'modules/' . $row['module_name'] . '/hooks.php';
+		$module = $db->querySingle("SELECT * FROM modules WHERE name = '" . $db->escape($row['module_name']) . "';");
+		if ($module['enabled'] == '1' && file_exists($module_hooks_filename) !== false)
+			include_once($module_hooks_filename);
 	}
 
 	$theme_hooks_filename = 'themes/' . $site_settings['theme'] . '/hooks.php';
@@ -196,19 +197,19 @@ if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($reques
 	Dexterous::addDeferredScript('resources/scripts/jquery.js');
 	Dexterous::addDeferredScript('resources/scripts/common.js');
 
-	Hooks::emit('header');
+	Hooks::emit('header', array('link_id' => $link['id']));
 	echo '</header>';
 
 	echo '<nav class="navigation" role="navigation">';
-	Hooks::emit('navigation');
+	Hooks::emit('navigation', array('link_id' => $link['id']));
 	echo '</nav>';
 
 	echo '<article class="main" role="main">';
-	Hooks::emit('main');
+	Hooks::emit('main', array('link_id' => $link['id']));
 	echo '</article>';
 
 	echo '<footer>';
-	Hooks::emit('footer');
+	Hooks::emit('footer', array('link_id' => $link['id']));
 }
 else
 	user_error('uri with request "' . $request_uri . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);

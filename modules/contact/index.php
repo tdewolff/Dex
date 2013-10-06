@@ -12,6 +12,11 @@ function contact_setup() {
         value VARCHAR(50)
     );
 
+    INSERT INTO link_modules (link_id, module_name) VALUES (
+        0,
+        'contact'
+    );
+
     INSERT INTO module_contact (key, value) VALUES (
         'url',
         ''
@@ -42,7 +47,8 @@ function contact_destroy() {
     global $db;
 
     $db->exec("
-    DROP TABLE IF EXISTS module_contact;");
+    DROP TABLE IF EXISTS module_contact;
+    DELETE FROM link_modules WHERE module_name = 'contact';");
 }
 
 ?>

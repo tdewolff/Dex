@@ -5,7 +5,7 @@ function listRecursion($_, $parent_id)
     foreach ($_['menu'][$parent_id] as $id => $item)
     {
         echo '<li ' . ($item['selected'] == '1' ? 'class="selected"' : '') . '>';
-        echo '<a href="' . $_['base_url'] . $item['link'] . '">' . $item['name'] . '</a>';
+        echo '<a href="/' . $_['base_url'] . $item['link'] . '">' . $item['name'] . '</a>';
 
         if (isset($_['menu'][$id]))
             listRecursion($_, $id);
