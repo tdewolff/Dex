@@ -54,12 +54,13 @@ header .contact {
 .navigation {
     background:#F8F8F8;
     border-bottom:1px #E0E0E0 solid;
+    padding:0.5em 0;
 }
 
 .tinynav {
     display:block;
     width:80%;
-    margin:0.5em auto;
+    margin:0 auto;
 }
 
 #nav {
@@ -87,26 +88,7 @@ footer {
     min-height:1em;
     color:#606060;
     font-size:90%;
-}
-
-footer .contact {
-    overflow:hidden;
-    position:relative;
-}
-
-footer .contact .org {
-}
-
-footer .contact .tel {
-    position:absolute;
-    top:0;
-    left:10em;
-}
-
-footer .contact .email {
-    position:absolute;
-    top:1em;
-    left:10em;
+    line-height:150%;
 }
 
 @media only screen and (min-width: 481px) {
@@ -171,6 +153,10 @@ footer .contact .email {
         height: 47px;
     }
 
+    .navigation {
+        padding:0;
+    }
+
     .tinynav {
         display:none;
     }
@@ -179,6 +165,7 @@ footer .contact .email {
         display:block;
         margin:0 auto;
         overflow:hidden;
+        margin-bottom:-1px;
 
         list-style-type:none;
     }
@@ -210,12 +197,47 @@ footer .contact .email {
         background:#113C56;
         color:#FFFFFF;
         font-weight: bold;
-        border:1px #E0E0E0 solid;
-        border-bottom:0;
+        border-left:1px #E0E0E0 solid;
+        border-right:1px #E0E0E0 solid;
     }
 
     .main {
         padding:1em 4em;
+    }
+
+    footer .contact {
+        margin-left:5em;
+        position:relative;
+        height:2.5em;
+    }
+
+    footer br {
+        display:none;
+    }
+
+    footer .contact .org {
+        position:absolute;
+        top:0;
+        left:0;
+        font-variant:small-caps;
+    }
+
+    footer .contact .fn {
+        position:absolute;
+        top:1.5em;
+        left:0;
+    }
+
+    footer .contact .tel {
+        position:absolute;
+        top:0;
+        left:12em;
+    }
+
+    footer .contact .email {
+        position:absolute;
+        top:1.5em;
+        left:12em;
     }
 }
 
@@ -230,8 +252,6 @@ footer .contact .email {
         position: absolute;
         top:2.5em;
         right:2em;
-        border-left:2px #404040 solid;
-        padding-left:0.5em;
     }
 
     header .contact .org {
@@ -243,7 +263,7 @@ footer .contact .email {
     header:after {
         content: " ";
         position: absolute;
-        top:2.9em;
+        top:3.0em;
         right:12em;
 
         background: url("../../themes/groningenbijles/resources/images/owl.png") no-repeat center center;
@@ -251,6 +271,8 @@ footer .contact .email {
         display: block;
         width:76px;
         height:80px;
+        border-right:2px #404040 solid;
+        padding-right:0.5em;
     }
 
     .main {

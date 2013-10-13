@@ -151,17 +151,6 @@ if ($uri[0] == 'admin' && Session::isUser()) {
 	Common::checkModules();
 }
 
-// load all modules
-/*$module_names = array(); // is filled with enabled module (id => name) pairs
-$modules = $db->query("SELECT * FROM modules WHERE enabled = 1;");
-while ($module = $modules->fetch())
-{
-	$module_names[] = $module['name'];
-	$module_filename = 'modules/' . $module['name'] . '/index.php';
-	if (file_exists($module_filename) !== false)
-		include_once($module_filename);
-}*/
-
 
 // load all settings
 $site_settings = array();
@@ -212,6 +201,6 @@ if ($link = $db->querySingle("SELECT * FROM links WHERE '" . $db->escape($reques
 	Hooks::emit('footer', array('link_id' => $link['id']));
 }
 else
-	user_error('uri with request "' . $request_uri . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+	user_error('Uri with request "' . $request_uri . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 ?>
