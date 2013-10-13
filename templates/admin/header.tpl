@@ -16,6 +16,7 @@
  <?php ob_flush(); flush(); ?>
 
  <body>
+  <div id="main">
   <?php if (isset($_['admin_links'])): ?>
    <div class="title"></div>
    <div id="left-column">

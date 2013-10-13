@@ -11,6 +11,7 @@ header {
     position:relative;
     background:white;
     color:black;
+    border-bottom:12px #832b27 solid;
 }
 
 header h1 {
@@ -52,7 +53,6 @@ header .contact {
 
 .navigation {
     background:#F8F8F8;
-    border-top:10px #843733 solid;
     border-bottom:1px #E0E0E0 solid;
 }
 
@@ -82,11 +82,31 @@ header .contact {
 footer {
     background:#E0E0E0;
     border-top:1px #C0C0C0 solid;
+    border-bottom:1px #C0C0C0 solid;
+    padding:1em;
     min-height:1em;
-    color:#808080;
+    color:#606060;
+    font-size:90%;
 }
 
 footer .contact {
+    overflow:hidden;
+    position:relative;
+}
+
+footer .contact .org {
+}
+
+footer .contact .tel {
+    position:absolute;
+    top:0;
+    left:10em;
+}
+
+footer .contact .email {
+    position:absolute;
+    top:1em;
+    left:10em;
 }
 
 @media only screen and (min-width: 481px) {
@@ -115,15 +135,15 @@ footer .contact {
     header {
         font-size:100%;
         padding:1em 0;
-        height:10em;
+        height:12em;
         border-top:8px solid #F0F0F0;
     }
 
     header h1 {
         text-align:left;
-        font-family:EBGaramond;
+        font-family:EBGaramond, serif;
         font-size:400%;
-        padding-top:0.1em;
+        padding-top:0.3em;
         padding-left:0.5em;
         padding-bottom: 0;
     }
@@ -131,7 +151,7 @@ footer .contact {
     header h2 {
         display:block;
         margin:0;
-        font-family:EBGaramond;
+        font-family:EBGaramond, serif;
         font-size:100%;
         font-style:italic;
         padding-left:5em;
@@ -177,7 +197,6 @@ footer .contact {
         font-size:110%;
         padding:0 1.6em;
         line-height:200%;
-        text-shadow: 0 1px 2px rgba(0,0,0, .75);
     }
 
     #nav a:hover {
@@ -185,16 +204,14 @@ footer .contact {
     }
 
     #nav .selected {
-        border-bottom:1px #113C56 solid;
-        margin-bottom:-1px;
     }
 
     #nav .selected a {
-        background:#164d6f;
+        background:#113C56;
         color:#FFFFFF;
         font-weight: bold;
-        border-left:1px #113C56 solid;
-        border-right:1px #113C56 solid;
+        border:1px #E0E0E0 solid;
+        border-bottom:0;
     }
 
     .main {
@@ -211,7 +228,7 @@ footer .contact {
         color:#404040;
 
         position: absolute;
-        top:2.3em;
+        top:2.5em;
         right:2em;
         border-left:2px #404040 solid;
         padding-left:0.5em;
@@ -226,7 +243,7 @@ footer .contact {
     header:after {
         content: " ";
         position: absolute;
-        top:2.7em;
+        top:2.9em;
         right:12em;
 
         background: url("../../themes/groningenbijles/resources/images/owl.png") no-repeat center center;

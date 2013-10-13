@@ -4,7 +4,7 @@
   <?php if ($i % 3 == 0) { echo '<tr>'; } ?>
 	<td class="no_wrap centered vertical_top <?php if ($item['name'] == $_['current_theme']) { echo 'theme_current'; } ?>">
 	 <div class="theme_caption"><strong><?php echo $item['title']; ?></strong><br />(<?php echo $item['author']; ?>)</div>
-	 <img src="/<?php echo $_['base_url']; ?>themes/<?php echo $item['name']; ?>/preview.png" alt="<?php echo $item['name']; ?>" class="theme_image" /><br />
+	 <img src="/<?php echo $_['base_url']; ?>themes/<?php echo $item['name']; ?>/preview.png" alt="<?php echo $item['name']; ?>" class="theme_image" width="256" height="256" /><br />
 
      <?php if ($item['name'] != $_['current_theme']): ?>
 	  <a href="/<?php echo $_['base_url']; ?>admin/themes/use/<?php echo $item['name']; ?>/" class="small-button"><i class="icon-check"></i>&ensp;Use</a>
