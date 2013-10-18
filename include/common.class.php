@@ -1,7 +1,5 @@
 <?php
 
-require_once('include/libs/jsmin.php');
-
 class Common
 {
 	private static $caching = false;
@@ -64,49 +62,26 @@ class Common
 		return sprintf($cache_formatted_filename, sha1($unique_scriptname));
 	}
 
-	public static function minifyCss($filenames)
-	{
+    public static function concatenateFiles($filenames, $extension)
+    {
         $starttime_local = explode(' ', microtime());
-		$cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.css');
-		if (!file_exists($cache_filename) || self::$caching == false)
-		{
-			$content = '';
-			foreach ($filenames as $filename)
-				$content .= file_get_contents($filename);
-			$cache_content = (self::$minifying ? minify_css($content) : $content);
+        $cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.' . $extension);
+        if (!file_exists($cache_filename) || self::$caching == false)
+        {
+            $content = '';
+            foreach ($filenames as $filename)
+                $content .= file_get_contents($filename);
 
-			$f = fopen($cache_filename, 'w');
-			fwrite($f, $cache_content);
-			fclose($f);
+            $f = fopen($cache_filename, 'w');
+            fwrite($f, $content);
+            fclose($f);
 
             $endtime_local = explode(' ', microtime());
             $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
-			Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
-		}
-		return $cache_filename;
-	}
-
-	public static function minifyJs($filenames)
-	{
-        $starttime_local = explode(' ', microtime());
-		$cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.js');
-		if (!file_exists($cache_filename) || self::$caching == false)
-		{
-			$content = '';
-			foreach ($filenames as $filename)
-				$content .= file_get_contents($filename);
-			$cache_content = (self::$minifying ? substr(JSMin::minify($content), 1) : $content);
-
-			$f = fopen($cache_filename, 'w');
-			fwrite($f, $cache_content);
-			fclose($f);
-
-            $endtime_local = explode(' ', microtime());
-            $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
-			Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's (' . number_format(100 * (1 - strlen($cache_content) / strlen($content)), 1) . '% reduction)');
-		}
-		return $cache_filename;
-	}
+            Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's');
+        }
+        return $cache_filename;
+    }
 
 	public static function imageResize($filename, $max_width, $max_height, $scale)
 	{
@@ -247,63 +222,6 @@ function minify_html($text)
     $text = preg_replace($re, " ", $text);
     if ($text === null) exit("PCRE Error! File too big.\n");
     return $text;
-}
-
-function minify_css($str)
-{
-    $re1 = <<<'EOS'
-(?sx)
-  # quotes
-  (
-    "(?:[^"\\]++|\\.)*+"
-  | '(?:[^'\\]++|\\.)*+'
-  )
-|
-  # comments
-  /\* (?> .*? \*/ )
-EOS;
-
-    $re2 = <<<'EOS'
-(?six)
-  # quotes
-  (
-    "(?:[^"\\]++|\\.)*+"
-  | '(?:[^'\\]++|\\.)*+'
-  )
-|
-  # ; before } (and the spaces after it while we're here)
-  \s*+ ; \s*+ ( } ) \s*+
-|
-  # all spaces around meta chars/operators
-  \s*+ ( [*$~^|]?+= | [{};,>~+-] | !important\b ) \s*+
-|
-  # spaces right of ( [ :
-  ( [[(:] ) \s++
-|
-  # spaces left of ) ]
-  \s++ ( [])] )
-|
-  # spaces left (and right) of :
-  \s++ ( : ) \s*+
-  # but not in selectors: not followed by a {
-  (?!
-    (?>
-      [^{}"']++
-    | "(?:[^"\\]++|\\.)*+"
-    | '(?:[^'\\]++|\\.)*+'
-    )*+
-    {
-  )
-|
-  # spaces at beginning/end of string
-  ^ \s++ | \s++ \z
-|
-  # double spaces to single
-  (\s)\s+
-EOS;
-
-    $str = preg_replace("%$re1%", '$1', $str);
-    return preg_replace("%$re2%", '$1$2$3$4$5$6$7', $str);
 }
 
 ?>

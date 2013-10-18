@@ -17,6 +17,28 @@
  * limitations under the License.
  * ======================================================================== */
 
+$(function() {
+    $('html').click(function() {
+        $('.dropdown-menu').fadeOut('fast');
+    });
+
+    $('.dropdown-menu').click(function(e) {
+        e.stopPropagation();
+    });
+
+    $('.dropdown-toggle').click(function(e) {
+        e.stopPropagation();
+
+        var dropdown = $(this).parent();
+        $('.dropdown-menu').not($('.dropdown-menu', dropdown)).hide(150);
+        $('.dropdown-menu', dropdown).toggle();
+        if ($('.dropdown-menu', dropdown).is(':visible')) {
+            $('.dropdown-menu', dropdown).css({
+                overflow: 'visible'
+            });
+        }
+    });
+});
 
 +function ($) { "use strict";
 

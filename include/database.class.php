@@ -1,13 +1,21 @@
 <?php
 
-function _sqliteRegexp($pattern, $string)
-{
+if (get_magic_quotes_gpc()) {
+    function strip_array($var) {
+        return is_array($var)? array_map("strip_array", $var):stripslashes($var);
+    }
+
+    $_POST = strip_array($_POST);
+    $_SESSION = strip_array($_SESSION);
+    $_GET = strip_array($_GET);
+}
+
+function _sqliteRegexp($pattern, $string) {
 	$pattern = preg_replace('/\//', '\/', $pattern);
 	return preg_match('/^' . $pattern . '$/', $string);
 }
 
-function _sqliteJsonAttr($json, $key)
-{
+function _sqliteJsonAttr($json, $key) {
 	$json = json_decode($json, true);
 	if (isset($json[$key]))
 		return $json[$key];

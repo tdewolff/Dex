@@ -8,15 +8,15 @@ function main_header() {
 	if (count($titles))
 		Dexterous::assign('header_title', implode(' - ', array_reverse($titles)));
 	if (count($styles))
-		Dexterous::assign('header_style', Common::minifyCss($styles));
+		Dexterous::assign('header_style', Common::concatenateFiles($styles, 'css'));
 	if (count($scripts))
-		Dexterous::assign('header_script', Common::minifyJs($scripts));
+		Dexterous::assign('header_script', Common::concatenateFiles($scripts, 'js'));
 }
 
 function main_footer() {
 	$scripts = Dexterous::getScripts('footer');
 	if (count($scripts))
-		Dexterous::assign('footer_script', Common::minifyJs($scripts));
+		Dexterous::assign('footer_script', Common::concatenateFiles($scripts, 'js'));
 }
 
 Hooks::attach('error', 0, function() {
@@ -56,6 +56,24 @@ Hooks::attach('admin_header', 0, function() {
 Hooks::attach('admin_footer', 0, function() {
 	main_footer();
 	Dexterous::render('admin/footer.tpl');
+});
+
+Hooks::attach('navigation', 0, function($p) {
+    global $db;
+    $current_link = $p['link_id'];
+
+    $menu = array();
+    $table = $db->query("SELECT * FROM menu ORDER BY position ASC;");
+    while ($row = $table->fetch())
+        if ($link = $db->querySingle("SELECT * FROM links WHERE id = '" . $db->escape($row['link_id']) . "' LIMIT 1;"))
+            $menu[$row['parent_id']][$row['id']] = array(
+                'name' => $row['name'],
+                'link' => $link['link'],
+                'selected' => ($current_link == $link['id'] ? '1' : '0')
+            );
+
+    Dexterous::assign('menu', $menu);
+    Dexterous::render('menu', 'menu.tpl');
 });
 
 ?>

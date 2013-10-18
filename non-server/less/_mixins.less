@@ -58,8 +58,8 @@ http://0to255.com/
 @red:				#DC3522;
 @light:				#F1ECDB;*/
 
-@dark:        		#181818;
-@light:				#F0F0F0;
+@dark:        		#374147;
+@light:				#FFFFFF;
 @text-black:		#303030;
 @text-grey:			#A0A0A0;
 
@@ -191,6 +191,30 @@ USAGE: .border-radius(4px);
           border-radius: @radius;
 }
 
+.border-top-left-radius(@radius: 4px) {
+  -webkit-border-top-left-radius: @radius;
+     -moz-border-top-left-radius: @radius;
+          border-top-left-radius: @radius;
+}
+
+.border-top-right-radius(@radius: 4px) {
+  -webkit-border-top-right-radius: @radius;
+     -moz-border-top-right-radius: @radius;
+          border-top-right-radius: @radius;
+}
+
+.border-bottom-left-radius(@radius: 4px) {
+  -webkit-border-bottom-left-radius: @radius;
+     -moz-border-bottom-left-radius: @radius;
+          border-bottom-left-radius: @radius;
+}
+
+.border-bottom-right-radius(@radius: 4px) {
+  -webkit-border-bottom-right-radius: @radius;
+     -moz-border-bottom-right-radius: @radius;
+          border-bottom-right-radius: @radius;
+}
+
 
 /*********************
 TRANISTION
@@ -225,8 +249,8 @@ really slow down your CSS. Don't overdo it.
 BOX SHADOW
 *********************/
 
-/* .boxShadow(0,0,4px,#444); */
-.boxShadow(@x: 0, @y: 0, @radius: 4px, @spread: 0, @color: rgba(0,0,0,0.5)) {
+/* .box-shadow(0,0,4px,#444); */
+.box-shadow(@x: 0, @y: 0, @radius: 4px, @spread: 0, @color: rgba(0,0,0,0.5)) {
 	-webkit-box-shadow: @x @y @radius @spread @color;
 	   -moz-box-shadow: @x @y @radius @spread @color;
 					box-shadow: @x @y @radius @spread @color;
@@ -240,7 +264,7 @@ BUTTONS
 	border: 1px solid darken(@bones-pink, 13%);
 	border-top-color: darken(@bones-pink, 7%);
 	border-left-color: darken(@bones-pink, 7%);
-	padding: 7px 12px;
+	padding: 5px 10px;
 	color: @white;
 	display: inline-block;
 	font-weight: bold;
@@ -303,4 +327,32 @@ BUTTONS
 	.small-alert-button();
 	padding: 0px 4px;
 	line-height:17px;
+}
+
+.list-button, .list-button:visited {
+	border: 1px solid darken(@light, 13%);
+	border-top-color: darken(@light, 7%);
+	border-left-color: darken(@light, 7%);
+	padding: 2px 8px;
+	color: @text-black;
+	display: inline-block;
+	text-decoration: none;
+	text-shadow: 0 1px 1px rgba(256,256,256, .75);
+	cursor: pointer;
+	.transition();
+	.border-radius(4px);
+	.css-gradient(@light, darken(@light, 5%));
+	.box-shadow(0, 0, lighten(@light, 16%), inset, 3px);
+
+	&:hover, &:focus {
+		color: @black;
+	  border: 1px solid darken(@light, 13%);
+	  border-top-color: darken(@light, 20%);
+	 	border-left-color: darken(@light, 20%);
+		.css-gradient(darken(@light, 5%),darken(@light, 10%));
+	}
+
+	&:active {
+		.css-gradient(darken(@light, 5%),@light);
+	}
 }

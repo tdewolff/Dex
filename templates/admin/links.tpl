@@ -1,4 +1,4 @@
-<h1>Links</h1>
+<h2>Links</h2>
 <a href="/<?php echo $_['base_url']; ?>admin/links/new/" class="button"><i class="icon-plus"></i>&ensp;New link</a>
 <table class="list">
   <tr>

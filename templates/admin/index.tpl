@@ -1,6 +1,6 @@
-<h1>Admin panel</h1>
+<h2>Admin panel</h2>
 <div class="halfwidth-column">
-  <h2>Logs</h2>
+  <h3>Logs</h3>
   <div class="progress_bar">
     <div class="bar <?php if ($_['logs_size_percentage'] > 80) { echo 'bar_alert'; } ?>" style="width:<?php echo ($_['logs_size_percentage'] > 100 ? '100' : $_['logs_size_percentage']); ?>%;"></div>
   </div>
@@ -27,7 +27,7 @@
 </div>
 
 <div class="halfwidth-column">
-  <h2>Cache</h2>
+  <h3>Cache</h3>
   <div class="progress_bar">
     <div class="bar <?php if ($_['cache_size_percentage'] > 80) { echo 'bar_alert'; } ?>" style="width:<?php echo ($_['cache_size_percentage'] > 100 ? '100' : $_['cache_size_percentage']); ?>%;"></div>
   </div>

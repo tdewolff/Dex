@@ -3,16 +3,15 @@
 class Form
 {
 	private $name = '';
-	private $title = '';
-	private $text = '';
 	private $items = array();
 	private $response = '';
 	private $errors = array();
 	private $mode = false;
+	private $ajax = false;
 
 	private static $inputTypes = array('name');
 
-	public function __construct($name, $title, $text = '')
+	public function __construct($name)
 	{
 		Hooks::attach('header', -1, function() {
 			Dexterous::addDeferredScript('resources/scripts/sha1.js');
@@ -25,19 +24,21 @@ class Form
 		});
 
 		$this->name = $name;
-		$this->title = $title;
-		$this->text = $text;
 	}
 
-	public function makeInline()
-	{
+
+	public function makeInline() {
 		$this->mode = 'inline';
 	}
 
-	public function makeCompact()
-	{
+	public function makeCompact() {
 		$this->mode = 'compact';
 	}
+
+	public function useAjax() {
+		$this->ajax = true;
+	}
+
 
 	public function addSeparator()
 	{
@@ -55,14 +56,68 @@ class Form
 		);
 	}
 
-	public function addText($name, $title, $subtitle, $preg)
+	public function addText($name, $title, $subtitle, $placeholder, $preg)
 	{
 		$this->items[] = array(
 			'type' => 'text',
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
+			'placeholder' => $placeholder,
 			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
+			'value' => ''
+		);
+	}
+
+	public function addEmail($name, $title, $subtitle)
+	{
+		$this->items[] = array(
+			'type' => 'email',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => 'user@domain.com',
+			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => 'Invalid emailaddress'),
+			'value' => ''
+		);
+	}
+
+	public function addTel($name, $title, $subtitle)
+	{
+		$this->items[] = array(
+			'type' => 'tel',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => '+99 (9) 9999-9999',
+			'preg' => array('regex' => '\+[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => 'Invalid telephone number'),
+			'value' => ''
+		);
+	}
+
+	public function addPassword($name, $title, $subtitle)
+	{
+		$this->items[] = array(
+			'type' => 'password',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => 'password',
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
+			'value' => ''
+		);
+	}
+
+	public function addPasswordConfirm($name, $name_confirm, $title, $subtitle)
+	{
+		$this->items[] = array(
+			'type' => 'password',
+			'name' => $this->name . '_' . $name,
+			'name_confirm' => $this->name . '_' . $name_confirm,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => 'password',
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
 			'value' => ''
 		);
 	}
@@ -116,31 +171,6 @@ class Form
 		);
 	}
 
-	public function addPassword($name, $title, $subtitle)
-	{
-		$this->items[] = array(
-			'type' => 'password',
-			'name' => $this->name . '_' . $name,
-			'title' => $title,
-			'subtitle' => $subtitle,
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Must be alphanumeric'),
-			'value' => ''
-		);
-	}
-
-	public function addPasswordConfirm($name, $name_confirm, $title, $subtitle)
-	{
-		$this->items[] = array(
-			'type' => 'password',
-			'name' => $this->name . '_' . $name,
-			'name_confirm' => $this->name . '_' . $name_confirm,
-			'title' => $title,
-			'subtitle' => $subtitle,
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Must be alphanumeric'),
-			'value' => ''
-		);
-	}
-
 	public function addSubmit($name, $title)
 	{
 		$this->items[] = array(
@@ -153,17 +183,11 @@ class Form
 	public function allowEmptyTogether($names)
 	{
 		foreach ($names as $k => $name)
-		{
 			$names[$k] = $this->name . '_' . $name;
-		}
 
 		foreach ($this->items as $k => $item)
-		{
 			if (isset($item['value']) && in_array($item['name'], $names))
-			{
 				$this->items[$k]['emptyTogether'] = $names;
-			}
-		}
 	}
 
 	public function submittedBy($name)
@@ -174,11 +198,17 @@ class Form
 	public function postToSession()
 	{
 		foreach ($this->items as $item)
-		{
 			if (isset($item['value']))
-			{
 				$_SESSION[$item['name']] = (isset($_POST[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $_POST[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
-			}
+
+		if ($this->ajax)
+		{
+			echo json_encode(array(
+				'response' => $this->response,
+				'items' => $this->items,
+				'errors' => $this->errors
+			));
+			exit;
 		}
 	}
 
@@ -207,41 +237,29 @@ class Form
 				$fullname = $item['name'] . '_' . $_SESSION[$this->name . '_salt'] . ($item['type'] == 'password' ? '_hash' : '');
 				$value = (isset($_POST[$fullname]) ? $_POST[$fullname] : '');
 
-				if (isset($item['name_confirm']))
+				if (!$allowEmpty || ($allowEmpty && strlen($value)))
 				{
-					// '_confirm' is the first value entered, we are now checking it against the second (current) item
-					$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'] . ($item['type'] == 'password' ? '_hash' : '');
-					$value_confirm = (isset($_POST[$fullname_confirm]) ? $_POST[$fullname_confirm] : '');
+					if (isset($item['name_confirm']))
+					{
+						// '_confirm' is the first value entered, we are now checking it against the second (current) item
+						$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'] . ($item['type'] == 'password' ? '_hash' : '');
+						$value_confirm = (isset($_POST[$fullname_confirm]) ? $_POST[$fullname_confirm] : '');
 
-					if ($value != $value_confirm)
-					{
-						$this->items[$k]['error'] = 'Does not confirm';
+						if ($value != $value_confirm)
+							$this->items[$k]['error'] = 'Does not confirm';
 					}
-				}
-				else if ($item['preg']['min'] > 0 && !strlen($value))
-				{
-					if (!$allowEmpty)
-					{
+					else if ($item['preg']['min'] > 0 && strlen($value) == 0)
 						$this->items[$k]['error'] = 'Cannot be empty';
-					}
-				}
-				else if (strlen($value) < $item['preg']['min'])
-				{
-					$this->items[$k]['error'] = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
-				}
-				else if (strlen($value) > $item['preg']['max'])
-				{
-					$this->items[$k]['error'] = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
-				}
-				else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
-				{
-					$this->items[$k]['error'] = $item['preg']['error'];
+					else if (strlen($value) < $item['preg']['min'])
+						$this->items[$k]['error'] = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
+					else if (strlen($value) > $item['preg']['max'])
+						$this->items[$k]['error'] = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
+					else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
+						$this->items[$k]['error'] = $item['preg']['error'];
 				}
 
 				if (isset($this->items[$k]['error']))
-				{
 					$valid = false;
-				}
 			}
 		}
 		return $valid;
@@ -307,9 +325,7 @@ class Form
 			{
 				$js_empty_together = $item['emptyTogether'];
 				foreach ($js_empty_together as $k_js_empty => $v_js_empty)
-				{
 					$js_empty_together[$k_js_empty] .= '_' . $_SESSION[$this->name . '_salt'];
-				}
 				$this->items[$k]['jsEmptyTogether'] = '[\'' . implode('\', \'', $js_empty_together) . '\']';
 
 				$this->items[$k]['cssEmptyTogether'] = true;
@@ -334,13 +350,12 @@ class Form
 
 		$form = array(
 			'name' => $this->name,
-			'title' => $this->title,
-			'text' => $this->text,
 			'salt' => $_SESSION[$this->name . '_salt'],
 			'items' => $this->items,
 			'response' => $this->response,
 			'errors' => $this->errors,
-			'mode' => $this->mode
+			'mode' => $this->mode,
+			'ajax' => $this->ajax
 		);
 
 		include('templates/form.tpl');

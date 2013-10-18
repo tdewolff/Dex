@@ -1,4 +1,4 @@
-<h1>Media</h1>
+<h2>Media</h2>
 <table class="grid">
  <?php foreach ($_['media'] as $i => $item): ?>
   <?php if ($i % 5 == 0) { echo '<tr>'; } ?>

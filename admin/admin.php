@@ -24,6 +24,7 @@ $admin_links[] = array('regex' => 'admin/(index/(logs/(view|clear)/|cache/clear/
 $admin_links[] = array('regex' => 'admin/settings/',                                  'file' => 'admin/settings.php', 'uri' => 'admin/settings/', 'icon' => 'icon-wrench',  'title' => 'Settings',    'admin_only' => 0);
 $admin_links[] = array('regex' => 'admin/users/([0-9]+/|new/|remove/[0-9]+/)?',       'file' => 'admin/users.php',    'uri' => 'admin/users/',    'icon' => 'icon-user',    'title' => 'Users',       'admin_only' => 1);
 $admin_links[] = array('regex' => 'admin/media/',                                     'file' => 'admin/media.php',    'uri' => 'admin/media/',    'icon' => 'icon-picture', 'title' => 'Media',       'admin_only' => 0);
+$admin_links[] = array('regex' => 'admin/module/menu/(remove/[0-9]+/)?',              'file' => 'admin/menu.php',     'uri' => 'admin/menu/',     'icon' => 'icon-list',    'title' => 'Menu',        'admin_only' => 0);
 
 $admin_links[] = array();
 

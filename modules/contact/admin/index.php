@@ -1,13 +1,14 @@
 <?php
 
-$form = new Form('contact', 'Contact');
+$form = new Form('contact');
+$form->useAjax();
 
 $form->addSection('Contact details', '');
-$form->addText('url', 'URL', 'URL to organization', array('.*', 1, 50, ''));
-$form->addText('organization', 'Organization', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
-$form->addText('name', 'Name', 'Your full name', array('[a-zA-Z\s]*', 1, 20, 'May contain alphabetic characters and spaces'));
-$form->addText('tel', 'Telephone', '', array('.*', 1, 20, ''));
-$form->addText('email', 'Emailaddress', '', array('.*', 1, 50, ''));
+$form->addText('url', 'URL', 'URL to organization', '', array('.*', 1, 50, ''));
+$form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
+$form->addText('name', 'Name', 'Your full name', '', array('[a-zA-Z\s]*', 1, 20, 'May contain alphabetic characters and spaces'));
+$form->addTel('tel', 'Telephone', '', array('.*', 1, 20, ''));
+$form->addEmail('email', 'Emailaddress', '', array('.*', 1, 50, ''));
 
 $form->addSeparator();
 $form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save');
@@ -40,6 +41,12 @@ if ($form->submittedBy('contact'))
         $form->setResponse('<span class="passed_time" data-time="' . time() . '">(<span></span>)</span>');
     }
     $form->postToSession();
+}
+else
+{
+    $contact_settings = $db->query("SELECT * FROM module_contact;");
+    while ($contact_setting = $contact_settings->fetch())
+        $form->set($contact_setting['key'], $contact_setting['value']);
 }
 
 Hooks::emit('admin_header');

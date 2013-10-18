@@ -1,19 +1,19 @@
 <?php
 
-$form = new Form('setup', 'Setting up Dexterous', 'Your site has not been setup yet. Fill out the forms below, any value can later on be change in the admin panel.');
+$form = new Form('setup');
 $form->addSection('Settings', 'General site settings');
-$form->addText('site_title', 'Site title', 'Displayed in the titlebar', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
-$form->addText('site_subtitle', 'Site subtitle', 'Displayed in the header', array('[a-zA-Z0-9\s<>\?!]*', 1, 200, 'May contain alphanumeric characters and spaces'));
-$form->addText('site_description', 'Site description', 'Describe the site concisely', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
-$form->addText('site_keywords', 'Site keywords', 'Comma-separate tags', array('[a-zA-Z0-9\s,\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
+$form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
+$form->addText('site_subtitle', 'Site subtitle', 'Displayed in the header', '', array('[a-zA-Z0-9\s<>\?!]*', 1, 200, 'May contain alphanumeric characters and spaces'));
+$form->addText('site_description', 'Site description', 'Describe the site concisely', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
+$form->addText('site_keywords', 'Site keywords', 'Comma-separate tags', '', array('[a-zA-Z0-9\s,\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 
 $form->addSection('Admin account', 'Admin account gives full access to the admin panel, meant for site owners.');
-$form->addText('admin_username', 'Admin username', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
+$form->addText('admin_username', 'Admin username', '', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
 $form->addPassword('admin_password', 'Admin password', '');
 $form->addPasswordConfirm('admin_password2', 'admin_password', 'Admin password', 'Confirm');
 
 $form->addSection('User account', 'User account gives restricted access to the admin panel, meant for clients. Leave empty to skip.');
-$form->addText('username', 'Username', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
+$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
 $form->addPassword('password', 'Password', '');
 $form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 $form->allowEmptyTogether(array('username', 'password', 'password2'));
@@ -120,14 +120,15 @@ if (!$isSetup)
 	Dexterous::addDeferredScript('resources/scripts/jquery.js');
 	Dexterous::addDeferredScript('resources/scripts/admin.js');
 
-	Hooks::emit('header');
+	Hooks::emit('admin_header');
 
 	$form->sessionToForm();
+
 	Dexterous::assign('setup', $form);
+	Dexterous::assign('form_action', $base_url . 'admin/');
+	Dexterous::render('admin/setup.tpl');
 
-	Dexterous::render('setup.tpl');
-
-	Hooks::emit('footer');
+	Hooks::emit('admin_footer');
 	exit;
 }
 

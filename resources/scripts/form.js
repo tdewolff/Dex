@@ -20,10 +20,7 @@ function form_empty_together(empty_together) {
 }
 
 function form_input(item, empty_together) {
-    // remove error style when it is amended
-    if ($(item).hasClass('invalid')) {
-        $(item).removeClass('invalid');
-    }
+    $(item).parent().next('.form_item_error').slideUp();
     form_empty_together(empty_together);
 }
 
@@ -72,7 +69,22 @@ function form_submit(form, submitted) {
         $(this).val(JSON.stringify(data));
     });
 
-    return true;
+    console.log($(form).data('ajax'));
+    if ($(form).data('ajax') === false) {
+        return true;
+    } else {
+        console.log('ajax');
+        $.ajax({
+            type: 'POST',
+            url: $(form).attr('action'),
+            data: $(form).serialize(),
+            success: function() {
+                console.log('ajax success');
+            },
+            dataType: 'json'
+        });
+        return false;
+    }
 }
 
 $(function() {

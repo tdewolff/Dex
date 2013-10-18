@@ -21,13 +21,13 @@ $table = $db->query("SELECT id, name FROM module_menu ORDER BY position ASC;");
 while ($row = $table->fetch())
     $dropbox_nodes[$row['id']] = $row['name'];
 
-$form = new Form('menu', 'Menu');
-$form->makeCompact();
+$form = new Form('menu');
+$form->makeInline();
 
 $form->addSection('Add menu item', '');
-$form->addText('name', 'Name', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
-$form->addDropdown('link', 'Link', '', $dropbox_links);
-$form->addDropdown('action', 'Position', '', $dropbox_action);
+$form->addText('name', '', '', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
+$form->addDropdown('link', '', '', $dropbox_links);
+$form->addDropdown('action', '', '', $dropbox_action);
 $form->addDropdown('action_item', '', '', $dropbox_nodes);
 
 $form->addSeparator();
@@ -93,16 +93,18 @@ while ($row = $table->fetch())
     }
 
 Dexterous::addStyle('resources/styles/popbox.css');
+Dexterous::addStyle('resources/styles/dropdown.css');
 Dexterous::addDeferredScript('resources/scripts/popbox.js');
+Dexterous::addDeferredScript('resources/scripts/dropdown.js');
 
 Hooks::emit('admin_header');
 
 $form->sessionToForm();
 
-Dexterous::assign('form_action', $base_url . 'admin/module/menu/');
+Dexterous::assign('form_action', $base_url . 'admin/menu/');
 Dexterous::assign('menu', $form);
 Dexterous::assign('menu_items', $menu);
-Dexterous::renderModule('menu', 'admin/menu.tpl');
+Dexterous::render('menu', 'admin/menu.tpl');
 
 Hooks::emit('admin_footer');
 exit;

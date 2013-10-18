@@ -54,10 +54,10 @@ else
 			$dropbox_modules[$module['name']] = '(' . $module['name'] . ')';
 	}
 
-	$form = new Form('link', 'Edit link');
+	$form = new Form('link');
 	$form->addSection('Link', 'Every URL typed in the address bar is processed and the correct module is loaded. Below you can define what module is loaded when the specified link is requested. Make sure the link is meaningful since its valuable for users and search engines.');
-	$form->addText('page_link', 'Link', $domain_url . $base_url, array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid link and end with /'));
-	$form->addText('page_title', 'Title', 'As displayed in links and titlebar', array('[a-zA-Z0-9\s_\/\-]*', 0, 20, 'May contain alphanumeric characters, spaces and (_/-)'));
+	$form->addText('page_link', 'Link', $domain_url . $base_url, '', array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid link and end with /'));
+	$form->addText('page_title', 'Title', 'As displayed in links and titlebar', '', array('[a-zA-Z0-9\s_\/\-]*', 0, 20, 'May contain alphanumeric characters, spaces and (_/-)'));
 	//$form->addDropdown('module_name', 'Module', 'Module to load', $dropbox_modules);
 	//$form->addParameters('module_params', 'Parameters', '');
 

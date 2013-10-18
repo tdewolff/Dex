@@ -1,16 +1,16 @@
-<h1>Modules</h1>
+<h2>Modules</h2>
 <table class="list">
   <tr>
 	<th></th>
 	<th>Name</th>
 	<th>Author</th>
-	<th>Description</th>
+	<th width="99%">Description</th>
   </tr>
  <?php foreach ($_['modules'] as $module): ?>
   <tr>
-	<td class="no_wrap centered">
+	<td class="no_wrap">
 	 <div class="dropdown">
-	  <a href="/<?php echo $_['base_url']; ?>admin/module/<?php echo $module['name']; ?>/" class="dropdown-select small-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle small-button"><i class="icon-caret-down"></i></a>
+	  <a href="/<?php echo $_['base_url']; ?>admin/module/<?php echo $module['name']; ?>/" class="dropdown-select list-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i></a>
       <ul class="dropdown-menu" role="menu">
 	   <?php if ($module['enabled'] == 0): ?>
 	    <li><a href="/<?php echo $_['base_url']; ?>admin/modules/enable/<?php echo $module['name']; ?>/"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a></li>

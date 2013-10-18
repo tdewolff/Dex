@@ -1,4 +1,4 @@
-<h1>Themes</h1>
+<h2>Themes</h2>
 <table class="grid">
  <?php foreach ($_['themes'] as $i => $item): ?>
   <?php if ($i % 3 == 0) { echo '<tr>'; } ?>

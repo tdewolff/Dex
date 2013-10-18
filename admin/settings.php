@@ -1,11 +1,11 @@
 <?php
 
-$form = new Form('settings', 'Settings');
+$form = new Form('settings');
 
 $form->addSection('Metadata', 'Site metadata is important for search engine indexing');
-$form->addText('title', 'Site title', 'Displayed in titlebar and header', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
-$form->addText('subtitle', 'Site subtitle', 'Displayed in the header', array('[a-zA-Z0-9\s<>\?!]*', 1, 200, 'May contain alphanumeric characters and spaces'));
-$form->addText('description', 'Site description', 'Describe the site concisely', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
+$form->addText('title', 'Site title', 'Displayed in titlebar and header', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
+$form->addText('subtitle', 'Site subtitle', 'Displayed in the header', '', array('[a-zA-Z0-9\s<>\?!]*', 1, 200, 'May contain alphanumeric characters and spaces'));
+$form->addText('description', 'Site description', 'Describe the site concisely', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 $form->addArray('keywords', 'Site keywords', 'Comma-separate tags', array('[a-zA-Z0-9\s,\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 
 $form->addSeparator();

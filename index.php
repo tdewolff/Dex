@@ -9,7 +9,7 @@ require_once('include/hooks.class.php');
 
 ErrorHandler::initialize(EXPLICIT);
 Common::setCaching(true);
-Common::setMinifying(true);
+Common::setMinifying(false);
 Log::setLevel(VERBOSE);
 Log::setDirectory('logs/');
 
@@ -85,7 +85,7 @@ if (strpos($request_uri, 'resources/') === 0 ||
 
 // not a resource, so start loading more stuff
 session_start();
-ob_start("minify_html");
+ob_start(/*"minify_html"*/);
 
 require_once('include/database.class.php');
 require_once('include/security.php');
@@ -125,30 +125,29 @@ Dexterous::assign('base_url', $base_url);
 if (file_exists($db->filename) === false)
 	user_error('Database file never created at "' . $db->filename . '"', ERROR);
 else if (filesize($db->filename) == 0)
-	require_once('setup.php'); // until site is setup, this will exit!
+	require_once('admin/setup.php'); // until site is setup, this will exit!
 
 
 // start loading page
-if ($uri[0] == 'admin' && Session::isUser()) {
+if ($uri[0] == 'admin' && Session::isUser())
+{
+	Common::checkModules();
+
 	// ugly way to make sure that destroying modules has direct effect
 	if (preg_match('/^admin\/modules\/(destroy\/|enable\/|disable\/)[a-zA-Z_][a-zA-Z0-9_]*\/$/', $request_uri))
-	{
-		if ($uri[2] == 'destroy') {
-			if (file_exists('modules/' . $uri[3] . '/index.php') !== false) {
+		if ($uri[2] == 'destroy')
+			if (file_exists('modules/' . $uri[3] . '/index.php') !== false)
+			{
 				$db->exec("DELETE FROM modules WHERE name = '" . $db->escape($uri[3]) . "';");
 				include_once('modules/' . $uri[3] . '/index.php');
 				if (function_exists($uri[3] . '_destroy') !== false)
 					call_user_func($uri[3] . '_destroy');
 				// TODO: remove module directory
 			}
-		} elseif ($uri[2] == 'enable') {
+		elseif ($uri[2] == 'enable')
 			$db->exec("UPDATE modules SET enabled = 1 WHERE name = '" . $db->escape($uri[3]) . "';");
-		} elseif ($uri[2] == 'disable') {
+		elseif ($uri[2] == 'disable')
 			$db->exec("UPDATE modules SET enabled = 0 WHERE name = '" . $db->escape($uri[3]) . "';");
-		}
-	}
-
-	Common::checkModules();
 }
 
 

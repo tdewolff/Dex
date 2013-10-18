@@ -31,13 +31,13 @@ if (!isset($uri[2]) || $uri[2] == 'remove')
 }
 else
 {
-	$form = new Form('user', 'Edit user');
+	$form = new Form('user');
 	$form->addSection('User', 'These users can access the admin area. Only admins can access all of the admin panel and are meant for webhosters / webdesigners. Regular accounts are for editors.');
-	$form->addText('username', 'Username', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
+	$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9\-_\.]*', 3, 20, 'May contain alphanumeric characters and (-_.)'));
 	$form->addPassword('password', 'Password', ($uri[2] != 'new' ? 'Leave empty to keep current' : ''));
 	$form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 	$form->addDropdown('userlevel', 'Userlevel', 'Restricts access', array('0' => 'Admin', '1' => 'User'));
-	$form->allowEmptyTogether(array('current_password', 'password', 'password2'));
+	//$form->allowEmptyTogether(array('current_password', 'password', 'password2')); // TODO: current password
 
 	$form->addSeparator();
 	$form->addSubmit('user', '<i class="icon-save"></i>&ensp;Save');

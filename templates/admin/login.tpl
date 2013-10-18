@@ -1,5 +1,7 @@
-<div id="main-small">
- <div class="title auto"></div>
+<div class="main">
+ <div class="header">
+  <h2>Login to admin panel</h2>
+ </div>
  <div class="content">
   <?php $_['login']->renderForm(); ?>
  </div>

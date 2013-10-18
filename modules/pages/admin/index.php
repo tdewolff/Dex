@@ -8,7 +8,7 @@ if (!isset($uri[3]) || $uri[3] == 'remove')
 {
     if (isset($uri[3]) && $uri[3] == 'remove' && isset($uri[4]) && is_numeric($uri[4]))
     {
-        $page = $db->querySingle("SELECT * FROM module_pages WHERE id = '" . $db->escape($uri[3]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE id = '" . $db->escape($uri[4]) . "' LIMIT 1;");
         if ($page)
         {
             $link_module = $db->query("SELECT COUNT(*) AS rows, link_id FROM link_modules WHERE link_id IN (SELECT link_id FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "' LIMIT 1);");
@@ -17,12 +17,9 @@ if (!isset($uri[3]) || $uri[3] == 'remove')
                 DELETE FROM links WHERE id = '" . $db->escape($link_module['link_id']) . "';");
 
             $db->exec("
-            DELETE FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "';");
+            DELETE FROM link_modules WHERE id = '" . $db->escape($page['link_module_id']) . "';
+            DELETE FROM module_pages WHERE id = '" . $db->escape($uri[4]) . "';");
         }
-
-        $db->exec("
-        DELETE FROM module_pages WHERE id = '" . $db->escape($uri[4]) . "';
-        DELETE FROM link_modules WHERE module_name = 'pages' AND id = '" . $db->escape($uri[4]) . "';");
     }
 
     $pages = array();
@@ -67,11 +64,11 @@ else
             user_error('Link to page with link id "' . $link_module['link_id'] . '" doesn\'t exist');
     }
 
-    $form = new Form('page', 'Page');
+    $form = new Form('page');
 
     $form->addSection('Page', '');
-    $form->addText('title', 'Title', 'As displayed in the titlebar', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
-    $form->addText('link', 'Link', $domain_url . $base_url, array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid link and end with /'));
+    $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
+    $form->addText('link', 'Link', $domain_url . $base_url, '', array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid link and end with /'));
     $form->addMarkdown('content', 'Content', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
 
     $form->addSeparator();

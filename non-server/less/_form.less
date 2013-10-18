@@ -3,32 +3,27 @@ form {
 	margin:0 auto;
 }
 
-form h1 {
-	padding-bottom:0;
+form > h3 {
+	padding-top:10px;
 }
 
-form h2 {
-	clear:both;
-	padding-top:30px;
-}
-
-.form_titletext {
-	width:400px;
-	margin:0 auto;
+form > p {
+	overflow:hidden;
+	margin:0;
+	padding:0;
 }
 
 .form_separator {
 	clear:both;
-	border-bottom:solid 1px @auxiliary;
-	padding-top:20px;
-	margin-bottom:20px;
+	border-bottom:solid 1px #E8E8E8;
+	margin:20px 0;
 }
 
 .form_section_text {
 	padding-left:10px;
 	padding-bottom:5px;
-	margin-bottom:30px;
-	border-bottom:solid 1px @auxiliary;
+	margin-bottom:20px;
+	border-bottom:solid 1px #E8E8E8;
 }
 
 .form_response {
@@ -40,40 +35,95 @@ form h2 {
 }
 
 .form_error {
-	font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
-	font-size: 14px;
-	line-height: 16px;
-	letter-spacing: 0.1em;
-	font-weight:bold;
-	color:#c7254e;
 	margin-top:15px;
 	margin-left:10px;
+
+	font-size:95%;
+	font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-weight:bold;
+
+	text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+	color:#B94A48;
+	background:#F2DEDE;
+	border:solid 1px #EED3D7;
+	.border-radius(3px);
+	padding:10px;
 }
 
 .form_item_error {
-	clear:both;
-	font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
-	font-size: 12px;
-	line-height: 14px;
-	font-weight:bold;
-	color:#c7254e;
+	position:relative;
 	margin-bottom:25px;
-	margin-left:215px;
+	margin-left:200px;
+}
+
+.form_item_error .box {
+	background:#F2DEDE;
+	border:solid 1px #EED3D7;
+	.border-radius(5px);
+
+	position:absolute;
+	z-index:999;
+	padding:5px;
+}
+
+.form_item_error .box .arrow {
+	width: 0;
+	height: 0;
+	border-left: 11px solid transparent;
+	border-right: 11px solid transparent;
+	border-bottom: 11px solid #F2DEDE;
+	position:absolute;
+	left:5px;
+	top:-10px;
+	z-index:1001;
+}
+
+.form_item_error .box .arrow-border {
+	width: 0;
+	height: 0;
+	border-left: 11px solid transparent;
+	border-right: 11px solid transparent;
+	border-bottom: 11px solid #EED3D7;
+	position:absolute;
+	top:-12px;
+	z-index:1000;
+}
+
+.form_item_error .box p {
+	padding:0;
+	margin:0;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+	color:#B94A48;
+	font-size:70%;
+	font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+	font-weight:bold;
+	white-space:nowrap;
+}
+
+.form_item_error .box p i {
+	font-size:150%;
+	vertical-align: middle;
+}
+
+.form_item_error .box p span {
+	vertical-align: middle;
 }
 
 label {
 	display:block;
 	float:left;
-	font-size:16px;
+	font-size:15px;
 	font-weight:bold;
 	text-align:right;
 	width:200px;
 	white-space: nowrap;
 	overflow:hidden;
+	margin-top:8px;
+	padding-top:1px;
 }
 
 label.empty_small {
-	margin-top:4px;
+	padding-top:4px;
 }
 
 label > .small {
@@ -88,36 +138,30 @@ label > .small {
 	overflow:hidden;
 }
 
-input[type="text"], input[type="password"], select {
-	background-color:#ffffff;
-	border:1px solid #c0c0c0;
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
+	border:1px solid #C0C0C0;
 	.border-radius(4px);
+	.css-gradient(#F8F8F8, #FFFFFF);
 	float:left;
 	font-size:16px;
 	letter-spacing: 0.1em;
 	padding:4px 6px;
-	margin:-2px 0 15px 10px;
+	margin:8px 0 8px 10px;
 	width:250px;
+}
+
+input:focus {
+}
+
+input.unused {
+	.css-gradient(#F8F8F8, #F8F8F8);
+	border:1px solid #F0F0F0;
+	.box-shadow(0, 0, 0, 0, rgba(0,0,0,0));
 }
 
 textarea {
 	.border-radius(4px);
 	border:1px solid #c0c0c0;
-}
-
-input.unused {
-	background-color:#e0e0e0;
-}
-
-input.invalid {
-	color:#c7254e;
-	border-color:#c7254e;
-	background-color:#f9f2f4;
-}
-
-input[data-type="parameter_key"] {
-	float:left;
-	width:75px;
 }
 
 span.parameter_equal {
@@ -127,6 +171,11 @@ span.parameter_equal {
 
 	text-align:center;
 	color:#666666;
+}
+
+input[data-type="parameter_key"] {
+	float:left;
+	width:75px;
 }
 
 input[data-type="parameter_val"] {
@@ -160,8 +209,7 @@ form.form_inline {
 	width:100%;
 	padding:5px;
 
-	h1,
-	h2,
+	h3,
 	.form_separator,
 	.form_section_text {
 		display:none;
@@ -184,7 +232,7 @@ form.form_inline {
 		display:none;
 	}
 
-	input[type="text"], input[type="password"], select {
+	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
 		float:none;
 		margin:0;
 		width:150px;
@@ -200,11 +248,7 @@ form.form_inline {
 form.form_compact {
 	padding:5px;
 
-	h1 {
-		display:none;
-	}
-
-	h2 {
+	h3 {
 		margin-left:210px;
 		padding-top:10px;
 	}
@@ -232,7 +276,7 @@ form.form_compact {
 		margin-top:6px;
 	}
 
-	input[type="text"], input[type="password"], select {
+	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
 		margin-top:0px;
 		margin-bottom:5px;
 	}
