@@ -8,35 +8,35 @@ Folder structure
 
 Core (all vital code), modules and themes comply to the following folder layout:
 
-``main directory
-├── admin
-|   └── setup.php
-├── resources
-|   ├── fonts
-|   ├── images
-|   ├── scripts
-|   └── styles
-├── templates
-|   └── admin
-└── hooks.php``
+    main directory
+    ├── admin
+    |   └── setup.php
+    ├── resources
+    |   ├── fonts
+    |   ├── images
+    |   ├── scripts
+    |   └── styles
+    ├── templates
+    |   └── admin
+    └── hooks.php
 
 Modules and themes also have a config.ini in the main directory. Adhere to this folder structure, the config.ini and hooks files are obligated!
 The admin folder contains all admin panel pages (where setup.php is used for installation), the hooks.php file defines how and when the code attaches to the frame. For example it defines that your module is run in the footer section. Config.ini contains details about the module or theme.
 
-``root directory
-├── cache
-├── core
-├── include
-├── logs
-├── media
-├── modules
-|   └── (module directories)
-├── themes
-|   └── (theme directories)
-├── .htaccess
-├── database.sqlite3
-├── favicon.ico
-└── index.php``
+    root directory
+    ├── cache
+    ├── core
+    ├── include
+    ├── logs
+    ├── media
+    ├── modules
+    |   └── (module directories)
+    ├── themes
+    |   └── (theme directories)
+    ├── .htaccess
+    ├── database.sqlite3
+    ├── favicon.ico
+    └── index.php
 
 The cache directory will contain all merged CSS and JS files as well as resized images. They are named SHA1(merged_filenames + last_modify_time). Core and include directories contain all essential code for Dexterous. Media has all uploaded data such as images or other files.
 
