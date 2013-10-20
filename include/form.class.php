@@ -4,6 +4,7 @@ class Form
 {
 	private $name = '';
 	private $items = array();
+	private $action = '';
 	private $response = '';
 	private $errors = array();
 	private $mode = false;
@@ -14,13 +15,13 @@ class Form
 	public function __construct($name)
 	{
 		Hooks::attach('header', -1, function() {
-			Dexterous::addDeferredScript('resources/scripts/sha1.js');
-			Dexterous::addDeferredScript('resources/scripts/form.js');
+			Core::addDeferredScript('sha1.js');
+			Core::addDeferredScript('form.defer.js');
 		});
 
 		Hooks::attach('admin_header', -1, function() {
-			Dexterous::addDeferredScript('resources/scripts/sha1.js');
-			Dexterous::addDeferredScript('resources/scripts/form.js');
+			Core::addDeferredScript('sha1.js');
+			Core::addDeferredScript('form.defer.js');
 		});
 
 		$this->name = $name;
@@ -60,6 +61,19 @@ class Form
 	{
 		$this->items[] = array(
 			'type' => 'text',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => $placeholder,
+			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
+			'value' => ''
+		);
+	}
+
+	public function addMultilineText($name, $title, $subtitle, $placeholder, $preg)
+	{
+		$this->items[] = array(
+			'type' => 'multiline_text',
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
@@ -279,6 +293,16 @@ class Form
 						   : false));
 	}
 
+	public function setAction($action)
+	{
+		$this->action = $action;
+	}
+
+	public function setResponse($response)
+	{
+		$this->response = $response;
+	}
+
 	public function appendError($error)
 	{
 		$this->errors[] = $error;
@@ -289,11 +313,6 @@ class Form
 		foreach ($this->items as $k => $item)
 			if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
 				$this->items[$k]['error'] = $error;
-	}
-
-	public function setResponse($response)
-	{
-		$this->response = $response;
 	}
 
 	public function unsetSession()
@@ -320,6 +339,9 @@ class Form
 		{
 			$this->items[$k]['jsEmptyTogether'] = '[]';
 			$this->items[$k]['cssEmptyTogether'] = false;
+
+			if (isset($item['name']))
+				$this->items[$k]['jsEmptyTogether'] = '[\'' . $item['name'] .  '_' . $_SESSION[$this->name . '_salt'] . '\']';
 
 			if (isset($item['emptyTogether']) && count($item['emptyTogether']))
 			{
@@ -352,13 +374,14 @@ class Form
 			'name' => $this->name,
 			'salt' => $_SESSION[$this->name . '_salt'],
 			'items' => $this->items,
+			'action' => $this->action,
 			'response' => $this->response,
 			'errors' => $this->errors,
 			'mode' => $this->mode,
 			'ajax' => $this->ajax
 		);
 
-		include('templates/form.tpl');
+		include('core/templates/form.tpl');
 	}
 }
 

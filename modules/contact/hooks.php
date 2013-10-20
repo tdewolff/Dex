@@ -2,12 +2,13 @@
 
 function contact_render() {
     global $db;
+    Module::set('contact');
 
     $table = $db->query("SELECT * FROM module_contact;");
     while ($row = $table->fetch())
-        Dexterous::assign($row['key'], $row['value']);
+        Module::assign($row['key'], $row['value']);
 
-    Dexterous::renderModule('contact', 'index.tpl');
+    Module::render('index.tpl');
 }
 
 Hooks::attach('header', 1, function() {

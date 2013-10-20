@@ -20,7 +20,7 @@ class Common
 		// first part are all allowed characters
 		// second part makes sure no ../ occurs
 		// third part makes sure no more than one / is a t the end
-		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
+		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=&]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
 	}
 
 	public static function formatBytes($size, $precision = 2)
@@ -41,22 +41,27 @@ class Common
 		return implode('.', $bytes);
 	}
 
-	public static function tryOrEmpty($string)
+	public static function tryOrEmpty($array, $index)
 	{
-		return isset($string) ? $string : '';
+		return isset($array[$index]) ? $array[$index] : '';
 	}
+
+    public static function tryOrZero($array, $index)
+    {
+        return isset($array[$index]) ? $array[$index] : 0;
+    }
 
 	private static function cacheFilename($filenames, $cache_formatted_filename)
 	{
 		$latest_modify_time = 0;
 		foreach ($filenames as $filename)
-		{
 			if (!file_exists($filename))
 				user_error('File "' . $filename . '" could not be found', WARNING);
-
-			$modify_time = filemtime($filename);
-			$latest_modify_time = max($modify_time, $latest_modify_time);
-		}
+            else
+            {
+                $modify_time = filemtime($filename);
+                $latest_modify_time = max($modify_time, $latest_modify_time);
+            }
 
 		$unique_scriptname = implode($filenames) . $latest_modify_time;
 		return sprintf($cache_formatted_filename, sha1($unique_scriptname));
@@ -65,12 +70,13 @@ class Common
     public static function concatenateFiles($filenames, $extension)
     {
         $starttime_local = explode(' ', microtime());
-        $cache_filename = self::cacheFilename($filenames, 'resources/cache/%s.' . $extension);
+        $cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
         if (!file_exists($cache_filename) || self::$caching == false)
         {
             $content = '';
             foreach ($filenames as $filename)
-                $content .= file_get_contents($filename);
+                if (file_exists($filename))
+                    $content .= file_get_contents($filename);
 
             $f = fopen($cache_filename, 'w');
             fwrite($f, $content);
@@ -80,13 +86,13 @@ class Common
             $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
             Log::caching($cache_filename . ' took ' . number_format($totaltime, 4) . 's');
         }
-        return $cache_filename;
+        return 'res/' . $cache_filename;
     }
 
 	public static function imageResize($filename, $max_width, $max_height, $scale)
 	{
         $starttime_local = explode(' ', microtime());
-		$cache_filename = 'resources/cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
+		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
 		if (!file_exists($cache_filename))
 		{
 			list($width, $height, $mime_type, $attribute) = getimagesize($filename);
@@ -170,36 +176,50 @@ class Common
 		while (($module_name = readdir($handle)) !== false)
 			if (is_dir('modules/' . $module_name) && $module_name != '.' && $module_name != '..')
 			{
-				$module_file = 'modules/' . $module_name . '/index.php';
+				$module_file = 'modules/' . $module_name . '/config.ini';
 				if (file_exists($module_file) !== false)
 					$fs_modules[$module_name] = 1;
 			}
 
 		// check with database
-		$db_modules = $db->query("SELECT * FROM modules;");
+		$db_modules = $db->query("SELECT * FROM module;");
 		while ($db_module = $db_modules->fetch())
-			if (isset($fs_modules[$db_module['name']])) // file exists and the db entry too
-				unset($fs_modules[$db_module['name']]);
+			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
+				unset($fs_modules[$db_module['module_name']]);
 			else // file does not exist but db entry does
 			{
-				Log::warning('module with name "' . $db_module['name'] . '" doesn\'t exist in the filesystem and is removed from the database');
-				$db->exec("DELETE FROM modules WHERE id = '" . $db->escape($db_module['id']) . "';");
+				Log::information('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
+
+                // remove module table, link_module relations of the module, module entry, dead links, dead menu items
+				$db->exec("
+                DROP TABLE IF EXISTS module_" . $db->escape($db_module['module_name']) . ";
+                DELETE FROM link_module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
+                DELETE FROM module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
+                DELETE FROM link WHERE NOT EXISTS (SELECT 1 FROM link_module WHERE link.link_id = link_module.link_id);
+                DELETE FROM menu WHERE NOT EXISTS (SELECT 1 FROM link WHERE menu.link_id = link.link_id);");
 			}
 
 		foreach ($fs_modules as $name => $enabled) // file exists but db entry does not
 		{
-			Log::information('module with name "' . $name . '" is inserted into the database');
-			$db->exec("INSERT INTO modules (name, enabled) VALUES ('" . $db->escape($name) . "', 1);");
+			include_once('modules/' . $name . '/admin/setup.php');
 
-			include_once('modules/' . $name . '/index.php');
-			if (function_exists($name . '_setup') !== false)
-				call_user_func($name . '_setup');
+            Log::information('module with module_name "' . $name . '" is inserted into the database');
+            $db->exec("INSERT INTO module (module_name, enabled) VALUES ('" . $db->escape($name) . "', 1);");
 		}
 	}
+
+    public static function cleanDatabase()
+    {
+
+    }
 }
 
-function minify_html($text)
+function minifyHtml($text)
 {
+    if (!Common::$minifying) {
+        return $text;
+    }
+
     $re = '%# Collapse whitespace everywhere but in blacklisted elements.
         (?>             # Match all whitespans other than single space.
           [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,

@@ -138,7 +138,7 @@ label > .small {
 	overflow:hidden;
 }
 
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
+input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select, textarea {
 	border:1px solid #C0C0C0;
 	.border-radius(4px);
 	.css-gradient(#F8F8F8, #FFFFFF);
@@ -150,18 +150,18 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="password
 	width:250px;
 }
 
-input:focus {
-}
-
 input.unused {
 	.css-gradient(#F8F8F8, #F8F8F8);
 	border:1px solid #F0F0F0;
 	.box-shadow(0, 0, 0, 0, rgba(0,0,0,0));
 }
 
-textarea {
-	.border-radius(4px);
-	border:1px solid #c0c0c0;
+textarea.markdown {
+	float:none;
+	width:none;
+	font-size:12px;
+	line-height:15px;
+	font-family:monospace;
 }
 
 span.parameter_equal {

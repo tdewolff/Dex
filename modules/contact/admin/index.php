@@ -1,4 +1,5 @@
 <?php
+Module::set('contact');
 
 $form = new Form('contact');
 $form->useAjax();
@@ -53,8 +54,8 @@ Hooks::emit('admin_header');
 
 $form->sessionToForm();
 
-Dexterous::assign('contact', $form);
-Dexterous::renderModule('contact', 'admin/contact.tpl');
+Module::assign('contact', $form);
+Module::render('admin/contact.tpl');
 
 Hooks::emit('admin_footer');
 exit;

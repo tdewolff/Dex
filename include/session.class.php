@@ -2,17 +2,17 @@
 
 class Session
 {
-	public static function logIn($id, $userlevel)
+	public static function logIn($id, $permission)
 	{
 		$_SESSION['logged_id'] = $id;
-		$_SESSION['logged_userlevel'] = $userlevel;
+		$_SESSION['logged_permission'] = $permission;
 		$_SESSION['logged_time'] = time();
 	}
 
 	public static function logOut()
 	{
 		unset($_SESSION['logged_id']);
-		unset($_SESSION['logged_userlevel']);
+		unset($_SESSION['logged_permission']);
 		unset($_SESSION['logged_time']);
 	}
 
@@ -33,7 +33,7 @@ class Session
 
 	public static function isAdmin()
 	{
-		return (isset($_SESSION['logged_userlevel']) && $_SESSION['logged_userlevel'] == 0);
+		return (self::isUser() && isset($_SESSION['logged_permission']) && $_SESSION['logged_permission'] == 0);
 	}
 }
 
