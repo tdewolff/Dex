@@ -146,17 +146,6 @@ else if (filesize($db->filename) == 0)
 	require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 
-// start loading page
-if ($url[0] == 'admin' && Session::isUser())
-{
-	Common::checkModules();
-
-	// make sure that enabling/disabling modules has direct effect
-	if (preg_match('/^admin\/modules\/(enable|disable)\/[a-zA-Z_][a-zA-Z0-9_]*\/$/', $request_url))
-		$db->exec("UPDATE module SET enabled = '" . $db->escape($url[2] == 'enable' ? 1 : 0) . "' WHERE name = '" . $db->escape($url[3]) . "';");
-}
-
-
 // load all settings
 $settings = $db->query("SELECT * FROM setting;");
 while ($setting = $settings->fetch())

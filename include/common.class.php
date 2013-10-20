@@ -190,13 +190,11 @@ class Common
 			{
 				Log::information('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
 
-                // remove module table, link_module relations of the module, module entry, dead links, dead menu items
+                // remove module table, link_module relations of the module, module entry
 				$db->exec("
                 DROP TABLE IF EXISTS module_" . $db->escape($db_module['module_name']) . ";
                 DELETE FROM link_module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
-                DELETE FROM module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
-                DELETE FROM link WHERE NOT EXISTS (SELECT 1 FROM link_module WHERE link.link_id = link_module.link_id);
-                DELETE FROM menu WHERE NOT EXISTS (SELECT 1 FROM link WHERE menu.link_id = link.link_id);");
+                DELETE FROM module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';");
 			}
 
 		foreach ($fs_modules as $name => $enabled) // file exists but db entry does not
@@ -210,7 +208,10 @@ class Common
 
     public static function cleanDatabase()
     {
-
+        // remove dead links, dead menu items
+        $db->exec("
+        DELETE FROM link WHERE NOT EXISTS (SELECT 1 FROM link_module WHERE link.link_id = link_module.link_id);
+        DELETE FROM menu WHERE NOT EXISTS (SELECT 1 FROM link WHERE menu.link_id = link.link_id);");
     }
 }
 

@@ -8,10 +8,20 @@ Core::addScript('jquery.js');
 Core::addScript('admin.js');
 Core::addDeferredScript('admin.defer.js');
 
+Core::assign('isAdmin', Session::isAdmin());
+
 // login
 if (!Session::isUser())
 	require_once('core/admin/login.php'); // exits if not logged in
-Core::assign('isAdmin', Session::isAdmin());
+else
+{
+	Common::checkModules();
+	Common::cleanDatabase();
+
+	// make sure that enabling/disabling modules has direct effect
+	if (preg_match('/^admin\/modules\/(enable|disable)\/[a-zA-Z_][a-zA-Z0-9_]*\/$/', $request_url))
+		$db->exec("UPDATE module SET enabled = '" . $db->escape($url[2] == 'enable' ? 1 : 0) . "' WHERE name = '" . $db->escape($url[3]) . "';");
+}
 
 // logout
 if ($request_url == 'admin/logout/')
