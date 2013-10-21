@@ -1,8 +1,8 @@
 <?php
 
 $db->exec("
-CREATE TABLE module_page (
-    module_page_id INTEGER PRIMARY KEY,
+CREATE TABLE module_pages (
+    module_pages_id INTEGER PRIMARY KEY,
     link_module_id INTEGER,
     content TEXT,
     parsed_content TEXT,

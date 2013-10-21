@@ -8,7 +8,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php if (isset($_['settings_description'])): ?><meta name="description" content="<?php echo $_['settings_description']; ?>"><?php endif; ?>
-  <?php if (isset($_['settings_keywords'])): ?><meta name="keywords" content="<?php echo $_['settings_keywords']; ?>"><?php endif; ?>
+  <?php if (isset($_['settings_keywords'])): ?><meta name="keywords" content="<?php echo implode(',', $_['settings_keywords']); ?>"><?php endif; ?>
 
   <?php if (isset($_['header_script'])): ?><script type="text/javascript" src="/<?php echo $_['base_url'] . $_['header_script']; ?>"></script><?php endif; ?>
  </head>

@@ -208,6 +208,8 @@ class Common
 
     public static function cleanDatabase()
     {
+        global $db;
+
         // remove dead links, dead menu items
         $db->exec("
         DELETE FROM link WHERE NOT EXISTS (SELECT 1 FROM link_module WHERE link.link_id = link_module.link_id);

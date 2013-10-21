@@ -50,8 +50,8 @@
       maxlength="<?php echo $item['preg']['max']; ?>"
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);" />
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
 
 
     <?php elseif ($item['type'] == 'multiline_text'): ?>
@@ -59,8 +59,8 @@
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
       maxlength="<?php echo $item['preg']['max']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);"><?php echo $item['value']; ?></textarea>
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'><?php echo $item['value']; ?></textarea>
 
 
     <?php elseif ($item['type'] == 'email'): ?>
@@ -70,8 +70,8 @@
       maxlength="<?php echo $item['preg']['max']; ?>"
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);" />
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
 
 
     <?php elseif ($item['type'] == 'tel'): ?>
@@ -81,29 +81,32 @@
       maxlength="<?php echo $item['preg']['max']; ?>"
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);" />
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
 
 
     <?php elseif ($item['type'] == 'password'): ?>
-     <input type="password"
+     <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+      value='<?php echo $item['value']; ?>'
+      data-type="password" />
+
+     <input type="password"
+      value=""
       maxlength="<?php echo $item['preg']['max']; ?>"
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);" />
-
-     <input type="hidden"
-      name="<?php echo $item['name'] . '_' . $form['salt']; ?>_hash"
-      value="" />
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
+      data-type="password_input"
+      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>" />
 
 
     <?php elseif ($item['type'] == 'dropdown'): ?>
      <select
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_input(this, <?php echo $item['jsEmptyTogether']; ?>);">
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'>
        <?php foreach ($item['options'] as $id => $name): ?>
         <option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>><?php echo $name; ?></option>
        <?php endforeach; ?>
@@ -114,40 +117,61 @@
      <div class="clear"></div>
      <textarea
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      class="markdown"><?php echo $item['value']; ?></textarea>
+      maxlength="<?php echo $item['preg']['max']; ?>"
+      placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+      class="markdown <?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'><?php echo $item['value']; ?></textarea>
 
 
     <?php elseif ($item['type'] == 'array'): ?>
-     <input type="text"
+     <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      data-type="array"
-      data-i="0"
-      value="<?php echo $item['value']; ?>"
+      value='<?php echo $item['value']; ?>'
+      data-type="array" />
+
+     <input type="text"
+      value=""
       maxlength="<?php echo $item['preg']['max']; ?>"
-      class="<?php echo (isset($item['error']) ? 'invalid' : ''); ?> <?php echo ($item['preg']['min'] == 0 || $item['cssEmptyTogether'] ? 'unused' : ''); ?>"
-      oninput="form_array(this);" />
+      pattern="<?php echo $item['preg']['regex']; ?>"
+      placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
+      data-type="array_item"
+      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+      data-i="0" />
+
+     <div class="clear"></div>
 
 
     <?php elseif ($item['type'] == 'parameters'): ?>
      <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      value="<?php echo $item['value']; ?>"
+      value='<?php echo $item['value']; ?>'
       data-type="parameters" />
 
      <input type="text"
-      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+      value=""
+      maxlength="<?php echo $item['preg']['max']; ?>"
+      pattern="<?php echo $item['preg']['regex']; ?>"
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
       data-type="parameter_key"
-      data-i="0"
-      value=""
-      oninput="form_parameter(this);" />
-
-     <span class="parameter_equal">=</span>
-     <input type="text"
       data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      data-type="parameter_val"
-      data-i="0"
+      data-i="0" />
+
+     <span class="equal">=</span>
+
+     <input type="text"
       value=""
-      oninput="form_parameter(this);" />
+      maxlength="<?php echo $item['preg']['max']; ?>"
+      pattern="<?php echo $item['preg']['regex']; ?>"
+      class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
+      data-type="parameter_value"
+      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+      data-i="0" />
+
+     <div class="clear"></div>
 
 
     <?php endif; ?>
@@ -156,7 +180,7 @@
 
 
   <?php if (isset($item['error'])): ?>
-   <div class="form_item_error">
+   <div class="form_item_error" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
     <div class="box">
      <div class="arrow"></div>
      <div class="arrow-border"></div>

@@ -13,7 +13,7 @@
 	 <div class="dropdown">
 	  <a href="/<?php echo $_['base_url']; ?>admin/module/pages/<?php echo $item['id']; ?>/" class="dropdown-select list-button"><i class="icon-pencil"></i>&ensp;Edit</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i></a>
       <ul class="dropdown-menu" role="menu">
-	   <li><a href="/<?php echo $_['base_url'] . $item['link']; ?>"><i class="icon-fixed-width icon-eye-open"></i>&ensp;View</a></li>
+	   <li><a href="/<?php echo $_['base_url'] . $item['url']; ?>"><i class="icon-fixed-width icon-eye-open"></i>&ensp;View</a></li>
 	   <li class="popbox">
 	    <a href="#" class="open"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
 	    <div class="box">
@@ -28,8 +28,8 @@
 	 </div>
 	</td>
 	<td class="no_wrap"><?php echo $item['title']; ?></td>
-	<td><?php echo $_['domain_url'] . $_['base_url'] . $item['link']; ?></td>
-	<td><?php echo (strlen($item['content']) > 50 ? substr($item['content'], 0, 50) . '...' : $item['content']); ?></td>
+	<td><?php echo $_['domain_url'] . $_['base_url'] . $item['url']; ?></td>
+	<td><?php echo (strlen($item['content']) > 50 ? substr($item['content'], 0, 50) . '... (' . $item['length'] . ')' : $item['content']); ?></td>
   </tr>
  <?php endforeach; ?>
 </table>

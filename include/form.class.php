@@ -104,7 +104,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => '+99 (9) 9999-9999',
-			'preg' => array('regex' => '\+[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => 'Invalid telephone number'),
+			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => 'Invalid telephone number'),
 			'value' => ''
 		);
 	}
@@ -194,6 +194,21 @@ class Form
 		);
 	}
 
+	public function allowEmpty($names)
+	{
+		if (is_array($names))
+		{
+			foreach ($names as $name)
+				foreach ($this->items as $k => $item)
+					if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
+						$this->items[$k]['emptyTogether'] = array($this->name . '_' . $name);
+		}
+		else
+			foreach ($this->items as $k => $item)
+				if (isset($item['value']) && $item['name'] == $this->name . '_' . $names)
+					$this->items[$k]['emptyTogether'] = array($this->name . '_' . $names);
+	}
+
 	public function allowEmptyTogether($names)
 	{
 		foreach ($names as $k => $name)
@@ -228,6 +243,7 @@ class Form
 
 	public function verifyPost()
 	{
+		print_r($this->items);
 		$valid = true;
 		foreach ($this->items as $k => $item)
 		{
@@ -239,8 +255,7 @@ class Form
 					$allowEmpty = true;
 					foreach ($item['emptyTogether'] as $name)
 					{
-						if ((isset($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]))
-						 || (isset($_POST[$name . '_' . $_SESSION[$this->name . '_salt'] . '_hash']) && strlen($_POST[$name . '_' . $_SESSION[$this->name . '_salt'] . '_hash'])))
+						if (isset($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]))
 						{
 							$allowEmpty = false;
 							break;
@@ -248,7 +263,7 @@ class Form
 					}
 				}
 
-				$fullname = $item['name'] . '_' . $_SESSION[$this->name . '_salt'] . ($item['type'] == 'password' ? '_hash' : '');
+				$fullname = $item['name'] . '_' . $_SESSION[$this->name . '_salt'];
 				$value = (isset($_POST[$fullname]) ? $_POST[$fullname] : '');
 
 				if (!$allowEmpty || ($allowEmpty && strlen($value)))
@@ -256,7 +271,7 @@ class Form
 					if (isset($item['name_confirm']))
 					{
 						// '_confirm' is the first value entered, we are now checking it against the second (current) item
-						$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'] . ($item['type'] == 'password' ? '_hash' : '');
+						$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'];
 						$value_confirm = (isset($_POST[$fullname_confirm]) ? $_POST[$fullname_confirm] : '');
 
 						if ($value != $value_confirm)
@@ -288,9 +303,7 @@ class Form
 	{
 		return (isset($_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
 		            ? $_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]
-				    : (isset($_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt'] . '_hash'])
-					       ? $_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt'] . '_hash']
-						   : false));
+						: false);
 	}
 
 	public function setAction($action)
@@ -336,39 +349,45 @@ class Form
 
 		// make handy variables for js and css
 		foreach ($this->items as $k => $item)
-		{
-			$this->items[$k]['jsEmptyTogether'] = '[]';
-			$this->items[$k]['cssEmptyTogether'] = false;
-
-			if (isset($item['name']))
-				$this->items[$k]['jsEmptyTogether'] = '[\'' . $item['name'] .  '_' . $_SESSION[$this->name . '_salt'] . '\']';
-
-			if (isset($item['emptyTogether']) && count($item['emptyTogether']))
+			if (isset($item['value']))
 			{
-				$js_empty_together = $item['emptyTogether'];
-				foreach ($js_empty_together as $k_js_empty => $v_js_empty)
-					$js_empty_together[$k_js_empty] .= '_' . $_SESSION[$this->name . '_salt'];
-				$this->items[$k]['jsEmptyTogether'] = '[\'' . implode('\', \'', $js_empty_together) . '\']';
+				if (!isset($item['unused']))
+				{
+					$this->items[$k]['unused'] = true;
+					if (strlen($item['value']) || $item['preg']['min'] > 0)
+						$this->items[$k]['unused'] = false;
+					else if (!isset($item['emptyTogether']))
+						$this->items[$k]['emptyTogether'] = array($item['name']);
 
-				$this->items[$k]['cssEmptyTogether'] = true;
-				if (strlen($item['value']))
-					$this->items[$k]['cssEmptyTogether'] = false;
-				else
-					foreach ($item['emptyTogether'] as $name) // go over all items this one is grouped with for emptyness
+					if (isset($this->items[$k]['emptyTogether']))
 					{
-						foreach ($this->items as $k2 => $item2) // go over all items
-							if (isset($item2['emptyTogether']) && $item2['name'] == $name) // to find one with a 'name' from the group
-								if (strlen($item2['value']))
-								{
-									$this->items[$k]['cssEmptyTogether'] = false;
-									break;
-								}
+						// find non-empty in emptyTogether
+						$unused = true;
+						foreach ($this->items as $k2 => $item2)
+							if (isset($item2['value']) && strlen($item2['value']) && in_array($item2['name'], $this->items[$k]['emptyTogether']))
+							{
+								$unused = false;
+								break;
+							}
 
-						if (isset($item['cssEmptyTogether']) && $item['cssEmptyTogether'] == false)
-							break;
+						$emptyTogetherArray = $this->items[$k]['emptyTogether'];
+						foreach ($emptyTogetherArray as $k2 => $item2)
+							$emptyTogetherArray[$k2] = $item2 . '_' . $_SESSION[$this->name . '_salt'];
+						$emptyTogetherArray = json_encode($emptyTogetherArray);
+
+						// set others in emptyTogether to the same!
+						foreach ($this->items as $k2 => $item2)
+							if (isset($item2['value']) && in_array($item2['name'], $this->items[$k]['emptyTogether']))
+							{
+								$this->items[$k2]['unused'] = $unused;
+								$this->items[$k2]['emptyTogetherArray'] = $emptyTogetherArray;
+							}
 					}
+				}
+
+				if (!isset($this->items[$k]['emptyTogetherArray']))
+					$this->items[$k]['emptyTogetherArray'] = json_encode(array());
 			}
-		}
 
 		$form = array(
 			'name' => $this->name,

@@ -8,12 +8,18 @@ Core::addScript('jquery.js');
 Core::addScript('admin.js');
 Core::addDeferredScript('admin.defer.js');
 
-Core::assign('isAdmin', Session::isAdmin());
-
 // login
 if (!Session::isUser())
 	require_once('core/admin/login.php'); // exits if not logged in
-else
+
+// logout
+if ($request_url == 'admin/logout/')
+{
+	Session::logOut();
+	require_once('core/admin/login.php');
+}
+
+if (Session::isUser())
 {
 	Common::checkModules();
 	Common::cleanDatabase();
@@ -21,13 +27,6 @@ else
 	// make sure that enabling/disabling modules has direct effect
 	if (preg_match('/^admin\/modules\/(enable|disable)\/[a-zA-Z_][a-zA-Z0-9_]*\/$/', $request_url))
 		$db->exec("UPDATE module SET enabled = '" . $db->escape($url[2] == 'enable' ? 1 : 0) . "' WHERE name = '" . $db->escape($url[3]) . "';");
-}
-
-// logout
-if ($request_url == 'admin/logout/')
-{
-	Session::logOut();
-	require_once('core/admin/login.php');
 }
 
 $admin_links = array();
@@ -61,6 +60,8 @@ $admin_links[] = array('regex' => 'admin/themes/([a-zA-Z_][a-zA-Z0-9_]*/)?(use/[
 $admin_links[] = array('regex' => 'admin/database/',                                                       'file' => 'database.php', 'url' => 'admin/database/', 'icon' => 'icon-hdd',     'title' => 'Database', 'admin_only' => 1);
 $admin_links[] = array('regex' => 'admin/logout/',                                                         'file' => 'logout.php',   'url' => 'admin/logout/',   'icon' => 'icon-signout', 'title' => 'Log out',  'admin_only' => 0);
 
+
+Core::assign('isAdmin', Session::isAdmin());
 Core::assign('admin_links', $admin_links);
 
 $log_error = 'URL has no match with to any admin pages';

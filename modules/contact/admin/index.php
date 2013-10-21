@@ -5,11 +5,13 @@ $form = new Form('contact');
 $form->useAjax();
 
 $form->addSection('Contact details', '');
-$form->addText('url', 'URL', 'URL to organization', '', array('.*', 1, 50, ''));
-$form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
-$form->addText('name', 'Name', 'Your full name', '', array('[a-zA-Z\s]*', 1, 20, 'May contain alphabetic characters and spaces'));
-$form->addTel('tel', 'Telephone', '', array('.*', 1, 20, ''));
-$form->addEmail('email', 'Emailaddress', '', array('.*', 1, 50, ''));
+$form->addText('url', 'URL', 'URL to organization', '', array('(https?|ftp)://[^\s/$.?#].[^\s]*', 0, 50, ''));
+$form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 0, 20, 'May contain alphanumeric characters and spaces'));
+$form->addText('name', 'Name', 'Your full name', '', array('[a-zA-Z\s]*', 0, 20, 'May contain alphabetic characters and spaces'));
+$form->addTel('tel', 'Telephone', '');
+$form->addEmail('email', 'Emailaddress', '');
+
+$form->allowEmpty(array('tel', 'email'));
 
 $form->addSeparator();
 $form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save');

@@ -9,24 +9,30 @@ if (!isset($url[3]) || $url[3] == 'remove')
 {
     if (isset($url[3]) && $url[3] == 'remove' && isset($url[4]) && is_numeric($url[4]))
     {
-        $page = $db->querySingle("SELECT * FROM module_page WHERE module_page_id = '" . $db->escape($url[4]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "' LIMIT 1;");
         if ($page)
             $db->exec("
-            DELETE FROM module_page WHERE module_page_id = '" . $db->escape($url[4]) . "';
+            DELETE FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "';
             DELETE FROM link_module WHERE link_module_id = '" . $db->escape($page['link_module_id']) . "';");
     }
 
     $pages = array();
-    $table = $db->query("SELECT * FROM module_page
-        JOIN link_module ON module_page.link_module_id = link_module.link_module_id
+    $table = $db->query("SELECT * FROM module_pages
+        JOIN link_module ON module_pages.link_module_id = link_module.link_module_id
         JOIN link ON link_module.link_id = link.link_id;");
     while ($row = $table->fetch())
+    {
+        $content = strip_tags($row['parsed_content']);
+        $content = strlen($content) > 50 ? substr($content, 0, 50) . '...' : $content;
+
         $pages[] = array(
-            'id' => $row['module_page_id'],
-            'link' => $row['link'],
+            'id' => $row['module_pages_id'],
+            'url' => $row['url'],
             'title' => $row['title'],
-            'content' => strip_tags($row['parsed_content'])
+            'content' => $content,
+            'length' => Common::formatBytes(strlen($row['parsed_content']))
         );
+    }
 
     Core::addStyle('popbox.css');
     Core::addStyle('dropdown.css');
@@ -43,12 +49,12 @@ else
 {
     if ($url[3] != 'new')
     {
-        $page = $db->querySingle("SELECT * FROM module_page
-            JOIN link_module ON module_page.link_module_id = link_module.link_module_id
-            JOIN link ON link_module.link_id = link_.link_id
-            WHERE module_page.module_page_id = '" . $db->escape($url[3]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages
+            JOIN link_module ON module_pages.link_module_id = link_module.link_module_id
+            JOIN link ON link_module.link_id = link.link_id
+            WHERE module_pages.module_pages_id = '" . $db->escape($url[3]) . "' LIMIT 1;");
         if (!$page)
-            user_error('Page with module_page_id "' . $url[3] . '" doesn\'t exist', ERROR);
+            user_error('Page with module_pages_id "' . $url[3] . '" doesn\'t exist', ERROR);
     }
 
     $form = new Form('page');
@@ -65,11 +71,9 @@ else
         {
             $url_base = substr($form->get('url'), 0, strpos($form->get('url'), '/') + 1);
             if ($db->querySingle("SELECT * FROM link WHERE url = '" . $db->escape($form->get('url')) . "' AND link_id IN (SELECT link_id FROM link_module WHERE module_name = 'pages')" . (isset($page) ? " AND link_id != '" . $db->escape($page['link_id']) . "'" : "") . " LIMIT 1;"))
-                $form->setError('link', 'Already used');
+                $form->setError('url', 'Already used');
             else if ($url_base == 'admin/' ||
-                     $url_base == 'resources/' ||
-                     $url_base == 'themes/' ||
-                     $url_base == 'media/')
+                     $url_base == 'res/')
                 $form->setError('url', 'Cannot start with "' . $url_base . '"');
             else
             {
@@ -81,10 +85,10 @@ else
                 {
                     $db->exec("
                     UPDATE link SET url = '" . $db->escape($form->get('url')) . "', title = '" . $db->escape($form->get('title')) . "' WHERE link_id = '" . $db->escape($page['link_id']) . "';
-                    UPDATE module_page SET
+                    UPDATE module_pages SET
                         content = '" . $db->escape($form->get('content')) . "',
                         parsed_content = '" . $db->escape($parsed_content) . "'
-                    WHERE module_page_id = '" . $db->escape($url[3]) . "';");
+                    WHERE module_pages_id = '" . $db->escape($url[3]) . "';");
                 }
                 else
                 {
@@ -108,7 +112,7 @@ else
                         'pages'
                     );
 
-                    INSERT INTO module_page (link_module_id, content, parsed_content) VALUES (
+                    INSERT INTO module_pages (link_module_id, content, parsed_content) VALUES (
                         last_insert_rowid(),
                         '" . $db->escape($form->get('content')) . "',
                         '" . $db->escape($parsed_content) . "'
@@ -122,17 +126,17 @@ else
         $form->postToSession();
 
         if ($url[2] != 'new')
-            Module::assign('view', $form->get('link'));
+            Module::assign('view', $form->get('url'));
     }
     else
     {
         if ($url[3] != 'new')
         {
             $form->set('title', $page['title']);
-            $form->set('link', $page['link']);
+            $form->set('url', $page['url']);
             $form->set('content', $page['content']);
 
-            Module::assign('view', $page['link']);
+            Module::assign('view', $page['url']);
         }
     }
 

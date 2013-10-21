@@ -147,9 +147,13 @@ else if (filesize($db->filename) == 0)
 
 
 // load all settings
+$site_settings = array();
 $settings = $db->query("SELECT * FROM setting;");
 while ($setting = $settings->fetch())
+{
+    $site_settings[$setting['key']] = $setting['value'];
 	Core::assign('setting_' . $setting['key'], $setting['value']);
+}
 
 
 // handle admin area
@@ -163,7 +167,7 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 	// load in module hooks
 	$table = $db->query("SELECT * FROM link_module
 		JOIN module ON link_module.module_name = module.module_name
-		WHERE (link_id = '0' OR link_id = '" . $db->escape($link['id']) . "') AND module.enabled = 1;");
+		WHERE (link_id = '0' OR link_id = '" . $db->escape($link['link_id']) . "') AND module.enabled = 1;");
 	while ($row = $table->fetch())
 		include_once('modules/' . $row['module_name'] . '/hooks.php');
 
@@ -172,19 +176,19 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 		include_once($theme_hooks_filename);
 
 
-	Hooks::emit('header', array('link_id' => $link['id']));
+	Hooks::emit('header', array('link_id' => $link['link_id']));
 	echo '</header>';
 
 	echo '<nav class="navigation" role="navigation">';
-	Hooks::emit('navigation', array('link_id' => $link['id']));
+	Hooks::emit('navigation', array('link_id' => $link['link_id']));
 	echo '</nav>';
 
 	echo '<article class="main" role="main">';
-	Hooks::emit('main', array('link_id' => $link['id']));
+	Hooks::emit('main', array('link_id' => $link['link_id']));
 	echo '</article>';
 
 	echo '<footer>';
-	Hooks::emit('footer', array('link_id' => $link['id']));
+	Hooks::emit('footer', array('link_id' => $link['link_id']));
 }
 else
 	user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);

@@ -66,7 +66,7 @@ Hooks::attach('navigation', 0, function($parameter) {
     $table = $db->query("SELECT * FROM menu
         JOIN link ON menu.link_id = link.link_id ORDER BY position ASC;");
     while ($row = $table->fetch())
-        $menu[$row['parent_id']][$row['id']] = array(
+        $menu[$row['parent_id']][$row['link_id']] = array(
             'name' => $row['name'],
             'url' => $row['url'],
             'selected' => ($current_link == $row['link_id'] ? '1' : '0')

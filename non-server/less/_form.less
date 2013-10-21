@@ -138,7 +138,7 @@ label > .small {
 	overflow:hidden;
 }
 
-input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select, textarea {
+input, select, textarea {
 	border:1px solid #C0C0C0;
 	.border-radius(4px);
 	.css-gradient(#F8F8F8, #FFFFFF);
@@ -148,12 +148,16 @@ input[type="text"], input[type="email"], input[type="tel"], input[type="password
 	padding:4px 6px;
 	margin:8px 0 8px 10px;
 	width:250px;
-}
 
-input.unused {
-	.css-gradient(#F8F8F8, #F8F8F8);
-	border:1px solid #F0F0F0;
-	.box-shadow(0, 0, 0, 0, rgba(0,0,0,0));
+	&.unused {
+		.css-gradient(#F8F8F8, #F8F8F8);
+		border:1px solid #F0F0F0;
+		.box-shadow(0, 0, 0, 0, rgba(0,0,0,0));
+	}
+
+	&.hidden {
+		display:none;
+	}
 }
 
 textarea.markdown {
@@ -164,36 +168,51 @@ textarea.markdown {
 	font-family:monospace;
 }
 
-span.parameter_equal {
+span.equal {
 	float:left;
-	width:25px;
-	margin-top:3px;
-
-	text-align:center;
+	padding-top:13px;
 	color:#666666;
+	width:3em;
+	text-align:center;
+}
+
+span.comma {
+	float:left;
+	padding-top:13px;
+	color:#666666;
+	width:1em;
+	text-align:center;
+}
+
+input[data-type="array_item"]  {
+	/* all but first item */
+	& + span + & {
+		margin-left:210px;
+	}
 }
 
 input[data-type="parameter_key"] {
-	float:left;
 	width:75px;
+
+	/* all but first key */
+	input[data-type="parameter_value"] + & {
+		margin-top:-10px;
+		margin-left:210px;
+	}
 }
 
-input[data-type="parameter_val"] {
-	width:150px;
-	margin-left:0;
-}
-
-input[data-type="parameter_val"] + input[data-type="parameter_key"] {
-	margin-top:-10px;
-	margin-left:210px;
-}
-
-input[data-type="parameter_val"] + input[data-type="parameter_key"] + span.parameter_equal {
+input[data-type="parameter_value"] + input[data-type="parameter_key"] + span {
 	margin-top:-5px;
 }
 
-input[data-type="parameter_val"] + input[data-type="parameter_key"] + span.parameter_equal + input[data-type="parameter_val"] {
-	margin-top:-10px;
+input[data-type="parameter_value"] {
+	width:150px;
+	margin-left:0;
+
+	/* all but first value */
+	& + input[data-type="parameter_key"] + span + & {
+		margin-top:-10px;
+	}
 }
 
 .submit {
