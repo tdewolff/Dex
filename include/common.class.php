@@ -5,15 +5,21 @@ class Common
 	private static $caching = false;
 	private static $minifying = false;
 
-	public static function setCaching($caching)
-	{
+	public static function setCaching($caching) {
 		self::$caching = $caching;
 	}
 
-	public static function setMinifying($minifying)
-	{
+    public static function isCaching() {
+        return self::$caching;
+    }
+
+	public static function setMinifying($minifying) {
 		self::$minifying = $minifying;
 	}
+
+    public static function isMinifying() {
+        return self::$minifying;
+    }
 
 	public static function validUrl($input)
 	{
@@ -49,6 +55,18 @@ class Common
     public static function tryOrZero($array, $index)
     {
         return isset($array[$index]) ? $array[$index] : 0;
+    }
+
+    public static function isMethod($method)
+    {
+        return $_SERVER['REQUEST_METHOD'] == $method;
+    }
+
+    public static function getMethodData()
+    {
+        $data = array();
+        parse_str(file_get_contents("php://input"), $data);
+        return $data;
     }
 
 	private static function cacheFilename($filenames, $cache_formatted_filename)
@@ -166,60 +184,11 @@ class Common
 		}
 		return $cache_filename;
 	}
-
-	public static function checkModules()
-	{
-		global $db;
-
-		$fs_modules = array();
-		$handle = opendir('modules/');
-		while (($module_name = readdir($handle)) !== false)
-			if (is_dir('modules/' . $module_name) && $module_name != '.' && $module_name != '..')
-			{
-				$module_file = 'modules/' . $module_name . '/config.ini';
-				if (file_exists($module_file) !== false)
-					$fs_modules[$module_name] = 1;
-			}
-
-		// check with database
-		$db_modules = $db->query("SELECT * FROM module;");
-		while ($db_module = $db_modules->fetch())
-			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
-				unset($fs_modules[$db_module['module_name']]);
-			else // file does not exist but db entry does
-			{
-				Log::information('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
-
-                // remove module table, link_module relations of the module, module entry
-				$db->exec("
-                DROP TABLE IF EXISTS module_" . $db->escape($db_module['module_name']) . ";
-                DELETE FROM link_module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
-                DELETE FROM module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';");
-			}
-
-		foreach ($fs_modules as $name => $enabled) // file exists but db entry does not
-		{
-			include_once('modules/' . $name . '/admin/setup.php');
-
-            Log::information('module with module_name "' . $name . '" is inserted into the database');
-            $db->exec("INSERT INTO module (module_name, enabled) VALUES ('" . $db->escape($name) . "', 1);");
-		}
-	}
-
-    public static function cleanDatabase()
-    {
-        global $db;
-
-        // remove dead links, dead menu items
-        $db->exec("
-        DELETE FROM link WHERE NOT EXISTS (SELECT 1 FROM link_module WHERE link.link_id = link_module.link_id);
-        DELETE FROM menu WHERE NOT EXISTS (SELECT 1 FROM link WHERE menu.link_id = link.link_id);");
-    }
 }
 
 function minifyHtml($text)
 {
-    if (!Common::$minifying) {
+    if (!Common::isMinifying()) {
         return $text;
     }
 

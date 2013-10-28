@@ -67,6 +67,10 @@ Modules
 
 In config.ini you set the details for your module including the admin panel link it adds. In setup.php you write the database setup code. Create the admin page and let it start with ``Module::set('__module_name__');``. You can now use the static ``Module`` class to add stylesheets, scripts, variables for your template and to render the template. Your admin page must end with ``exit;``. Use the hooks.php file to hook your module to the pages and use ``Module::set('__module_name__');`` and the ``Module`` class like in your admin page. Add all resources to the appropriate resource folders.
 
+### Adding links for your module ###
+
+Each module can be attached to a link (URL + title) in a many-many relation. You can retrieve the current link_id using ``Module::getLinkId();`` within your hooks. In the admin pages you can create a new link using ``$link_id = Module::getLink(__url__, __title__);`` where title is optional, this will retrieve link_id (by creating a new link or if the link already exists it will update title if necessary). You can attach the module to the link by calling ``$link_module_id = Module::attachToLink(__link_id__);`` or if all pages need this module you can call ``Module::attachToAllLinks();``. The retrieved link_module_id is needed to detach using ``Module::detachFromLink(__link_module_id__);`` or ``Module::detachFromAllLinks();``, so it is essential that in your module table you store the link_module_id.
+
 Themes
 ------
 

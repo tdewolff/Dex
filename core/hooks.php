@@ -58,22 +58,4 @@ Hooks::attach('admin_footer', 0, function() {
 	Core::render('admin/footer.tpl');
 });
 
-Hooks::attach('navigation', 0, function($parameter) {
-    global $db;
-    $current_link = $parameter['link_id'];
-
-    $menu = array();
-    $table = $db->query("SELECT * FROM menu
-        JOIN link ON menu.link_id = link.link_id ORDER BY position ASC;");
-    while ($row = $table->fetch())
-        $menu[$row['parent_id']][$row['link_id']] = array(
-            'name' => $row['name'],
-            'url' => $row['url'],
-            'selected' => ($current_link == $row['link_id'] ? '1' : '0')
-        );
-
-    Core::assign('menu', $menu);
-    Core::render('menu.tpl');
-});
-
 ?>

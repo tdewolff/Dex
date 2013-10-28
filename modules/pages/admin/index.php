@@ -11,27 +11,23 @@ if (!isset($url[3]) || $url[3] == 'remove')
     {
         $page = $db->querySingle("SELECT * FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "' LIMIT 1;");
         if ($page)
-            $db->exec("
-            DELETE FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "';
-            DELETE FROM link_module WHERE link_module_id = '" . $db->escape($page['link_module_id']) . "';");
+        {
+            Module::detachFromLink($page['link_module_id']);
+            $db->exec("DELETE FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "';");
+        }
+        exit;
     }
 
     $pages = array();
-    $table = $db->query("SELECT * FROM module_pages
-        JOIN link_module ON module_pages.link_module_id = link_module.link_module_id
-        JOIN link ON link_module.link_id = link.link_id;");
+    $table = $db->query("SELECT * FROM module_pages;");
     while ($row = $table->fetch())
     {
-        $content = strip_tags($row['parsed_content']);
-        $content = strlen($content) > 50 ? substr($content, 0, 50) . '...' : $content;
+        $row += Module::getAttachedLinkData($row['link_module_id']);
 
-        $pages[] = array(
-            'id' => $row['module_pages_id'],
-            'url' => $row['url'],
-            'title' => $row['title'],
-            'content' => $content,
-            'length' => Common::formatBytes(strlen($row['parsed_content']))
-        );
+        $row['content'] = strip_tags($row['parsed_content']);
+        $row['content'] = strlen($row['content']) > 50 ? substr($row['content'], 0, 50) . '...' : $row['content'];
+        $row['length'] = Common::formatBytes(strlen($row['parsed_content']));
+        $pages[] = $row;
     }
 
     Core::addStyle('popbox.css');
@@ -49,15 +45,16 @@ else
 {
     if ($url[3] != 'new')
     {
-        $page = $db->querySingle("SELECT * FROM module_pages
-            JOIN link_module ON module_pages.link_module_id = link_module.link_module_id
-            JOIN link ON link_module.link_id = link.link_id
-            WHERE module_pages.module_pages_id = '" . $db->escape($url[3]) . "' LIMIT 1;");
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE module_pages.module_pages_id = '" . $db->escape($url[3]) . "' LIMIT 1;");
         if (!$page)
             user_error('Page with module_pages_id "' . $url[3] . '" doesn\'t exist', ERROR);
+        $page += Module::getAttachedLinkData($page['link_module_id']);
     }
 
     $form = new Form('page');
+    if ($url[3] != 'new')
+        $form->useAjax();
+
     $form->addSection('Page', '');
     $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
     $form->addText('url', 'URL', $domain_url . $base_url, '', array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid URL and end with /'));
@@ -69,12 +66,9 @@ else
     {
         if ($form->verifyPost())
         {
-            $url_base = substr($form->get('url'), 0, strpos($form->get('url'), '/') + 1);
-            if ($db->querySingle("SELECT * FROM link WHERE url = '" . $db->escape($form->get('url')) . "' AND link_id IN (SELECT link_id FROM link_module WHERE module_name = 'pages')" . (isset($page) ? " AND link_id != '" . $db->escape($page['link_id']) . "'" : "") . " LIMIT 1;"))
-                $form->setError('url', 'Already used');
-            else if ($url_base == 'admin/' ||
-                     $url_base == 'res/')
-                $form->setError('url', 'Cannot start with "' . $url_base . '"');
+            $link_id = ($url[3] != 'new' ? $page['link_id'] : 0);
+            if (($error = Module::verifyUrl($link_id, $form->get('url'))) !== true)
+                 $form->setError('url', $error);
             else
             {
                 $parsed_content = $form->get('content');
@@ -83,8 +77,9 @@ else
 
                 if ($url[3] != 'new')
                 {
+                    Module::updateLink($link_id, $form->get('url'), $form->get('title'));
+
                     $db->exec("
-                    UPDATE link SET url = '" . $db->escape($form->get('url')) . "', title = '" . $db->escape($form->get('title')) . "' WHERE link_id = '" . $db->escape($page['link_id']) . "';
                     UPDATE module_pages SET
                         content = '" . $db->escape($form->get('content')) . "',
                         parsed_content = '" . $db->escape($parsed_content) . "'
@@ -92,35 +87,19 @@ else
                 }
                 else
                 {
-                    // don't make a new link if it already exists
-                    $link_id = 0;
-                    if ($existing_link = $db->querySingle("SELECT * FROM link WHERE url = '" . $db->escape($form->get('url')) . "' LIMIT 1"))
-                        $link_id = $existing_link['id'];
-                    else
-                    {
-                        $db->exec("
-                        INSERT INTO link (url, title) VALUES (
-                            '" . $db->escape($form->get('url')) . "',
-                            '" . $db->escape($form->get('title')) . "'
-                        );");
-                        $link_id = $db->last_id();
-                    }
+                    $link_id = Module::getLink($form->get('url'), $form->get('title'));
+                    $link_module_id = Module::attachToLink($link_id);
 
                     $db->exec("
-                    INSERT INTO link_module (link_id, module_name) VALUES (
-                        '" . $db->escape($link_id) . "',
-                        'pages'
-                    );
-
                     INSERT INTO module_pages (link_module_id, content, parsed_content) VALUES (
-                        last_insert_rowid(),
+                        '" . $db->escape($link_module_id) . "',
                         '" . $db->escape($form->get('content')) . "',
                         '" . $db->escape($parsed_content) . "'
                     );");
                     $form->setAction('/' . $base_url . 'admin/module/pages/' . $db->last_id() . '/');
                 }
 
-                $form->setResponse('<span class="passed_time" data-time="' . time() . '">(<span></span>)</span>');
+                $form->setResponse('<span class="passed_time" data-time="' . time() . '">(saved <span></span>)</span>');
             }
         }
         $form->postToSession();

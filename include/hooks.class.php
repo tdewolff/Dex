@@ -18,11 +18,11 @@ class Hooks
 		uasort(self::$hooks[$event], 'sortEvent');
 	}
 
-	public static function emit($event, $args = array())
+	public static function emit($event)
 	{
 		if (isset(self::$hooks[$event]))
 			foreach (self::$hooks[$event] as $item)
-				call_user_func($item['callback'], $args);
+				call_user_func($item['callback']);
 	}
 
 	public static function clear($event)

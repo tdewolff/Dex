@@ -1,6 +1,7 @@
 <?php
 
 $db->exec("
+DROP TABLE IF EXISTS module_contact;
 CREATE TABLE module_contact (
     id INTEGER PRIMARY KEY,
     key TEXT,

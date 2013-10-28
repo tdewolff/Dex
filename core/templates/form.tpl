@@ -1,23 +1,19 @@
-<form method="post"
+<form
  id="<?php echo $form['name'] . '_' . $form['salt']; ?>"
  <?php if (strlen($form['mode'])): ?>class="form_<?php echo $form['mode']; ?>"<?php endif; ?>
- <?php if (isset($form['action'])): ?>action="<?php echo $form['action']; ?>"<?php endif; ?>
- onsubmit="return form_submit(this, 'submitted_<?php echo $form['salt']; ?>');"
+ onsubmit="return form_submit(this);"
  autocomplete="off"
- data-ajax="<?php echo ($form['ajax'] ? 'true' : 'false'); ?>">
-
- <input type="hidden"
-  name="submitted_<?php echo $form['salt']; ?>"
-  value="0" />
+ data-salt="<?php echo $form['salt']; ?>"
+ data-method="<?php echo $form['method']; ?>">
 
 
- <?php if (count($form['errors'])): ?>
+ <?php /*if (count($form['errors'])): ?>
   <div class="form_error">
    <?php foreach ($form['errors'] as $error): ?>
     <?php echo $error; ?><br />
    <?php endforeach; ?>
   </div>
- <?php endif; ?>
+ <?php endif;*/ ?>
 
 
  <?php foreach ($form['items'] as $item): ?>
@@ -35,7 +31,9 @@
     name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
     value="" />
    <a class="button submit" href="#"><?php echo $item['title']; ?></a>
-   <span class="form_response"><?php echo (strlen($form['response']) ? $form['response'] : ''); ?></span>
+   <span class="form_response_loading"></span>
+   <span class="form_response_success"><?php echo $item['response_success']; ?></span>
+   <span class="form_response_error"><?php echo $item['response_error']; ?></span>
 
 
   <?php else: // input elements with a label ?>
@@ -179,7 +177,7 @@
   <?php endif; ?>
 
 
-  <?php if (isset($item['error'])): ?>
+  <?php /*if (isset($item['error'])): ?>
    <div class="form_item_error" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
     <div class="box">
      <div class="arrow"></div>
@@ -188,7 +186,7 @@
      <p class="pre_wrap"><i class="icon-exclamation-sign"></i>&ensp;<span><?php echo $item['error']; ?></span></p>
     </div>
    </div>
-  <?php endif; ?>
+  <?php endif;*/ ?>
 
  <?php endforeach; ?>
 </form>

@@ -66,17 +66,6 @@ if ($form->submittedBy('setup'))
             FOREIGN KEY(module_name) REFERENCES module(module_name)
         );
 
-        DROP TABLE IF EXISTS menu;
-        CREATE TABLE menu (
-            menu_id INTEGER PRIMARY KEY,
-            parent_menu_id INTEGER,
-            link_id INTEGER,
-            name TEXT,
-            position INTEGER,
-            FOREIGN KEY(parent_menu_id) REFERENCES menu(menu_id)
-            FOREIGN KEY(link_id) REFERENCES link(link_id)
-        );
-
         INSERT INTO setting (key, value) VALUES (
             'title',
             '" . $db->escape($form->get('site_title')) . "'

@@ -34,6 +34,16 @@ if (!Common::validUrl($request_url))
 	user_error('Request URL doesn\'t validate (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 
+// favicon.ico and robots.txt
+if ($request_url == 'favicon.ico' || $request_url == 'robots.txt')
+    if (file_exists($request_url))
+    {
+        if ($request_url == 'favicon.ico')
+            header('Content-Type: image/x-icon');
+        echo file_get_contents($request_url);
+    }
+
+
 // redirect resources
 if (strpos($request_url, 'res/') === 0)
 {
@@ -103,7 +113,7 @@ if (strpos($request_url, 'res/') === 0)
 
 // not a resource, so start loading more stuff
 session_start();
-ob_start(/*"minifyHtml"*/);
+ob_start('minifyHtml');
 
 require_once('include/database.class.php');
 require_once('include/security.php');
@@ -135,6 +145,8 @@ $domain_url .= '://' . $_SERVER['SERVER_NAME'];
 $domain_url .= ($_SERVER['SERVER_PORT'] == '80') ? '' : (':' . $_SERVER['SERVER_PORT']); // port
 $domain_url .= '/';
 
+echo $_SERVER['SERVER_NAME'] . ' ' . $domain_url;
+
 Core::assign('domain_url', $domain_url);
 Core::assign('base_url', $base_url);
 
@@ -164,6 +176,8 @@ if ($url[0] == 'admin')
 // show page
 if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url LIMIT 1;"))
 {
+    Core::$link_id = $link['link_id'];
+
 	// load in module hooks
 	$table = $db->query("SELECT * FROM link_module
 		JOIN module ON link_module.module_name = module.module_name
@@ -176,19 +190,19 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 		include_once($theme_hooks_filename);
 
 
-	Hooks::emit('header', array('link_id' => $link['link_id']));
+	Hooks::emit('header');
 	echo '</header>';
 
 	echo '<nav class="navigation" role="navigation">';
-	Hooks::emit('navigation', array('link_id' => $link['link_id']));
+	Hooks::emit('navigation');
 	echo '</nav>';
 
 	echo '<article class="main" role="main">';
-	Hooks::emit('main', array('link_id' => $link['link_id']));
+	Hooks::emit('main');
 	echo '</article>';
 
 	echo '<footer>';
-	Hooks::emit('footer', array('link_id' => $link['link_id']));
+	Hooks::emit('footer');
 }
 else
 	user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);

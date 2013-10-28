@@ -7,9 +7,8 @@ Options +SymLinksIfOwnerMatch
 RewriteEngine on
 
 # Add www
-#RewriteCond %{HTTP_HOST} !^www\.[a-z-]+\.[a-z]{2,6} [NC]
-#RewriteCond %{HTTP_HOST} ([a-z-]+\.[a-z]{2,6})$   [NC]
-#RewriteRule ^/(.*)$ http://%1/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} !^www
+RewriteRule .* http://www.%{SERVER_NAME}%{REQUEST_URI} [R=301,L]
 
 # Trailing slash
 RewriteCond %{REQUEST_URI} !(/$|\.)

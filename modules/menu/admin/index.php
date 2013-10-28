@@ -1,13 +1,14 @@
 <?php
+Module::set('menu');
 
 if (isset($url[3]) && $url[3] == 'remove' && isset($url[4]) && is_numeric($url[4]))
 {
     $db->exec("
-    UPDATE menu SET
+    UPDATE module_menu SET
         position = position - 1
-    WHERE position >= (SELECT position FROM menu WHERE id = '" . $db->escape($url[4]) . "' LIMIT 1);
+    WHERE position >= (SELECT position FROM module_menu WHERE id = '" . $db->escape($url[4]) . "' LIMIT 1);
 
-    DELETE FROM menu WHERE id = '" . $db->escape($url[4]) . "';");
+    DELETE FROM module_menu WHERE id = '" . $db->escape($url[4]) . "';");
 }
 /*
 $dropbox_links = array();
@@ -70,8 +71,9 @@ if ($form->submittedBy('menu'))
 }*/
 
 $menu = array();
-$table = $db->query("SELECT * FROM menu
-    JOIN link ON menu.link_id = link.link_id ORDER BY position ASC;");
+$table = $db->query("SELECT * FROM module_menu
+JOIN link ON module_menu.link_id = link.link_id
+ORDER BY position ASC;");
 while ($row = $table->fetch())
 {
     $level = 0;
@@ -100,8 +102,8 @@ Hooks::emit('admin_header');
 //$form->setAction('/' . $base_url . 'admin/menu/');
 
 //Dexterous::assign('menu_form', $form);
-Core::assign('menu', $menu);
-Core::render('admin/menu.tpl');
+Module::assign('menu', $menu);
+Module::render('admin/menu.tpl');
 
 Hooks::emit('admin_footer');
 exit;

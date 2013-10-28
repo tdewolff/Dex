@@ -10,17 +10,13 @@ while ($table = $tables->fetch())
 	$table_columns = array();
 	$table_rows = array();
 
-	$first = true;
+	$columns = $db->query("PRAGMA table_info(" . $db->escape($table['name']) . ");");
+	while ($column = $columns->fetch())
+		$table_columns[] = $column['name'] . ' (' . $column['type'] . ')';
+
 	$rows = $db->query("SELECT * FROM " . $db->escape($table['name']) . ";");
 	while ($row = $rows->fetch())
 	{
-		if ($first)
-		{
-			foreach ($row as $name => $item)
-				$table_columns[] = $name;
-			$first = false;
-		}
-
 		$table_row = array();
 		foreach ($row as $item)
 			$table_row[] = htmlentities($item, ENT_QUOTES, 'UTF-8');

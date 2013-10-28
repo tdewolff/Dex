@@ -26,6 +26,7 @@ body {
 	display:none; /* gets faded in */
 	margin:0 auto;
 	width:1200px;
+	color:@text-black;
 }
 
 .page-wrapper-slim {
@@ -33,6 +34,7 @@ body {
 	margin:0 auto;
 	margin-bottom:40px;
 	width:700px;
+	color:@text-black;
 }
 
 h1 {
@@ -40,6 +42,7 @@ h1 {
 	font-family:SourceSansRegular, Arial, Helvetica, sans-serif;
 	font-size:50pt;
 	text-align: center;
+	color:@light;
 }
 
 .main {
@@ -84,8 +87,8 @@ h1 {
 	text-decoration:none;
 	font-family:SourceSansRegular, Arial, Helvetica, sans-serif;
 	font-size:15px;
-	letter-spacing:1px;
 	color:@text-black;
+	letter-spacing:1px;
 	background-color:#f0f0f0;
 	border-top:1px solid #f8f8f8;
 	border-bottom:1px solid #e8e8e8;
@@ -112,10 +115,9 @@ h1 {
 }
 
 #right-column {
-	color:@text-black;
 	margin-left:200px;
 	padding:30px 50px;
-	width: 1000px;
+	width: 1006px;
 	background:@light;
 	border-left:3px solid darken(@light, 5%);
 	border-right:3px solid darken(@light, 5%);
@@ -182,43 +184,70 @@ p {
 	text-align:right;
 }
 
-table.list {
-	width:100%;
-	border-collapse:separate;
+ul.table {
+	width:902px;
 	border:1px solid darken(@light, 10%);
 	.border-radius(5px);
 }
 
-table.list th {
+ul.table > li {
+	height:33px;
+	border-top:1px solid darken(@light, 10%);
+	font-size:90%;
+}
+
+ul.table > li:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+ul.table > li:first-of-type {
+	border-top:0;
+	.border-top-left-radius(5px);
+	.border-top-right-radius(5px);
 	.css-gradient(darken(@light, 0%), darken(@light, 5%));
-	padding:10px 15px;
 	font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
 	text-shadow: rgba(255,255,255,0.8) 0 1px 0;
 }
 
-table.list th:first-of-type {
+ul.table > li:first-of-type > div:first-of-type {
 	.border-top-left-radius(5px);
 }
 
-table.list th:last-of-type {
+ul.table > li:first-of-type > div:last-of-type {
 	.border-top-right-radius(5px);
 }
 
-table.list td {
-	border-top:1px solid darken(@light, 10%);
+ul.table > li > div {
+	line-height:22px;
+
+	float:left;
 	padding:5px 15px;
-	font-size:90%;
+
+	vertical-align: middle;
+
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow: hidden;
 }
 
-table.list tr:nth-child(odd) td {
+ul.table > li > div * {
+	line-height:initial;
+}
+
+ul.table > li.odd > div {
 	background-color:darken(@light, 2%);
 }
 
-table.list tr:hover td {
+ul.table > li:hover:not(:first-of-type) > div {
 	background-color:@subtle;
 }
 
-table.list .icon-reorder {
+ul.table .icon-reorder {
 	font-size:120%;
 	cursor:n-resize;
 }
@@ -303,10 +332,6 @@ strong {
 
 .pre_wrap {
 	white-space:pre-wrap;
-}
-
-.passed_time {
-	display:none;
 }
 
 .disabled {

@@ -3,14 +3,13 @@
 class Form
 {
 	private $name = '';
+	private $data = array();
 	private $items = array();
-	private $action = '';
-	private $response = '';
 	private $errors = array();
-	private $mode = false;
-	private $ajax = false;
 
-	private static $inputTypes = array('name');
+	private $mode = false;
+	private $method = 'POST';
+	private $redirect = '';
 
 	public function __construct($name)
 	{
@@ -27,6 +26,7 @@ class Form
 		$this->name = $name;
 	}
 
+	////////////////////////////////////////////////////////////////
 
 	public function makeInline() {
 		$this->mode = 'inline';
@@ -36,10 +36,26 @@ class Form
 		$this->mode = 'compact';
 	}
 
-	public function useAjax() {
-		$this->ajax = true;
+	public function usePUT($redirect = '') {
+		$this->method = 'PUT';
+		$this->redirect = $redirect;
 	}
 
+	public function usePOST($redirect = '') {
+		$this->method = 'POST';
+		$this->redirect = $redirect;
+	}
+
+	public function useDELETE($redirect = '') {
+		$this->method = 'DELETE';
+		$this->redirect = $redirect;
+	}
+
+	public function setRedirect($redirect) {
+		$this->redirect = $redirect;
+	}
+
+	////////////////////////////////////////////////////////////////
 
 	public function addSeparator()
 	{
@@ -185,12 +201,14 @@ class Form
 		);
 	}
 
-	public function addSubmit($name, $title)
+	public function addSubmit($name, $title, $response_success = '', $reponse_error = '')
 	{
 		$this->items[] = array(
 			'type' => 'submit',
 			'name' => $this->name . '_' . $name,
-			'title' => $title
+			'title' => $title,
+			'response_success' => $response_success,
+			'response_error' => $reponse_error
 		);
 	}
 
@@ -219,31 +237,22 @@ class Form
 				$this->items[$k]['emptyTogether'] = $names;
 	}
 
+	////////////////////////////////////////////////////////////////
+
+	private function retrieveInput()
+	{
+		$this->data = Common::getMethodData();
+	}
+
 	public function submittedBy($name)
 	{
-		return isset($_SESSION[$this->name . '_salt']) && isset($_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]);
+		$this->retrieveInput();
+
+		return isset($_SESSION[$this->name . '_salt']) && isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]);
 	}
 
-	public function postToSession()
+	public function validateInput()
 	{
-		foreach ($this->items as $item)
-			if (isset($item['value']))
-				$_SESSION[$item['name']] = (isset($_POST[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $_POST[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
-
-		if ($this->ajax)
-		{
-			echo json_encode(array(
-				'response' => $this->response,
-				'items' => $this->items,
-				'errors' => $this->errors
-			));
-			exit;
-		}
-	}
-
-	public function verifyPost()
-	{
-		print_r($this->items);
 		$valid = true;
 		foreach ($this->items as $k => $item)
 		{
@@ -255,7 +264,7 @@ class Form
 					$allowEmpty = true;
 					foreach ($item['emptyTogether'] as $name)
 					{
-						if (isset($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($_POST[$name . '_' . $_SESSION[$this->name . '_salt']]))
+						if (isset($this->data[$name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($this->data[$name . '_' . $_SESSION[$this->name . '_salt']]))
 						{
 							$allowEmpty = false;
 							break;
@@ -264,7 +273,7 @@ class Form
 				}
 
 				$fullname = $item['name'] . '_' . $_SESSION[$this->name . '_salt'];
-				$value = (isset($_POST[$fullname]) ? $_POST[$fullname] : '');
+				$value = (isset($this->data[$fullname]) ? $this->data[$fullname] : '');
 
 				if (!$allowEmpty || ($allowEmpty && strlen($value)))
 				{
@@ -272,7 +281,7 @@ class Form
 					{
 						// '_confirm' is the first value entered, we are now checking it against the second (current) item
 						$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'];
-						$value_confirm = (isset($_POST[$fullname_confirm]) ? $_POST[$fullname_confirm] : '');
+						$value_confirm = (isset($this->data[$fullname_confirm]) ? $this->data[$fullname_confirm] : '');
 
 						if ($value != $value_confirm)
 							$this->items[$k]['error'] = 'Does not confirm';
@@ -294,38 +303,18 @@ class Form
 		return $valid;
 	}
 
-	public function set($name, $value)
+	private function inputToSession()
 	{
-		$_SESSION[$this->name . '_' . $name] = $value;
+		foreach ($this->items as $item)
+			if (isset($item['value']))
+				$_SESSION[$item['name']] = (isset($this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
 	}
 
-	public function get($name)
-	{
-		return (isset($_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
-		            ? $_POST[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]
-						: false);
-	}
-
-	public function setAction($action)
-	{
-		$this->action = $action;
-	}
-
-	public function setResponse($response)
-	{
-		$this->response = $response;
-	}
-
-	public function appendError($error)
-	{
-		$this->errors[] = $error;
-	}
-
-	public function setError($name, $error)
+	private function sessionToForm()
 	{
 		foreach ($this->items as $k => $item)
-			if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
-				$this->items[$k]['error'] = $error;
+			if (isset($item['value']))
+				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
 	}
 
 	public function unsetSession()
@@ -336,15 +325,55 @@ class Form
 				unset($_SESSION[$item['name']]);
 	}
 
-	public function sessionToForm()
+	public function returnJSON()
+	{
+		if (isset($_SESSION[$this->name . '_salt'])) // if not set, unsetSession() has been called
+			$this->inputToSession();
+
+		echo json_encode(array(
+			'items' => $this->items,
+			'errors' => $this->errors,
+			'redirect' => $this->redirect
+		));
+		exit;
+	}
+
+	// set value of input element
+	public function set($name, $value)
+	{
+		$_SESSION[$this->name . '_' . $name] = $value;
+	}
+
+	// get value of input element, use after verify()
+	public function get($name)
+	{
+		return (isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
+		            ? $this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]
+						: false);
+	}
+
+	// set error for input element
+	public function setError($name, $error)
 	{
 		foreach ($this->items as $k => $item)
-			if (isset($item['value']))
-				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
+			if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
+				$this->items[$k]['error'] = $error;
+	}
+
+	// add error for entire form
+	public function appendError($error)
+	{
+		$this->errors[] = $error;
+	}
+
+	public function setResponse($response)
+	{
+		$this->response = $response;
 	}
 
 	public function renderForm()
 	{
+		$this->sessionToForm();
 		$_SESSION[$this->name . '_salt'] = random(8);
 
 		// make handy variables for js and css
@@ -393,11 +422,9 @@ class Form
 			'name' => $this->name,
 			'salt' => $_SESSION[$this->name . '_salt'],
 			'items' => $this->items,
-			'action' => $this->action,
-			'response' => $this->response,
 			'errors' => $this->errors,
 			'mode' => $this->mode,
-			'ajax' => $this->ajax
+			'method' => $this->method
 		);
 
 		include('core/templates/form.tpl');

@@ -1,7 +1,14 @@
 <?php
 
-if (isset($url[2]) && $url[2] == 'use' && isset($url[3]))
-	$db->exec("UPDATE setting SET value = '" . $db->escape($url[3]) . "' WHERE key = 'theme';");
+if (Common::isMethod('PUT'))
+{
+	$data = Common::getMethodData();
+	if (!isset($data['theme_name']))
+		user_error('No theme name set', ERROR);
+
+	$db->exec("UPDATE setting SET value = '" . $db->escape($data['theme_name']) . "' WHERE key = 'theme';");
+	exit;
+}
 
 $themes = array();
 $handle = opendir('themes/');

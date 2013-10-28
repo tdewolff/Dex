@@ -24,7 +24,7 @@
         <li class="separator"></li>
        <?php elseif ($link['admin_only'] == 0 || ($link['admin_only'] == 1 && $_['isAdmin'])): ?>
         <?php if ($_['isAdmin'] || (!$_['isAdmin'] && (!isset($link['enabled']) || $link['enabled'] == 1))): ?>
-         <li <?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'class="disabled"'; } ?>>
+         <li id="<?php echo $link['name']; ?>" <?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'class="disabled"'; } ?>>
           <a href="/<?php echo $_['base_url'] . $link['url']; ?>" <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'id="selected"'; } ?>>
            <i class="icon-fixed-width <?php echo (strlen($link['icon']) ? $link['icon'] : 'icon-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
           </a>

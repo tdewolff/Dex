@@ -1,15 +1,12 @@
 <?php
 
-Hooks::attach('main', 0, function($p) {
+Hooks::attach('main', 0, function() {
     global $db;
-    Module::set('contact');
-
-    $current_link = $p['link_id'];
+    Module::set('pages');
 
     $content = '';
-    if ($page = $db->querySingle("SELECT * FROM link_module
-        JOIN module_pages ON link_module.link_module_id = module_pages.link_module_id
-        WHERE link_id = '" . $db->escape($current_link) . "' AND module_name = 'pages' LIMIT 1;"))
+    $link_data = Module::getLinkData();
+    if ($page = $db->querySingle("SELECT * FROM module_pages WHERE link_module_id = '" . $db->escape($link_data['link_module_id']) . "' LIMIT 1;"))
         $content = $page['parsed_content'];
 
     Module::assign('content', $content);

@@ -71,3 +71,8 @@
   background-color:#A9CC66;
 }
 
+.dropdown > .dropdown-menu > li > a.sure {
+  display:none;
+  background-color:#B94A48;
+  color:white;
+}

@@ -13,12 +13,24 @@ Pro's
 Cons:
 - Not suited for blogs, forums or large sites (underdeveloped and software is build for speed not scalability)
 
+The CMS tries to rely on modern but common used software. This includes the use of Sqlite3, HTML5 and CSS3. It is not hold back by legacy but doesn't use or require experimental software either.
+
 Installation
 ------------
 
 Move the files into a directory of your webserver. Access that directory with your browser, the setup page will show. It will create database.sqlite3 which will contain all your site data. After setup you are immediately logged in on the admin panel. With the default Pages module you can create a page and with Menu you can create the navigation on your site.
 
 If you ever want to do the installation again, delete the database.sqlite3 file using, for example, FTP and the next time your load a page you will go through the setup page again.
+
+Make sure that the following Apache modules are enabled:
+- mod_deflate
+- mod_expires
+- mod_filter
+- mod_headers
+- mod_rewrite (essential)
+
+And these PHP extensions:
+- php_sqlite3 (essential)
 
 Installing modules and themes
 -----------------------------
