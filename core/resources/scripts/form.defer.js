@@ -4,7 +4,8 @@ $('input, select').keydown(function(e) {
     }
 });
 
-$('a.submit').click(function() {
+$('a.submit').click(function(e) {
+    e.preventDefault();
     $(this).parents('form').submit();
 });
 
@@ -48,6 +49,7 @@ function form_submit(form) {
     $('input[type="submit"]', form).attr('disabled', 'disabled');
     $('.form_response_success, .form_reponse_error', form).hide();
     $('.form_response_loading', form).fadeIn('fast').css('display', 'inline-block');
+    interval();
 
     form_submit_password(form);
     form_submit_array(form);
@@ -57,10 +59,10 @@ function form_submit(form) {
         redirect = $(form).data('redirect'),
         data = $(form).serialize();
 
-    ajax(method, data, function(data) {
+    ajax(form, method, data, function(element, data) {
         form_ajax_success(form, data, redirect);
-    }, function(error) {
-        form_ajax_error(form, error);
+    }, function(element, data) {
+        form_ajax_error(form, data);
     });
     return false; // don't submit the regular way
 }

@@ -8,8 +8,8 @@ if (!isset($url[2]))
 	if (Common::isMethod('DELETE'))
 	{
 		$data = Common::getMethodData();
-		if (!isset($data['account_id']) || $data['account_id'] == Session::getAccountId())
-			user_error('No account ID set or account ID equals current user account ID', ERROR);
+		if (!isset($data['account_id']) || $data['account_id'] == Session::getAccountId() || !Session::isAdmin())
+			user_error('No account ID set, account ID equals current user account ID or current user is no admin', ERROR);
 
 		$db->exec("DELETE FROM account WHERE account_id = '" . $db->escape($data['account_id']) . "';");
 		exit;
@@ -60,7 +60,7 @@ else
 	$form->addSeparator();
     if ($url[2] != 'new')
 		$form->addPassword('current_password', 'Admin password', 'Confirm with your current password');
-	$form->addSubmit('user', '<i class="icon-save"></i>&ensp;Save');
+	$form->addSubmit('user', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
 
 	if ($form->submittedBy('user'))
 	{
@@ -69,10 +69,13 @@ else
 			$current_account = $db->querySingle("SELECT * FROM account WHERE account_id = '" . $db->escape(Session::getAccountId()) . "' LIMIT 1;");
             if ($db->querySingle("SELECT * FROM account WHERE username = '" . $db->escape($form->get('username')) . "' AND account_id != '" . $db->escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
-            else if ($url[2] != 'new' && (!$current_account || !$bcrypt->verify($form->get('current_password'), $current_account['password'])))
+            else if (!$current_account)
+                $form->appendError('Unknown error');
+            else if ($url[2] != 'new' && !$bcrypt->verify($form->get('current_password'), $current_account['password']))
                 $form->setError('current_password', 'Wrong password');
+            else if ($url[2] != 'new' && Session::getAccountId() == $url[2] && $current_account['permission'] != $form->get('permission'))
+                $form->setError('permission', 'Can\'t change your own permission level');
             else
-            {
 				if ($url[2] != 'new')
 				{
 					if ($form->get('password') != '')
@@ -97,11 +100,8 @@ else
 						'" . $db->escape($bcrypt->hash($form->get('password'))) . "',
 						'" . $db->escape($form->get('permission')) . "'
 					);");
-					$form->setRedirect('/' . $base_url . 'admin/users/' . $db->last_id() . '/');
+					$form->setRedirect('/' . $base_url . 'admin/users/');
 				}
-
-				$form->setResponse('<span class="passed_time" data-time="' . time() . '">(saved <span></span>)</span>');
-			}
 		}
 		$form->returnJSON();
 	}

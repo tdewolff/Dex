@@ -11,16 +11,19 @@ Core (all vital code), modules and themes comply to the following folder layout:
     main directory
     ├── admin
     |   └── setup.php
+    |
     ├── resources
     |   ├── fonts
     |   ├── images
     |   ├── scripts
     |   └── styles
+    |
     ├── templates
     |   └── admin
+    |
     └── hooks.php
 
-Modules and themes also have a config.ini in the main directory. Adhere to this folder structure, the config.ini and hooks files are obligated!
+Modules and themes also have a config.ini in the main directory. Adhere to this folder structure, the config.ini and hooks.php files are obligated!
 The admin folder contains all admin panel pages (where setup.php is used for installation), the hooks.php file defines how and when the code attaches to the frame. For example it defines that your module is run in the footer section. Config.ini contains details about the module or theme.
 
     root directory
@@ -31,8 +34,10 @@ The admin folder contains all admin panel pages (where setup.php is used for ins
     ├── media
     ├── modules
     |   └── (module directories)
+    |
     ├── themes
     |   └── (theme directories)
+    |
     ├── .htaccess
     ├── database.sqlite3
     ├── favicon.ico

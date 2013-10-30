@@ -57,6 +57,11 @@ class Common
         return isset($array[$index]) ? $array[$index] : 0;
     }
 
+    public static function tryOrDefault($array, $index, $default)
+    {
+        return isset($array[$index]) ? $array[$index] : $default;
+    }
+
     public static function isMethod($method)
     {
         return $_SERVER['REQUEST_METHOD'] == $method;

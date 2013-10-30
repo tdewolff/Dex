@@ -21,9 +21,6 @@ while (($media_name = readdir($handle)) !== false)
 		);
 	}
 
-Core::addStyle('fancybox.css');
-Core::addDeferredScript('fancybox.js');
-
 Hooks::emit('admin_header');
 
 Core::assign('media', $media);

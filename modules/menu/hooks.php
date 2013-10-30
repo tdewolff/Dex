@@ -5,14 +5,14 @@ Hooks::attach('navigation', 0, function() {
     Module::set('menu');
 
     $menu = array();
-    $table = $db->query("SELECT * FROM menu
-        JOIN link ON menu.link_id = link.link_id ORDER BY position ASC;");
+    $table = $db->query("SELECT *, link.link_id FROM module_menu
+        JOIN link ON module_menu.link_id = link.link_id ORDER BY position ASC;");
     while ($row = $table->fetch())
-        $menu[$row['parent_id']][$row['link_id']] = array(
-            'name' => $row['name'],
-            'url' => $row['url'],
-            'selected' => (Module::getLinkId() == $row['link_id'] ? '1' : '0')
-        );
+    {
+        $menu[$row['position']] = $row;
+        $menu[$row['position']]['selected'] = (Module::getLinkId() == $row['link_id'] ? '1' : '0');
+    }
+    ksort($menu);
 
     Module::assign('menu', $menu);
     Module::render('menu.tpl');

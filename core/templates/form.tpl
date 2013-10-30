@@ -1,20 +1,10 @@
 <form
  id="<?php echo $form['name'] . '_' . $form['salt']; ?>"
  <?php if (strlen($form['mode'])): ?>class="form_<?php echo $form['mode']; ?>"<?php endif; ?>
- onsubmit="return form_submit(this);"
+ onsubmit="return form_submit(this); "
  autocomplete="off"
  data-salt="<?php echo $form['salt']; ?>"
  data-method="<?php echo $form['method']; ?>">
-
-
- <?php /*if (count($form['errors'])): ?>
-  <div class="form_error">
-   <?php foreach ($form['errors'] as $error): ?>
-    <?php echo $error; ?><br />
-   <?php endforeach; ?>
-  </div>
- <?php endif;*/ ?>
-
 
  <?php foreach ($form['items'] as $item): ?>
   <?php if ($item['type'] == 'separator'): ?>
@@ -175,18 +165,5 @@
     <?php endif; ?>
    </p>
   <?php endif; ?>
-
-
-  <?php /*if (isset($item['error'])): ?>
-   <div class="form_item_error" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
-    <div class="box">
-     <div class="arrow"></div>
-     <div class="arrow-border"></div>
-
-     <p class="pre_wrap"><i class="icon-exclamation-sign"></i>&ensp;<span><?php echo $item['error']; ?></span></p>
-    </div>
-   </div>
-  <?php endif;*/ ?>
-
  <?php endforeach; ?>
 </form>

@@ -10,10 +10,21 @@
   <li id="<?php echo $item['module_name']; ?>">
 	<div style="width:120px; overflow:visible;">
 	 <div class="dropdown">
-	  <a href="/<?php echo $_['base_url']; ?>admin/module/<?php echo $item['module_name']; ?>/" class="dropdown-select list-button"><i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i></a>
+	  <a href="/<?php echo $_['base_url']; ?>admin/module/<?php echo $item['module_name']; ?>/" class="dropdown-select list-button">
+	   <i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i>
+	  </a>
       <ul class="dropdown-menu" role="menu">
-       <li><a href="#" onclick="ajax('PUT', {module_name: <?php echo $item['module_name']; ?>}, function() { $('#<?php echo $item['module_name']; ?> > div:not(:first-of-type)').toggleClass('disabled'); if ($('i', this).hasClass('icon-ok')) { $(this).html('<i class=&quot;icon-fixed-width icon-ban-circle&quot;></i>&ensp;Disable'); } else { $(this).html('<i class=&quot;icon-fixed-width icon-ok&quot;></i>&ensp;Enable'); } });">
-        <?php echo ($item['enabled'] == 0 ? '<i class="icon-fixed-width icon-ok"></i>&ensp;Enable' : '<i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable'); ?>
+       <li><a href="#" onclick="ajax(this, 'PUT', {module_name: '<?php echo $item['module_name']; ?>'}, function(element) {
+	       	$('.dropdown-menu').fadeOut('fast');
+	        $('#<?php echo $item['module_name']; ?> > div:not(:first-of-type)').toggleClass('disabled');
+	        if ($('i', element).hasClass('icon-ok')) {
+	       		$(element).html('<i class=&quot;icon-fixed-width icon-ban-circle&quot;></i>&ensp;Disable');
+	       	} else {
+	       		$(element).html('<i class=&quot;icon-fixed-width icon-ok&quot;></i>&ensp;Enable');
+	       	}
+       	});">
+        <?php echo ($item['enabled'] == 0 ? '<i class="icon-fixed-width icon-ok"></i>&ensp;Enable'
+                                          : '<i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable'); ?>
        </a></li>
 	  </ul>
 	 </div>

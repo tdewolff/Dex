@@ -171,7 +171,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'preg' => array('regex' => '.*', 'min' => 0, 'max' => 50, 'error' => 'Invalid dropdown item'),
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid dropdown item'),
 			'value' => '',
 			'options' => $options
 		);

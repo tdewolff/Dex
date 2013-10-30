@@ -1,6 +1,7 @@
 <?php
 
 $form = new Form('setup');
+$form->usePOST();
 
 $form->addSection('Settings', 'General site settings');
 $form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
@@ -20,12 +21,11 @@ $form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 $form->allowEmptyTogether(array('username', 'password', 'password2'));
 
 $form->addSeparator();
-$form->addSubmit('setup', '<i class="icon-asterisk"></i>&ensp;Setup');
+$form->addSubmit('setup', '<i class="icon-asterisk"></i>&ensp;Setup', '', '(not setup)');
 
-$isSetup = false;
 if ($form->submittedBy('setup'))
 {
-    if ($form->verifyPost())
+    if ($form->validateInput())
     {
         $db->exec("
         DROP TABLE IF EXISTS setting;
@@ -96,8 +96,7 @@ if ($form->submittedBy('setup'))
             '" . $db->escape($bcrypt->hash($form->get('admin_password'))) . "',
             'admin'
         );");
-
-        Session::logIn($db->last_id(), 'admin');
+        $account_id = $db->last_id();
 
         $username = $form->get('username');
         if (strlen($username))
@@ -110,32 +109,30 @@ if ($form->submittedBy('setup'))
             );");
         }
 
+        Session::logIn($account_id, 'admin');
         $form->unsetSession();
-        $isSetup = true;
+        $form->setRedirect('/' . $base_url . 'admin/');
     }
-    else
-        $form->postToSession();
+    $form->returnJSON();
 }
 
-if (!$isSetup)
-{
-    Core::addTitle('Setup Dexterous');
-    Core::addStyle('admin.css');
-    Core::addStyle('font-awesome.css');
-    Core::addScript('jquery.js');
-    Core::addScript('admin.js');
-    Core::addDeferredScript('admin.defer.js');
+Core::addTitle('Setup Dexterous');
+Core::addStyle('normalize.css');
+Core::addStyle('font-awesome.css');
+Core::addStyle('fancybox.css');
+Core::addStyle('admin.css');
+Core::addScript('jquery.js');
+Core::addScript('fancybox.jquery.js');
+Core::addScript('admin.js');
+Core::addDeferredScript('ajax.defer.js');
+Core::addDeferredScript('admin.defer.js');
 
-    Hooks::emit('admin_header');
+Hooks::emit('admin_header');
 
-    $form->sessionToForm();
-    $form->setAction('/' . $base_url . 'admin/');
+Core::assign('setup', $form);
+Core::render('admin/setup.tpl');
 
-    Core::assign('setup', $form);
-    Core::render('admin/setup.tpl');
-
-    Hooks::emit('admin_footer');
-    exit;
-}
+Hooks::emit('admin_footer');
+exit;
 
 ?>

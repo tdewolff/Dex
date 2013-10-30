@@ -14,12 +14,11 @@ $form->addEmail('email', 'Emailaddress', '');
 $form->allowEmpty(array('tel', 'email'));
 
 $form->addSeparator();
-$form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save');
+$form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
 
 if ($form->submittedBy('contact'))
 {
     if ($form->validateInput())
-    {
         $db->exec("
         UPDATE module_contact SET
             value = '" . $db->escape($form->get('url')) . "'
@@ -40,9 +39,6 @@ if ($form->submittedBy('contact'))
         UPDATE module_contact SET
             value = '" . $db->escape($form->get('email')) . "'
         WHERE key = 'email';");
-
-        $form->setResponse('<span class="passed_time" data-time="' . time() . '">(saved <span></span>)</span>');
-    }
     $form->returnJSON();
 }
 

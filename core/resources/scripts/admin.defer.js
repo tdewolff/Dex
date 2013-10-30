@@ -1,41 +1,48 @@
-function resequenceList(ul) {
-    var i = 0;
-    $(ul).children('li').each(function() {
-        if ($(this).is(':visible')) {
-            if (i != 0 && i % 2 == 0)
+function restyleList(ul) {
+    var items = $(ul).children('li:visible').filter(function() {
+        return $(this).css('position') == 'static';
+    });
+
+    var odd = false;
+    var len = items.length;
+    items.each(function(i) {
+        if (i != 0 && !$(this).hasClass('border')) {
+            if (odd)
                 $(this).addClass('odd');
             else
                 $(this).removeClass('odd');
-            i++;
+            odd = !odd;
         }
-    });
 
-    $('li:last-of-type').css({
-        '-webkit-border-bottom-left-radius': '5px',
-        '-moz-border-bottom-left-radius': '5px',
-        'border-bottom-left-radius': '5px',
-        '-webkit-border-bottom-right-radius': '5px',
-        '-moz-border-bottom-right-radius': '5px',
-        'border-bottom-right-radius': '5px'
-    });
+        if (i == len - 1) {
+            $(this).css({
+                '-webkit-border-bottom-left-radius': '5px',
+                '-moz-border-bottom-left-radius': '5px',
+                'border-bottom-left-radius': '5px',
+                '-webkit-border-bottom-right-radius': '5px',
+                '-moz-border-bottom-right-radius': '5px',
+                'border-bottom-right-radius': '5px'
+            });
 
-    $('li:last-of-type > div:first-of-type', ul).css({
-        '-webkit-border-bottom-left-radius': '5px',
-        '-moz-border-bottom-left-radius': '5px',
-        'border-bottom-left-radius': '5px'
-    });
+            $('div:first-of-type', this).css({
+                '-webkit-border-bottom-left-radius': '5px',
+                '-moz-border-bottom-left-radius': '5px',
+                'border-bottom-left-radius': '5px'
+            });
 
-    $('li:last-of-type > div:last-of-type', ul).css({
-        '-webkit-border-bottom-right-radius': '5px',
-        '-moz-border-bottom-right-radius': '5px',
-        'border-bottom-right-radius': '5px'
+            $('div:last-of-type', this).css({
+                '-webkit-border-bottom-right-radius': '5px',
+                '-moz-border-bottom-right-radius': '5px',
+                'border-bottom-right-radius': '5px'
+            });
+        }
     });
 }
 
 function hideRow(id) {
     $('#' + id + ' .popbox .box, #' + id + ' .dropdown-menu').hide(150);
     $('#' + id).slideUp('fast', function() {
-        resequenceList($(this).closest('ul'));
+        restyleList($(this).closest('ul'));
     });
 }
 
@@ -45,32 +52,33 @@ function interval() {
             $('span', this).text('just now');
 
         if ($(this).is(':visible')) {
-            if (typeof($(this).attr('data-time')) == 'undefined')
+            if (typeof $(this).attr('data-time') == 'undefined')
                 $(this).attr('data-time', new Date().getTime());
 
             var diff = Math.round((new Date().getTime() - $(this).attr('data-time')) / 1000),
                 then = new Date($(this).attr('data-time')),
                 value;
 
-            if (diff < 2) {
+            if (diff < 2)
                 value = 'just now';
-            } else if (diff < 30) {
+            else if (diff < 30)
                 value = 'seconds ago';
-            } else if (diff < 60) {
+            else if (diff < 60)
                 value = 'half a minute ago';
-            } else if (diff < 120) {
+            else if (diff < 120)
                 value = '1 minute ago';
-            } else if (diff < 600) {
+            else if (diff < 600)
                 value = Math.round(diff / 60) + ' minutes ago';
-            } else {
+            else
                 value = then.getHours() + ':' + then.getMinutes();
-            }
 
-            if ($('span', this).text() !== value) {
+            if ($('span', this).text() !== value)
                 $(this).fadeOut(function () {
                     $('span', this).text(value);
                 }).fadeIn();
-            }
+        } else if (typeof $(this).attr('data-time') != 'undefined') {
+            $(this).removeAttr('data-time');
+            $('span', this).text('just now');
         }
     });
 }
@@ -98,12 +106,12 @@ $(function() {
     }
 
     $('ul.table').each(function() {
-        resequenceList(this);
+        restyleList(this);
     });
-});
 
-$('textarea.bottom').each(function () {
-    $(this).scrollTop($(this)[0].scrollHeight);
+    $('textarea.bottom').each(function () {
+        $(this).scrollTop(this.scrollHeight - $(this).height());
+    });
 });
 
 // dropdown
@@ -170,46 +178,3 @@ $('.popbox .close').click(function(e) {
     var box = $(this).closest('.popbox').find('.box');
     box.fadeOut('fast');
 });
-
-/*$('[data-popbox]').not('a').mouseenter(function() {
-    showPopbox(this);
-}).mouseleave(function() {
-    var popbox = $('#' + $(this).attr('data-popbox'));
-    popbox.fadeOut('fast');
-});*/
-
-// draggable
-var dragee;
-$('tr i.icon-reorder').mousedown(function(event) {
-    console.log('drag');
-    if (event.which == 1) {
-        var tr = $(this).closest('tr');
-        var width = tr.width();
-
-        var blankTr = '<tr style="height:' + tr.height() + 'px;">';
-        $('td', tr).each(function() {
-            blankTr += '<td></td>';
-        });
-        blankTr += '</tr>';
-
-        tr.wrap('<div><table width="100%"></table></div>');
-        dragee = $(this).closest('div');
-
-        dragee.after(blankTr);
-        dragee.css('width', width + 'px');
-        dragee.css('position', 'absolute');
-
-        $(document).bind('mousemove', drag);
-    }
-});
-
-function drag(event) {
-    if (event.which == 0) {
-        console.log('undrag');
-        $(document).unbind('mousemove', drag);
-        //dragee.html($('tr', dragee).parent().html());
-        //$('tr', dragee).unwrap();
-    } else if (event.which == 1) {
-        dragee.css('top', (event.pageY - dragee.height() / 2) + 'px');
-    }
-}

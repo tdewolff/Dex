@@ -1,6 +1,6 @@
 <h2>Database</h2>
 <?php foreach ($_['database'] as $data): ?>
- <h3><?php echo $data['name']; ?></h3>
+ <strong><?php echo $data['name']; ?></strong>
  <table class="database">
   <tr>
    <?php foreach ($data['columns'] as $column): ?>
@@ -16,4 +16,5 @@
    </tr>
   <?php endforeach; ?>
  </table>
+ <br />
 <?php endforeach; ?>

@@ -10,7 +10,11 @@ if (Common::isMethod('PUT'))
         user_error('No module name set', ERROR);
 
     // toggle enable/disable
-    $db->exec("UPDATE module SET enabled = !enabled WHERE module_name = '" . $db->escape($data['module_name']) . "';");
+    $db->exec("UPDATE module SET enabled = CASE enabled
+                                           WHEN 1 THEN 0
+                                           ELSE 1
+                                           END
+        WHERE module_name = '" . $db->escape($data['module_name']) . "';");
     exit;
 }
 

@@ -3,7 +3,7 @@ Dexterous
 
 [Developers Guide](DEVELOPERS-GUIDE.md)
 
-Small but feature-rich CMS for small and medium sized websites and is meant for webdevelopers in need of a framework to deliver websites to their clients. The software focusses on speed overall and usability for the client. It tries to follow modern web methods (mobile support, typography, HTML5) and have a high-rating on PageSpeed.
+Dexterous is a small but feature-rich CMS for small- and medium-sized websites. It is build with the idea that webdevelopers need a framework to deliver websites to their clients quickly. Therefor it is modular so that developers can expand the functionality and it is also intuitive to use for clients (or developers) who want to edit the content. The software focusses on speed overall and usability for the client. It tries to follow modern web methods (mobile support, typography, HTML5) and have a high-rating on PageSpeed.
 
 Pro's
 - Fast (due to no redirects, minifying, browser caching, server caching)

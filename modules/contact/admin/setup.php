@@ -3,7 +3,7 @@
 $db->exec("
 DROP TABLE IF EXISTS module_contact;
 CREATE TABLE module_contact (
-    id INTEGER PRIMARY KEY,
+    module_contact_id INTEGER PRIMARY KEY,
     key TEXT,
     value TEXT
 );

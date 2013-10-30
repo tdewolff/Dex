@@ -3,8 +3,10 @@
 Core::addTitle('Admin panel');
 Core::addStyle('normalize.css');
 Core::addStyle('font-awesome.css');
+Core::addStyle('fancybox.css');
 Core::addStyle('admin.css');
 Core::addScript('jquery.js');
+Core::addScript('fancybox.jquery.js');
 Core::addScript('admin.js');
 Core::addDeferredScript('ajax.defer.js');
 Core::addDeferredScript('admin.defer.js');
@@ -45,10 +47,10 @@ while ($row = $table->fetch())
 if (!empty($admin_links[count($admin_links) - 1]))
 	$admin_links[] = array();
 
-$admin_links[] = array('name' => 'modules',  'regex' => 'admin/modules/',                                                        'file' => 'modules.php',  'url' => 'admin/modules/',  'icon' => 'icon-sitemap', 'title' => 'Modules',  'admin_only' => 1);
-$admin_links[] = array('name' => 'themes',   'regex' => 'admin/themes/([a-zA-Z_][a-zA-Z0-9_]*/)?(use/[a-zA-Z_][a-zA-Z0-9_]*/)?', 'file' => 'themes.php',   'url' => 'admin/themes/',   'icon' => 'icon-adjust',  'title' => 'Themes',   'admin_only' => 0);
-$admin_links[] = array('name' => 'database', 'regex' => 'admin/database/',                                                       'file' => 'database.php', 'url' => 'admin/database/', 'icon' => 'icon-hdd',     'title' => 'Database', 'admin_only' => 1);
-$admin_links[] = array('name' => 'logout',   'regex' => 'admin/logout/',                                                         'file' => 'logout.php',   'url' => 'admin/logout/',   'icon' => 'icon-signout', 'title' => 'Log out',  'admin_only' => 0);
+$admin_links[] = array('name' => 'modules',  'regex' => 'admin/modules/',  'file' => 'modules.php',  'url' => 'admin/modules/',  'icon' => 'icon-sitemap', 'title' => 'Modules',  'admin_only' => 1);
+$admin_links[] = array('name' => 'themes',   'regex' => 'admin/themes/',   'file' => 'themes.php',   'url' => 'admin/themes/',   'icon' => 'icon-adjust',  'title' => 'Themes',   'admin_only' => 0);
+$admin_links[] = array('name' => 'database', 'regex' => 'admin/database/', 'file' => 'database.php', 'url' => 'admin/database/', 'icon' => 'icon-hdd',     'title' => 'Database', 'admin_only' => 1);
+$admin_links[] = array('name' => 'logout',   'regex' => 'admin/logout/',   'file' => 'logout.php',   'url' => 'admin/logout/',   'icon' => 'icon-signout', 'title' => 'Log out',  'admin_only' => 0);
 
 
 Core::assign('isAdmin', Session::isAdmin());

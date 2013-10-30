@@ -33,7 +33,7 @@ class Session
 
 	public static function isAdmin()
 	{
-		return (self::isUser() && isset($_SESSION['logged_permission']) && $_SESSION['logged_permission'] == 0);
+		return (self::isUser() && isset($_SESSION['logged_permission']) && $_SESSION['logged_permission'] == 'admin');
 	}
 
 	public static function getAccountId()

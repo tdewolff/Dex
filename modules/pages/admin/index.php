@@ -5,16 +5,20 @@ use \Michelf\Markdown;
 require_once('include/libs/markdown.php');
 require_once('include/libs/smartypants.php');
 
-if (!isset($url[3]) || $url[3] == 'remove')
+if (!isset($url[3]))
 {
-    if (isset($url[3]) && $url[3] == 'remove' && isset($url[4]) && is_numeric($url[4]))
+    if (Common::isMethod('DELETE'))
     {
-        $page = $db->querySingle("SELECT * FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "' LIMIT 1;");
-        if ($page)
-        {
-            Module::detachFromLink($page['link_module_id']);
-            $db->exec("DELETE FROM module_pages WHERE module_pages_id = '" . $db->escape($url[4]) . "';");
-        }
+        $data = Common::getMethodData();
+        if (!isset($data['module_pages_id']))
+            user_error('No page ID set', ERROR);
+
+        $page = $db->querySingle("SELECT * FROM module_pages WHERE module_pages_id = '" . $db->escape($data['module_pages_id']) . "' LIMIT 1;");
+        if (!$page)
+            user_error('Page ID ' . $data['module_pages_id'] . ' doesn\'t exist', ERROR);
+
+        Module::detachFromLink($page['link_module_id']);
+        $db->exec("DELETE FROM module_pages WHERE module_pages_id = '" . $db->escape($data['module_pages_id']) . "';");
         exit;
     }
 
@@ -52,19 +56,20 @@ else
     }
 
     $form = new Form('page');
-    if ($url[3] != 'new')
-        $form->useAjax();
+    $form->usePUT();
+    if ($url[3] == 'new')
+        $form->usePOST();
 
     $form->addSection('Page', '');
     $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
     $form->addText('url', 'URL', $domain_url . $base_url, '', array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid URL and end with /'));
     $form->addMarkdown('content', 'Content', '', array('[a-zA-Z0-9\s,\.\-\']*', 0, 80, 'May contain alphanumeric characters, spaces and (,\'-.)'));
     $form->addSeparator();
-    $form->addSubmit('page', '<i class="icon-save"></i>&ensp;Save');
+    $form->addSubmit('page', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
 
     if ($form->submittedBy('page'))
     {
-        if ($form->verifyPost())
+        if ($form->validateInput())
         {
             $link_id = ($url[3] != 'new' ? $page['link_id'] : 0);
             if (($error = Module::verifyUrl($link_id, $form->get('url'))) !== true)
@@ -96,27 +101,20 @@ else
                         '" . $db->escape($form->get('content')) . "',
                         '" . $db->escape($parsed_content) . "'
                     );");
-                    $form->setAction('/' . $base_url . 'admin/module/pages/' . $db->last_id() . '/');
+                    $form->setRedirect('/' . $base_url . 'admin/module/pages/');
                 }
-
-                $form->setResponse('<span class="passed_time" data-time="' . time() . '">(saved <span></span>)</span>');
             }
         }
-        $form->postToSession();
-
-        if ($url[2] != 'new')
-            Module::assign('view', $form->get('url'));
+        $form->returnJSON();
     }
-    else
-    {
-        if ($url[3] != 'new')
-        {
-            $form->set('title', $page['title']);
-            $form->set('url', $page['url']);
-            $form->set('content', $page['content']);
 
-            Module::assign('view', $page['url']);
-        }
+    if ($url[3] != 'new')
+    {
+        $form->set('title', $page['title']);
+        $form->set('url', $page['url']);
+        $form->set('content', $page['content']);
+
+        Module::assign('view', $page['url']);
     }
 
     Module::addStyle('markitup.css');
@@ -125,8 +123,6 @@ else
     Module::addDeferredScript('jquery.markitup.markdown.js');
 
     Hooks::emit('admin_header');
-
-    $form->sessionToForm();
 
     Module::assign('page', $form);
     Module::render('admin/page.tpl');
