@@ -251,6 +251,14 @@ class Module extends Dexterous
         DELETE FROM link_module WHERE module_name = '" . $db->escape(self::$module_name) . "';");
 	}
 
+    public static function getLinkId()
+    {
+        if (self::$link_id == '')
+            user_error('Link ID not set', ERROR);
+
+        return self::$link_id;
+    }
+
 	public static function getLinkData()
 	{
 		global $db;
