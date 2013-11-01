@@ -1,4 +1,9 @@
-/logs/
-/cache/
-/assets/
+non-server/images/
+non-server/less/groningenbijles/
+non-server/dexterous.sublime-project
+non-server/dexterous.sublime-workspace
+themes/groningenbijles/
+
 database.sqlite3
+GRONINGENBIJLES.md
+TODO.md

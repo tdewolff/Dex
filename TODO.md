@@ -1,1 +1,0 @@
-* Simplify the menu module
