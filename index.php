@@ -143,12 +143,15 @@ else if (filesize($db->filename) == 0)
 
 
 // load all settings
-$site_settings = array();
+$theme_name = '';
 $settings = $db->query("SELECT * FROM setting;");
 while ($setting = $settings->fetch())
 {
-    $site_settings[$setting['key']] = $setting['value'];
-	Core::assign('setting_' . $setting['key'], $setting['value']);
+    if (!empty($setting['value']))
+	   Core::assign('setting_' . $setting['key'], $setting['value']);
+
+    if ($setting['key'] == 'theme')
+        $theme_name = $setting['value'];
 }
 
 
@@ -169,7 +172,7 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 	while ($row = $table->fetch())
 		include_once('modules/' . $row['module_name'] . '/hooks.php');
 
-	$theme_hooks_filename = 'themes/' . $site_settings['theme'] . '/hooks.php';
+	$theme_hooks_filename = 'themes/' . $theme_name . '/hooks.php';
 	if (file_exists($theme_hooks_filename) !== false)
 		include_once($theme_hooks_filename);
 

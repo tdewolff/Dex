@@ -9,6 +9,11 @@ CREATE TABLE module_menu (
     level INTEGER,
     name TEXT,
     FOREIGN KEY(link_id) REFERENCES link(link_id)
+);
+
+INSERT INTO link_module (link_id, module_name) VALUES (
+    0,
+    'menu'
 );");
 
 ?>

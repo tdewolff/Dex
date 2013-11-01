@@ -1,5 +1,4 @@
 function ajax(element, method, data, success, error) {
-    console.log(data);
     $.ajax({
         type: method,
         url: window.location.href,

@@ -47,7 +47,8 @@ function form_empty_together(empty_together) {    // toggle 'unused' style for e
 
 function form_submit(form) {
     $('input[type="submit"]', form).attr('disabled', 'disabled');
-    $('.form_response_success, .form_reponse_error', form).hide();
+    $('.form_error, .form_item_error', form).hide();
+    $('.form_response_success, .form_response_error', form).hide();
     $('.form_response_loading', form).fadeIn('fast').css('display', 'inline-block');
     interval();
 
@@ -80,8 +81,6 @@ function form_ajax_success(form, data, redirect) {
         });
 
     if (!valid) {
-        $('.form_error, .form_item_error', form).hide();
-
         if (data['errors'].length > 0) {
             var errors = '';
             $.each(data['errors'], function(i, error) {
@@ -107,21 +106,29 @@ function form_ajax_success(form, data, redirect) {
 
         $('.form_response_loading', form).hide();
         $('.form_response_error', form).fadeIn();
-    }
-    else if (data['redirect'].length > 0)
+    } else if (data['redirect'].length > 0) {
         window.location.replace(data['redirect']);
-    else {
+    } else {
         $('.form_response_loading', form).hide();
         $('.form_response_success', form).fadeIn();
         interval();
     }
 }
 
-function form_ajax_error(form, error) {
-    console.log(JSON.stringify(error));
-    $('.form_error, .form_item_error', form).hide();
+function form_ajax_error(form, data) {
     $('.form_response_loading', form).hide();
     $('.form_response_error', form).fadeIn();
+
+    var text = JSON.stringify(data);
+    if (typeof data['responseText'] !== 'undefined')
+        text = data['responseText'];
+    else if (typeof data['statusText'] !== 'undefined')
+        text = data['statusText'];
+
+    $('#ajax_error, #ajax_error_link').remove();
+    $('body').append('<a href="#ajax_error" id="ajax_error_link" class="hidden fancybox"></a>\
+        <div id="ajax_error" class="hidden">' + text + '</div>');
+    $('#ajax_error_link').fancybox().click();
 }
 
 ////////////////////////////////////////////////////////////////

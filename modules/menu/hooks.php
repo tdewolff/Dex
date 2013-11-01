@@ -4,6 +4,8 @@ Hooks::attach('navigation', 0, function() {
     global $db;
     Module::set('menu');
 
+    echo 'menu';
+
     $menu = array();
     $table = $db->query("SELECT *, link.link_id FROM module_menu
         JOIN link ON module_menu.link_id = link.link_id ORDER BY position ASC;");
