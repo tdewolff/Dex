@@ -47,21 +47,7 @@ if ($request_url == 'favicon.ico' || $request_url == 'robots.txt')
 // redirect resources
 if (strpos($request_url, 'res/') === 0)
 {
-    $url = explode('/', $request_url);
-
-    $filename = '';
-    if (isset($url[1]) && isset($url[2]))
-        if ($url[1] == 'cache')
-            $filename = 'cache/' . implode('/', array_splice($url, 2));
-        else if ($url[1] == 'media')
-            $filename = 'media/' . implode('/', array_splice($url, 2));
-        else if ($url[1] == 'core')
-            $filename = 'core/resources/' . implode('/', array_splice($url, 2));
-        else if ($url[1] == 'module')
-            $filename = 'modules/' . $url[2] . '/resources/' . implode('/', array_splice($url, 3));
-        else if ($url[1] == 'theme')
-            $filename = 'themes/' . $url[2] . '/resources/' . implode('/', array_splice($url, 3));
-
+    $filename = Common::expandResourceUrl($request_url);
     if (empty($filename))
         user_error('Bad resource URL "' . $request_url . '"', ERROR);
 

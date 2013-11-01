@@ -18,7 +18,7 @@ if (isset($url[2]) && $url[2] == 'logs' && isset($url[3]))
 	{
 		$handle = opendir('logs/');
 		while (($log_name = readdir($handle)) !== false)
-			if (is_file('logs/' . $log_name))
+			if ($log_name != '.gitignore' && is_file('logs/' . $log_name))
 				unlink('logs/' . $log_name);
 	}
 }
@@ -26,20 +26,20 @@ elseif (isset($url[2]) && $url[2] == 'cache' && isset($url[3]) && $url[3] == 'cl
 {
 	$handle = opendir('cache/');
 	while (($cache_name = readdir($handle)) !== false)
-		if (is_file('cache/' . $cache_name))
+		if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
 			unlink('cache/' . $cache_name);
 }
 
 $logs_size = 0;
 $handle = opendir('logs/');
 while (($log_name = readdir($handle)) !== false)
-	if (is_file('logs/' . $log_name))
+	if ($log_name != '.gitignore' && is_file('logs/' . $log_name))
 		$logs_size += filesize('logs/' . $log_name);
 
 $cache_size = 0;
 $handle = opendir('cache/');
 while (($cache_name = readdir($handle)) !== false)
-	if (is_file('cache/' . $cache_name))
+	if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
 		$cache_size += filesize('cache/' . $cache_name);
 
 Core::addStyle('popbox.css');

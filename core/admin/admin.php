@@ -25,7 +25,7 @@ $admin_links = array();
 $admin_links[] = array('name' => 'index',    'regex' => 'admin/(index/(logs/(view|clear)/|cache/clear/))?', 'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',    'title' => 'Admin panel', 'admin_only' => 0);
 $admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',                                  'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',  'title' => 'Settings',    'admin_only' => 0);
 $admin_links[] = array('name' => 'users',    'regex' => 'admin/users/([0-9]+/|new/)?',                      'file' => 'users.php',    'url' => 'admin/users/',    'icon' => 'icon-user',    'title' => 'Users',       'admin_only' => 1);
-$admin_links[] = array('name' => 'media',    'regex' => 'admin/media/',                                     'file' => 'media.php',    'url' => 'admin/media/',    'icon' => 'icon-picture', 'title' => 'Media',       'admin_only' => 0);
+$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',                                    'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture', 'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 

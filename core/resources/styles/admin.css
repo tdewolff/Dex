@@ -1308,14 +1308,14 @@ div.theme_caption {
   -moz-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
 }
-.media_caption {
+.assets_caption {
   width: 200px;
   overflow: hidden;
 }
-div.media_caption {
+div.assets_caption {
   font-size: 90%;
 }
-.media_image {
+.assets_image {
   margin: 10px 0;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;

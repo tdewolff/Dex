@@ -112,43 +112,85 @@ class Common
         return 'res/' . $cache_filename;
     }
 
-	public static function imageResize($filename, $max_width, $max_height, $scale)
+    public static function expandResourceUrl($request_url)
+    {
+        $filename = '';
+        $url = explode('/', $request_url);
+        if (isset($url[1]) && isset($url[2]))
+            if ($url[1] == 'cache')
+                $filename = 'cache/' . implode('/', array_splice($url, 2));
+            else if ($url[1] == 'assets')
+                $filename = 'assets/' . implode('/', array_splice($url, 2));
+            else if ($url[1] == 'core')
+                $filename = 'core/resources/' . implode('/', array_splice($url, 2));
+            else if ($url[1] == 'module')
+                $filename = 'modules/' . $url[2] . '/resources/' . implode('/', array_splice($url, 3));
+            else if ($url[1] == 'theme')
+                $filename = 'themes/' . $url[2] . '/resources/' . implode('/', array_splice($url, 3));
+
+        if (empty($filename))
+            Log::warning('Could not expand URL "' . $request_url . '" to a resource');
+
+        return $filename;
+    }
+
+    public static function imageSize($filename, $max_width, $max_height = 0, $scale = 0)
+    {
+        if (!file_exists($filename))
+        {
+            Log::warning('Could not find "' . $filename . '" to determine new image size');
+            return array(0, 0);
+        }
+
+        list($width, $height, $mime_type, $attribute) = getimagesize($filename);
+
+        $new_width = 0;
+        $new_height = 0;
+        if ($width > $max_width && $max_width != 0)
+        {
+            $new_width = $max_width;
+            $new_height = floor($height * ($new_width / $width));
+            if ($new_height > $max_height && $max_height != 0)
+            {
+                $new_height = $max_height;
+                $new_width = floor($width * ($new_height / $height));
+            }
+        }
+        else if ($height > $max_height && $max_height != 0)
+        {
+            $new_height = $max_height;
+            $new_width = floor($width * ($new_height / $height));
+            if ($new_width > $max_width && $max_width != 0)
+            {
+                $new_width = $max_width;
+                $new_height = floor($height * ($new_width / $width));
+            }
+        }
+        else if ($scale != 0)
+        {
+            $new_width = floor($scale * $width);
+            $new_height = floor($scale * $height);
+        }
+        else
+            Log::warning('No parameters passed to determine new image size');
+        return array($new_width, $new_height);
+    }
+
+    public static function imageSizeAttributes($request_url, $max_width, $max_height = 0, $scale = 0)
+    {
+        $filename = self::expandResourceUrl($request_url);
+        list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
+        return 'width="' . $new_width . '" height="' . $new_height . '"';
+    }
+
+	public static function imageResize($filename, $max_width, $max_height = 0, $scale = 0)
 	{
         $starttime_local = explode(' ', microtime());
 		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
 		if (!file_exists($cache_filename))
 		{
 			list($width, $height, $mime_type, $attribute) = getimagesize($filename);
-
-			$new_width = 100;
-			$new_height = 100;
-			if ($width > $max_width && $max_width != 0)
-			{
-				$new_width = $max_width;
-				$new_height = floor($height * ($new_width / $width));
-				if ($new_height > $max_height && $max_height != 0)
-				{
-					$new_height = $max_height;
-					$new_width = floor($width * ($new_height / $height));
-				}
-			}
-			else if ($height > $max_height && $max_height != 0)
-			{
-				$new_height = $max_height;
-				$new_width = floor($width * ($new_height / $height));
-				if ($new_width > $max_width && $max_width != 0)
-				{
-					$new_width = $max_width;
-					$new_height = floor($height * ($new_width / $width));
-				}
-			}
-			else if ($scale != 0)
-			{
-				$new_width = floor($scale * $width);
-				$new_height = floor($scale * $height);
-			}
-			else
-				return $filename;
+			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
 
 			switch (image_type_to_mime_type($mime_type))
 			{
