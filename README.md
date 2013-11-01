@@ -32,6 +32,8 @@ Make sure that the following Apache modules are enabled:
 And these PHP extensions:
 - php_sqlite3 (essential)
 
+The cache/ and media/ folders should be writable!
+
 Installing modules and themes
 -----------------------------
 
