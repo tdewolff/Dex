@@ -201,7 +201,7 @@ function save(ul) {
         $(this).find('span').text($(this).find('input').val());
     });
 
-    ajax(false, 'PUT', data, function() {
+    ajax(false, 'POST', data, function() {
         $('.response > .loading').hide();
         $('.response > .success').fadeIn();
         interval();

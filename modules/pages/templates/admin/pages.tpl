@@ -16,7 +16,7 @@
 	   <li><a href="/<?php echo $_['base_url'] . $item['url']; ?>"><i class="icon-fixed-width icon-eye-open"></i>&ensp;View</a></li>
 	   <li>
 	    <a href="#" class="halt"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
-	    <a href="#" class="sure" onclick="ajax(this, 'DELETE', {module_pages_id: <?php echo $item['module_pages_id']; ?>}, function() {
+	    <a href="#" class="sure" onclick="ajax(this, 'POST', {module_pages_id: <?php echo $item['module_pages_id']; ?>}, function() {
 	    	hideRow(<?php echo $item['module_pages_id']; ?>);
 	    });"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
 	   </li>

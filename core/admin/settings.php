@@ -1,8 +1,6 @@
 <?php
 
 $form = new Form('settings');
-$form->usePUT();
-
 $form->addSection('Metadata', 'Site metadata is important for search engine indexing');
 $form->addText('title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
 $form->addMultilineText('subtitle', 'Site subtitle', 'Displayed in the header', '', array('.*', 0, 200, 'Unknown error'));

@@ -36,7 +36,7 @@ class Form
 		$this->mode = 'compact';
 	}
 
-	public function usePUT($redirect = '') {
+	/*public function usePUT($redirect = '') {
 		$this->method = 'PUT';
 		$this->redirect = $redirect;
 	}
@@ -49,7 +49,7 @@ class Form
 	public function useDELETE($redirect = '') {
 		$this->method = 'DELETE';
 		$this->redirect = $redirect;
-	}
+	}*/
 
 	public function setRedirect($redirect) {
 		$this->redirect = $redirect;

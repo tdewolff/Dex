@@ -1,6 +1,6 @@
 <?php
 
-if (Common::isMethod('PUT'))
+if (Common::isMethod('POST'))
 {
 	$data = Common::getMethodData();
 	if (!isset($data['theme_name']))

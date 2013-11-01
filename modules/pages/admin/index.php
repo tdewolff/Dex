@@ -7,7 +7,7 @@ require_once('include/libs/smartypants.php');
 
 if (!isset($url[3]))
 {
-    if (Common::isMethod('DELETE'))
+    if (Common::isMethod('POST'))
     {
         $data = Common::getMethodData();
         if (!isset($data['module_pages_id']))
@@ -56,10 +56,6 @@ else
     }
 
     $form = new Form('page');
-    $form->usePUT();
-    if ($url[3] == 'new')
-        $form->usePOST();
-
     $form->addSection('Page', '');
     $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
     $form->addText('url', 'URL', $domain_url . $base_url, '', array('([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 0, 50, 'Must be valid URL and end with /'));

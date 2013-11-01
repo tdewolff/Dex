@@ -1,8 +1,6 @@
 <?php
 
 $form = new Form('setup');
-$form->usePOST();
-
 $form->addSection('Settings', 'General site settings');
 $form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
 $form->addMultilineText('site_subtitle', 'Site subtitle', 'Displayed in the header', '', array('.*', 0, 200, 'Unknown error'));

@@ -34,11 +34,21 @@
     white-space:nowrap;
 }
 
-ul.table > li:not(.unused) > div:first-of-type + div {
+ul.draggable > li:not(:first-of-type):not(.unused) > div:first-of-type + div {
     padding:2px 15px;
 }
 
-input {
+ul.draggable > li:not(:first-of-type):not(.unused) > div:first-of-type + div > span {
+    display:none;
+}
+
+ul.draggable > li.unused > div:first-of-type + div > span {
+    display:inline-block;
+    height:22px;
+    line-height:22px;
+}
+
+ul.draggable > li input {
     float:none;
     margin:0;
     font-size:15px;
@@ -47,16 +57,6 @@ input {
     width:100%;
 }
 
-ul.table > li > div > span {
+ul.draggable > li.unused input {
     display:none;
-}
-
-ul.table > li.unused input {
-    display:none;
-}
-
-ul.table > li.unused > div > span {
-    display:inline-block;
-    height:22px;
-    line-height:22px;
 }

@@ -2,8 +2,6 @@
 Module::set('contact');
 
 $form = new Form('contact');
-$form->usePUT();
-
 $form->addSection('Contact details', '');
 $form->addText('url', 'URL', 'URL to organization', 'http://www.domain.com', array('((https?|ftp):\/\/[^\s\/\$\.\?#]\.[^\s]*)?', 0, 50, 'Bad URL'));
 $form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 0, 20, 'May contain alphanumeric characters and spaces'));

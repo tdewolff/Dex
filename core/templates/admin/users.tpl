@@ -15,7 +15,7 @@
 	   <li>
 	    <a href="#" class="halt"><i class="icon-fixed-width icon-trash"></i>&ensp;<?php echo ($item['account_id'] != Session::getAccountId() ? 'Delete' : '<del>Delete</del>'); ?></a>
 	    <?php if ($item['account_id'] != Session::getAccountId()) { ?>
-	    <a href="#" class="sure" onclick="ajax(this, 'DELETE', {account_id: <?php echo $item['account_id']; ?>}, function() {
+	    <a href="#" class="sure" onclick="ajax(this, 'POST', {account_id: <?php echo $item['account_id']; ?>}, function() {
 	    	hideRow(<?php echo $item['account_id']; ?>);
 	    });"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
 	    <?php } ?>

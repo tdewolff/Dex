@@ -14,7 +14,7 @@
 	   <i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i>
 	  </a>
       <ul class="dropdown-menu" role="menu">
-       <li><a href="#" onclick="ajax(this, 'PUT', {module_name: '<?php echo $item['module_name']; ?>'}, function(element) {
+       <li><a href="#" onclick="ajax(this, 'POST', {module_name: '<?php echo $item['module_name']; ?>'}, function(element) {
 	       	$('.dropdown-menu').fadeOut('fast');
 	        $('#<?php echo $item['module_name']; ?> > div:not(:first-of-type)').toggleClass('disabled');
 	        if ($('i', element).hasClass('icon-ok')) {

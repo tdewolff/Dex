@@ -3,7 +3,7 @@
 if (!Session::isAdmin())
 	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
-if (Common::isMethod('PUT'))
+if (Common::isMethod('POST'))
 {
     $data = Common::getMethodData();
     if (!isset($data['module_name']))

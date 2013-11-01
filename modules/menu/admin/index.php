@@ -1,7 +1,7 @@
 <?php
 Module::set('menu');
 
-if (Common::isMethod('PUT'))
+if (Common::isMethod('POST'))
 {
     $data = Common::getMethodData();
     $db->exec("DELETE FROM module_menu;");

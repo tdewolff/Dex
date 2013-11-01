@@ -5,7 +5,7 @@ if (!Session::isAdmin())
 
 if (!isset($url[2]))
 {
-	if (Common::isMethod('DELETE'))
+	if (Common::isMethod('POST'))
 	{
 		$data = Common::getMethodData();
 		if (!isset($data['account_id']) || $data['account_id'] == Session::getAccountId() || !Session::isAdmin())
@@ -44,10 +44,6 @@ else
 	}
 
 	$form = new Form('user');
-    $form->usePUT();
-    if ($url[2] == 'new')
-        $form->usePOST();
-
 	$form->addSection('User', 'These users can access the admin area. Admins have access to everything.');
 	$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
 	$form->addPassword('password', 'Password', ($url[2] != 'new' ? 'Leave empty to keep current' : ''));

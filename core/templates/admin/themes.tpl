@@ -6,7 +6,7 @@
 	 <h4 class="theme_caption"><?php echo $theme['title']; ?></h4>
      <div class="theme_caption">(<?php echo $theme['author']; ?>)</div>
 	 <img src="/<?php echo $_['base_url']; ?>res/theme/<?php echo $theme['name']; ?>/preview.png" alt="<?php echo $theme['name']; ?>" class="theme_image" width="256" height="256" /><br />
-	 <a href="#" class="small-button" onclick="ajax(this, 'PUT', {theme_name: '<?php echo $theme['name']; ?>'}, function(element) {
+	 <a href="#" class="small-button" onclick="ajax(this, 'POST', {theme_name: '<?php echo $theme['name']; ?>'}, function(element) {
         $('.grid td').removeClass('theme_current');
         $(element).closest('td').addClass('theme_current');
      });"><i class="icon-check"></i>&ensp;Use</a>
