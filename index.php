@@ -164,6 +164,7 @@ if ($url[0] == 'admin')
 if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url LIMIT 1;"))
 {
     Core::$link_id = $link['link_id'];
+    Core::$template_name = $link['template_name'];
 
 	// load in module hooks
 	$table = $db->query("SELECT * FROM link_module

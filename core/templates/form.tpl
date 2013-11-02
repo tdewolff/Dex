@@ -1,10 +1,11 @@
 <form
  id="<?php echo $form['name'] . '_' . $form['salt']; ?>"
  <?php if (strlen($form['mode'])): ?>class="form_<?php echo $form['mode']; ?>"<?php endif; ?>
- onsubmit="return form_submit(this); "
+ onsubmit="return form_submit(this);"
  autocomplete="off"
  data-salt="<?php echo $form['salt']; ?>"
- data-method="<?php echo $form['method']; ?>">
+ data-method="<?php echo $form['method']; ?>"
+ data-has-submit="<?php echo $form['has_submit']; ?>">
 
  <?php foreach ($form['items'] as $item): ?>
   <?php if ($item['type'] == 'separator'): ?>
@@ -20,10 +21,12 @@
    <input type="hidden"
     name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
     value="" />
-   <a class="button submit" href="#"><?php echo $item['title']; ?></a>
-   <span class="form_response_loading"></span>
-   <span class="form_response_success"><?php echo $item['response_success']; ?></span>
-   <span class="form_response_error"><?php echo $item['response_error']; ?></span>
+   <?php if ($form['has_submit']): ?><a class="button submit" href="#"><?php echo $item['title']; ?></a><?php endif; ?>
+   <div class="form_response">
+    <span class="loading"></span>
+    <span class="success"><?php echo $item['response_success']; ?></span>
+    <span class="error"><?php echo $item['response_error']; ?></span>
+   </div>
 
 
   <?php else: // input elements with a label ?>

@@ -12,7 +12,7 @@ $form->addEmail('email', 'Emailaddress', '');
 $form->allowEmpty(array('tel', 'email'));
 
 $form->addSeparator();
-$form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
+$form->addSubmit('contact', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
 if ($form->submittedBy('contact'))
 {

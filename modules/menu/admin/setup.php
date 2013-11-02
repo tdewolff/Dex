@@ -8,6 +8,7 @@ CREATE TABLE module_menu (
     position INTEGER,
     level INTEGER,
     name TEXT,
+    enabled INTEGER,
     FOREIGN KEY(link_id) REFERENCES link(link_id)
 );
 

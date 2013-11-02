@@ -22,17 +22,19 @@ else
 	Core::checkModules();
 
 $admin_links = array();
-$admin_links[] = array('name' => 'index',    'regex' => 'admin/(index/(logs/(view|clear)/|cache/clear/))?', 'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',    'title' => 'Admin panel', 'admin_only' => 0);
-$admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',                                  'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',  'title' => 'Settings',    'admin_only' => 0);
-$admin_links[] = array('name' => 'users',    'regex' => 'admin/users/([0-9]+/|new/)?',                      'file' => 'users.php',    'url' => 'admin/users/',    'icon' => 'icon-user',    'title' => 'Users',       'admin_only' => 1);
-$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',                                    'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture', 'title' => 'Assets',      'admin_only' => 0);
+$admin_links[] = array('name' => 'index',    'regex' => 'admin/(index/(logs/view/|cache/))?', 'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
+$admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',                    'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',        'title' => 'Settings',    'admin_only' => 0);
+$admin_links[] = array('name' => 'pages',    'regex' => 'admin/pages/([0-9]+/|new/)?',        'file' => 'pages.php',    'url' => 'admin/pages/',    'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
+$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',                      'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 
 $modules = array();
 $table = $db->query("SELECT * FROM module;");
 while ($row = $table->fetch())
-	if (($ini = parse_ini_file('modules/' . $row['module_name'] . '/config.ini')) !== false)
+{
+	$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
+	if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
 		$admin_links[] = array(
 			'name' => 'module_' . Common::tryOrEmpty($ini, 'name'),
 			'regex' => Common::tryOrEmpty($ini, 'regex'),
@@ -43,14 +45,17 @@ while ($row = $table->fetch())
 			'admin_only' => Common::tryOrEmpty($ini, 'admin_only'),
 			'enabled' => $row['enabled']
 		);
+}
 
 if (!empty($admin_links[count($admin_links) - 1]))
 	$admin_links[] = array();
 
-$admin_links[] = array('name' => 'modules',  'regex' => 'admin/modules/',  'file' => 'modules.php',  'url' => 'admin/modules/',  'icon' => 'icon-sitemap', 'title' => 'Modules',  'admin_only' => 1);
-$admin_links[] = array('name' => 'themes',   'regex' => 'admin/themes/',   'file' => 'themes.php',   'url' => 'admin/themes/',   'icon' => 'icon-adjust',  'title' => 'Themes',   'admin_only' => 0);
-$admin_links[] = array('name' => 'database', 'regex' => 'admin/database/', 'file' => 'database.php', 'url' => 'admin/database/', 'icon' => 'icon-hdd',     'title' => 'Database', 'admin_only' => 1);
-$admin_links[] = array('name' => 'logout',   'regex' => 'admin/logout/',   'file' => 'logout.php',   'url' => 'admin/logout/',   'icon' => 'icon-signout', 'title' => 'Log out',  'admin_only' => 0);
+$admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'users.php',     'url' => 'admin/users/',     'icon' => 'icon-user',     'title' => 'Users',     'admin_only' => 1);
+$admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'modules.php',   'url' => 'admin/modules/',   'icon' => 'icon-sitemap',  'title' => 'Modules',   'admin_only' => 1);
+$admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'templates.php', 'url' => 'admin/templates/', 'icon' => 'icon-file-alt', 'title' => 'Templates', 'admin_only' => 1);
+$admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'themes.php',    'url' => 'admin/themes/',    'icon' => 'icon-adjust',   'title' => 'Themes',    'admin_only' => 0);
+$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'database.php',  'url' => 'admin/database/',  'icon' => 'icon-hdd',      'title' => 'Database',  'admin_only' => 1);
+$admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'logout.php',    'url' => 'admin/logout/',    'icon' => 'icon-signout',  'title' => 'Log out',   'admin_only' => 0);
 
 
 Core::assign('isAdmin', Session::isAdmin());

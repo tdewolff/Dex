@@ -1,8 +1,5 @@
 <?php
 
-if (isset($url[2]) && $url[2] == 'destroy' && isset($url[3]))
-	;// remove file
-
 $dir = '';
 
 $assets = array();

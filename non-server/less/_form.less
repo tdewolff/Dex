@@ -26,29 +26,35 @@ form > p {
 	border-bottom:solid 1px #E8E8E8;
 }
 
-.form_response_loading {
-  	display:none;
-  	vertical-align: middle;
-	background:url('../core/images/loading.gif');
-	width:16px;
-	height:16px;
-	margin-left:10px;
-}
+.form_response {
+	margin-bottom:5px;
+	margin-left:210px;
 
-.form_response_success {
-  	display: none;
-  	vertical-align: middle;
-	font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
-	font-size: 13px;
-	letter-spacing: 0.1em;
-	color:@base;
-	margin-left:10px;
-	white-space:nowrap;
-}
+	height:1.5em;
+	line-height:1.5em;
 
-.form_response_error {
-	.form_response_success();
-	color:#B94A48;
+	.loading {
+		display:none;
+		vertical-align: middle;
+		background:url('../core/images/loading.gif');
+		width:16px;
+		height:16px;
+	}
+
+	.success {
+		display:none;
+		vertical-align: middle;
+		font-family:Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
+		font-size: 13px;
+		letter-spacing: 0.1em;
+		color:@base;
+		white-space:nowrap;
+	}
+
+	.error {
+		.success();
+		color:#B94A48;
+	}
 }
 
 .form_error {

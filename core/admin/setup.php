@@ -1,6 +1,8 @@
 <?php
 
 $form = new Form('setup');
+$form->explicitSubmit();
+
 $form->addSection('Settings', 'General site settings');
 $form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
 $form->addMultilineText('site_subtitle', 'Site subtitle', 'Displayed in the header', '', array('(.|\n)*', 0, 200, 'Unknown error'));
@@ -41,18 +43,28 @@ if ($form->submittedBy('setup'))
             permission TEXT
         );
 
+        DROP TABLE IF EXISTS link;
+        CREATE TABLE link (
+            link_id INTEGER PRIMARY KEY,
+            url TEXT,
+            title TEXT,
+            template_name TEXT
+        );
+
+        DROP TABLE IF EXISTS content;
+        CREATE TABLE content (
+            content_id INTEGER PRIMARY KEY,
+            link_id INTEGER,
+            name TEXT,
+            content TEXT,
+            FOREIGN KEY(link_id) REFERENCES link(link_id)
+        );
+
         DROP TABLE IF EXISTS module;
         CREATE TABLE module (
             module_id INTEGER PRIMARY KEY,
             module_name TEXT,
             enabled INTEGER
-        );
-
-        DROP TABLE IF EXISTS link;
-        CREATE TABLE link (
-            link_id INTEGER PRIMARY KEY,
-            url TEXT,
-            title TEXT
         );
 
         DROP TABLE IF EXISTS link_module;

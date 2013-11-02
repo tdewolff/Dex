@@ -12,7 +12,6 @@ $('a.submit').click(function(e) {
 ////////////////////////////////////////////////////////////////
 
 function form_input(item, empty_together) {
-    $('.form_item_error[data-for-name="' + item + '"]').slideUp();
     form_empty_together(empty_together);
 
     var type = $(item).data('type');
@@ -20,6 +19,7 @@ function form_input(item, empty_together) {
         form_input_array(item);
     else if (type == 'parameter_key' || type == 'parameter_value')
         form_input_parameter(item);
+    form_save($(item).closest('form'));
 }
 
 function form_empty_together(empty_together) {    // toggle 'unused' style for elements in 'empty_together' when all are empty
@@ -46,12 +46,32 @@ function form_empty_together(empty_together) {    // toggle 'unused' style for e
 }
 
 function form_submit(form) {
-    $('input[type="submit"]', form).attr('disabled', 'disabled');
-    $('.form_error, .form_item_error', form).hide();
-    $('.form_response_success, .form_response_error', form).hide();
-    $('.form_response_loading', form).fadeIn('fast').css('display', 'inline-block');
-    interval();
+    if ($(form).attr('data-has-submit') == '1')
+        form_ajax_save(form);
+    else
+        form_save(form);
+    return false;
+}
 
+var edittedForm = false;
+function form_save(form) {
+    if ($(form).attr('data-has-submit') == '0')
+    {
+        $('.form_response > .success', form).css('opacity', '0.5');
+        edittedForm = form;
+    }
+}
+
+setInterval(function() {
+    if (edittedForm !== false) {
+        var form = edittedForm;
+        edittedForm = false;
+
+        form_ajax_save(form);
+    }
+}, 1000);
+
+function form_ajax_save(form) {
     form_submit_password(form);
     form_submit_array(form);
     form_submit_parameters(form);
@@ -65,7 +85,6 @@ function form_submit(form) {
     }, function(element, data) {
         form_ajax_error(form, data);
     });
-    return false; // don't submit the regular way
 }
 
 function form_ajax_success(form, data, redirect) {
@@ -89,7 +108,9 @@ function form_ajax_success(form, data, redirect) {
 
             if ($('.form_error', form).length == 0)
                 $('<div>').addClass('form_error').prependTo(form);
-            $('.form_error', form).html(errors).hide().fadeIn();
+
+            if ($('.form_error', form).html() != errors)
+                $('.form_error', form).html(errors).hide().fadeIn();
         }
 
         var salt = $(form).data('salt');
@@ -98,26 +119,46 @@ function form_ajax_success(form, data, redirect) {
                 var name = item['name'] + '_' + salt;
                 var input = $('[type!="hidden"][name="' + name + '"], [data-name="' + name + '"]', form);
                 input.addClass('invalid');
+
                 if ($('.form_item_error[data-for-name="' + name + '"]', form).length == 0)
+                {
                     $('<div>').addClass('form_item_error').attr('data-for-name', name).insertAfter(input.parent());
-                $('.form_item_error[data-for-name="' + name + '"]', form).html('<div class="box"><div class="arrow"></div><div class="arrow-border"></div><p class="pre_wrap"><i class="icon-exclamation-sign"></i>&ensp;<span>' + item['error'] + '</span></p></div>').hide().fadeIn();
+                    $('.form_item_error[data-for-name="' + name + '"]', form).html('<div class="box"><div class="arrow"></div><div class="arrow-border"></div><p class="pre_wrap"><i class="icon-exclamation-sign"></i>&ensp;<span></span></p></div>');
+                }
+
+                if ($('.form_item_error[data-for-name="' + name + '"] span', form).text() != item['error'])
+                {
+                    $('.form_item_error[data-for-name="' + name + '"]', form).hide();
+                    $('.form_item_error[data-for-name="' + name + '"] span', form).text(item['error']);
+                    $('.form_item_error[data-for-name="' + name + '"]', form).fadeIn();
+                }
             }
         });
 
-        $('.form_response_loading', form).hide();
-        $('.form_response_error', form).fadeIn();
+        $('.form_response > .success', form).hide();
+        $('.form_response > .error', form).fadeIn('fast');
     } else if (data['redirect'].length > 0) {
         window.location.replace(data['redirect']);
     } else {
-        $('.form_response_loading', form).hide();
-        $('.form_response_success', form).fadeIn();
+        $('.form_error, .form_item_error', form).hide();
+        $('.form_response > .error', form).hide();
+
+        var response_success = $('.form_response > .success', form);
+        var success = response_success.html();
+        $('.form_response > .success', form).hide().css('opacity', '1');
+
         interval();
+
+        if (response_success.html() == success)
+            response_success.show();
+        else
+            response_success.fadeIn('fast');
     }
 }
 
 function form_ajax_error(form, data) {
-    $('.form_response_loading', form).hide();
-    $('.form_response_error', form).fadeIn();
+    $('.form_response > .success', form).hide();
+    $('.form_response > .error', form).fadeIn('fast');
 
     var text = JSON.stringify(data);
     if (typeof data['responseText'] !== 'undefined')

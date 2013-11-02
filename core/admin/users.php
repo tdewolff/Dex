@@ -56,7 +56,7 @@ else
 	$form->addSeparator();
     if ($url[2] != 'new')
 		$form->addPassword('current_password', 'Admin password', 'Confirm with your current password');
-	$form->addSubmit('user', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
+	$form->addSubmit('user', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
 	if ($form->submittedBy('user'))
 	{

@@ -8,7 +8,7 @@ $form->addText('description', 'Site description', 'Describe the site concisely',
 $form->addArray('keywords', 'Site keywords', '', array('.*', 0, 80, 'Unknown error'));
 
 $form->addSeparator();
-$form->addSubmit('settings', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved <span></span>)</span>', '(not saved)');
+$form->addSubmit('settings', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
 if ($form->submittedBy('settings'))
 {

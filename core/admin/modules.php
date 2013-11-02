@@ -1,7 +1,7 @@
 <?php
 
 if (!Session::isAdmin())
-	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+    user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 if (Common::isMethod('POST'))
 {
@@ -22,13 +22,14 @@ $modules = array();
 $table = $db->query("SELECT * FROM module;");
 while ($row = $table->fetch())
 {
-	if (($ini = parse_ini_file('modules/' . $row['module_name'] . '/config.ini')) !== false)
-	{
-		$row['title'] = Common::tryOrEmpty($ini, 'title');
-		$row['author'] = Common::tryOrEmpty($ini, 'author');
-		$row['description'] = Common::tryOrEmpty($ini, 'description');
-	}
-	$modules[] = $row;
+    $ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
+    if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+    {
+        $row['title'] = Common::tryOrEmpty($ini, 'title');
+        $row['author'] = Common::tryOrEmpty($ini, 'author');
+        $row['description'] = Common::tryOrEmpty($ini, 'description');
+    }
+    $modules[] = $row;
 }
 
 Core::addStyle('popbox.css');

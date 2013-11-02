@@ -58,4 +58,17 @@ Hooks::attach('admin_footer', 0, function() {
 	Core::render('admin/footer.tpl');
 });
 
+Hooks::attach('main', 0, function() {
+    global $db;
+
+    $link_id = Core::getLinkId();
+    $template_name = Core::getTemplateName();
+
+    $table = $db->query("SELECT * FROM content WHERE link_id = '" . $db->escape($link_id) . "';");
+    while ($row = $table->fetch())
+    	Core::assign($row['name'], $row['content']);
+
+	Core::renderTemplate($template_name);
+});
+
 ?>

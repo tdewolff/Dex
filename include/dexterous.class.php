@@ -8,6 +8,7 @@ class Dexterous
 	public static $scripts = array();
 
 	public static $link_id = 0;
+    public static $template_name = '';
 
 	////////////////
 
@@ -18,6 +19,24 @@ class Dexterous
 	public static function addTitle($title) {
 		self::$titles[] = $title;
 	}
+
+    ////////////////
+
+    public static function getLinkId()
+    {
+        if (self::$link_id == '')
+            user_error('Link ID not set', ERROR);
+
+        return self::$link_id;
+    }
+
+    public static function getTemplateName()
+    {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
+
+        return self::$template_name;
+    }
 }
 
 class Core extends Dexterous
@@ -26,6 +45,14 @@ class Core extends Dexterous
 		$_ = self::$vars;
 		include('core/templates/' . $_template);
 	}
+
+    public static function renderTemplate() {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
+
+        $_ = self::$vars;
+        include('templates/' . self::$template_name . '/template.php');
+    }
 
 	public static function addStyle($style) {
 		self::$styles[] = 'core/resources/styles/' . $style;
@@ -97,6 +124,23 @@ class Core extends Dexterous
             );");
 		}
 	}
+
+    public static function verifyLinkUrl($url, $link_id = 0)
+    {
+        global $db;
+
+        if (!Common::validUrl($url))
+            return 'Must be valid URL';
+
+        if ($db->querySingle("SELECT * FROM link WHERE url = '" . $db->escape($url) . "' AND link_id != '" . $db->escape($link_id) . "' LIMIT 1;"))
+            return 'Already used';
+
+        $url_base = substr($url, 0, strpos($url, '/') + 1);
+        if ($url_base == 'admin/' || $url_base == 'res/')
+            return 'Cannot start with "' . $url_base . '"';
+
+        return true;
+    }
 }
 
 class Module extends Dexterous
@@ -138,7 +182,7 @@ class Module extends Dexterous
 
 	////////////////
 
-	public static function verifyUrl($link_id, $url)
+	/*public static function verifyLinkUrl($url, $link_id = 0)
 	{
 		global $db;
 
@@ -196,7 +240,7 @@ class Module extends Dexterous
     		url = '" . $db->escape($url) . ($title !== false ? "',
     		title = '" . $db->escape($title) : '') . "'
     	WHERE link_id = '" . $db->escape($link_id) . "';");
-	}
+	}*/
 
 	public static function attachToLink($link_id)
 	{
@@ -250,14 +294,6 @@ class Module extends Dexterous
 		$db->exec("
         DELETE FROM link_module WHERE module_name = '" . $db->escape(self::$module_name) . "';");
 	}
-
-    public static function getLinkId()
-    {
-        if (self::$link_id == '')
-            user_error('Link ID not set', ERROR);
-
-        return self::$link_id;
-    }
 
 	public static function getLinkData()
 	{

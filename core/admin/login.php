@@ -1,6 +1,8 @@
 <?php
 
 $form = new Form('login');
+$form->explicitSubmit();
+
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');
 $form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
 $form->addPassword('password', 'Password', '');

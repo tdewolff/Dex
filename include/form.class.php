@@ -10,6 +10,7 @@ class Form
 	private $mode = false;
 	private $method = 'POST';
 	private $redirect = '';
+	private $hasSubmit = false;
 
 	public function __construct($name)
 	{
@@ -34,6 +35,10 @@ class Form
 
 	public function makeCompact() {
 		$this->mode = 'compact';
+	}
+
+	public function explicitSubmit() {
+		$this->hasSubmit = true;
 	}
 
 	/*public function usePUT($redirect = '') {
@@ -161,6 +166,20 @@ class Form
 			'subtitle' => $subtitle,
 			'preg' => array('regex' => '(?s)(.*)', 'min' => 0, 'max' => 65535, 'error' => 'Unknown error'),
 			'value' => ''
+		);
+	}
+
+	public function addLinkUrl($name, $title, $subtitle, $source)
+	{
+		$this->items[] = array(
+			'type' => 'text',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'placeholder' => '',
+			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => 'Must be valid local URL'),
+			'value' => ''
+			// TODO: JS
 		);
 	}
 
@@ -344,12 +363,30 @@ class Form
 		$_SESSION[$this->name . '_' . $name] = $value;
 	}
 
+	public function setAll($all)
+	{
+		foreach ($all as $name => $value)
+			$_SESSION[$this->name . '_' . $name] = $value;
+	}
+
 	// get value of input element, use after verify()
 	public function get($name)
 	{
 		return (isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
 		            ? $this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]
 						: false);
+	}
+
+	public function getAll()
+	{
+		$all = array();
+		foreach ($this->items as $item)
+			if (isset($item['value']))
+			{
+				$name = substr($item['name'], strlen($this->name . '_'));
+				$all[$name] = self::get($name);
+			}
+		return $all;
 	}
 
 	// set error for input element
@@ -424,7 +461,8 @@ class Form
 			'items' => $this->items,
 			'errors' => $this->errors,
 			'mode' => $this->mode,
-			'method' => $this->method
+			'method' => $this->method,
+			'has_submit' => $this->hasSubmit
 		);
 
 		include('core/templates/form.tpl');

@@ -45,6 +45,10 @@ h1 {
 	color:@light;
 }
 
+.page-wrapper h1 {
+	margin-left:200px;
+}
+
 .main {
 	margin:8px 0;
 	.border-radius(8px);
@@ -206,17 +210,8 @@ ul.table > li:after {
     height: 0;
 }
 
-ul.table > li.border {
-	height:4px;
-	background-color:darken(@light, 10%);
-}
-
 ul.table > li.odd {
 	background-color:darken(@light, 2%);
-}
-
-ul.table > li.placeholder {
-	background-color:@base;
 }
 
 ul.table > li.unused {
@@ -260,11 +255,6 @@ ul.table > li > div * {
 
 ul.table > li:hover:not(:first-of-type) > div {
 	background-color:@subtle;
-}
-
-ul.table .icon-reorder {
-	font-size:120%;
-	cursor:move;
 }
 
 table.database td {
@@ -450,4 +440,8 @@ div.assets_caption {
 
     .border-radius(3px);
     .box-shadow(0, 1px, 1px);
+}
+
+#ajax_error {
+	white-space: pre;
 }

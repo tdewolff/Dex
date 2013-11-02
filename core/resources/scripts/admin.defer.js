@@ -48,29 +48,26 @@ function hideRow(id) {
 
 function interval() {
     $('span.passed_time').each(function () {
-        if ($('span', this).text() == '')
-            $('span', this).text('just now');
-
         if ($(this).is(':visible')) {
             if (typeof $(this).attr('data-time') == 'undefined')
                 $(this).attr('data-time', new Date().getTime());
 
             var diff = Math.round((new Date().getTime() - $(this).attr('data-time')) / 1000),
-                then = new Date($(this).attr('data-time')),
+                then = new Date(parseInt($(this).attr('data-time'))),
                 value;
 
-            if (diff < 2)
-                value = 'just now';
+            if (diff < 10)
+                value = '';
             else if (diff < 30)
-                value = 'seconds ago';
+                value = ' seconds ago';
             else if (diff < 60)
-                value = 'half a minute ago';
+                value = ' half a minute ago';
             else if (diff < 120)
-                value = '1 minute ago';
+                value = ' 1 minute ago';
             else if (diff < 600)
-                value = Math.round(diff / 60) + ' minutes ago';
+                value = ' ' + Math.round(diff / 60) + ' minutes ago';
             else
-                value = then.getHours() + ':' + then.getMinutes();
+                value = ' ' + then.getHours() + ':' + then.getMinutes();
 
             if ($('span', this).text() !== value)
                 $(this).fadeOut(function () {
@@ -78,7 +75,7 @@ function interval() {
                 }).fadeIn();
         } else if (typeof $(this).attr('data-time') != 'undefined') {
             $(this).removeAttr('data-time');
-            $('span', this).text('just now');
+            $('span', this).text('');
         }
     });
 }
@@ -139,7 +136,7 @@ $('.dropdown-toggle').click(function(e) {
 // halt
 $('a.halt').click(function() {
     $(this).hide();
-    $(this).parent().find('a.sure').fadeIn('fast').css('display', 'block');
+    $(this).parent().find('a.sure').show().css('display', 'block');
 });
 
 $('a.sure').mouseleave(function() {

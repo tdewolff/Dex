@@ -34,29 +34,47 @@
     white-space:nowrap;
 }
 
-ul.draggable > li:not(:first-of-type):not(.unused) > div:first-of-type + div {
-    padding:2px 15px;
+ul.draggable > li:not(:first-of-type) > div:first-of-type + div + div {
+    padding:4px 15px;
 }
 
-ul.draggable > li:not(:first-of-type):not(.unused) > div:first-of-type + div > span {
-    display:none;
+ul.draggable > li.placeholder {
+    background-color:#A9CC66;
 }
 
-ul.draggable > li.unused > div:first-of-type + div > span {
-    display:inline-block;
-    height:22px;
-    line-height:22px;
+ul.draggable > li.draggee {
+    position: absolute;
+    border-top-width: 0;
+    height: 32px;
+    cursor: move;
+}
+
+ul.draggable i {
+    display: inline-block;
+    width: 40px;
+    font-size:17px;
+    line-height:21px;
+    height:21px;
+}
+
+ul.draggable i.icon-eye-open {
+    cursor:pointer;
+}
+
+ul.draggable i.icon-reorder {
+    cursor:move;
 }
 
 ul.draggable > li input {
     float:none;
     margin:0;
-    font-size:15px;
-    line-height:28px;
-    height:28px;
+    font-size:14px;
+    line-height:24px;
+    height:24px;
     width:100%;
 }
 
 ul.draggable > li.unused input {
-    display:none;
+    font-style:italic;
+    color:#A0A0A0;
 }

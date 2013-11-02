@@ -1,5 +1,5 @@
 <?php
-function listRecursion($menu, $level)
+function listRecursion(&$menu, $level)
 {
     global $_;
 
@@ -11,14 +11,15 @@ function listRecursion($menu, $level)
         if (isset($menu[1]) && $menu[1]['level'] > $level)
         {
             echo '<ul>';
-            $menu = listRecursion($menu, $menu[1]['level']);
+            $menu = array_slice($menu, 1);
+            listRecursion($menu, $menu[0]['level']);
             echo '</ul>';
             echo '</li>';
             continue;
         }
 
         echo '</li>';
-        array_shift($menu);
+        $menu = array_slice($menu, 1);
     }
     return $menu;
 }

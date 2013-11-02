@@ -6,15 +6,14 @@ if (Common::isMethod('POST'))
     $data = Common::getMethodData();
     $db->exec("DELETE FROM module_menu;");
 
-    $position = 0;
-    foreach ($data as $link_id => $item) {
-        $db->exec("INSERT INTO module_menu (link_id, position, level, name) VALUES (
-            '" . $db->escape($link_id) . "',
-            '" . $db->escape($position) . "',
+    foreach ($data as $i => $item) {
+        $db->exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
+            '" . $db->escape($item['link_id']) . "',
+            '" . $db->escape($i) . "',
             '" . $db->escape($item['level']) . "',
-            '" . $db->escape($item['name']) . "'
+            '" . $db->escape($item['name']) . "',
+            '" . $db->escape($item['enabled']) . "'
         );");
-        $position++;
     }
     exit;
 }
@@ -26,12 +25,18 @@ $table = $db->query("SELECT *, link.link_id AS link_id FROM link
     ORDER BY module_menu.position ASC;");
 while ($row = $table->fetch())
     if (isset($row['module_menu_id']))
-        $menu[$row['position']] = $row;
+        $menu[] = $row;
     else
         $non_menu[] = $row;
-ksort($menu);
 
-Module::addStyle('style.css');
+foreach ($non_menu as $item) {
+    $item['name'] = $item['title'];
+    $item['level'] = '0';
+    $item['enabled'] = '0';
+    $menu[] = $item;
+}
+
+Module::addStyle('draggable.css');
 Module::addDeferredScript('draggable.defer.js');
 
 Hooks::emit('admin_header');

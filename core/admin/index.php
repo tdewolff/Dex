@@ -1,33 +1,39 @@
 <?php
 
-if (isset($url[2]) && $url[2] == 'logs' && isset($url[3]))
+if (Common::isMethod('POST'))
 {
-	if ($url[3] == 'view')
-	{
-		$log = file_get_contents('logs/' . Log::getCurrentFilename());
+	$data = Common::getMethodData();
+	if (!isset($data['subject']) || !Session::isAdmin())
+		user_error('Subject not set or current user is no admin', ERROR);
 
-		Hooks::emit('admin_header');
-
-		Core::assign('log', $log);
-		Core::render('admin/log.tpl');
-
-		Hooks::emit('admin_footer');
-		exit;
-	}
-	else if ($url[3] == 'clear' && Session::isAdmin())
+	if ($data['subject'] == 'logs')
 	{
 		$handle = opendir('logs/');
 		while (($log_name = readdir($handle)) !== false)
 			if ($log_name != '.gitignore' && is_file('logs/' . $log_name))
 				unlink('logs/' . $log_name);
 	}
+	else if ($data['subject'] == 'cache')
+	{
+		$handle = opendir('cache/');
+		while (($cache_name = readdir($handle)) !== false)
+			if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
+				unlink('cache/' . $cache_name);
+	}
+	exit;
 }
-elseif (isset($url[2]) && $url[2] == 'cache' && isset($url[3]) && $url[3] == 'clear' && Session::isAdmin())
+
+if (isset($url[2]) && $url[2] == 'logs' && isset($url[3]) && $url[3] == 'view')
 {
-	$handle = opendir('cache/');
-	while (($cache_name = readdir($handle)) !== false)
-		if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
-			unlink('cache/' . $cache_name);
+	$log = file_get_contents('logs/' . Log::getCurrentFilename());
+
+	Hooks::emit('admin_header');
+
+	Core::assign('log', $log);
+	Core::render('admin/log.tpl');
+
+	Hooks::emit('admin_footer');
+	exit;
 }
 
 $logs_size = 0;
