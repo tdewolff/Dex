@@ -14,12 +14,6 @@ Common::setMinifying(false);
 Log::setLevel(VERBOSE);
 Log::setDirectory('logs/');
 
-if (ErrorHandler::getLevel() == DISCREET)
-	Hooks::attach('error', function() {
-		echo 'ERROR';
-		exit;
-	});
-
 
 // form the request URI
 $base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
@@ -27,11 +21,11 @@ $request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp($base_url, $request_url, strlen($base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
-$request_url = substr($request_url, strlen($base_url)); // remove basedir from URI
+$request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
 Log::request($_SERVER['REQUEST_URI']);
 
 if (!Common::validUrl($request_url))
-	user_error('Request URL doesn\'t validate (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+	user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
 
 
 // favicon.ico and robots.txt
@@ -56,33 +50,18 @@ if (strpos($request_url, 'res/') === 0)
     if ($querystring_position !== false)
         $filename = substr($filename, 0, $querystring_position);
 
+    // check extension
     $extension_position = strrpos($filename, '.');
-    $extension = strtolower(substr($filename, $extension_position + 1));
+    $extension = strtolower($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
 
-    $extensions_mime = array(
-        'js' => 'application/x-javascript',
-        'css' => 'text/css',
-        'png' => 'image/png',
-        'gif' => 'image/gif',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'htm' => 'text/html',
-        'html' => 'text/html',
-        'svg' => 'image/svg+xml',
-        'eot' => 'application/vnd.ms-fontobject',
-        'woff' => 'application/font-woff',
-        'otf' => 'application/octet-stream',
-        'ttf' => 'application/x-font-ttf'
-    );
-
-    if ($extension_position === false || !array_key_exists($extension, $extensions_mime))
+    if (!Common::isResource($extension))
         user_error('Resource file extension "' . $extension . '" invalid of "' . $request_url . '"', ERROR);
     else if (!file_exists($filename))
         user_error('Could not find resource file "' . $filename . '"', ERROR);
     else
     {
         // resize images
-        if ($querystring_position !== false && ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg'))
+        if ($querystring_position !== false && Common::isImage($extension))
         {
             $w = Common::tryOrZero($_GET, 'w');
             $h = Common::tryOrZero($_GET, 'h');
@@ -90,7 +69,7 @@ if (strpos($request_url, 'res/') === 0)
             $filename = Common::imageResize($filename, $w, $h, $s);
         }
 
-        header('Content-Type: ' . $extensions_mime[$extension]);
+        header('Content-Type: ' . Common::getMime($extension));
         echo file_get_contents($filename);
     }
     exit;
@@ -120,7 +99,6 @@ register_shutdown_function(function() {
 
 
 // setting more stuff
-Hooks::clear('error');
 require_once('include/dexterous.class.php');
 require_once('core/hooks.php');
 

@@ -26,7 +26,7 @@ form > p {
 	border-bottom:solid 1px #E8E8E8;
 }
 
-.form_response {
+.form_response, .form_response_inline {
 	margin-bottom:5px;
 	margin-left:210px;
 
@@ -55,6 +55,9 @@ form > p {
 		.success();
 		color:#B94A48;
 	}
+}
+
+.form_response_inline {
 }
 
 .form_error {
@@ -239,8 +242,10 @@ input[data-type="parameter_value"] {
 }
 
 .submit {
+	float:left;
 	clear:both;
 	margin-left:210px;
+	margin-right:10px;
 	padding-left:20px;
 	padding-right:20px;
 }

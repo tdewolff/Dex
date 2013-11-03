@@ -4,6 +4,10 @@ non-server/dexterous.sublime-project
 non-server/dexterous.sublime-workspace
 themes/groningenbijles/
 
+assets/
+cache/
+logs/
+
 database.sqlite3
 GRONINGENBIJLES.md
 TODO.md

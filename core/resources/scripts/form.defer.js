@@ -103,7 +103,7 @@ function form_ajax_success(form, data, redirect) {
         if (data['errors'].length > 0) {
             var errors = '';
             $.each(data['errors'], function(i, error) {
-                errors += error + '<br/>';
+                errors += error + '<br>';
             });
 
             if ($('.form_error', form).length == 0)

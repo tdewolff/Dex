@@ -16,5 +16,5 @@
    </tr>
   <?php endforeach; ?>
  </table>
- <br />
+ <br>
 <?php endforeach; ?>

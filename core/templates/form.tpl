@@ -20,7 +20,7 @@
   <?php elseif ($item['type'] == 'submit'): ?>
    <input type="hidden"
     name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-    value="" />
+    value="">
    <?php if ($form['has_submit']): ?><a class="button submit" href="#"><?php echo $item['title']; ?></a><?php endif; ?>
    <div class="form_response">
     <span class="loading"></span>
@@ -42,7 +42,7 @@
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
       class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
-      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'>
 
 
     <?php elseif ($item['type'] == 'multiline_text'): ?>
@@ -62,7 +62,7 @@
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
       class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
-      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'>
 
 
     <?php elseif ($item['type'] == 'tel'): ?>
@@ -73,14 +73,14 @@
       pattern="<?php echo $item['preg']['regex']; ?>"
       placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
       class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
-      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);' />
+      oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'>
 
 
     <?php elseif ($item['type'] == 'password'): ?>
      <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
       value='<?php echo $item['value']; ?>'
-      data-type="password" />
+      data-type="password">
 
      <input type="password"
       value=""
@@ -90,7 +90,7 @@
       class="<?php echo (isset($item['error']) ? 'invalid' : '') . ' ' . ($item['unused'] ? 'unused' : ''); ?>"
       oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
       data-type="password_input"
-      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>" />
+      data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
 
 
     <?php elseif ($item['type'] == 'dropdown'): ?>
@@ -118,7 +118,7 @@
      <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
       value='<?php echo $item['value']; ?>'
-      data-type="array" />
+      data-type="array">
 
      <input type="text"
       value=""
@@ -129,7 +129,7 @@
       oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
       data-type="array_item"
       data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      data-i="0" />
+      data-i="0">
 
      <div class="clear"></div>
 
@@ -138,7 +138,7 @@
      <input type="hidden"
       name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
       value='<?php echo $item['value']; ?>'
-      data-type="parameters" />
+      data-type="parameters">
 
      <input type="text"
       value=""
@@ -148,7 +148,7 @@
       oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
       data-type="parameter_key"
       data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      data-i="0" />
+      data-i="0">
 
      <span class="equal">=</span>
 
@@ -160,7 +160,7 @@
       oninput='form_input(this, <?php echo $item['emptyTogetherArray']; ?>);'
       data-type="parameter_value"
       data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-      data-i="0" />
+      data-i="0">
 
      <div class="clear"></div>
 

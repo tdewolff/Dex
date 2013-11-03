@@ -25,9 +25,6 @@ class Log
 		if ($directory[strlen($directory) - 1] != '/')
 			$directory .= '/';
 
-		if (!is_dir($directory))
-			mkdir($directory);
-
 		// absolute path needed for atexit()
 		self::$filename = substr($_SERVER['SCRIPT_FILENAME'], 0, strrpos($_SERVER['SCRIPT_FILENAME'], "/")) . '/' . $directory . self::getCurrentFilename();
 	}
@@ -64,9 +61,12 @@ class Log
 	{
 		$message = '[' . date('Y-m-d H:i:s') . '] ' . Common::padIpAddress($_SERVER['REMOTE_ADDR']) . ' ' . $type . ' ' . $message . "\r\n";
 
-		$f = fopen(self::$filename, 'a');
-	    fwrite($f, $message);
-	    fclose($f);
+		if (file_exists($message))
+		{
+			$f = fopen(self::$filename, 'a');
+		    fwrite($f, $message);
+		    fclose($f);
+		}
 	}
 }
 

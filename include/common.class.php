@@ -5,6 +5,22 @@ class Common
 	private static $caching = false;
 	private static $minifying = false;
 
+    private static $extensions_mime = array(
+        'js' => 'application/x-javascript',
+        'css' => 'text/css',
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'htm' => 'text/html',
+        'html' => 'text/html',
+        'svg' => 'image/svg+xml',
+        'eot' => 'application/vnd.ms-fontobject',
+        'woff' => 'application/font-woff',
+        'otf' => 'application/octet-stream',
+        'ttf' => 'application/x-font-ttf'
+    );
+
 	public static function setCaching($caching) {
 		self::$caching = $caching;
 	}
@@ -26,7 +42,7 @@ class Common
 		// first part are all allowed characters
 		// second part makes sure no ../ occurs
 		// third part makes sure no more than one / is a t the end
-		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=&]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
+		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=& ]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
 	}
 
 	public static function formatBytes($size, $precision = 2)
@@ -62,6 +78,21 @@ class Common
         return isset($array[$index]) ? $array[$index] : $default;
     }
 
+    public static function getMime($extension)
+    {
+        return self::$extensions_mime[$extension];
+    }
+
+    public static function isResource($extension)
+    {
+        return array_key_exists($extension, self::$extensions_mime);
+    }
+
+    public static function isImage($extension)
+    {
+        return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg');
+    }
+
     public static function isMethod($method)
     {
         return $_SERVER['REQUEST_METHOD'] == $method;
@@ -72,6 +103,16 @@ class Common
         $data = array();
         parse_str(file_get_contents("php://input"), $data);
         return $data;
+    }
+
+    public static function ajaxError($error = '')
+    {
+        echo json_encode(array(
+            'status' => 'error',
+            'responseText' => $error
+        ));
+        user_error($error, WARNING);
+        exit;
     }
 
 	private static function cacheFilename($filenames, $cache_formatted_filename)
@@ -144,8 +185,8 @@ class Common
 
         list($width, $height, $mime_type, $attribute) = getimagesize($filename);
 
-        $new_width = 0;
-        $new_height = 0;
+        $new_width = $width;
+        $new_height = $height;
         if ($width > $max_width && $max_width != 0)
         {
             $new_width = $max_width;
@@ -171,8 +212,6 @@ class Common
             $new_width = floor($scale * $width);
             $new_height = floor($scale * $height);
         }
-        else
-            Log::warning('No parameters passed to determine new image size');
         return array($new_width, $new_height);
     }
 

@@ -17,8 +17,14 @@ class ErrorHandler
 		set_error_handler(array('ErrorHandler', 'report'));
 
 		self::$level = $level;
-		if (self::$level == EXPLICIT)
-			ini_set('error_reporting', E_ALL);
+		if (self::$level == DISCREET)
+		{
+			ini_set('error_reporting', E_ALL | E_STRICT);
+			ini_set('display_errors', false);
+			ini_set('log_errors', false);
+		}
+		else
+			ini_set('error_reporting', E_ALL | ~E_NOTICE);
 	}
 
 	public static function getLevel()
@@ -26,25 +32,27 @@ class ErrorHandler
 		return self::$level;
 	}
 
-	public static function report($type, $error, $file, $line)
+	public static function report($type, $error, $file, $line, $context)
 	{
 		switch ($type)
 		{
 			case ERROR:
 				Log::error('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$level == EXPLICIT)
-					echo '<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '<br /></pre>';
-				Hooks::emit('error');
+					echo '<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '<br></pre>';
 				exit;
 
 			case WARNING:
 				Log::warning('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$level == EXPLICIT)
-					echo '<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '<br /></pre>';
+					echo '<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '<br></pre>';
 				break;
 
 			default:
-				return false;
+				Log::error('(' . $file . ':' . $line . ') ' . $error);
+				if (self::$level == EXPLICIT)
+					echo '<pre><b>UNKNOWN</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '<br></pre>';
+				exit;
 		}
 		return true;
 	}

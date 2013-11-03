@@ -6,7 +6,7 @@ Core::addStyle('font-awesome.css');
 Core::addStyle('fancybox.css');
 Core::addStyle('admin.css');
 Core::addScript('jquery.js');
-Core::addScript('fancybox.jquery.js');
+Core::addScript('jquery.fancybox.js');
 Core::addScript('admin.js');
 Core::addDeferredScript('ajax.defer.js');
 Core::addDeferredScript('admin.defer.js');
@@ -25,7 +25,7 @@ $admin_links = array();
 $admin_links[] = array('name' => 'index',    'regex' => 'admin/(index/(logs/view/|cache/))?', 'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
 $admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',                    'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',        'title' => 'Settings',    'admin_only' => 0);
 $admin_links[] = array('name' => 'pages',    'regex' => 'admin/pages/([0-9]+/|new/)?',        'file' => 'pages.php',    'url' => 'admin/pages/',    'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
-$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',                      'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
+$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/([^/]+/)*',             'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 
