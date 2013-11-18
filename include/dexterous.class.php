@@ -103,7 +103,7 @@ class Core extends Dexterous
 				unset($fs_modules[$db_module['module_name']]);
 			else // file does not exist but db entry does
 			{
-				Log::information('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
+				Log::notice('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
 
                 // remove module table, link_module relations of the module, module entry
 				$db->exec("
@@ -116,7 +116,7 @@ class Core extends Dexterous
 		{
 			include_once('modules/' . $name . '/admin/setup.php');
 
-            Log::information('module with module_name "' . $name . '" is inserted into the database');
+            Log::notice('module with module_name "' . $name . '" is inserted into the database');
             $db->exec("
             INSERT INTO module (module_name, enabled) VALUES (
             	'" . $db->escape($name) . "',
@@ -182,7 +182,8 @@ class Module extends Dexterous
 
 	////////////////
 
-	/*public static function verifyLinkUrl($url, $link_id = 0)
+	/* TODO: remove when really sure
+    public static function verifyLinkUrl($url, $link_id = 0)
 	{
 		global $db;
 
@@ -240,7 +241,7 @@ class Module extends Dexterous
     		url = '" . $db->escape($url) . ($title !== false ? "',
     		title = '" . $db->escape($title) : '') . "'
     	WHERE link_id = '" . $db->escape($link_id) . "';");
-	}*/
+	}
 
 	public static function attachToLink($link_id)
 	{
@@ -319,7 +320,7 @@ class Module extends Dexterous
 		SELECT * FROM link_module
         JOIN link ON link_module.link_id = link.link_id
         WHERE link_module.link_module_id = '" . $db->escape($link_module_id) . "' LIMIT 1;");
-	}
+	}*/
 }
 
 class Theme extends Dexterous

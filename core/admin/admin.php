@@ -1,15 +1,16 @@
 <?php
 
 Core::addTitle('Admin panel');
-Core::addStyle('normalize.css');
-Core::addStyle('font-awesome.css');
-Core::addStyle('fancybox.css');
+Core::addStyle('include/normalize.css');
+Core::addStyle('vendor/font-awesome.css');
+Core::addStyle('vendor/fancybox.css');
 Core::addStyle('admin.css');
-Core::addScript('jquery.js');
-Core::addScript('jquery.fancybox.js');
-Core::addScript('admin.js');
-Core::addDeferredScript('ajax.defer.js');
-Core::addDeferredScript('admin.defer.js');
+Core::addScript('vendor/jquery-2.0.3.min.js');
+Core::addScript('vendor/doT.min.js');
+Core::addScript('include/api.js');
+Core::addScript('include/slidein.js');
+Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+Core::addDeferredScript('admin.js');
 
 // logout
 if (Session::isUser() && $request_url == 'admin/logout/')
@@ -22,15 +23,15 @@ else
 	Core::checkModules();
 
 $admin_links = array();
-$admin_links[] = array('name' => 'index',    'regex' => 'admin/(index/(logs/view/|cache/))?', 'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
-$admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',                    'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',        'title' => 'Settings',    'admin_only' => 0);
-$admin_links[] = array('name' => 'pages',    'regex' => 'admin/pages/([0-9]+/|new/)?',        'file' => 'pages.php',    'url' => 'admin/pages/',    'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
-$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/([^/]+/)*',             'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
+$admin_links[] = array('name' => 'index',    'regex' => 'admin/(logs/)?',              'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
+$admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',             'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',        'title' => 'Settings',    'admin_only' => 0);
+$admin_links[] = array('name' => 'pages',    'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'pages.php',    'url' => 'admin/pages/',    'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
+$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',               'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 
 $modules = array();
-$table = $db->query("SELECT * FROM module;");
+$table = $db->query("SELECT * FROM module WHERE enabled = '1';");
 while ($row = $table->fetch())
 {
 	$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
@@ -61,17 +62,18 @@ $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',       
 Core::assign('isAdmin', Session::isAdmin());
 Core::assign('admin_links', $admin_links);
 
-$log_error = 'URL has no match with to any admin pages';
+$log_error = 'URL "' . $request_url . '"" has no match with to any admin pages';
 foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
 	{
 		$admin_link['regex'] = preg_replace('/\//', '\/', $admin_link['regex']);
 		if (preg_match('/^' . $admin_link['regex'] . '$/', $request_url))
 		{
+			Core::assign('apiUrl', '/' . $base_url . 'admin/api/' . substr($admin_link['file'], 0, -4) . '/');
+			Core::assign('current_admin_i', $i);
+
 			if (strpos($admin_link['file'], '/') === false)
 				$admin_link['file'] = 'core/admin/' . $admin_link['file'];
-
-			Core::assign('current_admin_i', $i);
 			if (file_exists($admin_link['file']))
 			{
 				$log_error = 'error within admin page';
@@ -83,6 +85,6 @@ foreach ($admin_links as $i => $admin_link)
 		}
 	}
 
-user_error($log_error . ' (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+user_error($log_error, ERROR);
 
 ?>

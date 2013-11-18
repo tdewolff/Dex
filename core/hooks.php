@@ -8,15 +8,15 @@ function main_header() {
 	if (count($titles))
 		Core::assign('header_title', implode(' - ', array_reverse($titles)));
 	if (count($styles))
-		Core::assign('header_style', Common::concatenateFiles($styles, 'css'));
+		Core::assign('header_style', Resource::concatenateFiles($styles, 'css'));
 	if (count($scripts))
-		Core::assign('header_script', Common::concatenateFiles($scripts, 'js'));
+		Core::assign('header_script', Resource::concatenateFiles($scripts, 'js'));
 }
 
 function main_footer() {
 	$scripts = Core::getScripts('footer');
 	if (count($scripts))
-		Core::assign('footer_script', Common::concatenateFiles($scripts, 'js'));
+		Core::assign('footer_script', Resource::concatenateFiles($scripts, 'js'));
 }
 
 Hooks::attach('error', 0, function() {

@@ -1,16 +1,33 @@
 <h2>Themes</h2>
-<table class="grid">
- <?php foreach ($_['themes'] as $i => $theme): ?>
-  <?php if ($i % 3 == 0) { echo '<tr>'; } ?>
-	<td class="no_wrap centered vertical_top <?php if ($theme['name'] == $_['current_theme']) { echo 'theme_current'; } ?>">
-	 <h4 class="theme_caption"><?php echo $theme['title']; ?></h4>
-     <div class="theme_caption">(<?php echo $theme['author']; ?>)</div>
-	 <img src="/<?php echo $_['base_url']; ?>res/theme/<?php echo $theme['name']; ?>/preview.png" alt="<?php echo $theme['name']; ?>" class="theme_image" width="256" height="256"><br>
-	 <a href="#" class="small-button" onclick="ajax(this, 'POST', {theme_name: '<?php echo $theme['name']; ?>'}, function(element) {
-        $('.grid td').removeClass('theme_current');
-        $(element).closest('td').addClass('theme_current');
-     });"><i class="icon-check"></i>&ensp;Use</a>
-	</td>
-  <?php if ($i % 3 == 2) { echo '</table>tr>'; } ?>
- <?php endforeach; ?>
-</table>
+<ul id="themes" class="grid">
+</ul>
+
+<script id="theme_item" type="text/x-dot-template">
+    <li id="theme_{{=it.name}}" data-theme-name="{{=it.name}}" {{?it.current}}class="current"{{?}}>
+        <h4>{{=it.title}}</h4>
+        <div>({{=it.author}})</div>
+        <img src="/<?php echo $_['base_url']; ?>res/theme/{{=it.name}}/preview.png" alt="{{=it.name}}" width="256" height="256">
+    </li>
+</script>
+
+<script type="text/javascript">
+    var themes = $('#themes');
+    var theme_item = doT.template($('#theme_item').text());
+    api(null, function(data) {
+        $.each(data['themes'], function() {
+            themes.append(theme_item(this));
+        });
+    });
+
+    themes.on('click', 'li', function() {
+        var item = $(this);
+        if (!item.hasClass('current'))
+            api({
+                action: 'change_theme',
+                theme_name: item.attr('data-theme-name')
+            }, function() {
+                themes.find('li').removeClass('current');
+                item.addClass('current');
+            });
+    });
+</script>

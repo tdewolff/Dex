@@ -1,53 +1,21 @@
 <?php
 use \Michelf\Markdown;
-require_once('include/libs/markdown.php');
-require_once('include/libs/smartypants.php');
+require_once('vendor/markdown.php');
+require_once('vendor/smartypants.php');
 
 if (!isset($url[2]))
 {
-    if (Common::isMethod('POST'))
-    {
-        $data = Common::getMethodData();
-        if (!isset($data['link_id']))
-            user_error('No link ID set', ERROR);
-
-        $db->exec("
-            DELETE FROM content WHERE link_id = '" . $db->escape($data['link_id']) . "';
-            DELETE FROM link WHERE link_id = '" . $db->escape($data['link_id']) . "';");
-        exit;
-    }
-
-    $pages = array();
-    $table = $db->query("SELECT * FROM link;");
-    while ($row = $table->fetch())
-    {
-        $ini_filename = 'templates/' . $row['template_name'] . '/config.ini';
-        if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
-            $row['template_name'] = Common::tryOrEmpty($ini, 'title');
-
-        $row['content'] = array();
-        $table2 = $db->query("SELECT * FROM content WHERE link_id = '" . $row['link_id'] . "';");
-        while ($row2 = $table2->fetch())
-            $row['content'][] = $row2['content'];
-        $row['content'] = strip_tags(implode(' ', $row['content']));
-        $row['content'] = strlen($row['content']) > 50 ? substr($row['content'], 0, 50) . '...' : $row['content'];
-        $row['length'] = Common::formatBytes(strlen($row['content']));
-        $pages[] = $row;
-    }
-
-    Core::addStyle('popbox.css');
-    Core::addStyle('dropdown.css');
+    Core::addStyle('vendor/popbox.css');
+    Core::addStyle('vendor/dropdown.css');
 
     Hooks::emit('admin_header');
-
-    Core::assign('pages', $pages);
     Core::render('admin/pages.tpl');
-
     Hooks::emit('admin_footer');
     exit;
 }
 
 $form = new Form('page');
+
 $form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
 $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'May contain alphanumeric characters and spaces'));
 $form->addLinkUrl('url', 'URL', $domain_url . $base_url, 'title');
@@ -66,11 +34,13 @@ if ($url[2] == 'new')
     $form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
 
     $form->addSeparator();
-    $form->addSubmit('page', '<i class="icon-asterisk"></i>&ensp;Create', '(created)', '(not created)');
 
-    if ($form->submittedBy('page'))
+    $form->setSubmit('<i class="icon-asterisk"></i>&ensp;Create');
+    $form->setResponse('(created)', '(not created)');
+
+    if ($form->submitted())
     {
-        if ($form->validateInput())
+        if ($form->validate())
             if (($error = Core::verifyLinkUrl($form->get('url'))) !== true)
                  $form->setError('url', $error);
             else
@@ -100,7 +70,7 @@ if ($url[2] == 'new')
                 }
                 $form->setRedirect('/' . $base_url . 'admin/pages/' . $link_id);
             }
-        $form->returnJSON();
+        $form->finish();
     }
 }
 else
@@ -114,18 +84,20 @@ else
     while ($row = $table->fetch())
         $content[$row['name']] = $row['content'];
 
-
     $form->addSeparator();
+
     if (!file_exists('templates/' . $link['template_name'] . '/form.php'))
         user_error('Template name not set', ERROR);
     include_once('templates/' . $link['template_name'] . '/form.php');
 
     $form->addSeparator();
-    $form->addSubmit('page', '<i class="icon-save"></i>&ensp;Save', '<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
-    if ($form->submittedBy('page'))
+    $form->setSubmit('<i class="icon-save"></i>&ensp;Save');
+    $form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
+
+    if ($form->submitted())
     {
-        if ($form->validateInput())
+        if ($form->validate())
         {
             if (($error = Core::verifyLinkUrl($form->get('url'), $url[2])) !== true)
                  $form->setError('url', $error);
@@ -157,20 +129,20 @@ else
                 }
             }
         }
-        $form->returnJSON();
+        $form->finish();
     }
 
     $form->set('title', $link['title']);
     $form->set('url', $link['url']);
     $form->setAll($content);
 
-    CORE::assign('view', $link['url']);
+    Core::assign('view', $link['url']);
 }
 
-Core::addStyle('markitup.css');
-Core::addStyle('markdown.css');
-Core::addDeferredScript('jquery.markitup.js');
-Core::addDeferredScript('jquery.markitup.markdown.js');
+Core::addStyle('vendor/markitup.css');
+Core::addStyle('vendor/markdown.css');
+Core::addDeferredScript('vendor/jquery.markitup.js');
+Core::addDeferredScript('vendor/jquery.markitup.markdown.js');
 
 Hooks::emit('admin_header');
 

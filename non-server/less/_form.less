@@ -26,7 +26,7 @@ form > p {
 	border-bottom:solid 1px #E8E8E8;
 }
 
-.form_response, .form_response_inline {
+.form_response {
 	margin-bottom:5px;
 	margin-left:210px;
 
@@ -57,10 +57,8 @@ form > p {
 	}
 }
 
-.form_response_inline {
-}
-
-.form_error {
+.form_errors {
+	display:none;
 	margin-bottom:15px;
 	margin-left:10px;
 
@@ -77,12 +75,13 @@ form > p {
 }
 
 .form_item_error {
-	display:inline-block;
+	display:none;
 	margin-bottom:5px;
 	margin-left:200px;
 }
 
 .form_item_error .box {
+	display:inline-block;
 	background:#F2DEDE;
 	border:solid 1px #EED3D7;
 	.border-radius(5px);
@@ -210,125 +209,57 @@ span.comma {
 	text-align:center;
 }
 
-input[data-type="array_item"]  {
+form ul {
+	margin:0;
+	margin-top:-32px;
+	margin-left:200px;
+	padding:0;
+}
+
+form ul > li input {
+	margin-bottom:0;
+}
+
+form ul > li:last-of-type span.comma {
+	display:none;
+}
+
+input.array_item  {
 	/* all but first item */
 	& + span + & {
 		margin-left:210px;
 	}
 }
 
-input[data-type="parameter_key"] {
+input.parameter_key {
 	width:75px;
 
 	/* all but first key */
-	input[data-type="parameter_value"] + & {
+	input.parameter_val + & {
 		margin-top:-10px;
 		margin-left:210px;
 	}
 }
 
-input[data-type="parameter_value"] + input[data-type="parameter_key"] + span {
+input.parameter_val + input.parameter_key + span {
 	margin-top:-5px;
 }
 
-input[data-type="parameter_value"] {
+input.parameter_val {
 	width:150px;
 	margin-left:0;
 
 	/* all but first value */
-	& + input[data-type="parameter_key"] + span + & {
+	& + input.parameter_key + span + & {
 		margin-top:-10px;
 	}
 }
 
-.submit {
+button[type="submit"] {
 	float:left;
 	clear:both;
 	margin-left:210px;
 	margin-right:10px;
 	padding-left:20px;
 	padding-right:20px;
-}
-
-
-
-form.form_inline {
-	width:100%;
-	padding:5px;
-
-	h3,
-	.form_separator,
-	.form_section_text {
-		display:none;
-	}
-
-	p {
-		display:inline-block;
-		margin:0;
-		padding:0;
-		margin-right:20px;
-	}
-
-	label {
-		float:none;
-		display:inline;
-		width:auto;
-	}
-
-	label > .small {
-		display:none;
-	}
-
-	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
-		float:none;
-		margin:0;
-		width:150px;
-	}
-
-	.submit {
-		display:inline-block;
-		margin:0;
-		vertical-align:top;
-	}
-}
-
-form.form_compact {
-	padding:5px;
-
-	h3 {
-		margin-left:210px;
-		padding-top:10px;
-	}
-
-	p {
-		overflow:auto;
-		margin:0;
-		padding:0;
-	}
-
-	.form_separator {
-		clear:both;
-		border:0;
-		margin:0;
-		padding:0;
-		padding-bottom:5px;
-	}
-
-	.form_section_text {
-		border:0;
-		padding-bottom:5px;
-	}
-
-	label {
-		margin-top:6px;
-	}
-
-	input[type="text"], input[type="email"], input[type="tel"], input[type="password"], select {
-		margin-top:0px;
-		margin-bottom:5px;
-	}
-
-	.submit {
-		vertical-align:top;
-	}
 }

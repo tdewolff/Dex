@@ -24,7 +24,7 @@ $(function() {
             data.i = upload_i;
             upload_i++;
 
-            $('<li id="upload_' + data.i + '"><span></span>&emsp;' + data.files[0].name + '</li>').hide().appendTo('#upload ul').slideDown();
+            $('<li id="upload_' + data.i + '"><span></span>&ensp;' + data.files[0].name + '</li>').hide().appendTo('#upload ul').slideDown();
             var jqXHR = data.submit();
         },
         progress: function(e, data) {

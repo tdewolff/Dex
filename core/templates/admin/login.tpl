@@ -3,6 +3,6 @@
   <h2>Login to admin panel</h2>
  </div>
  <div class="content">
-  <?php $_['login']->renderForm(); ?>
+  <?php $_['login']->render(); ?>
  </div>
 </div>

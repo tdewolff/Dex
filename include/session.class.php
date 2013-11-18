@@ -2,9 +2,9 @@
 
 class Session
 {
-	public static function logIn($account_id, $permission)
+	public static function logIn($user_id, $permission)
 	{
-		$_SESSION['logged_id'] = $account_id;
+		$_SESSION['logged_id'] = $user_id;
 		$_SESSION['logged_permission'] = $permission;
 		$_SESSION['logged_time'] = time();
 	}
@@ -36,7 +36,7 @@ class Session
 		return (self::isUser() && isset($_SESSION['logged_permission']) && $_SESSION['logged_permission'] == 'admin');
 	}
 
-	public static function getAccountId()
+	public static function getUserId()
 	{
 		return isset($_SESSION['logged_id']) ? $_SESSION['logged_id'] : 0;
 	}

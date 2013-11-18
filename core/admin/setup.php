@@ -8,7 +8,6 @@ foreach ($directories as $directory)
         chmod($directory, 0777);
 
 $form = new Form('setup');
-$form->explicitSubmit();
 
 $form->addSection('Settings', 'General site settings');
 $form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
@@ -28,11 +27,13 @@ $form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 $form->allowEmptyTogether(array('username', 'password', 'password2'));
 
 $form->addSeparator();
-$form->addSubmit('setup', '<i class="icon-asterisk"></i>&ensp;Setup', '', '(not setup)');
 
-if ($form->submittedBy('setup'))
+$form->setSubmit('<i class="icon-asterisk"></i>&ensp;Setup');
+$form->setResponse('', '(not setup)');
+
+if ($form->submitted())
 {
-    if ($form->validateInput())
+    if ($form->validate())
     {
         $db->exec("
         DROP TABLE IF EXISTS setting;
@@ -42,9 +43,9 @@ if ($form->submittedBy('setup'))
             value TEXT
         );
 
-        DROP TABLE IF EXISTS account;
-        CREATE TABLE account (
-            account_id INTEGER PRIMARY KEY,
+        DROP TABLE IF EXISTS user;
+        CREATE TABLE user (
+            user_id INTEGER PRIMARY KEY,
             username TEXT,
             password TEXT,
             permission TEXT
@@ -108,41 +109,42 @@ if ($form->submittedBy('setup'))
             'default'
         );
 
-        INSERT INTO account (username, password, permission) VALUES (
+        INSERT INTO user (username, password, permission) VALUES (
             '" . $db->escape($form->get('admin_username')) . "',
             '" . $db->escape($bcrypt->hash($form->get('admin_password'))) . "',
             'admin'
         );");
-        $account_id = $db->last_id();
+        $user_id = $db->last_id();
 
         $username = $form->get('username');
         if (strlen($username))
         {
             $db->exec("
-            INSERT INTO account (username, password, permission) VALUES (
+            INSERT INTO user (username, password, permission) VALUES (
                 '" . $db->escape($form->get('username')) . "',
                 '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
                 'user'
             );");
         }
 
-        Session::logIn($account_id, 'admin');
-        $form->unsetSession();
+        $form->clearSession();
+        Session::logIn($user_id, 'admin');
+
         $form->setRedirect('/' . $base_url . 'admin/');
     }
-    $form->returnJSON();
+    $form->finish();
 }
 
 Core::addTitle('Setup Dexterous');
-Core::addStyle('normalize.css');
-Core::addStyle('font-awesome.css');
-Core::addStyle('fancybox.css');
+Core::addStyle('include/normalize.css');
+Core::addStyle('vendor/font-awesome.css');
+Core::addStyle('vendor/fancybox.css');
 Core::addStyle('admin.css');
-Core::addScript('jquery.js');
-Core::addScript('jquery.fancybox.js');
-Core::addScript('admin.js');
-Core::addDeferredScript('ajax.defer.js');
-Core::addDeferredScript('admin.defer.js');
+Core::addScript('vendor/jquery.js');
+Core::addScript('vendor/jquery.fancybox.js');
+Core::addScript('slidein.js');
+Core::addDeferredScript('include/api.js');
+Core::addDeferredScript('admin.js');
 
 Hooks::emit('admin_header');
 

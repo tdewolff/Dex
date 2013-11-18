@@ -3,16 +3,21 @@
 // preliminaries
 $starttime = explode(' ', microtime());
 
-require_once('include/errorhandler.class.php');
-require_once('include/log.class.php');
 require_once('include/common.class.php');
-require_once('include/hooks.class.php');
+require_once('include/error.class.php');
+require_once('include/log.class.php');
+require_once('include/resource.class.php');
 
-ErrorHandler::initialize(EXPLICIT);
-Common::setCaching(true);
+Log::initialize(VERBOSE, 'logs/');
+Error::initialize(EXPLICIT);
+register_shutdown_function(function() {
+    $error = error_get_last();
+    if ($error['type'] > 0)
+        Error::report($error['type'], $error['message'], $error['file'], $error['line']);
+});
+
 Common::setMinifying(false);
-Log::setLevel(VERBOSE);
-Log::setDirectory('logs/');
+Resource::setCaching(true);
 
 
 // form the request URI
@@ -39,9 +44,9 @@ if ($request_url == 'favicon.ico' || $request_url == 'robots.txt')
 
 
 // redirect resources
-if (strpos($request_url, 'res/') === 0)
+if (Common::requestResource())
 {
-    $filename = Common::expandResourceUrl($request_url);
+    $filename = Resource::expandUrl($request_url);
     if (empty($filename))
         user_error('Bad resource URL "' . $request_url . '"', ERROR);
 
@@ -54,22 +59,22 @@ if (strpos($request_url, 'res/') === 0)
     $extension_position = strrpos($filename, '.');
     $extension = strtolower($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
 
-    if (!Common::isResource($extension))
+    if (!Resource::isResource($extension))
         user_error('Resource file extension "' . $extension . '" invalid of "' . $request_url . '"', ERROR);
     else if (!file_exists($filename))
         user_error('Could not find resource file "' . $filename . '"', ERROR);
     else
     {
         // resize images
-        if ($querystring_position !== false && Common::isImage($extension))
+        if ($querystring_position !== false && Resource::isImage($extension))
         {
             $w = Common::tryOrZero($_GET, 'w');
             $h = Common::tryOrZero($_GET, 'h');
             $s = Common::tryOrZero($_GET, 's');
-            $filename = Common::imageResize($filename, $w, $h, $s);
+            $filename = Resource::imageResize($filename, $w, $h, $s);
         }
 
-        header('Content-Type: ' . Common::getMime($extension));
+        header('Content-Type: ' . Resource::getMime($extension));
         echo file_get_contents($filename);
     }
     exit;
@@ -81,9 +86,11 @@ session_start();
 ob_start('minifyHtml');
 
 require_once('include/database.class.php');
+require_once('include/dexterous.class.php');
 require_once('include/security.php');
 require_once('include/session.class.php');
 require_once('include/form.class.php');
+require_once('include/hooks.class.php');
 
 $db = new Database('database.sqlite3');
 $bcrypt = new Bcrypt(8);
@@ -94,12 +101,11 @@ register_shutdown_function(function() {
 	$endtime = explode(' ', microtime());
 	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
-	Log::information('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
+	Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
 });
 
 
 // setting more stuff
-require_once('include/dexterous.class.php');
 require_once('core/hooks.php');
 
 $url = explode('/', substr($request_url, 0, -1));
@@ -134,8 +140,23 @@ while ($setting = $settings->fetch())
 
 
 // handle admin area
-if ($url[0] == 'admin')
-	require_once('core/admin/admin.php'); // always exits
+if (Common::requestAdmin())
+{
+    if (Common::requestApi())
+    {
+        require_once('include/api.class.php');
+
+        API::load();
+
+        $filename = 'core/' . implode('/', $url) . '.php';
+        if (!file_exists($filename))
+            API::error('API file "' . $filename . '" does not exist');
+
+        require_once($filename);
+    }
+    else
+	   require_once('core/admin/admin.php'); // always exits
+}
 
 
 // show page

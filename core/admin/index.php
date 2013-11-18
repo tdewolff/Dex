@@ -1,37 +1,9 @@
 <?php
 
-if (Common::isMethod('POST'))
+if (isset($url[1]) && $url[1] == 'logs')
 {
-	$data = Common::getMethodData();
-	if (!isset($data['subject']) || !Session::isAdmin())
-		user_error('Subject not set or current user is no admin', ERROR);
-
-	if ($data['subject'] == 'logs')
-	{
-		$handle = opendir('logs/');
-		while (($log_name = readdir($handle)) !== false)
-			if ($log_name != '.gitignore' && is_file('logs/' . $log_name))
-				unlink('logs/' . $log_name);
-	}
-	else if ($data['subject'] == 'cache')
-	{
-		$handle = opendir('cache/');
-		while (($cache_name = readdir($handle)) !== false)
-			if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
-				unlink('cache/' . $cache_name);
-	}
-	exit;
-}
-
-if (isset($url[2]) && $url[2] == 'logs' && isset($url[3]) && $url[3] == 'view')
-{
-	$log = file_get_contents('logs/' . Log::getCurrentFilename());
-
 	Hooks::emit('admin_header');
-
-	Core::assign('log', $log);
-	Core::render('admin/log.tpl');
-
+	Core::render('admin/logs.tpl');
 	Hooks::emit('admin_footer');
 	exit;
 }
@@ -39,20 +11,20 @@ if (isset($url[2]) && $url[2] == 'logs' && isset($url[3]) && $url[3] == 'view')
 $logs_size = 0;
 $handle = opendir('logs/');
 while (($log_name = readdir($handle)) !== false)
-	if ($log_name != '.gitignore' && is_file('logs/' . $log_name))
+	if (is_file('logs/' . $log_name))
 		$logs_size += filesize('logs/' . $log_name);
 
 $cache_size = 0;
 $handle = opendir('cache/');
 while (($cache_name = readdir($handle)) !== false)
-	if ($cache_name != '.gitignore' && is_file('cache/' . $cache_name))
+	if (is_file('cache/' . $cache_name))
 		$cache_size += filesize('cache/' . $cache_name);
 
-Core::addStyle('popbox.css');
+Core::addStyle('vendor/popbox.css');
 
 Hooks::emit('admin_header');
 
-Core::assign('log_name_current', Log::getCurrentFilename());
+Core::assign('log_name_current', Log::getFilename());
 Core::assign('logs_size', Common::formatBytes($logs_size));
 Core::assign('logs_size_percentage', number_format(100 * $logs_size / 50 / 1000 / 1000, 1));
 Core::assign('cache_size', Common::formatBytes($cache_size));

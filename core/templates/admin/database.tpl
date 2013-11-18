@@ -1,7 +1,7 @@
 <h2>Database</h2>
 <?php foreach ($_['database'] as $data): ?>
  <strong><?php echo $data['name']; ?></strong>
- <table class="database">
+ <table id="database">
   <tr>
    <?php foreach ($data['columns'] as $column): ?>
     <td><strong><?php echo $column; ?></strong></td>

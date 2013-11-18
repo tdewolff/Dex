@@ -3,61 +3,29 @@
 class Form
 {
 	private $name = '';
-	private $data = array();
 	private $items = array();
-	private $errors = array();
+	private $submit = false;
+	private $response = array('success' => '', 'errors' => '');
+	private $optionals = array();
 
-	private $mode = false;
-	private $method = 'POST';
+	private $data = array();
+	private $errors = array();
+	private $item_errors = array();
 	private $redirect = '';
-	private $hasSubmit = false;
 
 	public function __construct($name)
 	{
 		Hooks::attach('header', -1, function() {
-			Core::addDeferredScript('sha1.js');
-			Core::addDeferredScript('form.defer.js');
+			Core::addDeferredScript('vendor/sha1.min.js');
+			Core::addDeferredScript('form.js');
 		});
 
 		Hooks::attach('admin_header', -1, function() {
-			Core::addDeferredScript('sha1.js');
-			Core::addDeferredScript('form.defer.js');
+			Core::addDeferredScript('vendor/sha1.min.js');
+			Core::addDeferredScript('form.js');
 		});
 
 		$this->name = $name;
-	}
-
-	////////////////////////////////////////////////////////////////
-
-	public function makeInline() {
-		$this->mode = 'inline';
-	}
-
-	public function makeCompact() {
-		$this->mode = 'compact';
-	}
-
-	public function explicitSubmit() {
-		$this->hasSubmit = true;
-	}
-
-	/*public function usePUT($redirect = '') {
-		$this->method = 'PUT';
-		$this->redirect = $redirect;
-	}
-
-	public function usePOST($redirect = '') {
-		$this->method = 'POST';
-		$this->redirect = $redirect;
-	}
-
-	public function useDELETE($redirect = '') {
-		$this->method = 'DELETE';
-		$this->redirect = $redirect;
-	}*/
-
-	public function setRedirect($redirect) {
-		$this->redirect = $redirect;
 	}
 
 	////////////////////////////////////////////////////////////////
@@ -220,123 +188,114 @@ class Form
 		);
 	}
 
-	public function addSubmit($name, $title, $response_success = '', $reponse_error = '')
+	////////////////////////////////////////////////////////////////
+
+	public function setSubmit($title)
 	{
-		$this->items[] = array(
-			'type' => 'submit',
-			'name' => $this->name . '_' . $name,
-			'title' => $title,
-			'response_success' => $response_success,
-			'response_error' => $reponse_error
+		$this->submit = $title;
+	}
+
+	public function setResponse($success, $error)
+	{
+		$this->response = array(
+			'success' => $success,
+			'error' => $error
 		);
 	}
 
-	public function allowEmpty($names)
-	{
-		if (is_array($names))
-		{
-			foreach ($names as $name)
-				foreach ($this->items as $k => $item)
-					if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
-						$this->items[$k]['emptyTogether'] = array($this->name . '_' . $name);
-		}
-		else
-			foreach ($this->items as $k => $item)
-				if (isset($item['value']) && $item['name'] == $this->name . '_' . $names)
-					$this->items[$k]['emptyTogether'] = array($this->name . '_' . $names);
-	}
-
-	public function allowEmptyTogether($names)
-	{
-		foreach ($names as $k => $name)
-			$names[$k] = $this->name . '_' . $name;
-
-		foreach ($this->items as $k => $item)
-			if (isset($item['value']) && in_array($item['name'], $names))
-				$this->items[$k]['emptyTogether'] = $names;
+	public function setRedirect($redirect) {
+		$this->redirect = $redirect;
 	}
 
 	////////////////////////////////////////////////////////////////
 
-	private function retrieveInput()
+	public function optional($names)
 	{
-		$this->data = Common::getMethodData();
+		if (is_array($names))
+			foreach ($names as $name)
+				$this->optionals[] = array($this->name . '_' . $name);
+		else
+			$this->optionals[] = array($this->name . '_' . $name);
 	}
 
-	public function submittedBy($name)
+	public function optionalTogether($names)
 	{
-		$this->retrieveInput();
-
-		return isset($_SESSION[$this->name . '_salt']) && isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]);
+		foreach ($names as $k => $name)
+			$names[$k] = $this->name . '_' . $name;
+		$this->optionals[] = $names;
 	}
 
-	public function validateInput()
+	////////////////////////////////////////////////////////////////
+
+	public function submitted()
 	{
-		$valid = true;
+		$submitted = isset($_SESSION[$this->name . '_salt']) && ($_SERVER['REQUEST_METHOD'] == 'POST');
+		if ($submitted)
+		{
+			parse_str(file_get_contents("php://input"), $this->data); // retrieve input
+
+			foreach ($this->items as $item) // input to session
+				if (isset($item['value']))
+					$_SESSION[$item['name']] = (isset($this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
+		}
+		return $submitted;
+	}
+
+	public function validate()
+	{
 		foreach ($this->items as $k => $item)
 		{
 			if (isset($item['value']))
 			{
-				$allowEmpty = false;
-				if (isset($item['emptyTogether']))
-				{
-					$allowEmpty = true;
-					foreach ($item['emptyTogether'] as $name)
+				$name = $item['name'] . '_' . $_SESSION[$this->name . '_salt'];
+				$value = (isset($this->data[$name]) ? $this->data[$name] : '');
+
+				$optional = false;
+				foreach ($this->optionals as $optionals)
+					if (in_array($name, $optionals))
 					{
-						if (isset($this->data[$name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($this->data[$name . '_' . $_SESSION[$this->name . '_salt']]))
+						$optional = true;
+						foreach ($optionals as $optionals_name)
 						{
-							$allowEmpty = false;
-							break;
+							$optionals_name = $optionals_name . '_' . $_SESSION[$this->name . '_salt'];
+							if (isset($this->data[$optionals_name]) && strlen($this->data[$optionals_name]))
+							{
+								$optional = false;
+								break;
+							}
 						}
 					}
-				}
 
-				$fullname = $item['name'] . '_' . $_SESSION[$this->name . '_salt'];
-				$value = (isset($this->data[$fullname]) ? $this->data[$fullname] : '');
-
-				if (!$allowEmpty || ($allowEmpty && strlen($value)))
+				if (!$optional || ($optional && strlen($value)))
 				{
+					$error = false;
 					if (isset($item['name_confirm']))
 					{
 						// '_confirm' is the first value entered, we are now checking it against the second (current) item
-						$fullname_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'];
-						$value_confirm = (isset($this->data[$fullname_confirm]) ? $this->data[$fullname_confirm] : '');
+						$name_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'];
+						$value_confirm = (isset($this->data[$name_confirm]) ? $this->data[$name_confirm] : '');
 
 						if ($value != $value_confirm)
-							$this->items[$k]['error'] = 'Does not confirm';
+							$error = 'Does not confirm';
 					}
 					else if ($item['preg']['min'] > 0 && strlen($value) == 0)
-						$this->items[$k]['error'] = 'Cannot be empty';
+						$error = 'Cannot be empty';
 					else if (strlen($value) < $item['preg']['min'])
-						$this->items[$k]['error'] = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
+						$error = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
 					else if (strlen($value) > $item['preg']['max'])
-						$this->items[$k]['error'] = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
+						$error = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
 					else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
-						$this->items[$k]['error'] = $item['preg']['error'];
-				}
+						$error = $item['preg']['error'];
 
-				if (isset($this->items[$k]['error']))
-					$valid = false;
+					if ($error)
+						$this->item_errors[] = array('name' => $name, 'error' => $error);
+				}
 			}
 		}
-		return $valid;
+		return count($this->item_errors) == 0;
 	}
 
-	private function inputToSession()
-	{
-		foreach ($this->items as $item)
-			if (isset($item['value']))
-				$_SESSION[$item['name']] = (isset($this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
-	}
-
-	private function sessionToForm()
-	{
-		foreach ($this->items as $k => $item)
-			if (isset($item['value']))
-				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
-	}
-
-	public function unsetSession()
+	public function clearSession()
 	{
 		unset($_SESSION[$this->name . '_salt']);
 		foreach ($this->items as $item)
@@ -344,18 +303,37 @@ class Form
 				unset($_SESSION[$item['name']]);
 	}
 
-	public function returnJSON()
+	public function finish()
 	{
-		if (isset($_SESSION[$this->name . '_salt'])) // if not set, unsetSession() has been called
-			$this->inputToSession();
-
 		echo json_encode(array(
-			'items' => $this->items,
 			'errors' => $this->errors,
+			'item_errors' => $this->item_errors,
 			'redirect' => $this->redirect
 		));
 		exit;
 	}
+
+	public function render()
+	{
+		foreach ($this->items as $k => $item) // session to form
+			if (isset($item['value']))
+				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
+
+		$_SESSION[$this->name . '_salt'] = random(8);
+
+		$form = array(
+			'name' => $this->name,
+			'salt' => $_SESSION[$this->name . '_salt'],
+			'items' => $this->items,
+			'submit' => $this->submit,
+			'response' => $this->response,
+			'optionals' => json_encode($this->optionals)
+		);
+
+		include('core/templates/form.tpl');
+	}
+
+	////////////////////////////////////////////////////////////////
 
 	// set value of input element
 	public function set($name, $value)
@@ -369,7 +347,7 @@ class Form
 			$_SESSION[$this->name . '_' . $name] = $value;
 	}
 
-	// get value of input element, use after verify()
+	// get value of input element, use after validate()
 	public function get($name)
 	{
 		return (isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
@@ -389,83 +367,14 @@ class Form
 		return $all;
 	}
 
-	// set error for input element
 	public function setError($name, $error)
 	{
-		foreach ($this->items as $k => $item)
-			if (isset($item['value']) && $item['name'] == $this->name . '_' . $name)
-				$this->items[$k]['error'] = $error;
+		$this->item_errors[] = array('name' => $this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt'], 'error' => $error);
 	}
 
-	// add error for entire form
 	public function appendError($error)
 	{
 		$this->errors[] = $error;
-	}
-
-	public function setResponse($response)
-	{
-		$this->response = $response;
-	}
-
-	public function renderForm()
-	{
-		$this->sessionToForm();
-		$_SESSION[$this->name . '_salt'] = random(8);
-
-		// make handy variables for js and css
-		foreach ($this->items as $k => $item)
-			if (isset($item['value']))
-			{
-				if (!isset($item['unused']))
-				{
-					$this->items[$k]['unused'] = true;
-					if (strlen($item['value']) || $item['preg']['min'] > 0)
-						$this->items[$k]['unused'] = false;
-					else if (!isset($item['emptyTogether']))
-						$this->items[$k]['emptyTogether'] = array($item['name']);
-
-					if (isset($this->items[$k]['emptyTogether']))
-					{
-						// find non-empty in emptyTogether
-						$unused = true;
-						foreach ($this->items as $k2 => $item2)
-							if (isset($item2['value']) && strlen($item2['value']) && in_array($item2['name'], $this->items[$k]['emptyTogether']))
-							{
-								$unused = false;
-								break;
-							}
-
-						$emptyTogetherArray = $this->items[$k]['emptyTogether'];
-						foreach ($emptyTogetherArray as $k2 => $item2)
-							$emptyTogetherArray[$k2] = $item2 . '_' . $_SESSION[$this->name . '_salt'];
-						$emptyTogetherArray = json_encode($emptyTogetherArray);
-
-						// set others in emptyTogether to the same!
-						foreach ($this->items as $k2 => $item2)
-							if (isset($item2['value']) && in_array($item2['name'], $this->items[$k]['emptyTogether']))
-							{
-								$this->items[$k2]['unused'] = $unused;
-								$this->items[$k2]['emptyTogetherArray'] = $emptyTogetherArray;
-							}
-					}
-				}
-
-				if (!isset($this->items[$k]['emptyTogetherArray']))
-					$this->items[$k]['emptyTogetherArray'] = json_encode(array());
-			}
-
-		$form = array(
-			'name' => $this->name,
-			'salt' => $_SESSION[$this->name . '_salt'],
-			'items' => $this->items,
-			'errors' => $this->errors,
-			'mode' => $this->mode,
-			'method' => $this->method,
-			'has_submit' => $this->hasSubmit
-		);
-
-		include('core/templates/form.tpl');
 	}
 }
 

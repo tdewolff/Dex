@@ -4,6 +4,6 @@
  </div>
  <div class="content">
   <p>Your site has not been setup yet. Fill out the forms below, any value can later on be change in the admin panel.</p>
-  <?php $_['setup']->renderForm(); ?>
+  <?php $_['setup']->render(); ?>
  </div>
 </div>
