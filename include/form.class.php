@@ -311,7 +311,7 @@ class Form
 
 	public function render()
 	{
-		$_SESSION[$this->name . '_salt'] = random(8);
+		$_SESSION[$this->name . '_salt'] = Common::random(8);
 
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))

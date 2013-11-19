@@ -60,6 +60,16 @@ class Common
 		return implode('.', $bytes);
 	}
 
+    public static function random($n)
+    {
+        $max = ceil($n / 40);
+        $random = '';
+        for ($i = 0; $i < $max; $i++) {
+            $random .= sha1(microtime(true).mt_rand(10000, 90000));
+        }
+        return substr($random, 0, $n);
+    }
+
     ////////////////
 
 	public static function tryOrEmpty($array, $index)

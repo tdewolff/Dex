@@ -8,7 +8,7 @@ $form->addText('url', 'URL', 'URL to organization', 'http://www.domain.com', arr
 $form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 0, 20, 'May contain alphanumeric characters and spaces'));
 $form->addText('name', 'Name', 'Your full name', '', array('[a-zA-Z\s]*', 0, 20, 'May contain alphabetic characters and spaces'));
 $form->addTel('tel', 'Telephone', '');
-$form->addEmail('email', 'Emailaddress', '');
+$form->addEmail('email', 'Email address', '');
 
 $form->addSeparator();
 
