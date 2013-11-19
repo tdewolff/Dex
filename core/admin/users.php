@@ -17,9 +17,9 @@ else
 {
     if ($url[2] != 'new')
     {
-		$account = $db->querySingle("SELECT * FROM account WHERE account_id = '" . $db->escape($url[2]) . "' LIMIT 1;");
-		if (!$account)
-			user_error('Account with id "' . $url[2] . '" doesn\'t exist', ERROR);
+		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $db->escape($url[2]) . "' LIMIT 1;");
+		if (!$user)
+			user_error('User ID "' . $url[2] . '" doesn\'t exist', ERROR);
 	}
 
 	$form = new Form('user');
@@ -34,46 +34,47 @@ else
 
     if ($url[2] != 'new')
     {
-		$form->addPassword('current_password', 'Admin password', 'Confirm with your current password');
-		$form->setSubmit('<i class="icon-save"></i>&ensp;Save');
+		$form->addPassword('current_password', 'Admin password', 'Confirm with your password');
 		$form->optional(array('password', 'password2'));
     }
+
+	$form->setSubmit('<i class="icon-save"></i>&ensp;Save');
 	$form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
 	if ($form->submitted())
 	{
-		if ($form->validateInput())
+		if ($form->validate())
 		{
-			$current_account = $db->querySingle("SELECT * FROM account WHERE account_id = '" . $db->escape(Session::getAccountId()) . "' LIMIT 1;");
-            if ($db->querySingle("SELECT * FROM account WHERE username = '" . $db->escape($form->get('username')) . "' AND account_id != '" . $db->escape($url[2]) . "' LIMIT 1;"))
+			$current_user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $db->escape(Session::getUserId()) . "' LIMIT 1;");
+            if ($db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' AND user_id != '" . $db->escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
-            else if (!$current_account)
+            else if (!$current_user)
                 $form->appendError('Unknown error');
-            else if ($url[2] != 'new' && !$bcrypt->verify($form->get('current_password'), $current_account['password']))
+            else if ($url[2] != 'new' && !$bcrypt->verify($form->get('current_password'), $current_user['password']))
                 $form->setError('current_password', 'Wrong password');
-            else if ($url[2] != 'new' && Session::getAccountId() == $url[2] && $current_account['permission'] != $form->get('permission'))
+            else if ($url[2] != 'new' && Session::getUserId() == $url[2] && $current_user['permission'] != $form->get('permission'))
                 $form->setError('permission', 'Can\'t change your own permission level');
             else
 				if ($url[2] != 'new')
 				{
 					if ($form->get('password') != '')
 						$db->exec("
-						UPDATE account SET
+						UPDATE user SET
 							username = '" . $db->escape($form->get('username')) . "',
 							password = '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
 							permission = '" . $db->escape($form->get('permission')) . "'
-						WHERE account_id = '" . $db->escape($url[2]) . "';");
+						WHERE user_id = '" . $db->escape($url[2]) . "';");
 					else
 						$db->exec("
-						UPDATE account SET
+						UPDATE user SET
 							username = '" . $db->escape($form->get('username')) . "',
 							permission = '" . $db->escape($form->get('permission')) . "'
-						WHERE account_id = '" . $db->escape($url[2]) . "';");
+						WHERE user_id = '" . $db->escape($url[2]) . "';");
 				}
 				else
 				{
 					$db->exec("
-					INSERT INTO account (username, password, permission) VALUES (
+					INSERT INTO user (username, password, permission) VALUES (
 						'" . $db->escape($form->get('username')) . "',
 						'" . $db->escape($bcrypt->hash($form->get('password'))) . "',
 						'" . $db->escape($form->get('permission')) . "'
@@ -86,8 +87,8 @@ else
 
 	if ($url[2] != 'new')
 	{
-		$form->set('username', $account['username']);
-		$form->set('permission', $account['permission']);
+		$form->set('username', $user['username']);
+		$form->set('permission', $user['permission']);
 	}
 
 	Hooks::emit('admin_header');

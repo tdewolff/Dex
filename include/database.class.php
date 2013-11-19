@@ -2,7 +2,7 @@
 
 if (get_magic_quotes_gpc()) {
     function strip_array($var) {
-        return is_array($var)? array_map("strip_array", $var):stripslashes($var);
+        return is_array($var) ? array_map("strip_array", $var) : stripslashes($var);
     }
 
     $_POST = strip_array($_POST);
@@ -13,13 +13,6 @@ if (get_magic_quotes_gpc()) {
 function _sqliteRegexp($pattern, $string) {
 	$pattern = preg_replace('/\//', '\/', $pattern);
 	return preg_match('/^' . $pattern . '$/', $string);
-}
-
-function _sqliteJsonAttr($json, $key) {
-	$json = json_decode($json, true);
-	if (isset($json[$key]))
-		return $json[$key];
-	return null;
 }
 
 class Database
@@ -33,7 +26,6 @@ class Database
 		$this->filename = $filename;
 		$this->handle = new SQLite3($this->filename);
 		$this->handle->createFunction('REGEXP', '_sqliteRegexp', 2);
-		$this->handle->createFunction('JSONATTR', '_sqliteJsonAttr', 2);
 	}
 
 	public function __destruct()

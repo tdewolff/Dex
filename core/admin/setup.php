@@ -1,12 +1,5 @@
 <?php
 
-$directories = array('assets/', 'cache/', 'logs/');
-foreach ($directories as $directory)
-    if (!is_dir($directory))
-        mkdir($directory, 0777);
-    else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0777')
-        chmod($directory, 0777);
-
 $form = new Form('setup');
 
 $form->addSection('Settings', 'General site settings');
@@ -24,7 +17,7 @@ $form->addSection('User account', 'User account gives restricted access to the a
 $form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
 $form->addPassword('password', 'Password', '');
 $form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
-$form->allowEmptyTogether(array('username', 'password', 'password2'));
+$form->optionalTogether(array('username', 'password', 'password2'));
 
 $form->addSeparator();
 
@@ -140,10 +133,11 @@ Core::addStyle('include/normalize.css');
 Core::addStyle('vendor/font-awesome.css');
 Core::addStyle('vendor/fancybox.css');
 Core::addStyle('admin.css');
-Core::addScript('vendor/jquery.js');
-Core::addScript('vendor/jquery.fancybox.js');
-Core::addScript('slidein.js');
-Core::addDeferredScript('include/api.js');
+Core::addScript('vendor/jquery-2.0.3.min.js');
+Core::addScript('vendor/doT.min.js');
+Core::addScript('include/slidein.js');
+Core::addScript('include/api.js');
+Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('admin.js');
 
 Hooks::emit('admin_header');

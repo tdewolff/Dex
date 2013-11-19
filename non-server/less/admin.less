@@ -75,6 +75,13 @@ h1 {
 	padding: 40px 60px;
 }
 
+#user {
+	color:#E0E0E0;
+	font-size:90%;
+	padding-bottom:5px;
+	text-align:right;
+}
+
 #left-column {
 	position:absolute;
 	width: 200px;
@@ -292,9 +299,10 @@ ul.table {
 ul.grid {
 	margin:0 auto;
 	overflow:hidden;
+	text-align:center;
 
 	li {
-		float:left;
+		display:inline-block;
 		padding:25px 15px;
 	    border:darken(@light, 2%) 1px solid;
 
@@ -389,6 +397,7 @@ ul.grid-3 {
 	#images {
 		li {
 			position:relative;
+			vertical-align: top;
 
 			.delete {
 				position:absolute;

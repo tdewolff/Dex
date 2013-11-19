@@ -6,10 +6,10 @@ Core::addStyle('vendor/font-awesome.css');
 Core::addStyle('vendor/fancybox.css');
 Core::addStyle('admin.css');
 Core::addScript('vendor/jquery-2.0.3.min.js');
+Core::addScript('vendor/jquery.fancybox.min.js');
 Core::addScript('vendor/doT.min.js');
-Core::addScript('include/api.js');
 Core::addScript('include/slidein.js');
-Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+Core::addScript('include/api.js');
 Core::addDeferredScript('admin.js');
 
 // logout
@@ -23,10 +23,9 @@ else
 	Core::checkModules();
 
 $admin_links = array();
-$admin_links[] = array('name' => 'index',    'regex' => 'admin/(logs/)?',              'file' => 'index.php',    'url' => 'admin/',          'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
-$admin_links[] = array('name' => 'settings', 'regex' => 'admin/settings/',             'file' => 'settings.php', 'url' => 'admin/settings/', 'icon' => 'icon-wrench',        'title' => 'Settings',    'admin_only' => 0);
-$admin_links[] = array('name' => 'pages',    'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'pages.php',    'url' => 'admin/pages/',    'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
-$admin_links[] = array('name' => 'assets',   'regex' => 'admin/assets/',               'file' => 'assets.php',   'url' => 'admin/assets/',   'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
+$admin_links[] = array('name' => 'index',  'regex' => 'admin/(logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
+$admin_links[] = array('name' => 'pages',  'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'core/admin/pages.php',  'url' => 'admin/pages/',  'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
+$admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',               'file' => 'core/admin/assets.php', 'url' => 'admin/assets/', 'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 
@@ -51,15 +50,18 @@ while ($row = $table->fetch())
 if (!empty($admin_links[count($admin_links) - 1]))
 	$admin_links[] = array();
 
-$admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'users.php',     'url' => 'admin/users/',     'icon' => 'icon-user',     'title' => 'Users',     'admin_only' => 1);
-$admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'modules.php',   'url' => 'admin/modules/',   'icon' => 'icon-sitemap',  'title' => 'Modules',   'admin_only' => 1);
-$admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'templates.php', 'url' => 'admin/templates/', 'icon' => 'icon-file-alt', 'title' => 'Templates', 'admin_only' => 1);
-$admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'themes.php',    'url' => 'admin/themes/',    'icon' => 'icon-adjust',   'title' => 'Themes',    'admin_only' => 0);
-$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'database.php',  'url' => 'admin/database/',  'icon' => 'icon-hdd',      'title' => 'Database',  'admin_only' => 1);
-$admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'logout.php',    'url' => 'admin/logout/',    'icon' => 'icon-signout',  'title' => 'Log out',   'admin_only' => 0);
+$admin_links[] = array('name' => 'settings',  'regex' => 'admin/settings/',             'file' => 'core/admin/settings.php',  'url' => 'admin/settings/',  'icon' => 'icon-wrench',   'title' => 'Settings',  'admin_only' => 0);
+$admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'core/admin/users.php',     'url' => 'admin/users/',     'icon' => 'icon-user',     'title' => 'Users',     'admin_only' => 1);
+$admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'core/admin/modules.php',   'url' => 'admin/modules/',   'icon' => 'icon-sitemap',  'title' => 'Modules',   'admin_only' => 1);
+$admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'core/admin/templates.php', 'url' => 'admin/templates/', 'icon' => 'icon-file-alt', 'title' => 'Templates', 'admin_only' => 1);
+$admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'core/admin/themes.php',    'url' => 'admin/themes/',    'icon' => 'icon-adjust',   'title' => 'Themes',    'admin_only' => 0);
+$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'icon-hdd',      'title' => 'Database',  'admin_only' => 1);
+$admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'icon-signout',  'title' => 'Log out',   'admin_only' => 0);
 
 
-Core::assign('isAdmin', Session::isAdmin());
+Core::assign('username', Session::getUsername());
+Core::assign('permission', ucfirst(Session::getPermission()));
+Core::assign('is_admin', Session::isAdmin());
 Core::assign('admin_links', $admin_links);
 
 $log_error = 'URL "' . $request_url . '"" has no match with to any admin pages';
@@ -69,11 +71,10 @@ foreach ($admin_links as $i => $admin_link)
 		$admin_link['regex'] = preg_replace('/\//', '\/', $admin_link['regex']);
 		if (preg_match('/^' . $admin_link['regex'] . '$/', $request_url))
 		{
-			Core::assign('apiUrl', '/' . $base_url . 'admin/api/' . substr($admin_link['file'], 0, -4) . '/');
+			$api_file = substr_replace($admin_link['file'], 'api/', strpos($admin_link['file'], 'admin/') + 6, 0);
+			Core::assign('api_url', '/' . $base_url . 'api/' . substr($api_file, 0, -4) . '/');
 			Core::assign('current_admin_i', $i);
 
-			if (strpos($admin_link['file'], '/') === false)
-				$admin_link['file'] = 'core/admin/' . $admin_link['file'];
 			if (file_exists($admin_link['file']))
 			{
 				$log_error = 'error within admin page';

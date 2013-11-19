@@ -7,7 +7,7 @@
     <div class="left"><?php echo $_['logs_size']; ?></div>
     <div class="text-right">
         <?php echo $_['logs_size_percentage']; ?>%
-        <?php if ($_['isAdmin']): ?>
+        <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
         <a href="#" class="sure inline-rounded" data-action="clear_logs"><i class="icon-trash"></i></a>
         <?php endif; ?>
@@ -26,7 +26,7 @@
     <div class="left"><?php echo $_['cache_size']; ?></div>
     <div class="text-right">
         <?php echo $_['cache_size_percentage']; ?>%
-        <?php if ($_['isAdmin']): ?>
+        <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
         <a href="#" class="sure inline-rounded" data-action="clear_cache"><i class="icon-trash"></i></a>
         <?php endif; ?>

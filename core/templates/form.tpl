@@ -1,6 +1,7 @@
 <form
     id="<?php echo $form['name'] . '_' . $form['salt']; ?>"
     autocomplete="off"
+    onsubmit="return false;"
     data-salt="<?php echo $form['salt']; ?>"
     data-optionals='<?php echo $form['optionals']; ?>'>
 
@@ -26,7 +27,6 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            pattern="<?php echo $item['preg']['regex']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
 
 
@@ -42,7 +42,6 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            pattern="<?php echo $item['preg']['regex']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
 
 
@@ -51,7 +50,6 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            pattern="<?php echo $item['preg']['regex']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
 
 
@@ -80,6 +78,7 @@
         <div class="clear"></div>
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+            class="markdown"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"><?php echo $item['value']; ?></textarea>
 
@@ -99,7 +98,6 @@
                 <input type="text"
                     value='{{=it.value}}'
                     maxlength="<?php echo $item['preg']['max']; ?>"
-                    pattern="<?php echo $item['preg']['regex']; ?>"
                     placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
                     class="array_item"
                     data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
@@ -123,14 +121,12 @@
                 <input type="text"
                     value='{{=it.key}}'
                     maxlength="<?php echo $item['preg']['max']; ?>"
-                    pattern="<?php echo $item['preg']['regex']; ?>"
                     class="parameter_key"
                     data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
                 <span class="equal">=</span>
                 <input type="text"
                     value='{{=it.value}}'
                     maxlength="<?php echo $item['preg']['max']; ?>"
-                    pattern="<?php echo $item['preg']['regex']; ?>"
                     class="parameter_val"
                     data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
             </li>

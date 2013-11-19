@@ -30,7 +30,7 @@ class Log
 
 	public static function open()
 	{
-		self::$file = fopen(self::$filename, 'a');
+		self::$file = @fopen(self::$filename, 'a');
 	}
 
 	public static function close()

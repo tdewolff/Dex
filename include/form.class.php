@@ -252,28 +252,24 @@ class Form
 
 				$optional = false;
 				foreach ($this->optionals as $optionals)
-					if (in_array($name, $optionals))
+					if (in_array($item['name'], $optionals))
 					{
 						$optional = true;
 						foreach ($optionals as $optionals_name)
-						{
-							$optionals_name = $optionals_name . '_' . $_SESSION[$this->name . '_salt'];
-							if (isset($this->data[$optionals_name]) && strlen($this->data[$optionals_name]))
+							if (isset($this->data[$optionals_name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($this->data[$optionals_name . '_' . $_SESSION[$this->name . '_salt']]))
 							{
 								$optional = false;
 								break;
 							}
-						}
 					}
 
-				if (!$optional || ($optional && strlen($value)))
+				if (!$optional)
 				{
 					$error = false;
 					if (isset($item['name_confirm']))
 					{
 						// '_confirm' is the first value entered, we are now checking it against the second (current) item
-						$name_confirm = $item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt'];
-						$value_confirm = (isset($this->data[$name_confirm]) ? $this->data[$name_confirm] : '');
+						$value_confirm = (isset($this->data[$item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt']] : '');
 
 						if ($value != $value_confirm)
 							$error = 'Does not confirm';
@@ -315,11 +311,11 @@ class Form
 
 	public function render()
 	{
+		$_SESSION[$this->name . '_salt'] = random(8);
+
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
-
-		$_SESSION[$this->name . '_salt'] = random(8);
 
 		$form = array(
 			'name' => $this->name,

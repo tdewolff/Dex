@@ -8,9 +8,10 @@ var Form = function(form) {
 
     this.updateUnused = function(name) {
         $.each(self.optionals, function(i, optional) {
-            if (typeof name == 'undefined' || $.inArray(name, optional) !== -1) {
+            if (typeof name == 'undefined' || $.inArray(name.slice(0, -9), optional) !== -1) {
                 inputs = $();
                 $.each(optional, function(i, name) {
+                    name += '_' + self.salt;
                     inputs = inputs.add('[name="' + name + '"], [data-name="' + name + '"]');
                 });
 
@@ -62,7 +63,6 @@ var Form = function(form) {
                     if (value.length)
                         data.push(value);
                 });
-                    console.log(hidden);
 
                 if (data.length)
                 {
@@ -86,12 +86,7 @@ var Form = function(form) {
     this.success = function(data) {
         if (data['errors'].length) {
             var errors = data['errors'].join('<br>');
-
-            console.log(errors);
-
             var form_errors = self.form.find('.form_errors');
-            console.log(form_errors);
-            console.log(form_errors.html());
             if (form_errors.html() != errors)
                 form_errors.html(errors).hide();
             form_errors.fadeIn();
@@ -101,7 +96,6 @@ var Form = function(form) {
 
         if (data['item_errors'].length)
             $.each(data['item_errors'], function(i, item_error) {
-                console.log(item_error['name'] + ' : ' + item_error['error']);
                 var input = self.form.find('[name="' + item_error['name'] + '"], [data-name="' + item_error['name'] + '"]');
                 input.addClass('invalid');
 
@@ -117,7 +111,7 @@ var Form = function(form) {
             self.form.find('.form_item_error').hide();
 
         if (data['errors'].length || data['item_errors'].length)
-           self.responseError();
+            self.responseError();
         else if (data['redirect'].length > 0)
             window.location.replace(data['redirect']);
         else
@@ -142,12 +136,6 @@ var Form = function(form) {
     this.form.on('input', 'input', function(e) {
         self.input($(e.currentTarget));
     });
-
-    // submit
-    /*this.form.find('input, select').keydown(function(e) {
-        if (e.keyCode === 13)
-            form.submit();
-    });*/
 
     this.form.on('submit', function(e) {
         e.preventDefault();

@@ -26,16 +26,17 @@ class Resource
 
     public static function getMime($extension)
     {
-        return self::$extensions_mime[$extension];
+        return self::$extensions_mime[strtolower($extension)];
     }
 
     public static function isResource($extension)
     {
-        return array_key_exists($extension, self::$extensions_mime);
+        return array_key_exists(strtolower($extension), self::$extensions_mime);
     }
 
     public static function isImage($extension)
     {
+        $extension = strtolower($extension);
         return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg');
     }
 

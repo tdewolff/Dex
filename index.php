@@ -3,6 +3,13 @@
 // preliminaries
 $starttime = explode(' ', microtime());
 
+$directories = array('assets/', 'cache/', 'logs/');
+foreach ($directories as $directory)
+    if (!is_dir($directory))
+        mkdir($directory, 0777);
+    else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0777')
+        chmod($directory, 0777);
+
 require_once('include/common.class.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
@@ -83,17 +90,14 @@ if (Common::requestResource())
 
 // not a resource, so start loading more stuff
 session_start();
-ob_start('minifyHtml');
 
 require_once('include/database.class.php');
-require_once('include/dexterous.class.php');
 require_once('include/security.php');
 require_once('include/session.class.php');
-require_once('include/form.class.php');
-require_once('include/hooks.class.php');
 
 $db = new Database('database.sqlite3');
 $bcrypt = new Bcrypt(8);
+$url = explode('/', substr($request_url, 0, -1));
 
 register_shutdown_function(function() {
 	global $starttime, $db;
@@ -105,10 +109,28 @@ register_shutdown_function(function() {
 });
 
 
-// setting more stuff
+// API
+if (Common::requestApi())
+{
+    require_once('include/api.class.php');
+    API::load();
+
+    $filename = implode('/', array_slice($url, 1)) . '.php';
+    if (!file_exists($filename))
+        API::error('API file "' . $filename . '" does not exist');
+
+    require_once($filename);
+}
+
+
+// setting more stuff for a page
+ob_start('minifyHtml');
+
+require_once('include/dexterous.class.php');
+require_once('include/form.class.php');
+require_once('include/hooks.class.php');
 require_once('core/hooks.php');
 
-$url = explode('/', substr($request_url, 0, -1));
 $domain_url = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos(strtolower($_SERVER['SERVER_PROTOCOL']), '/')); // http
 $domain_url .= ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : ''); // s in https
 $domain_url .= '://' . $_SERVER['SERVER_NAME'];
@@ -141,22 +163,7 @@ while ($setting = $settings->fetch())
 
 // handle admin area
 if (Common::requestAdmin())
-{
-    if (Common::requestApi())
-    {
-        require_once('include/api.class.php');
-
-        API::load();
-
-        $filename = 'core/' . implode('/', $url) . '.php';
-        if (!file_exists($filename))
-            API::error('API file "' . $filename . '" does not exist');
-
-        require_once($filename);
-    }
-    else
-	   require_once('core/admin/admin.php'); // always exits
-}
+	require_once('core/admin/admin.php'); // always exits
 
 
 // show page

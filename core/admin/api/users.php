@@ -16,7 +16,7 @@ $users = array();
 $table = $db->query("SELECT * FROM user;");
 while ($row = $table->fetch())
 {
-	$row['current'] = $row['user_id'] == Session::getAccountId();
+	$row['current'] = $row['user_id'] == Session::getUserId();
 	$row['permission'] = ucfirst($row['permission']);
 	$users[] = $row;
 }

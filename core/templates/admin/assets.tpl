@@ -1,6 +1,6 @@
 <h2>Assets</h2>
 <div id="assets">
-    <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>admin/assets/" enctype="multipart/form-data">
+    <form id="upload" method="post" action="<?php echo $_['api_url']; ?>" enctype="multipart/form-data">
         <div id="drop">
             <span>Drop Here</span><br>
             <a class="small-button">Browse</a>
@@ -30,29 +30,29 @@
 </div>
 
 <script id="directory_item" type="text/x-dot-template">
-    <li id="directory_{{=it.id}}" data-name="{{=it.name}}" class="directory">
-        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="/<?php echo $_['base_url']; ?>admin/assets/{{=it.url}}">{{=it.title}}</a></div>
+    <li data-name="{{=it.name}}" class="directory">
+        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.title}}</a></div>
         <div style="width:100px;">-</div>
         <div style="width:40px;">&nbsp;</div>
     </li>
 </script>
 
 <script id="asset_item" type="text/x-dot-template">
-    <li id="asset_{{=it.id}}" class="asset">
+    <li data-name="{{=it.name}}" class="asset">
         <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
         <div style="width:100px;">{{=it.size}}</div>
         <div style="width:40px;">
-            <a href="#" class="halt"><i class="icon-fixed-width icon-trash"></i></a>
-            <a href="#" class="sure" data-id="{{=it.id}}" data-name="{{=it.name}}"><i class="icon-fixed-width icon-question"></i></a>
+            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
         </div>
     </li>
 </script>
 
 <script id="image_item" type="text/x-dot-template">
-    <li id="image_{{=it.id}}">
+    <li data-name="{{=it.name}}">
         <div class="delete">
-            <a href="#" class="halt"><i class="icon-fixed-width icon-trash"></i></a>
-            <a href="#" class="sure" data-id="{{=it.id}}" data-name="{{=it.name}}"><i class="icon-fixed-width icon-question"></i></a>
+            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
         </div>
         <div class="caption"><strong>{{=it.title}}</strong></div>
         {{? it.width > 200}}
@@ -71,6 +71,7 @@
 </script>
 
 <script type="text/javascript">
+    // preliminaries
     var directories_assets = $('#directories_assets');
     var images = $('#images');
 
@@ -78,18 +79,32 @@
     var asset_item = doT.template($('#asset_item').text());
     var image_item = doT.template($('#image_item').text());
 
-    api(null, function(data) {
-        $.each(data['directories'], function() {
-            directories_assets.append(directory_item(this));
-        });
+    // loading initial data
+    function loadDir(dir) {
+        directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
+        images.find('li').slideUp('fast', function() { $(this).remove(); });
 
-        $.each(data['assets'], function() {
-            directories_assets.append(asset_item(this));
-        });
+        api({
+            dir: dir
+        }, function(data) {
+            $.each(data['directories'], function() {
+                directories_assets.append(directory_item(this));
+            });
 
-        $.each(data['images'], function() {
-            images.append(image_item(this));
+            $.each(data['assets'], function() {
+                directories_assets.append(asset_item(this));
+            });
+
+            $.each(data['images'], function() {
+                images.append(image_item(this));
+            });
         });
+    }
+    loadDir('');
+
+    // click events on directories, assets and images
+    directories_assets.on('click', '.directory a', function() {
+        loadDir($(this).attr('data-dir'));
     });
 
     directories_assets.on('click', '.asset a.sure', function() {
@@ -98,7 +113,7 @@
             action: 'delete_file',
             name: item.attr('data-name')
         }, function() {
-            $('#asset_' + item.attr('data-id')).remove();
+            item.closest('li').slideUp('fast', function() { $(this).remove(); });
         });
     });
 
@@ -108,30 +123,42 @@
             action: 'delete_file',
             name: item.attr('data-name')
         }, function() {
-            $('#image_' + item.attr('data-id')).remove();
+            item.closest('li').slideUp('fast', function() { $(this).remove(); });
         });
     });
+
+    // adding directories, assets or images
+    function addAlphabetically(list, item, name) {
+        var added = false;
+        list.each(function() {
+            if ($(this).attr('data-name') > name)
+            {
+                $(this).before(item);
+                added = true;
+                return false;
+            }
+        });
+
+        if (!added)
+            list.last().after(item);
+    }
 
     $('#create_directory').on('click', 'a', function() {
         api({
             action: 'create_directory',
-            dir_name: $(this).prev('input').val()
+            name: $(this).prev('input').val()
         }, function(data) {
-            // append directory at the right place, alphabetically
-            var appended = false;
-            var directories = directories_assets.find('.directory');
+            addAlphabetically(directories_assets.find('.directory'), directory_item(data['directory']), data['directory']['name']);
+        });
+    });
 
-            directories.each(function() {
-                if ($(this).attr('data-name') > data['directory']['name'])
-                {
-                    $(this).before(directory_item(data['directory']));
-                    appended = true;
-                    return false;
-                }
-            });
-
-            if (!appended)
-                directories.last().after(directory_item(data['directory']));
+    $(function() {
+        initializeUpload('#upload', function(data) {
+            if (!data.is_image) {
+                addAlphabetically(directories_assets.find('.asset'), asset_item(data), data['name']);
+            } else {
+                addAlphabetically(images, image_item(data), data['name']);
+            }
         });
     });
 </script>

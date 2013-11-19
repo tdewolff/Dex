@@ -10,16 +10,15 @@ $form->addSeparator();
 
 $form->setSubmit('<i class="icon-signin"></i>&ensp;Login');
 $form->setResponse('', '(not logged in)');
-$form->optional(array('username', 'password'));
 
 if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		$account = $db->querySingle('SELECT * FROM account WHERE username = "' . $db->escape($form->get('username')) . '" LIMIT 1;');
-		if ($account && $bcrypt->verify($form->get('password'), $account['password']))
+		$user = $db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
+		if ($user && $bcrypt->verify($form->get('password'), $user['password']))
 		{
-			Session::logIn($account['account_id'], $account['permission']);
+			Session::logIn($user['user_id'], $user['permission']);
 
 			$form->clearSession(); // don't remember!
 			$form->setRedirect('/' . $base_url . $request_url);

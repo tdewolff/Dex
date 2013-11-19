@@ -29,7 +29,7 @@ class Common
     public static function requestApi()
     {
         global $request_url;
-        return strpos($request_url, 'admin/api/') === 0;
+        return strpos($request_url, 'api/') === 0;
     }
 
     ////////////////

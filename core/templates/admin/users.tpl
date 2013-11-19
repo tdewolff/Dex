@@ -37,7 +37,10 @@
 
     users.on('click', 'a.sure', function() {
         var item = $(this);
-        api({user_id: item.attr('data-user-id')}, function() {
+        api({
+            action: 'delete_user',
+            user_id: item.attr('data-user-id')
+        }, function() {
             $('.dropdown-menu').fadeOut('fast');
             $('#user_' + item.attr('data-user-id')).remove();
         });

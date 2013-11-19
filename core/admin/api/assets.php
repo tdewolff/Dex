@@ -11,7 +11,12 @@ if (!file_exists('assets/' . $dir))
 if (isset($_FILES['upload']))
 {
     if ($_FILES['upload']['error'] != 0)
-        API::error('Unknown error');
+    {
+        if ($_FILES['upload']['error'] == 1 || $_FILES['upload']['error'] == 2)
+            API::error('File too big');
+        else
+            API::error('Unknown error: ' . $_FILES['upload']['error']);
+    }
 
     $name = $_FILES['upload']['name'];
     $last_slash = strrpos($name, '/');
@@ -36,10 +41,10 @@ if (isset($_FILES['upload']))
         'name' => $name,
         'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? '/' . $base_url . 'res/core/images/icons/' . $extension . '.png' : '/' . $base_url . 'res/core/images/icons/unknown.png'),
         'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-        'isImage' => Resource::isImage($extension),
+        'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
         'width' => $width,
-        'widthAttr' => Resource::imageSizeAttributes('res/assets/' . $dir . $name, 200),
-        'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2)
+        'is_image' => Resource::isImage($extension),
+        'width_attr' => Resource::imageSizeAttributes('res/assets/' . $dir . $name, 200),
     ));
     API::finish();
 }
@@ -85,7 +90,6 @@ while (($name = readdir($handle)) !== false)
         {
             list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
             $images[] = array(
-                'id' => count($images),
                 'url' => 'res/assets/' . $dir . $name,
                 'name' => $name,
                 'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
@@ -94,7 +98,6 @@ while (($name = readdir($handle)) !== false)
         }
         else
             $assets[] = array(
-                'id' => count($assets),
                 'url' => $dir . $name,
                 'name' => $name,
                 'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
@@ -120,8 +123,7 @@ while (($name = readdir($handle)) !== false)
         }
 
         $directories[] = array(
-            'id' => count($directories),
-            'url' => $url,
+            'dir' => $url,
             'name' => $name,
             'icon' => ($name == '..' ? 'dirup.png' : 'folder.png'),
             'title' => $name

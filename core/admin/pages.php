@@ -1,7 +1,4 @@
 <?php
-use \Michelf\Markdown;
-require_once('vendor/markdown.php');
-require_once('vendor/smartypants.php');
 
 if (!isset($url[2]))
 {
@@ -141,8 +138,8 @@ else
 
 Core::addStyle('vendor/markitup.css');
 Core::addStyle('vendor/markdown.css');
-Core::addDeferredScript('vendor/jquery.markitup.js');
-Core::addDeferredScript('vendor/jquery.markitup.markdown.js');
+Core::addDeferredScript('vendor/jquery.markitup.min.js');
+Core::addDeferredScript('include/jquery.markitup.markdown.js');
 
 Hooks::emit('admin_header');
 

@@ -136,7 +136,7 @@ class Core extends Dexterous
             return 'Already used';
 
         $url_base = substr($url, 0, strpos($url, '/') + 1);
-        if ($url_base == 'admin/' || $url_base == 'res/')
+        if ($url_base == 'admin/' || $url_base == 'res/' || $url_base == 'api/')
             return 'Cannot start with "' . $url_base . '"';
 
         return true;

@@ -4,7 +4,7 @@ Module::set('contact');
 $form = new Form('contact');
 
 $form->addSection('Contact details', '');
-$form->addText('url', 'URL', 'URL to organization', 'http://www.domain.com', array('((https?|ftp):\/\/[^\s\/\$\.\?#]\.[^\s]*)?', 0, 50, 'Bad URL'));
+$form->addText('url', 'URL', 'URL to organization', 'http://www.domain.com', array('((https?):\/\/[^\s]*)?', 0, 50, 'Bad URL'));
 $form->addText('organization', 'Organization', '', '', array('[a-zA-Z0-9\s]*', 0, 20, 'May contain alphanumeric characters and spaces'));
 $form->addText('name', 'Name', 'Your full name', '', array('[a-zA-Z\s]*', 0, 20, 'May contain alphabetic characters and spaces'));
 $form->addTel('tel', 'Telephone', '');
