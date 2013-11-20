@@ -33,7 +33,9 @@
 <script type="text/javascript">
     var pages = $('#pages');
     var page_item = doT.template($('#page_item').text());
-    api(null, function(data) {
+    api('/' + base_url + 'api/core/pages.php', {
+        action: 'get_pages'
+    }, function(data) {
         $.each(data['pages'], function() {
             pages.append(page_item(this));
         });
@@ -41,7 +43,7 @@
 
     pages.on('click', 'a.sure', function() {
     	var item = $(this);
-        api({
+        api('/' + base_url + 'api/core/pages.php', {
             action: 'delete_page',
             link_id: $(this).attr('data-link-id')
         }, function() {

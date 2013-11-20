@@ -30,7 +30,9 @@
 <script type="text/javascript">
     var menu = $('#menu');
     var menu_item = doT.template($('#menu_item').text());
-    api(null, function(data) {
+    api('/' + base_url + 'api/module/menu/index.php', {
+        action: 'get_menu'
+    }, function(data) {
         $.each(data['menu'], function() {
             var item = $(menu_item(this));
 

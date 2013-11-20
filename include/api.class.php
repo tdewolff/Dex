@@ -20,6 +20,21 @@ class API
         return false;
     }
 
+    public static function expandUrl($url)
+    {
+        $filename = '';
+        if (isset($url[1]) && isset($url[2]))
+            if ($url[1] == 'core')
+                $filename = 'core/api/' . implode('/', array_splice($url, 2));
+            else if ($url[1] == 'module')
+                $filename = 'modules/' . $url[2] . '/api/' . implode('/', array_splice($url, 3));
+
+        if (empty($filename))
+            user_error('Could not expand URL "' . implode('/', $url) . '" to API', ERROR);
+
+        return $filename;
+    }
+
     ////////////////
 
     public static function has($key)

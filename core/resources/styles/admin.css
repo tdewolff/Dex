@@ -836,6 +836,14 @@ select.hidden,
 textarea.hidden {
   display: none;
 }
+div.markdown-buttons {
+  text-align: right;
+  margin-left: -200px;
+  width: 912px;
+}
+div.markItUp {
+  margin-top: -25px;
+}
 textarea.markdown {
   float: none;
   width: 100%;
@@ -1306,7 +1314,11 @@ ul.grid-3 > li {
 #assets #images li img.small {
   margin: 10px 0;
 }
-#ajax_error {
+#api_error_link {
+  display: none;
+}
+#api_error {
+  display: none;
   white-space: pre;
   padding: 0 15px;
 }
@@ -1393,7 +1405,7 @@ strong {
 }
 .disabled {
   font-style: italic;
-  color: #a0a0a0;
+  color: #C0C0C0;
 }
 .halfwidth-column {
   float: left;

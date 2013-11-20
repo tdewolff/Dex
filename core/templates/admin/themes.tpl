@@ -13,7 +13,9 @@
 <script type="text/javascript">
     var themes = $('#themes');
     var theme_item = doT.template($('#theme_item').text());
-    api(null, function(data) {
+    api('/' + base_url + 'api/core/themes.php', {
+        action: 'get_themes'
+    }, function(data) {
         $.each(data['themes'], function() {
             themes.append(theme_item(this));
         });
@@ -22,11 +24,11 @@
     themes.on('click', 'li', function() {
         var item = $(this);
         if (!item.hasClass('current'))
-            api({
+            api('/' + base_url + 'api/core/themes.php', {
                 action: 'change_theme',
                 theme_name: item.attr('data-theme-name')
             }, function() {
-                themes.find('li').removeClass('current');
+                themes.find('li.current').removeClass('current');
                 item.addClass('current');
             });
     });

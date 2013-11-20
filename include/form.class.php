@@ -17,12 +17,12 @@ class Form
 	{
 		Hooks::attach('header', -1, function() {
 			Core::addDeferredScript('vendor/sha1.min.js');
-			Core::addDeferredScript('form.js');
+			Core::addDeferredScript('include/form.js');
 		});
 
 		Hooks::attach('admin_header', -1, function() {
 			Core::addDeferredScript('vendor/sha1.min.js');
-			Core::addDeferredScript('form.js');
+			Core::addDeferredScript('include/form.js');
 		});
 
 		$this->name = $name;
@@ -326,7 +326,7 @@ class Form
 			'optionals' => json_encode($this->optionals)
 		);
 
-		include('core/templates/form.tpl');
+		include('core/templates/include/form.tpl');
 	}
 
 	////////////////////////////////////////////////////////////////

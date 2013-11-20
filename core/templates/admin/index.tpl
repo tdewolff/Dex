@@ -14,10 +14,9 @@
     </div>
 
     <div style="margin-top:10px;">
-        <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="icon-list-alt"></i>&ensp;View <?php echo $_['log_name_current']; ?></a>
+        <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="icon-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
     </div>
 </div>
-
 <div class="halfwidth-column">
     <h3>Cache</h3>
     <div id="cache_bar" class="progress_bar">

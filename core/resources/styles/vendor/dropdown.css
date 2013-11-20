@@ -63,6 +63,7 @@
   color: #303030;
   text-align:left;
   white-space: nowrap;
+  text-decoration:none;
 }
 
 .dropdown > .dropdown-menu > li > a.sure {

@@ -76,6 +76,10 @@
 
         <?php elseif ($item['type'] == 'markdown'): ?>
         <div class="clear"></div>
+        <div class="markdown-buttons">
+            <a href="#" class="small-button fancybox"><i class="icon-link"></i>&ensp;Insert link</a>
+            <a href="#" class="small-button fancybox"><i class="icon-picture"></i>&ensp;Insert image</a>
+        </div>
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             class="markdown"

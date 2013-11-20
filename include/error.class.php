@@ -1,33 +1,23 @@
 <?php
 
-define('DISCREET', 0);
-define('EXPLICIT', 1);
-
 define('ERROR', E_USER_ERROR);
 define('WARNING', E_USER_WARNING);
 define('NOTICE', E_USER_NOTICE);
 
+set_error_handler(array('Error', 'report'));
+ini_set('display_errors', false);
+
 class Error
 {
-	private static $level = 0;
+	private static $display = false;
 
-	private function __constructor() {}
-
-	public static function initialize($level = DISCREET)
+	public static function setDisplay($display)
 	{
-		set_error_handler(array('Error', 'report'));
-		ini_set('display_errors', false);
-
-		self::$level = $level;
-		if (self::$level == DISCREET)
-			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
-		else
+		self::$display = $display;
+		if (self::$display)
 			ini_set('error_reporting', E_ALL | E_STRICT);
-	}
-
-	public static function isExplicit()
-	{
-		return self::$level == EXPLICIT;
+		else
+			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 	}
 
 	public static function report($type, $error, $file, $line, $context = '')
@@ -40,7 +30,7 @@ class Error
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
 				Log::error('(' . $file . ':' . $line . ') ' . $error);
-				if (self::isExplicit() && !Common::requestResource())
+				if (self::$display && !Common::requestResource())
 					if (Common::requestApi())
 						API::error('<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else
@@ -53,7 +43,7 @@ class Error
 			case E_USER_WARNING:
 			case E_RECOVERABLE_ERROR:
 				Log::warning('(' . $file . ':' . $line . ') ' . $error);
-				if (self::isExplicit() && !Common::requestResource())
+				if (self::$display && !Common::requestResource())
 					if (Common::requestApi())
 						API::warning('<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else
@@ -66,7 +56,7 @@ class Error
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				Log::notice('(' . $file . ':' . $line . ') ' . $error);
-				if (self::isExplicit() && !Common::requestResource())
+				if (self::$display && !Common::requestResource())
 					if (Common::requestApi())
 						API::notice('<pre><b>NOTICE</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else
@@ -75,7 +65,7 @@ class Error
 
 			default:
 				Log::error('(' . $file . ':' . $line . ') ' . $error);
-				if (self::isExplicit() && !Common::requestResource())
+				if (self::$display && !Common::requestResource())
 					if (Common::requestApi())
 						API::error('<pre><b>UNKNOWN (' . $type . ')</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else

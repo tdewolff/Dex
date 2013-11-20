@@ -2,39 +2,37 @@
 
 // preliminaries
 $starttime = explode(' ', microtime());
-
-$directories = array('assets/', 'cache/', 'logs/');
-foreach ($directories as $directory)
-    if (!is_dir($directory))
-        mkdir($directory, 0777);
-    else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0777')
-        chmod($directory, 0777);
+$config = file_exists('config.ini') ? parse_ini_file('config.ini') : array();
 
 require_once('include/common.class.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
-require_once('include/resource.class.php');
 
-Log::initialize(VERBOSE, 'logs/');
-Error::initialize(EXPLICIT);
-register_shutdown_function(function() {
+Common::setMinifying(Common::tryOrDefault($config, 'minifying', true));
+Common::ensureWritableDirectory('assets/');
+Common::ensureWritableDirectory('cache/');
+
+Log::setDirectory(Common::tryOrDefault($config, 'log_directory', 'logs/'));
+Log::setVerbose(Common::tryOrDefault($config, 'verbose_logging', false));
+Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false));
+
+register_shutdown_function(function() { // PHP errors
     $error = error_get_last();
     if ($error['type'] > 0)
         Error::report($error['type'], $error['message'], $error['file'], $error['line']);
 });
 
-Common::setMinifying(false);
-Resource::setCaching(true);
-
 
 // form the request URI
+Log::request($_SERVER['REQUEST_URI']);
+
 $base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
 $request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp($base_url, $request_url, strlen($base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
 $request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
-Log::request($_SERVER['REQUEST_URI']);
+$url = preg_split('/\/+/', $request_url, -1, PREG_SPLIT_NO_EMPTY);
 
 if (!Common::validUrl($request_url))
 	user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
@@ -49,13 +47,14 @@ if ($request_url == 'favicon.ico' || $request_url == 'robots.txt')
         echo file_get_contents($request_url);
     }
 
+require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
 
 // redirect resources
 if (Common::requestResource())
 {
-    $filename = Resource::expandUrl($request_url);
-    if (empty($filename))
-        user_error('Bad resource URL "' . $request_url . '"', ERROR);
+    Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
+
+    $filename = Resource::expandUrl($url);
 
     // remove querystring
     $querystring_position = strrpos($filename, '?');
@@ -97,7 +96,6 @@ require_once('include/session.class.php');
 
 $db = new Database('database.sqlite3');
 $bcrypt = new Bcrypt(8);
-$url = explode('/', substr($request_url, 0, -1));
 
 register_shutdown_function(function() {
 	global $starttime, $db;
@@ -113,13 +111,14 @@ register_shutdown_function(function() {
 if (Common::requestApi())
 {
     require_once('include/api.class.php');
-    API::load();
 
-    $filename = implode('/', array_slice($url, 1)) . '.php';
+    API::load();
+    $filename = API::expandUrl($url);
     if (!file_exists($filename))
-        API::error('API file "' . $filename . '" does not exist');
+        user_error('Could not find API file "' . $filename . '"', ERROR);
 
     require_once($filename);
+    user_error('API not handled in "' . $filename . '"', ERROR);
 }
 
 
@@ -148,6 +147,11 @@ else if (filesize($db->filename) == 0)
 	require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 
+// handle admin area
+if (Common::requestAdmin())
+    require_once('core/admin/admin.php'); // always exits
+
+
 // load all settings
 $theme_name = '';
 $settings = $db->query("SELECT * FROM setting;");
@@ -159,11 +163,6 @@ while ($setting = $settings->fetch())
     if ($setting['key'] == 'theme')
         $theme_name = $setting['value'];
 }
-
-
-// handle admin area
-if (Common::requestAdmin())
-	require_once('core/admin/admin.php'); // always exits
 
 
 // show page

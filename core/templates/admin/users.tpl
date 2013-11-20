@@ -29,7 +29,9 @@
 <script type="text/javascript">
     var users = $('#users');
     var user_item = doT.template($('#user_item').text());
-    api(null, function(data) {
+    api('/' + base_url + 'api/core/users.php', {
+        action: 'get_users'
+    }, function(data) {
         $.each(data['users'], function() {
             users.append(user_item(this));
         });

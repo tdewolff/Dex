@@ -1,6 +1,6 @@
 <h2>Assets</h2>
 <div id="assets">
-    <form id="upload" method="post" action="<?php echo $_['api_url']; ?>" enctype="multipart/form-data">
+    <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
         <div id="drop">
             <span>Drop Here</span><br>
             <a class="small-button">Browse</a>
@@ -31,7 +31,7 @@
 
 <script id="directory_item" type="text/x-dot-template">
     <li data-name="{{=it.name}}" class="directory">
-        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.title}}</a></div>
+        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
         <div style="width:100px;">-</div>
         <div style="width:40px;">&nbsp;</div>
     </li>
@@ -84,19 +84,24 @@
         directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
         images.find('li').slideUp('fast', function() { $(this).remove(); });
 
-        api({
+        api('/' + base_url + 'api/core/assets.php', {
+            action: 'get_directories',
             dir: dir
         }, function(data) {
             $.each(data['directories'], function() {
                 directories_assets.append(directory_item(this));
             });
+        });
 
+        api('/' + base_url + 'api/core/assets.php', {
+            action: 'get_assets',
+            dir: dir
+        }, function(data) {
             $.each(data['assets'], function() {
-                directories_assets.append(asset_item(this));
-            });
-
-            $.each(data['images'], function() {
-                images.append(image_item(this));
+                if (this.is_image)
+                    images.append(image_item(this));
+                else
+                    directories_assets.append(asset_item(this));
             });
         });
     }
@@ -107,19 +112,9 @@
         loadDir($(this).attr('data-dir'));
     });
 
-    directories_assets.on('click', '.asset a.sure', function() {
+    $('#directories_assets, #images').on('click', 'a.sure', function() {
         var item = $(this);
-        api({
-            action: 'delete_file',
-            name: item.attr('data-name')
-        }, function() {
-            item.closest('li').slideUp('fast', function() { $(this).remove(); });
-        });
-    });
-
-    images.on('click', 'a.sure', function() {
-        var item = $(this);
-        api({
+        api('/' + base_url + 'api/core/assets.php', {
             action: 'delete_file',
             name: item.attr('data-name')
         }, function() {
@@ -144,7 +139,7 @@
     }
 
     $('#create_directory').on('click', 'a', function() {
-        api({
+        api('/' + base_url + 'api/core/assets.php', {
             action: 'create_directory',
             name: $(this).prev('input').val()
         }, function(data) {

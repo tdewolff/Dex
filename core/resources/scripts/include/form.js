@@ -80,7 +80,7 @@ var Form = function(form) {
         });
 
         // AJAX
-        ajax(window.location.href, 'POST', self.form.serialize(), self.success, self.responseError);
+        api(window.location.href, self.form.serialize(), self.success, self.responseError);
     };
 
     this.success = function(data) {
@@ -140,6 +140,10 @@ var Form = function(form) {
     this.form.on('submit', function(e) {
         e.preventDefault();
         self.save();
+    });
+
+    // handle markdown buttons
+    this.form.on('click', 'a.markdown-button-link', function(e) {
     });
 };
 

@@ -11,17 +11,18 @@ if (API::action('delete_user'))
 	$db->exec("DELETE FROM user WHERE user_id = '" . $db->escape(API::get('user_id')) . "';");
 	API::finish();
 }
-
-$users = array();
-$table = $db->query("SELECT * FROM user;");
-while ($row = $table->fetch())
+else if (API::action('get_users'))
 {
-	$row['current'] = $row['user_id'] == Session::getUserId();
-	$row['permission'] = ucfirst($row['permission']);
-	$users[] = $row;
+    $users = array();
+    $table = $db->query("SELECT * FROM user;");
+    while ($row = $table->fetch())
+    {
+    	$row['current'] = $row['user_id'] == Session::getUserId();
+    	$row['permission'] = ucfirst($row['permission']);
+    	$users[] = $row;
+    }
+    API::set('users', $users);
+    API::finish();
 }
-
-API::set('users', $users);
-API::finish();
 
 ?>

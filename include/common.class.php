@@ -34,6 +34,14 @@ class Common
 
     ////////////////
 
+    public static function ensureWritableDirectory($directory)
+    {
+        if (!is_dir($directory))
+            mkdir($directory, 0777);
+        else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0777')
+            chmod($directory, 0777);
+    }
+
 	public static function validUrl($input)
 	{
 		// first part are all allowed characters

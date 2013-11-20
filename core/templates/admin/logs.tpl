@@ -19,7 +19,9 @@
 <script type="text/javascript">
     var logs = $('#logs');
     var log_item = doT.template($('#log_item').text());
-    api(null, function(data) {
+    api('/' + base_url + 'api/core/index.php', {
+        action: 'get_logs'
+    }, function(data) {
         $.each(data['logs'], function() {
             var item = $(log_item(this));
             if (this['type'] == 'ERROR')

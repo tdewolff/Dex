@@ -60,7 +60,7 @@ class Resource
     {
         $starttime_local = explode(' ', microtime());
         $cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
-        if (!file_exists($cache_filename) || self::$caching == false)
+        if (!file_exists($cache_filename) || !self::$caching)
         {
             $content = '';
             foreach ($filenames as $filename)
@@ -78,10 +78,9 @@ class Resource
         return 'res/' . $cache_filename;
     }
 
-    public static function expandUrl($request_url)
+    public static function expandUrl($url)
     {
         $filename = '';
-        $url = explode('/', $request_url);
         if (isset($url[1]) && isset($url[2]))
             if ($url[1] == 'cache')
                 $filename = 'cache/' . implode('/', array_splice($url, 2));
@@ -95,7 +94,7 @@ class Resource
                 $filename = 'themes/' . $url[2] . '/resources/' . implode('/', array_splice($url, 3));
 
         if (empty($filename))
-            Log::warning('Could not expand URL "' . $request_url . '" to a resource');
+            user_error('Could not expand URL "' . implode('/', $url) . '" to resource', ERROR);
 
         return $filename;
     }
