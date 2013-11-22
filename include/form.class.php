@@ -20,7 +20,7 @@ class Form
 			Core::addDeferredScript('include/form.js');
 		});
 
-		Hooks::attach('admin_header', -1, function() {
+		Hooks::attach('admin-header', -1, function() {
 			Core::addDeferredScript('vendor/sha1.min.js');
 			Core::addDeferredScript('include/form.js');
 		});
@@ -48,6 +48,7 @@ class Form
 
 	public function addText($name, $title, $subtitle, $placeholder, $preg)
 	{
+		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
 		$this->items[] = array(
 			'type' => 'text',
 			'name' => $this->name . '_' . $name,
@@ -61,6 +62,7 @@ class Form
 
 	public function addMultilineText($name, $title, $subtitle, $placeholder, $preg)
 	{
+		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
 		$this->items[] = array(
 			'type' => 'multiline_text',
 			'name' => $this->name . '_' . $name,
@@ -166,6 +168,7 @@ class Form
 
 	public function addArray($name, $title, $subtitle, $preg)
 	{
+		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
 		$this->items[] = array(
 			'type' => 'array',
 			'name' => $this->name . '_' . $name,
@@ -178,6 +181,7 @@ class Form
 
 	public function addParameters($name, $title, $subtitle, $preg)
 	{
+		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
 		$this->items[] = array(
 			'type' => 'parameters',
 			'name' => $this->name . '_' . $name,

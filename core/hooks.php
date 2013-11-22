@@ -1,62 +1,51 @@
 <?php
 
-function main_header() {
-	$titles = Core::getTitles();
-	$styles = Core::getStyles();
-	$scripts = Core::getScripts('header');
-
-	if (count($titles))
-		Core::assign('header_title', implode(' - ', array_reverse($titles)));
-	if (count($styles))
-		Core::assign('header_style', Resource::concatenateFiles($styles, 'css'));
-	if (count($scripts))
-		Core::assign('header_script', Resource::concatenateFiles($scripts, 'js'));
-}
-
-function main_footer() {
-	$scripts = Core::getScripts('footer');
-	if (count($scripts))
-		Core::assign('footer_script', Resource::concatenateFiles($scripts, 'js'));
-}
+////////////////////////////////////////////////////////////////
 
 Hooks::attach('error', 0, function() {
 	global $url;
 
+	ob_clean();
+
 	Core::addTitle('Error');
 	if ($url[0] == 'admin')
 	{
-		Hooks::emit('admin_header');
+		Hooks::emit('admin-header');
 		Core::render('admin/error.tpl');
-		Hooks::emit('admin_footer');
+		Hooks::emit('admin-footer');
 	}
 	else
 	{
-		Hooks::emit('header');
+		Hooks::emit('site_header');
 		Core::render('error.tpl');
-		Hooks::emit('footer');
+		Hooks::emit('site_footer');
 	}
 	exit;
 });
 
-Hooks::attach('header', 0, function() {
-	main_header();
+////////////////////////////////////////////////////////////////
+
+Hooks::attach('site-header', 0, function() {
+	site_header();
 	Core::render('header.tpl');
 });
 
-Hooks::attach('footer', 0, function() {
-	main_footer();
+Hooks::attach('site-footer', 0, function() {
+	site_footer();
 	Core::render('footer.tpl');
 });
 
-Hooks::attach('admin_header', 0, function() {
-	main_header();
+Hooks::attach('admin-header', 0, function() {
+	site_header();
 	Core::render('admin/header.tpl');
 });
 
-Hooks::attach('admin_footer', 0, function() {
-	main_footer();
+Hooks::attach('admin-footer', 0, function() {
+	site_footer();
 	Core::render('admin/footer.tpl');
 });
+
+////////////////////////////////////////////////////////////////
 
 Hooks::attach('main', 0, function() {
     global $db;
@@ -70,5 +59,35 @@ Hooks::attach('main', 0, function() {
 
 	Core::renderTemplate($template_name);
 });
+
+////////////////////////////////////////////////////////////////
+
+function site_header() {
+	$titles = Core::getTitles();
+	$externalStyles = Core::getExternalStyles();
+	$styles = Core::getStyles();
+	$externalScripts = Core::getExternalScripts('header');
+	$scripts = Core::getScripts('header');
+
+	if (count($titles))
+		Core::assign('header_title', implode(' - ', array_reverse($titles)));
+	Core::assign('header_external_styles', $externalStyles);
+	if (count($styles))
+		Core::assign('header_style', Resource::concatenateFiles($styles, 'css'));
+	Core::assign('header_external_scripts', $externalScripts);
+	if (count($scripts))
+		Core::assign('header_script', Resource::concatenateFiles($scripts, 'js'));
+}
+
+function site_footer() {
+	$externalScripts = Core::getExternalScripts('footer');
+	$scripts = Core::getScripts('footer');
+
+	Core::assign('footer_external_scripts', $externalScripts);
+	if (count($scripts))
+		Core::assign('footer_script', Resource::concatenateFiles($scripts, 'js'));
+}
+
+////////////////////////////////////////////////////////////////
 
 ?>

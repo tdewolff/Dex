@@ -1,11 +1,16 @@
 <?php
 
-Hooks::attach('header', -1, function () {
+Hooks::attach('site-header', -1, function () {
     Theme::set('default');
+});
 
-    Core::addStyle('include/normalize.css');
+Hooks::attach('header', 0, function() {
+    global $settings;
 
-    Theme::addStyle('style.css');
+    if (isset($settings['title']))
+        echo '<h1>' . $settings['title'] . '</h1>';
+    if (isset($settings['subtitle']))
+        echo '<h2>' . nl2br($settings['subtitle']) . '</h2>';
 });
 
 ?>

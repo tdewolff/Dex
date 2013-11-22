@@ -2,9 +2,9 @@
 
 if (isset($url[1]) && $url[1] == 'logs')
 {
-	Hooks::emit('admin_header');
+	Hooks::emit('admin-header');
 	Core::render('admin/logs.tpl');
-	Hooks::emit('admin_footer');
+	Hooks::emit('admin-footer');
 	exit;
 }
 
@@ -26,7 +26,7 @@ $log_name = $slash ? substr($log_name, $slash + 1) : $log_name;
 
 Core::addStyle('vendor/popbox.css');
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('log_name', $log_name);
 Core::assign('logs_size', Common::formatBytes($logs_size));
@@ -35,7 +35,7 @@ Core::assign('cache_size', Common::formatBytes($cache_size));
 Core::assign('cache_size_percentage', number_format(100 * $cache_size / 250 / 1000 / 1000, 1));
 Core::render('admin/index.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

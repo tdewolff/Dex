@@ -1,7 +1,7 @@
 <?php
 
 Hooks::attach('navigation', 0, function() {
-    global $db;
+    global $db, $base_url;
     Module::set('menu');
 
     $menu = array();
@@ -11,6 +11,7 @@ Hooks::attach('navigation', 0, function() {
         WHERE enabled = '1' ORDER BY position ASC;");
     while ($row = $table->fetch())
     {
+        $row['url'] = '/' . $base_url . $row['url'];
         $row['selected'] = ($link_id == $row['link_id'] ? '1' : '0');
         $menu[] = $row;
     }

@@ -1,12 +1,11 @@
 <?php
+
 function listRecursion(&$menu, $level)
 {
-    global $_;
-
     while (count($menu))
     {
         echo '<li ' . ($menu[0]['selected'] == '1' ? 'class="selected"' : '') . '>';
-        echo '<a href="/' . $_['base_url'] . $menu[0]['url'] . '">' . $menu[0]['name'] . '</a>';
+        echo '<a href="' . $menu[0]['url'] . '">' . $menu[0]['name'] . '</a>';
 
         if (isset($menu[1]) && $menu[1]['level'] > $level)
         {
@@ -30,4 +29,5 @@ if (count($_['menu']))
     listRecursion($_['menu'], 0);
     echo '</ul>';
 }
+
 ?>

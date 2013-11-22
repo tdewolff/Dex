@@ -29,12 +29,12 @@ $settings = $db->query("SELECT * FROM setting;");
 while ($setting = $settings->fetch())
 	$form->set($setting['key'], $setting['value']);
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('settings', $form);
 Core::render('admin/settings.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

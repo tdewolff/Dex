@@ -1,5 +1,6 @@
 <?php
 
+Core::addTitle('Dexterous');
 Core::addTitle('Admin panel');
 Core::addStyle('include/normalize.css');
 Core::addStyle('vendor/font-awesome.css');

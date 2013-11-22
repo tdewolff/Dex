@@ -33,12 +33,12 @@ if ($form->submitted())
 
 Core::addTitle('Admin panel');
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('login', $form);
 Core::render('admin/login.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

@@ -57,13 +57,13 @@ Hooks
 
 Hooks can hook a function onto an event, whenever that event fires the function is run. Current events are:
 
+- site-header
 - header
 - navigation
 - main
 - footer
+- site-footer
 - error
-- admin_header (admin panel only)
-- admin_footer (ditto)
 
 Attached functions are run in the sequence they were attached unless you specify its order. Negative number means before the core hook, zero or positive means after (default).
 

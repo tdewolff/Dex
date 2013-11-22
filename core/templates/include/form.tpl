@@ -1,6 +1,5 @@
 <form
     id="<?php echo $form['name'] . '_' . $form['salt']; ?>"
-    autocomplete="off"
     onsubmit="return false;"
     data-salt="<?php echo $form['salt']; ?>"
     data-optionals='<?php echo $form['optionals']; ?>'>

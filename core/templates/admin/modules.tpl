@@ -20,6 +20,10 @@
                         <a href="#" class="enable" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a>
                         <a href="#" class="disable" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a>
                     </li>
+                    <li>
+                        <a href="#" class="halt"><i class="icon-fixed-width icon-refresh"></i>&ensp;Reinstall</a>
+                        <a href="#" class="sure" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-refresh"></i>&ensp;Really?</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -70,6 +74,16 @@
             $('#admin_link_module_' + item.attr('data-module-name')).slideUp();
             item.hide();
             item.parent().find('.enable').show();
+        });
+    });
+
+    modules.on('click', 'a.sure', function() {
+        var item = $(this);
+        api('/' + base_url + 'api/core/modules.php', {
+            action: 'reinstall_module',
+            module_name: item.attr('data-module-name')
+        }, function() {
+            $('.dropdown-menu').hide();
         });
     });
 </script>

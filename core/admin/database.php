@@ -30,12 +30,12 @@ while ($table = $tables->fetch())
 	);
 }
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('database', $database);
 Core::render('admin/database.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

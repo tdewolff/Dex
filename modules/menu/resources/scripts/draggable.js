@@ -11,7 +11,7 @@ var Draggable = function(ul) {
 
     this.drag = function(e) {
         if (self.draggee !== false) {
-            var elements = $('li:not(:first)', self.ul).filter(function() {
+            var elements = self.ul.find('li:not(:first)').filter(function() {
                 return $(this).css('position') == 'static';
             });
 
@@ -34,7 +34,7 @@ var Draggable = function(ul) {
                 places.each(function() {
                     var place = $(this);
                     if (y >= place.offset().top && y < place.offset().top + place.outerHeight()) {
-                        if (top < placeholder.offset().top)
+                        if (top < self.placeholder.offset().top)
                             self.placeholder.insertBefore(place);
                         else
                             self.placeholder.insertAfter(place);
@@ -61,9 +61,9 @@ var Draggable = function(ul) {
                     level = previous_level + 1;
             }
 
-            $('.icon-long-arrow-right', self.draggee).hide();
+            self.draggee.find('.icon-long-arrow-right').hide();
             for (var i = 0; i < level; i++)
-                $('.icon-long-arrow-right', self.draggee).eq(i).show();
+                self.draggee.find('.icon-long-arrow-right').eq(i).show();
 
             // apply CSS
             self.draggee.css('top', top + 'px');
@@ -77,7 +77,6 @@ var Draggable = function(ul) {
         e.preventDefault();
 
         var li = $(this).closest('li');
-
         li.toggleClass('unused');
         li.find('input').toggleClass('unused');
 
@@ -107,7 +106,7 @@ var Draggable = function(ul) {
             self.draggee_x_start = e.pageX - $('.icon-long-arrow-right:visible', self.draggee).length * 40.0;
             self.draggee_y_offset = e.pageY - (self.draggee.offset().top + 1);
 
-            self.placeholder = $('<li class="placeholder"></li>').insertAfter(self.draggee);
+            self.placeholder = $('<li>').addClass('placeholder').insertAfter(self.draggee);
             self.draggee.addClass('draggee').css({
                 'top': (self.draggee.offset().top + 1) + 'px',
                 'left': self.draggee.offset().left + 'px'
@@ -174,7 +173,7 @@ var Draggable = function(ul) {
             i++;
         });
 
-        api({
+        api('/' + base_url + 'api/module/menu/index.php', {
             action: 'modify_menu',
             menu: data
         }, function() {

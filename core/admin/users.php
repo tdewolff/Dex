@@ -8,9 +8,9 @@ if (!isset($url[2]))
 	Core::addStyle('vendor/popbox.css');
 	Core::addStyle('vendor/dropdown.css');
 
-	Hooks::emit('admin_header');
+	Hooks::emit('admin-header');
 	Core::render('admin/users.tpl');
-	Hooks::emit('admin_footer');
+	Hooks::emit('admin-footer');
 	exit;
 }
 else
@@ -91,12 +91,12 @@ else
 		$form->set('permission', $user['permission']);
 	}
 
-	Hooks::emit('admin_header');
+	Hooks::emit('admin-header');
 
 	Core::assign('user', $form);
 	Core::render('admin/user.tpl');
 
-	Hooks::emit('admin_footer');
+	Hooks::emit('admin-footer');
 	exit;
 }
 

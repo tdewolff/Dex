@@ -153,15 +153,13 @@ if (Common::requestAdmin())
 
 
 // load all settings
-$theme_name = '';
-$settings = $db->query("SELECT * FROM setting;");
-while ($setting = $settings->fetch())
+$settings = array();
+$table = $db->query("SELECT * FROM setting;");
+while ($row = $table->fetch())
 {
-    if (!empty($setting['value']))
-	   Core::assign('setting_' . $setting['key'], $setting['value']);
-
-    if ($setting['key'] == 'theme')
-        $theme_name = $setting['value'];
+    $settings[$row['key']] = $row['value'];
+    if (!empty($row['value']))
+	   Core::assign('setting_' . $row['key'], $row['value']);
 }
 
 
@@ -171,6 +169,9 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
 
+    Core::addTitle($settings['title']);
+    Core::addTitle($link['title']);
+
 	// load in module hooks
 	$table = $db->query("SELECT * FROM link_module
 		JOIN module ON link_module.module_name = module.module_name
@@ -178,11 +179,15 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 	while ($row = $table->fetch())
 		include_once('modules/' . $row['module_name'] . '/hooks.php');
 
-	$theme_hooks_filename = 'themes/' . $theme_name . '/hooks.php';
+	$theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
 	if (file_exists($theme_hooks_filename) !== false)
 		include_once($theme_hooks_filename);
 
 
+    Hooks::emit('site-header');
+    echo '<section class="page-wrapper">';
+
+    echo '<header>';
 	Hooks::emit('header');
 	echo '</header>';
 
@@ -196,6 +201,10 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
 
 	echo '<footer>';
 	Hooks::emit('footer');
+    echo '</footer>';
+
+    echo '</section>';
+    Hooks::emit('site-footer');
 }
 else
 	user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);

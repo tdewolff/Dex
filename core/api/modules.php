@@ -13,6 +13,14 @@ if (API::action('enable_module') || API::action('disable_module'))
         WHERE module_name = '" . $db->escape(API::get('module_name')) . "';");
     API::finish();
 }
+else if (API::action('reinstall_module'))
+{
+    if (!API::has('module_name') || !file_exists('modules/' . API::get('module_name') . '/admin/setup.php'))
+        user_error('No module name set or module doesn\'t exist', ERROR);
+
+    include_once('modules/' . API::get('module_name') . '/admin/setup.php');
+    API::finish();
+}
 else if (API::action('get_modules'))
 {
     $modules = array();

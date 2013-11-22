@@ -18,6 +18,7 @@ if (API::action('modify_menu'))
 else if (API::action('get_menu'))
 {
     $menu = array();
+    $non_menu = array();
     $table = $db->query("SELECT *, link.link_id AS link_id FROM link
         LEFT JOIN module_menu ON link.link_id = module_menu.link_id
         ORDER BY module_menu.position ASC;");
@@ -25,12 +26,16 @@ else if (API::action('get_menu'))
     {
         if (!isset($row['module_menu_id']))
         {
+            $row['level'] = 0;
             $row['name'] = $row['title'];
-            $row['level'] = '0';
-            $row['enabled'] = '0';
+            $row['enabled'] = 0;
+            $non_menu[] = $row;
         }
-        $menu[] = $row;
+        else
+            $menu[] = $row;
     }
+    $menu = array_merge($menu, $non_menu); // non_menu items come last
+
     API::set('menu', $menu);
     API::finish();
 }

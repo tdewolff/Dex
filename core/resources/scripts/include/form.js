@@ -139,6 +139,7 @@ var Form = function(form) {
 
     this.form.on('submit', function(e) {
         e.preventDefault();
+        console.log('save');
         self.save();
     });
 

@@ -5,9 +5,9 @@ if (!isset($url[2]))
     Core::addStyle('vendor/popbox.css');
     Core::addStyle('vendor/dropdown.css');
 
-    Hooks::emit('admin_header');
+    Hooks::emit('admin-header');
     Core::render('admin/pages.tpl');
-    Hooks::emit('admin_footer');
+    Hooks::emit('admin-footer');
     exit;
 }
 
@@ -141,12 +141,12 @@ Core::addStyle('vendor/markdown.css');
 Core::addDeferredScript('vendor/jquery.markitup.min.js');
 Core::addDeferredScript('include/jquery.markitup.markdown.js');
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('page', $form);
 Core::render('admin/page.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

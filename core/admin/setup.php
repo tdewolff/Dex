@@ -140,12 +140,12 @@ Core::addScript('include/api.js');
 Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('admin.js');
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 
 Core::assign('setup', $form);
 Core::render('admin/setup.tpl');
 
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

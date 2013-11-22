@@ -7,9 +7,9 @@ Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('upload.js');
 
-Hooks::emit('admin_header');
+Hooks::emit('admin-header');
 Core::render('admin/assets.tpl');
-Hooks::emit('admin_footer');
+Hooks::emit('admin-footer');
 exit;
 
 ?>

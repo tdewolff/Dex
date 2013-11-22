@@ -4,7 +4,9 @@ class Dexterous
 {
 	public static $vars = array();
 	public static $titles = array();
+    public static $externalStyles = array();
 	public static $styles = array();
+    public static $externalScripts = array();
 	public static $scripts = array();
 
 	public static $link_id = 0;
@@ -19,6 +21,18 @@ class Dexterous
 	public static function addTitle($title) {
 		self::$titles[] = $title;
 	}
+
+    public static function addExternalStyle($style) {
+        self::$externalStyles[] = $style;
+    }
+
+    public static function addExternalScript($script) {
+        self::$externalScripts['header'][] = $script;
+    }
+
+    public static function addExternalDeferredScript($script) {
+        self::$externalScripts['footer'][] = $script;
+    }
 
     ////////////////
 
@@ -72,12 +86,20 @@ class Core extends Dexterous
 		return self::$titles;
 	}
 
+    public static function getExternalStyles() {
+        return isset(self::$externalStyles) ? self::$externalStyles : array();
+    }
+
+    public static function getStyles() {
+        return self::$styles;
+    }
+
+    public static function getExternalScripts($place) {
+        return isset(self::$externalScripts[$place]) ? self::$externalScripts[$place] : array();
+    }
+
 	public static function getScripts($place) {
 		return isset(self::$scripts[$place]) ? self::$scripts[$place] : array();
-	}
-
-	public static function getStyles() {
-		return self::$styles;
 	}
 
 	////////////////
