@@ -148,8 +148,8 @@ class Form
 			'subtitle' => $subtitle,
 			'placeholder' => '',
 			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => 'Must be valid local URL'),
-			'value' => ''
-			// TODO: JS
+			'value' => '',
+			'class' => 'link-url'
 		);
 	}
 

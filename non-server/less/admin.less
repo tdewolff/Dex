@@ -213,7 +213,7 @@ ul {
 	padding:0;
 }
 
-ul.table {
+ul.table, ul.small-table {
 	width:902px;
 	margin:0 auto;
 	border:1px solid darken(@light, 10%);
@@ -294,6 +294,10 @@ ul.table {
 	>li > div * {
 		line-height:initial;
 	}
+}
+
+ul.small-table {
+	width:502px;
 }
 
 ul.grid {
@@ -381,6 +385,17 @@ ul.grid-3 {
 			width:150px;
 			margin-left:10px;
 			margin-right:0;
+		}
+	}
+
+	#breadcrumbs {
+		width:602px;
+		margin:0 auto;
+		margin-bottom:5px;
+		font-size: 90%;
+
+		a {
+			padding:0 5px;
 		}
 	}
 
@@ -481,6 +496,54 @@ ul.grid-3 {
 
 	>div {
 		line-height:100%;
+	}
+}
+
+.popup-wrapper {
+	width:600px;
+	overflow:hidden;
+	white-space:nowrap;
+
+	.popup {
+		>div {
+			vertical-align: top;
+			width:600px;
+  			display:inline-block;
+			white-space:normal;
+		}
+
+		#external-link {
+			margin:0 auto;
+			width:500px;
+			margin-bottom:30px;
+
+			input {
+				width:370px;
+				margin:0;
+				float:none;
+			}
+
+			a {
+				width:120px;
+				margin-left:10px;
+				margin-right:0;
+				text-align:center;
+			}
+		}
+
+		#assets {
+			#breadcrumbs {
+				width:502px;
+			}
+
+			#directories_assets {
+				width:502px;
+			}
+
+			#images li:hover {
+				cursor:pointer;
+			}
+		}
 	}
 }
 
@@ -588,6 +651,7 @@ strong {
 }
 
 a.halt {
+	display:inline-block;
 	text-decoration: none;
 }
 

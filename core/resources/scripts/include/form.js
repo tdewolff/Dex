@@ -139,12 +139,52 @@ var Form = function(form) {
 
     this.form.on('submit', function(e) {
         e.preventDefault();
-        console.log('save');
         self.save();
     });
 
-    // handle markdown buttons
-    this.form.on('click', 'a.markdown-button-link', function(e) {
+    // other stuff
+    this.form.on('blur', '.link-url', function() {
+        var link_url = $(this).val();
+        if (link_url[link_url.length - 1] != '/')
+            $(this).val(link_url + '/');
+    });
+
+    this.form.on('click', 'a.insert-link', function() {
+        var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
+        $.fancybox.open({
+            'type': 'ajax',
+            'href': '/' + base_url + 'admin/popup/insert_link/',
+            onComplete: function() {
+                $('#fancybox-content').css('background', 'white')
+            },
+            beforeClose: function() {
+                if ($('#insert_submit').val() == 1 && $('#insert_url').val())
+                {
+                    if (!$('#insert_text').val())
+                        $('#insert_text').val($('#insert_title').val());
+                    textarea.insertAtCaret('[' + $('#insert_text').val() + '](' + $('#insert_url').val() + ' "' + $('#insert_title').val() + '")');
+                }
+            }
+        });
+    });
+
+    this.form.on('click', 'a.insert-image', function() {
+        var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
+        $.fancybox.open({
+            'type': 'ajax',
+            'href': '/' + base_url + 'admin/popup/insert_image/',
+            onComplete: function() {
+                $('#fancybox-content').css('background', 'white')
+            },
+            beforeClose: function() {
+                if ($('#insert_submit').val() == 1 && $('#insert_url').val())
+                {
+                    if (!$('#insert_text').val())
+                        $('#insert_text').val($('#insert_title').val());
+                    textarea.insertAtCaret('![' + $('#insert_text').val() + '](' + $('#insert_url').val() + ' "' + $('#insert_title').val() + '")');
+                }
+            }
+        });
     });
 };
 

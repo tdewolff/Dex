@@ -17,6 +17,9 @@
         <input type="text"><a href="#" class="small-button"><i class="icon-asterisk"></i>&ensp;Create directory</a>
     </div>
 
+    <div id="breadcrumbs">
+    </div>
+
     <ul id="directories_assets" class="table">
         <li>
             <div style="width:460px;">Filename</div>
@@ -72,6 +75,7 @@
 
 <script type="text/javascript">
     // preliminaries
+    var breadcrumbs = $('#breadcrumbs');
     var directories_assets = $('#directories_assets');
     var images = $('#images');
 
@@ -85,11 +89,23 @@
         images.find('li').slideUp('fast', function() { $(this).remove(); });
 
         api('/' + base_url + 'api/core/assets.php', {
+            action: 'get_breadcrumbs',
+            dir: dir
+        }, function(data) {
+            breadcrumbs.empty();
+            $.each(data['breadcrumbs'], function(i) {
+                if (i)
+                    breadcrumbs.append('&gt;');
+                breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+            });
+        });
+
+        api('/' + base_url + 'api/core/assets.php', {
             action: 'get_directories',
             dir: dir
         }, function(data) {
             $.each(data['directories'], function() {
-                directories_assets.append(directory_item(this));
+                $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
             });
         });
 
@@ -99,15 +115,19 @@
         }, function(data) {
             $.each(data['assets'], function() {
                 if (this.is_image)
-                    images.append(image_item(this));
+                    $(image_item(this)).hide().appendTo(images).slideDown('fast');
                 else
-                    directories_assets.append(asset_item(this));
+                    $(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
             });
         });
     }
     loadDir('');
 
     // click events on directories, assets and images
+    breadcrumbs.on('click', 'a', function() {
+        loadDir($(this).attr('data-dir'));
+    });
+
     directories_assets.on('click', '.directory a', function() {
         loadDir($(this).attr('data-dir'));
     });

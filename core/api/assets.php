@@ -74,6 +74,28 @@ else if (API::action('delete_file'))
     unlink('assets/' . $dir . API::get('name'));
     API::finish();
 }
+else if (API::action('get_breadcrumbs'))
+{
+    $breadcrumbs = array();
+    $breadcrumbs[] = array(
+        'dir' => '',
+        'name' => 'Assets'
+    );
+
+    $url = '';
+    foreach (explode('/', $dir) as $breadcrumb)
+        if (!empty($breadcrumb))
+        {
+            $url .= $breadcrumb . '/';
+            $breadcrumbs[] = array(
+                'dir' => $url,
+                'name' => $breadcrumb
+            );
+        }
+
+    API::set('breadcrumbs', $breadcrumbs);
+    API::finish();
+}
 else if (API::action('get_directories'))
 {
     $directories = array();
@@ -117,7 +139,7 @@ else if (API::action('get_assets'))
             $extension = substr($name, strrpos($name, '.') + 1);
 
             list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
-            $images[] = array(
+            $assets[] = array(
                 'url' => 'res/assets/' . $dir . $name,
                 'name' => $name,
                 'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),

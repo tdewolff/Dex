@@ -136,6 +136,7 @@ $domain_url .= '://' . $_SERVER['SERVER_NAME'];
 $domain_url .= ($_SERVER['SERVER_PORT'] == '80') ? '' : (':' . $_SERVER['SERVER_PORT']); // port
 $domain_url .= '/';
 
+Session::refreshLogin();
 Core::assign('domain_url', $domain_url);
 Core::assign('base_url', $base_url);
 

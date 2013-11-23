@@ -20,8 +20,17 @@ if (Session::isUser() && $request_url == 'admin/logout/')
 // login
 if (!Session::isUser())
 	require_once('core/admin/login.php'); // exits if not logged in
-else
+else // didn't go through login screen
 	Core::checkModules();
+
+if ($url[1] == 'popup')
+{
+	if (!file_exists('core/templates/admin/popup/' . $url[2] . '.tpl'))
+		user_error('Popup "' . $url[2] . '" does not exist', ERROR);
+
+	Core::render('admin/popup/' . $url[2] . '.tpl');
+	exit;
+}
 
 $admin_links = array();
 $admin_links[] = array('name' => 'index',  'regex' => 'admin/(logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
@@ -65,15 +74,13 @@ Core::assign('permission', ucfirst(Session::getPermission()));
 Core::assign('is_admin', Session::isAdmin());
 Core::assign('admin_links', $admin_links);
 
-$log_error = 'URL "' . $request_url . '"" has no match with to any admin pages';
+$log_error = 'URL "' . $request_url . '" has no match with to any admin pages';
 foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
 	{
 		$admin_link['regex'] = preg_replace('/\//', '\/', $admin_link['regex']);
 		if (preg_match('/^' . $admin_link['regex'] . '$/', $request_url))
 		{
-			$api_file = substr_replace($admin_link['file'], 'api/', strpos($admin_link['file'], 'admin/') + 6, 0);
-			Core::assign('api_url', '/' . $base_url . 'api/' . substr($api_file, 0, -4) . '/');
 			Core::assign('current_admin_i', $i);
 
 			if (file_exists($admin_link['file']))

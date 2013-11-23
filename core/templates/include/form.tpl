@@ -26,7 +26,8 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
+            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
 
         <?php elseif ($item['type'] == 'multiline_text'): ?>
@@ -76,8 +77,8 @@
         <?php elseif ($item['type'] == 'markdown'): ?>
         <div class="clear"></div>
         <div class="markdown-buttons">
-            <a href="#" class="small-button fancybox"><i class="icon-link"></i>&ensp;Insert link</a>
-            <a href="#" class="small-button fancybox"><i class="icon-picture"></i>&ensp;Insert image</a>
+            <a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"><i class="icon-link"></i>&ensp;Insert link</a>
+            <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"><i class="icon-picture"></i>&ensp;Insert image</a>
         </div>
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
@@ -152,7 +153,7 @@
     <?php endforeach; ?>
 
     <?php if ($form['submit']): ?>
-    <button type="submit" class="button"><?php echo $form['submit']; ?></button>
+    <button type="submit" class="form_button button"><?php echo $form['submit']; ?></button>
     <?php endif; ?>
 
     <div class="form_response">
