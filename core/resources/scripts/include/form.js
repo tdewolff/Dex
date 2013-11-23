@@ -154,15 +154,20 @@ var Form = function(form) {
         $.fancybox.open({
             'type': 'ajax',
             'href': '/' + base_url + 'admin/popup/insert_link/',
-            onComplete: function() {
-                $('#fancybox-content').css('background', 'white')
+            beforeShow: function() {
+                $('.fancybox-skin').css('background', 'white')
             },
             beforeClose: function() {
                 if ($('#insert_submit').val() == 1 && $('#insert_url').val())
                 {
-                    if (!$('#insert_text').val())
-                        $('#insert_text').val($('#insert_title').val());
-                    textarea.insertAtCaret('[' + $('#insert_text').val() + '](' + $('#insert_url').val() + ' "' + $('#insert_title').val() + '")');
+                    var title = $('#insert_title').val();
+                    var url = $('#insert_url').val();
+                    var text = $('#insert_text').val();
+
+                    if (!text)
+                        text = $('#insert_title').val();
+
+                    textarea.insertAtCaret('[' + text + '](' + encodeURI(url) + ' "' + title + '")');
                 }
             }
         });
@@ -173,15 +178,52 @@ var Form = function(form) {
         $.fancybox.open({
             'type': 'ajax',
             'href': '/' + base_url + 'admin/popup/insert_image/',
-            onComplete: function() {
-                $('#fancybox-content').css('background', 'white')
+            beforeShow: function() {
+                $('.fancybox-skin').css('background', 'white')
             },
             beforeClose: function() {
                 if ($('#insert_submit').val() == 1 && $('#insert_url').val())
                 {
-                    if (!$('#insert_text').val())
-                        $('#insert_text').val($('#insert_title').val());
-                    textarea.insertAtCaret('![' + $('#insert_text').val() + '](' + $('#insert_url').val() + ' "' + $('#insert_title').val() + '")');
+                    var title = $('#insert_title').val();
+                    var url = $('#insert_url').val();
+                    var text = $('#insert_text').val();
+                    var width = $('#insert_width').val();
+                    var position = $('#insert_position').val();
+
+                    if (!text)
+                        text = $('#insert_title').val();
+                    if (width)
+                        url += '?w=' + width;
+
+                    var insert = '![' + text + '](' + encodeURI(url) + ' "' + title + '")';
+                    if (position)
+                        insert = '<span style="float:' + position + ';">' + insert + '</span>';
+
+                    textarea.insertAtCaret(insert);
+                }
+            }
+        });
+    });
+
+    this.form.on('click', 'a.insert-asset', function() {
+        var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
+        $.fancybox.open({
+            'type': 'ajax',
+            'href': '/' + base_url + 'admin/popup/insert_asset/',
+            beforeShow: function() {
+                $('.fancybox-skin').css('background', 'white')
+            },
+            beforeClose: function() {
+                if ($('#insert_submit').val() == 1 && $('#insert_url').val())
+                {
+                    var title = $('#insert_title').val();
+                    var url = $('#insert_url').val();
+                    var text = $('#insert_text').val();
+
+                    if (!text)
+                        text = $('#insert_title').val();
+
+                    textarea.insertAtCaret('[' + text + '](' + encodeURI(url) + ' "' + title + '")');
                 }
             }
         });

@@ -79,6 +79,7 @@
         <div class="markdown-buttons">
             <a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"><i class="icon-link"></i>&ensp;Insert link</a>
             <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"><i class="icon-picture"></i>&ensp;Insert image</a>
+            <a href="#" class="small-button insert-asset" data-for-name="<?php echo $item['name'] . '_' . $form['salt']; ?>"><i class="icon-briefcase"></i>&ensp;Insert asset</a>
         </div>
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"

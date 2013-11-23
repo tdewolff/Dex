@@ -7,17 +7,27 @@ class Resource
     private static $extensions_mime = array(
         'js' => 'application/x-javascript',
         'css' => 'text/css',
-        'png' => 'image/png',
-        'gif' => 'image/gif',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
         'htm' => 'text/html',
         'html' => 'text/html',
+
         'svg' => 'image/svg+xml',
         'eot' => 'application/vnd.ms-fontobject',
         'woff' => 'application/font-woff',
         'otf' => 'application/octet-stream',
-        'ttf' => 'application/x-font-ttf'
+        'ttf' => 'application/x-font-ttf',
+
+        'png' => 'image/png',
+        'gif' => 'image/gif',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+
+        'mp3' => 'audio/mpeg',
+
+        'doc' => 'application/msword',
+        'pdf' => 'application/pdf',
+        'zip' => 'application/zip',
+        'rar' => 'application/x-rar-compressed',
+        '7z' => 'application/x-7z-compressed'
     );
 
     public static function setCaching($caching) {

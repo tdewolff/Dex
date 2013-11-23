@@ -531,6 +531,12 @@ ul.grid-3 {
 			}
 		}
 
+		#links {
+			li:not(:first-of-type):hover {
+				cursor:pointer;
+			}
+		}
+
 		#assets {
 			#breadcrumbs {
 				width:502px;
@@ -538,6 +544,10 @@ ul.grid-3 {
 
 			#directories_assets {
 				width:502px;
+
+				li.asset:hover {
+					cursor:pointer;
+				}
 			}
 
 			#images li:hover {

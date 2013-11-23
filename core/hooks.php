@@ -2,29 +2,6 @@
 
 ////////////////////////////////////////////////////////////////
 
-Hooks::attach('error', 0, function() {
-	global $url;
-
-	ob_clean();
-
-	Core::addTitle('Error');
-	if ($url[0] == 'admin')
-	{
-		Hooks::emit('admin-header');
-		Core::render('admin/error.tpl');
-		Hooks::emit('admin-footer');
-	}
-	else
-	{
-		Hooks::emit('site_header');
-		Core::render('error.tpl');
-		Hooks::emit('site_footer');
-	}
-	exit;
-});
-
-////////////////////////////////////////////////////////////////
-
 Hooks::attach('site-header', 0, function() {
 	site_header();
 	Core::render('header.tpl');

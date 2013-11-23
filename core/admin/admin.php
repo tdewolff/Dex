@@ -23,7 +23,7 @@ if (!Session::isUser())
 else // didn't go through login screen
 	Core::checkModules();
 
-if ($url[1] == 'popup')
+if (isset($url[1]) && $url[1] == 'popup' && isset($url[2]))
 {
 	if (!file_exists('core/templates/admin/popup/' . $url[2] . '.tpl'))
 		user_error('Popup "' . $url[2] . '" does not exist', ERROR);

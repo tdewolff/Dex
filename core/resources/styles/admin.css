@@ -1414,11 +1414,17 @@ ul.grid-3 > li {
   margin-right: 0;
   text-align: center;
 }
+.popup-wrapper .popup #links li:not(:first-of-type):hover {
+  cursor: pointer;
+}
 .popup-wrapper .popup #assets #breadcrumbs {
   width: 502px;
 }
 .popup-wrapper .popup #assets #directories_assets {
   width: 502px;
+}
+.popup-wrapper .popup #assets #directories_assets li.asset:hover {
+  cursor: pointer;
 }
 .popup-wrapper .popup #assets #images li:hover {
   cursor: pointer;

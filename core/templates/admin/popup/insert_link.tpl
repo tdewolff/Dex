@@ -5,11 +5,11 @@
             <div id="external-link">
                 <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button"><i class="icon-arrow-right"></i>&ensp;Properties</a>
             </div>
+
             <ul id="links" class="small-table">
               <li>
                 <div style="width:120px;">Title</div>
-                <div style="width:260px;">Link</div>
-                <div style="width:120px;">&nbsp;</div>
+                <div style="width:380px;">Link</div>
               </li>
             </ul>
         </div>
@@ -25,10 +25,9 @@
 </div>
 
 <script id="link_item" type="text/x-dot-template">
-    <li id="link_{{=it.link_id}}">
+    <li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}">
         <div style="width:120px;">{{=it.title}}</div>
-        <div style="width:260px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/<?php echo $_['base_url']; ?>{{=it.url}}</a></div>
-        <div style="width:120px;"><a href="#" class="properties really-small-button" data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}"><i class="icon-arrow-right"></i>&ensp;Properties</a></div>
+        <div style="width:380px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/<?php echo $_['base_url']; ?>{{=it.url}}</a></div>
     </li>
 </script>
 
@@ -44,19 +43,19 @@
     });
 
     var popup = $('.popup');
-    popup.on('click', 'a.properties', function() {
+    links.on('click', 'li', function() {
+        $('#insert_title').val($(this).attr('data-title'));
+        $('#insert_url').val($(this).attr('data-url'));
         popup.animate({
             'margin-left': '-600px'
         });
     });
 
-    links.on('click', 'a.properties', function() {
-        $('#insert_title').val($(this).attr('data-title'));
-        $('#insert_url').val($(this).attr('data-url'));
-    });
-
     popup.on('click', '#external-link a', function() {
         $('#insert_url').val($('#external-link input').val());
+        popup.animate({
+            'margin-left': '-600px'
+        });
     });
 
     popup.on('click', 'a.insert', function() {
