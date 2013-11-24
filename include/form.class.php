@@ -17,12 +17,12 @@ class Form
 	{
 		Hooks::attach('header', -1, function() {
 			Core::addDeferredScript('vendor/sha1.min.js');
-			Core::addDeferredScript('include/form.js');
+			Core::addDeferredScript('include/form.min.js');
 		});
 
 		Hooks::attach('admin-header', -1, function() {
 			Core::addDeferredScript('vendor/sha1.min.js');
-			Core::addDeferredScript('include/form.js');
+			Core::addDeferredScript('include/form.min.js');
 		});
 
 		$this->name = $name;

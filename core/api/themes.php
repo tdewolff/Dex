@@ -28,6 +28,8 @@ else if (API::action('get_themes'))
                     'current' => ($theme_name == $current_theme)
                 );
         }
+    Common::sortOn($themes, 'name');
+
     API::set('themes', $themes);
     API::finish();
 }

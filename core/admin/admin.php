@@ -2,16 +2,16 @@
 
 Core::addTitle('Dexterous');
 Core::addTitle('Admin panel');
-Core::addStyle('include/normalize.css');
-Core::addStyle('vendor/font-awesome.css');
-Core::addStyle('vendor/fancybox.css');
-Core::addStyle('admin.css');
+Core::addStyle('include/normalize.min.css');
+Core::addStyle('vendor/font-awesome.min.css');
+Core::addStyle('vendor/fancybox.min.css');
+Core::addStyle('admin.min.css');
 Core::addScript('vendor/jquery-2.0.3.min.js');
 Core::addScript('vendor/jquery.fancybox.min.js');
 Core::addScript('vendor/doT.min.js');
-Core::addScript('include/slidein.js');
-Core::addScript('include/api.js');
-Core::addDeferredScript('admin.js');
+Core::addScript('include/slidein.min.js');
+Core::addScript('include/api.min.js');
+Core::addDeferredScript('admin.min.js');
 
 // logout
 if (Session::isUser() && $request_url == 'admin/logout/')

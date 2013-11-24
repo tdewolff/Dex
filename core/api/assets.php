@@ -123,6 +123,8 @@ else if (API::action('get_directories'))
             );
         }
     }
+    Common::sortOn($directories, 'name');
+
     API::set('directories', $directories);
     API::finish();
 }
@@ -150,6 +152,8 @@ else if (API::action('get_assets'))
             );
         }
     }
+    Common::sortOn($assets, 'name');
+
     API::set('assets', $assets);
     API::finish();
 }

@@ -1,8 +1,8 @@
 <?php
 Module::set('menu');
 
-Module::addStyle('draggable.css');
-Module::addDeferredScript('draggable.js');
+Module::addStyle('draggable.min.css');
+Module::addDeferredScript('draggable.min.js');
 
 Hooks::emit('admin-header');
 Module::render('admin/menu.tpl');

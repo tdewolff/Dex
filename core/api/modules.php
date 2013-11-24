@@ -24,7 +24,7 @@ else if (API::action('reinstall_module'))
 else if (API::action('get_modules'))
 {
     $modules = array();
-    $table = $db->query("SELECT * FROM module;");
+    $table = $db->query("SELECT * FROM module ORDER BY module_name ASC;");
     while ($row = $table->fetch())
     {
         $ini_filename = 'modules/' . $row['module_name'] . '/config.ini';

@@ -78,6 +78,18 @@ class Common
         return substr($random, 0, $n);
     }
 
+    private static $column = '';
+    public static function cmpOn($a, $b)
+    {
+        return strcmp($a[self::$column], $b[self::$column]);
+    }
+
+    public static function sortOn($array, $column)
+    {
+        self::$column = $column;
+        usort($array, array('Common', 'cmpOn'));
+    }
+
     ////////////////
 
 	public static function tryOrEmpty($array, $index)

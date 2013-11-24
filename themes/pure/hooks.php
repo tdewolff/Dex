@@ -4,10 +4,9 @@ Hooks::attach('site-header', -1, function () {
     Theme::set('pure');
 
     Theme::addExternalStyle('http://yui.yahooapis.com/pure/0.3.0/pure-min.css');
-    Theme::addStyle('side-menu.css');
-    Theme::addStyle('style.css');
+    Theme::addStyle('side-menu.min.css');
     Theme::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
-    Theme::addDeferredScript('script.js');
+    Theme::addDeferredScript('script.min.js');
 });
 
 Hooks::attach('site-header', 1, function () {

@@ -370,6 +370,96 @@ ul.grid-3 {
 }
 
 #assets {
+	#upload {
+	    width:400px;
+	    margin:10px auto;
+	    background-color: #A9CC66;
+	    border: 1px dashed #477725;
+	    border-radius: 3px;
+
+		#drop {
+		    position: relative;
+		    text-align: center;
+		    margin:30px 50px;
+		    height:70px;
+
+		    span {
+			    font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+			    text-shadow: rgba(255,255,255,0.75) 0 1px 0;
+
+			    font-size:18px;
+			    color:#303030;
+			    line-height:200%;
+			}
+		}
+
+		ul {
+		    font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+		    text-shadow: rgba(255,255,255,0.5) 0 1px 0;
+		    color:#303030;
+		    font-size:12px;
+		    margin:0 20px;
+		    margin-bottom:20px;
+
+		    li {
+			    height: 16px;
+			    line-height: 16px;
+
+			    span {
+				    display:inline-block;
+				    width: 16px;
+				    height: 16px;
+				    background: url('../core/images/loading_green.gif') no-repeat;
+				    vertical-align: middle;
+				}
+			}
+
+			li.done {
+			    color:#477725;
+
+			    span {
+				    background: url('../core/images/upload_icons.png') no-repeat;
+				    height:13px;
+				}
+			}
+
+			li.fail {
+			    color:#B94A48;
+
+			    span {
+				    background: url('../core/images/upload_icons.png') no-repeat;
+				    background-position: 0 -13px;
+				    height:13px;
+				}
+			}
+		}
+
+		input {
+		    display:none;
+		}
+
+		#knob {
+		    position: absolute;
+		    top: 50%;
+		    right: 0;
+		    margin-top:-32px;
+		    width:64px;
+		    height:64px;
+		}
+
+		#big-knob {
+		    position: absolute;
+		    top:0;
+		    left:0;
+		}
+
+		#small-knob {
+		    position: absolute;
+		    top:8px;
+		    left:8px;
+		}
+	}
+
 	#create_directory {
 		margin:0 auto;
 		width:400px;

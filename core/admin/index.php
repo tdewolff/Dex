@@ -24,7 +24,7 @@ $log_name = Log::getFilename();
 $slash = strrpos($log_name, '/');
 $log_name = $slash ? substr($log_name, $slash + 1) : $log_name;
 
-Core::addStyle('vendor/popbox.css');
+Core::addStyle('vendor/popbox.min.css');
 
 Hooks::emit('admin-header');
 

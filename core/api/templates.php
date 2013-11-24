@@ -19,6 +19,8 @@ if (API::action('get_templates'))
                     'description' => Common::tryOrEmpty($ini, 'description')
                 );
         }
+    Common::sortOn($templates, 'name');
+
     API::set('templates', $templates);
     API::finish();
 }
