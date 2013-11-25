@@ -25,7 +25,7 @@ else
 	$form = new Form('user');
 
 	$form->addSection('User', 'These users can access the admin area. Admins have access to everything.');
-	$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
+	$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 	$form->addPassword('password', 'Password', ($url[2] != 'new' ? 'Leave empty to keep current' : ''));
 	$form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 	$form->addDropdown('permission', 'Permission level', 'Restricts access', array('admin' => 'Admin', 'user' => 'User'));

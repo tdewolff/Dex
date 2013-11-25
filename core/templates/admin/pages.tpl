@@ -18,7 +18,7 @@
 				<ul class="dropdown-menu" role="menu">
 					<li>
 						<a href="#" class="halt"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
-						<a href="#" class="sure" data-link-id="{{=it.link_id}}"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
+						<a href="#" class="sure" data-link-id="{{=it.link_id}}" title="Click to confirm"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
 					</li>
 				</ul>
 			</div>

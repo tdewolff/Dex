@@ -3,18 +3,18 @@
 $form = new Form('setup');
 
 $form->addSection('Settings', 'General site settings');
-$form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'May contain alphanumeric characters and spaces'));
+$form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
 $form->addMultilineText('site_subtitle', 'Site subtitle', 'Displayed in the header', '', array('(.|\n)*', 0, 200, 'Unknown error'));
 $form->addText('site_description', 'Site description', 'Describe the site concisely', '', array('.*', 0, 80, 'Unknown error'));
 $form->addArray('site_keywords', 'Site keywords', '', array('.*', 0, 80, 'Unknown error'));
 
 $form->addSection('Admin account', 'Admin account gives full access to the admin panel, meant for site owners.');
-$form->addText('admin_username', 'Admin username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
+$form->addText('admin_username', 'Admin username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 $form->addPassword('admin_password', 'Admin password', '');
 $form->addPasswordConfirm('admin_password2', 'admin_password', 'Admin password', 'Confirm');
 
 $form->addSection('User account', 'User account gives restricted access to the admin panel, meant for clients. Leave empty to skip.');
-$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
+$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 $form->addPassword('password', 'Password', '');
 $form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
 $form->optionalTogether(array('username', 'password', 'password2'));

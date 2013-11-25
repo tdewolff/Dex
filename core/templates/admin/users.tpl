@@ -16,7 +16,7 @@
                 <ul class="dropdown-menu" role="menu">
                     <li>
                         <a href="#" class="halt{{?it.current}}-stop{{?}}"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
-                        <a href="#" class="sure" data-user-id="{{=it.user_id}}"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
+                        <a href="#" class="sure" data-user-id="{{=it.user_id}}" title="Click to confirm"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
                     </li>
                 </ul>
             </div>

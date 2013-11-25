@@ -22,7 +22,7 @@
                     </li>
                     <li>
                         <a href="#" class="halt"><i class="icon-fixed-width icon-refresh"></i>&ensp;Reinstall</a>
-                        <a href="#" class="sure" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-refresh"></i>&ensp;Really?</a>
+                        <a href="#" class="sure" data-module-name="{{=it.module_name}}" title="Click to confirm"><i class="icon-fixed-width icon-refresh"></i>&ensp;Really?</a>
                     </li>
                 </ul>
             </div>

@@ -9,7 +9,7 @@
         <?php echo $_['logs_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-action="clear_logs"><i class="icon-trash"></i></a>
+        <a href="#" class="sure inline-rounded" data-action="clear_logs" title="Click to confirm"><i class="icon-trash"></i></a>
         <?php endif; ?>
     </div>
 
@@ -27,7 +27,7 @@
         <?php echo $_['cache_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-action="clear_cache"><i class="icon-trash"></i></a>
+        <a href="#" class="sure inline-rounded" data-action="clear_cache" title="Click to confirm"><i class="icon-trash"></i></a>
         <?php endif; ?>
     </div>
 </div>
@@ -41,7 +41,7 @@
 
     $('a.sure').click(function() {
         var action = $(this).attr('data-action');
-        api({
+        api('/' + base_url + 'api/core/index.php', {
             action: action
         }, function(data) {
             if (action == 'clear_logs')

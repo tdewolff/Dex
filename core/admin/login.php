@@ -3,7 +3,7 @@
 $form = new Form('login');
 
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');
-$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'May contain alphanumeric characters and (-_)'));
+$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 $form->addPassword('password', 'Password', '');
 
 $form->addSeparator();

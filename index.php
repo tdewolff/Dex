@@ -1,5 +1,13 @@
 <?php
 
+if (strpos($_SERVER['HTTP_HOST'], 'www.') === 0)
+{
+    $s = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: http' . $s . '://' . substr($_SERVER['HTTP_HOST'], 4) . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
 // preliminaries
 $starttime = explode(' ', microtime());
 $config = file_exists('config.ini') ? parse_ini_file('config.ini') : array();
@@ -27,12 +35,14 @@ register_shutdown_function(function() { // PHP errors
 Log::request($_SERVER['REQUEST_URI']);
 
 $base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
+$base_url = preg_replace('/\/+$/', '/', $base_url); // remove added slashes to base url
+
 $request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp($base_url, $request_url, strlen($base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
 $request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
-$url = preg_split('/\/+/', $request_url, -1, PREG_SPLIT_NO_EMPTY);
+$url = explode('/', $request_url);
 
 if (!Common::validUrl($request_url))
 	user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
@@ -130,14 +140,7 @@ require_once('include/form.class.php');
 require_once('include/hooks.class.php');
 require_once('core/hooks.php');
 
-$domain_url = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos(strtolower($_SERVER['SERVER_PROTOCOL']), '/')); // http
-$domain_url .= ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : ''); // s in https
-$domain_url .= '://' . $_SERVER['SERVER_NAME'];
-$domain_url .= ($_SERVER['SERVER_PORT'] == '80') ? '' : (':' . $_SERVER['SERVER_PORT']); // port
-$domain_url .= '/';
-
 Session::refreshLogin();
-Core::assign('domain_url', $domain_url);
 Core::assign('base_url', $base_url);
 
 
