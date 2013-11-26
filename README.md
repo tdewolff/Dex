@@ -7,7 +7,9 @@ Dexterous is a small and simple CMS designed for small- to medium-sized websites
 
 ### Wordpress
 The project was initiated after heavy use of Wordpress for sites. Where Wordpress is officially a blog platform, I noticed how users disliked the large admin panel which was mostly for webmasters anyways. Dexterous tries to minimize the options users (editors) have, they add or edit pages and manage assets. Period.
+
 Wordpress, while modular, was not ideal to build themes for. You have to hide all blog elements and the stylesheets tended to get really big. Dexterous is very modular too, but is very strict with themes. Themes may not contain logic or HTML, clearing the line between logic and presentation. Dexterous sets the basic HTML structure and modules can expand on that, but themes do not.
+
 Another downside (which is an upside too) of Wordpress was that it's really big. The output HTML was large, CSS and JS files are plenty (WP Total Cache solves a lot but is complex and clumsy). Dexterous automatically concatenates CSS and JS files and minifies output HTML.
 
 ### Properties
@@ -31,12 +33,14 @@ Another downside (which is an upside too) of Wordpress was that it's really big.
 
 ### Note
 Dexterous is _not_ suited for blogs, forums or large sites. The CMS is simply underdeveloped at this point of time and is in the first place not build for very large or dynamic sites.
+
 The CMS relies on modern but common used software. This includes the use of Sqlite3, HTML5 and CSS3. It is not hold back by legacy but doesn't use experimental software either.
 
 Installation
 ------------
 
 Download the zipfile from Git and extract. Move the files onto your webserver and access that with your browser. The setup page will show and a (SQLite) database is created containing all site-specific data.
+
 Accessing the admin panel is done by appending admin/ to the base site URL. Removing database.sqlite3 will reinitiate the setup process.
 
 Make sure that the following Apache modules are enabled:
