@@ -39,7 +39,7 @@ Another downside (which is an upside too) of Wordpress is its size. The output H
 Installation
 ------------
 
-Download the zipfile from Git and extract. Move the files onto your webserver and access it with your browser. The setup page will show and a (SQLite) database is created containing all site-specific data.
+Download the zipfile from Git and extract. Move the files onto your webserver and access it with your browser. The setup page will show and a (SQLite) database is created containing all site-specific data. The non-server/ directory does not have to be uploaded.
 
 Accessing the admin panel is done by appending admin/ to the base site URL. Removing database.sqlite3 will reinitiate the setup process.
 
