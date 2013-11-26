@@ -39,7 +39,7 @@ Another downside (which is an upside too) of Wordpress is its size. The output H
 Installation
 ------------
 
-Download the zipfile from Git and extract. Move the files onto your webserver and access that with your browser. The setup page will show and a (SQLite) database is created containing all site-specific data.
+Download the zipfile from Git and extract. Move the files onto your webserver and access it with your browser. The setup page will show and a (SQLite) database is created containing all site-specific data.
 
 Accessing the admin panel is done by appending admin/ to the base site URL. Removing database.sqlite3 will reinitiate the setup process.
 
@@ -53,12 +53,10 @@ Make sure that the following Apache modules are enabled:
 And this PHP extension:
 - php_sqlite3 (essential)
 
-Installing modules, themes and templates
------------------------------
+### Installing modules, themes and templates
 
 Move the module, theme or template folder into modules/, themes/ or templates/ respectively. The next time you load a page in the admin panel the new module will be installed. Deleting the module, theme or template folder will uninstall.
 
-Setting up a site
------------------
+### Setting up a site
 
 After setup you can add content using the admin panel. Create pages and upload assets. Make sure to make pages visible in the menu module so the pages can be navigated to.
