@@ -30,11 +30,11 @@ Dexterous is _not_ suited for blogs, forums or large sites. The CMS is simply un
 The CMS relies on modern but common used software. This includes the use of Sqlite3, HTML5 and CSS3. It is not hold back by legacy but doesn't use experimental software either.
 
 ### Comparison to Wordpress
-The project was initiated after heavy use of Wordpress for sites. Where Wordpress is officially a blog platform, I noticed how users disliked the large admin panel which was mostly for webmasters anyways. Dexterous tries to minimize the options users (editors) have, they add or edit pages and manage assets. Period.
+The project was initiated after heavy use of Wordpress for sites. Where Wordpress is officially a blog platform, I noticed how users dislike the large admin panel which is mostly for webmasters anyways. Dexterous tries to minimize the options users (editors) have, they edit pages and manage assets. Period.
 
-Wordpress, while modular, was not ideal to build themes for. You have to hide all blog elements and the stylesheets tended to get really big. Dexterous is very modular too, but is very strict with themes. Themes may not contain logic or HTML, clearing the line between logic and presentation. Dexterous sets the basic HTML structure and modules can expand on that, but themes do not.
+Wordpress, while modular, is not ideal to build themes for. One has to hide all blog elements and stylesheets tend to get quite big. Dexterous is very modular too, but is more strict with themes. Themes do not contain logic or HTML which clears the line between logic and presentation. Dexterous sets a basic HTML structure and modules can expand on that, themes do not.
 
-Another downside (which is an upside too) of Wordpress was that it's really big. The output HTML was large, CSS and JS files are plenty (WP Total Cache solves a lot but is complex and clumsy). Dexterous automatically concatenates CSS and JS files and minifies output HTML.
+Another downside (which is an upside too) of Wordpress is its size. The output HTML is large, CSS and JS files are plenty (WP Total Cache solves a lot but is complex and clumsy). Dexterous automatically concatenates CSS and JS files and minifies output HTML.
 
 Installation
 ------------
