@@ -27,6 +27,7 @@
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
 
@@ -34,7 +35,9 @@
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"><?php echo $item['value']; ?></textarea>
+            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>><?php echo $item['value']; ?></textarea>
 
 
         <?php elseif ($item['type'] == 'email'): ?>
@@ -42,7 +45,9 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
+            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
 
         <?php elseif ($item['type'] == 'tel'): ?>
@@ -50,13 +55,17 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>">
+            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
 
         <?php elseif ($item['type'] == 'password'): ?>
         <input type="hidden"
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value='<?php echo $item['value']; ?>'
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
             data-type="password">
 
         <input type="password"
@@ -67,7 +76,9 @@
 
         <?php elseif ($item['type'] == 'dropdown'): ?>
         <select
-            name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
+            name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
             <?php foreach ($item['options'] as $id => $name): ?>
             <option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>><?php echo $name; ?></option>
             <?php endforeach; ?>
@@ -83,15 +94,18 @@
         </div>
         <textarea
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
-            class="markdown"
             maxlength="<?php echo $item['preg']['max']; ?>"
-            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"><?php echo $item['value']; ?></textarea>
+            placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            class="markdown <?php echo (isset($item['class']) ? $item['class'] : ''); ?>"><?php echo $item['value']; ?></textarea>
 
 
         <?php elseif ($item['type'] == 'array'): ?>
         <input type="hidden"
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value='<?php echo $item['value']; ?>'
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
             data-type="array"
             data-template="template_<?php echo $item['name'] . '_' . $form['salt']; ?>"
             data-ul="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>">
@@ -115,6 +129,8 @@
         <input type="hidden"
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value='<?php echo $item['value']; ?>'
+            <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+            <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
             data-type="parameters"
             data-template="template_<?php echo $item['name'] . '_' . $form['salt']; ?>"
             data-ul="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>">

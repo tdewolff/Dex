@@ -19,8 +19,9 @@ require_once('include/log.class.php');
 Common::setMinifying(Common::tryOrDefault($config, 'minifying', true));
 Common::ensureWritableDirectory('assets/');
 Common::ensureWritableDirectory('cache/');
+Common::ensureWritableDirectory('logs/');
 
-Log::setDirectory(Common::tryOrDefault($config, 'log_directory', 'logs/'));
+Log::initialize();
 Log::setVerbose(Common::tryOrDefault($config, 'verbose_logging', false));
 Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false));
 
@@ -43,19 +44,18 @@ if (strncmp($base_url, $request_url, strlen($base_url)))
 
 $request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
 $url = explode('/', $request_url);
+if (empty($url[count($url) - 1]))
+    unset($url[count($url) - 1]);
 
 if (!Common::validUrl($request_url))
 	user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
 
 
-// favicon.ico and robots.txt
-if ($request_url == 'favicon.ico' || $request_url == 'robots.txt')
-    if (file_exists($request_url))
-    {
-        if ($request_url == 'favicon.ico')
-            header('Content-Type: image/x-icon');
-        echo file_get_contents($request_url);
-    }
+// robots.txt and favicon.ico
+if ($request_url == 'robots.txt')
+    Common::outputRobotsTxt(); // always exits
+else if ($request_url == 'favicon.ico')
+    Common::outputFaviconIco();
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
 
@@ -149,6 +149,10 @@ if (file_exists($db->filename) === false)
 	user_error('Database file never created at "' . $db->filename . '"', ERROR);
 else if (filesize($db->filename) == 0)
 	require_once('core/admin/setup.php'); // until site is setup, this will exit!
+
+
+if ($request_url == 'sitemap.xml')
+    Common::outputSitemapXml(); // always exits
 
 
 // handle admin area

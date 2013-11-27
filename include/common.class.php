@@ -37,9 +37,9 @@ class Common
     public static function ensureWritableDirectory($directory)
     {
         if (!is_dir($directory))
-            mkdir($directory, 0777);
-        else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0777')
-            chmod($directory, 0777);
+            mkdir($directory, 0755);
+        else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0755')
+            chmod($directory, 0755);
     }
 
 	public static function validUrl($input)
@@ -105,6 +105,53 @@ class Common
     public static function tryOrDefault($array, $index, $default)
     {
         return isset($array[$index]) ? $array[$index] : $default;
+    }
+
+    ////////////////
+
+    public static function fullBaseUrl()
+    {
+        $s = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
+        return 'http' . $s . '://' . $_SERVER['HTTP_HOST'] . '/';
+    }
+
+    public static function outputFaviconIco()
+    {
+        if (file_exists('favicon.ico'))
+        {
+            header('Content-Type: image/x-icon');
+            echo file_get_contents('favicon.ico');
+        }
+        exit;
+    }
+
+    public static function outputRobotsTxt()
+    {
+        global $base_url;
+
+        header('Content-Type: text');
+        echo "User-agent: *\n" .
+             "Disallow: /admin/\n" .
+             "Sitemap: " . self::fullBaseUrl() . $base_url . "sitemap.xml";
+        exit;
+    }
+
+    public static function outputSitemapXml()
+    {
+        global $db, $base_url;
+
+        header('Content-Type: text/xml');
+        echo '<?xml version="1.0" encoding="UTF-8"?>' .
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        $table = $db->query("SELECT * FROM link;");
+        while ($row = $table->fetch())
+        {
+            echo '<url>' .
+                 '<loc>' . self::fullBaseUrl() . $base_url . $row['url'] . '</loc>' .
+                 '</url>';
+        }
+        echo '</urlset>';
+        exit;
     }
 }
 

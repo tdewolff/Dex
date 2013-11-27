@@ -17,6 +17,9 @@ $form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
 $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
 $form->addLinkUrl('url', 'URL', $base_url, 'title');
 
+$form->setId('title', 'url-feed');
+$form->setId('url', 'url');
+
 if ($url[2] == 'new')
 {
     $templates = array();

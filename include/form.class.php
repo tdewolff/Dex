@@ -148,8 +148,7 @@ class Form
 			'subtitle' => $subtitle,
 			'placeholder' => '',
 			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => 'Must be valid local URL'),
-			'value' => '',
-			'class' => 'link-url'
+			'value' => ''
 		);
 	}
 
@@ -211,6 +210,26 @@ class Form
 		$this->redirect = $redirect;
 	}
 
+	public function setId($name, $id)
+	{
+		foreach ($this->items as $i => $item)
+			if (isset($item['name']) && $item['name'] == $this->name . '_' . $name)
+			{
+				$this->items[$i]['id'] = $id;
+				break;
+			}
+	}
+
+	public function setClass($name, $class)
+	{
+		foreach ($this->items as $i => $item)
+			if (isset($item['name']) && $item['name'] == $this->name . '_' . $name)
+			{
+				$this->items[$i]['class'] = $class;
+				break;
+			}
+	}
+
 	////////////////////////////////////////////////////////////////
 
 	public function optional($names)
@@ -233,16 +252,17 @@ class Form
 
 	public function submitted()
 	{
-		$submitted = isset($_SESSION[$this->name . '_salt']) && ($_SERVER['REQUEST_METHOD'] == 'POST');
-		if ($submitted)
+		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
 			parse_str(file_get_contents("php://input"), $this->data); // retrieve input
 
+			$_SESSION[$this->name . '_salt'] = $this->data['salt'];
 			foreach ($this->items as $item) // input to session
 				if (isset($item['value']))
 					$_SESSION[$item['name']] = (isset($this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
+			return true;
 		}
-		return $submitted;
+		return false;
 	}
 
 	public function validate()

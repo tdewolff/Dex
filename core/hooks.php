@@ -25,7 +25,7 @@ Hooks::attach('admin-footer', 0, function() {
 ////////////////////////////////////////////////////////////////
 
 Hooks::attach('main', 0, function() {
-    global $db;
+    global $db, $base_url;
 
     $link_id = Core::getLinkId();
     $template_name = Core::getTemplateName();
@@ -35,6 +35,9 @@ Hooks::attach('main', 0, function() {
     	Core::assign($row['name'], $row['content']);
 
 	Core::renderTemplate($template_name);
+
+	if (Session::loggedIn())
+		echo '<a href="/' . $base_url . 'admin/pages/' . $link_id . '/">Edit page</a>';
 });
 
 ////////////////////////////////////////////////////////////////

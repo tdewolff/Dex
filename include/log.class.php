@@ -4,13 +4,21 @@ class Log
 {
 	private static $file = false;
 	private static $verbose = true;
-	private static $directory = '';
 	private static $filename = '';
 	private static $ipaddress = '';
 
 	function __destruct()
 	{
 		self::close();
+	}
+
+	public static function initialize()
+	{
+		// absolute path needed for atexit()
+		self::$filename = substr($_SERVER['SCRIPT_FILENAME'], 0, strrpos($_SERVER['SCRIPT_FILENAME'], '/')) . '/' . self::getFilename();
+		self::$ipaddress = Common::padIpAddress($_SERVER['REMOTE_ADDR']);
+
+		self::open();
 	}
 
 	public static function open()
@@ -24,20 +32,6 @@ class Log
 			fclose(self::$file);
 	}
 
-	public static function setDirectory($directory)
-	{
-		if ($directory[strlen($directory) - 1] != '/')
-			$directory .= '/';
-		Common::ensureWritableDirectory($directory);
-		self::$directory = $directory;
-
-		// absolute path needed for atexit()
-		self::$filename = substr($_SERVER['SCRIPT_FILENAME'], 0, strrpos($_SERVER['SCRIPT_FILENAME'], '/')) . '/' . self::getFilename();
-		self::$ipaddress = Common::padIpAddress($_SERVER['REMOTE_ADDR']);
-
-		self::open();
-	}
-
 	public static function setVerbose($verbose)
 	{
 		self::$verbose = $verbose;
@@ -45,7 +39,7 @@ class Log
 
 	public static function getFilename()
 	{
-		return self::$directory . date('Y-m M') . '.log';
+		return 'logs/' . date('Y-m M') . '.log';
 	}
 
 	public static function error($message) {

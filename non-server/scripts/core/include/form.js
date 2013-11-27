@@ -51,6 +51,8 @@ var Form = function(form) {
     };
 
     this.save = function() {
+        console.log('saving');
+
         // put data of multi-input fields into single hidden input
         self.form.find('input[type="hidden"]').each(function(i, hidden) {
             hidden = $(hidden);
@@ -79,8 +81,11 @@ var Form = function(form) {
             }
         });
 
+        var data = self.form.serialize();
+        data += '&salt=' + self.salt;
+
         // AJAX
-        api(window.location.href, self.form.serialize(), self.success, self.responseError);
+        api(window.location.href, data, self.success, self.responseError);
     };
 
     this.success = function(data) {
@@ -124,8 +129,8 @@ var Form = function(form) {
     };
 
     this.responseError = function(data) {
-        self.form.find('.form_response > .error').hide();
-        self.form.find('.form_response > .success').fadeIn('fast');
+        self.form.find('.form_response > .success').hide();
+        self.form.find('.form_response > .error').fadeIn('fast');
     };
 
     // saving interval if no submit
@@ -143,12 +148,6 @@ var Form = function(form) {
     });
 
     // other stuff
-    this.form.on('blur', '.link-url', function() {
-        var link_url = $(this).val();
-        if (link_url[link_url.length - 1] != '/')
-            $(this).val(link_url + '/');
-    });
-
     this.form.on('click', 'a.insert-link', function() {
         var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
         $.fancybox.open({
