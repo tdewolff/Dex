@@ -139,7 +139,7 @@ class Form
 		);
 	}
 
-	public function addLinkUrl($name, $title, $subtitle, $source)
+	public function addLinkUrl($name, $title, $subtitle)
 	{
 		$this->items[] = array(
 			'type' => 'text',
