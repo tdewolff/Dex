@@ -1,12 +1,13 @@
+v1.0:
 * Upload image in popup
 * Custom 404 on production
-* ? Markdown preview
+* (?) Markdown page preview
 
 Later:
-* Image size preview met vierkantjes bij Insert Image popup
-* Meertaligheid
-* ? Pagina revisies
-* ? Verschil tussen pagina opslaan en publiceren
+* Image size preview with squares on the corners in the Insert Image popup
+* Multiple languages for admin interface
+* (?) Page revisions
+* (?) Difference between saving a page and publishing
 * Expand sitemap (modify date, priority)
 * Image compression when uploaded
-* Instead of confirm password make originl showable
+* Instead of confirm password make original showable
