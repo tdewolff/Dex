@@ -14,3 +14,4 @@ Later:
 * Expand sitemap (modify date, priority)
 * Image compression when uploaded
 * Instead of confirm password make original showable
+* Use YUICompressor in PHP for theme updates etc. (not on the fly compression)
