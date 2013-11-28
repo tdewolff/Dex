@@ -32,3 +32,4 @@ Module::assign('first_module', $form);
 Module::render('admin/first_module.tpl');
 
 Hooks::emit('admin-footer');
+exit;
