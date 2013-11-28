@@ -13,11 +13,19 @@ if ($form->submitted()) {
     if ($form->validate()) {
         $db->exec('
             UPDATE module_first_module
-            SET value = "' . $form->get('message') . '"
+            SET value = "' . $db->escape($form->get('message')) . '"
             WHERE key = "message";');
     }
     $form->finish();
 }
+
+$currentMessageQuerry = $db->query('SELECT value FROM module_first_module WHERE key = "message" LIMIT 1');
+if ($currentMessageQuerry) {
+    if ($row = $currentMessageQuerry->fetch()) {
+        $form->set("message", $row['value']);
+    }
+}
+
 Hooks::emit('admin-header');
 
 Module::assign('first_module', $form);
