@@ -40,7 +40,7 @@ $base_url = preg_replace('/\/+$/', '/', $base_url); // remove added slashes to b
 
 $request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp($base_url, $request_url, strlen($base_url)))
-	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
+    user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
 $request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
 $url = explode('/', $request_url);
@@ -48,7 +48,7 @@ if (empty($url[count($url) - 1]))
     unset($url[count($url) - 1]);
 
 if (!Common::validUrl($request_url))
-	user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
+    user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
 
 
 // robots.txt and favicon.ico
@@ -108,12 +108,12 @@ $db = new Database('database.sqlite3');
 $bcrypt = new Bcrypt(8);
 
 register_shutdown_function(function() {
-	global $starttime, $db;
+    global $starttime, $db;
 
-	$endtime = explode(' ', microtime());
-	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
+    $endtime = explode(' ', microtime());
+    $totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
-	Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
+    Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
 });
 
 
@@ -146,9 +146,9 @@ Core::assign('base_url', $base_url);
 
 // check whether database needs to be set up
 if (file_exists($db->filename) === false)
-	user_error('Database file never created at "' . $db->filename . '"', ERROR);
+    user_error('Database file never created at "' . $db->filename . '"', ERROR);
 else if (filesize($db->filename) == 0)
-	require_once('core/admin/setup.php'); // until site is setup, this will exit!
+    require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 
 if ($request_url == 'sitemap.xml')
@@ -167,12 +167,11 @@ while ($row = $table->fetch())
 {
     $settings[$row['key']] = $row['value'];
     if (!empty($row['value']))
-	   Core::assign('setting_' . $row['key'], $row['value']);
+       Core::assign('setting_' . $row['key'], $row['value']);
 }
 
-
 // show page
-if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url LIMIT 1;"))
+if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;"))
 {
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
@@ -180,41 +179,41 @@ if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request
     Core::addTitle($settings['title']);
     Core::addTitle($link['title']);
 
-	// load in module hooks
-	$table = $db->query("SELECT * FROM link_module
-		JOIN module ON link_module.module_name = module.module_name
-		WHERE (link_id = '0' OR link_id = '" . $db->escape($link['link_id']) . "') AND module.enabled = 1;");
-	while ($row = $table->fetch())
-		include_once('modules/' . $row['module_name'] . '/hooks.php');
+    // load in module hooks
+    $table = $db->query("SELECT * FROM link_module
+        JOIN module ON link_module.module_name = module.module_name
+        WHERE (link_id = '0' OR link_id = '" . $db->escape($link['link_id']) . "') AND module.enabled = 1;");
+    while ($row = $table->fetch())
+        include_once('modules/' . $row['module_name'] . '/hooks.php');
 
-	$theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
-	if (file_exists($theme_hooks_filename) !== false)
-		include_once($theme_hooks_filename);
+    $theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
+    if (file_exists($theme_hooks_filename) !== false)
+        include_once($theme_hooks_filename);
 
 
     Hooks::emit('site-header');
     echo '<section class="page-wrapper">';
 
     echo '<header>';
-	Hooks::emit('header');
-	echo '</header>';
+    Hooks::emit('header');
+    echo '</header>';
 
-	echo '<nav class="navigation" role="navigation">';
-	Hooks::emit('navigation');
-	echo '</nav>';
+    echo '<nav class="navigation" role="navigation">';
+    Hooks::emit('navigation');
+    echo '</nav>';
 
-	echo '<article class="main" role="main">';
-	Hooks::emit('main');
-	echo '</article>';
+    echo '<article class="main" role="main">';
+    Hooks::emit('main');
+    echo '</article>';
 
-	echo '<footer>';
-	Hooks::emit('footer');
+    echo '<footer>';
+    Hooks::emit('footer');
     echo '</footer>';
 
     echo '</section>';
     Hooks::emit('site-footer');
 }
 else
-	user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+    user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 ?>
