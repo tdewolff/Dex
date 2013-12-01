@@ -54,7 +54,7 @@ class Resource
     {
         $latest_modify_time = 0;
         foreach ($filenames as $filename)
-            if (!file_exists($filename))
+            if (!is_file($filename))
                 user_error('File "' . $filename . '" could not be found', WARNING);
             else
             {
@@ -70,11 +70,11 @@ class Resource
     {
         $starttime_local = explode(' ', microtime());
         $cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
-        if (!file_exists($cache_filename) || !self::$caching)
+        if (!is_file($cache_filename) || !self::$caching)
         {
             $content = '';
             foreach ($filenames as $filename)
-                if (file_exists($filename))
+                if (is_file($filename))
                     $content .= file_get_contents($filename);
 
             $f = fopen($cache_filename, 'w');
@@ -111,9 +111,9 @@ class Resource
 
     public static function imageSize($filename, $max_width, $max_height = 0, $scale = 0)
     {
-        if (!file_exists($filename))
+        if (!is_file($filename))
         {
-            Log::warning('Could not find "' . $filename . '" to determine new image size');
+            user_error('Could not find "' . $filename . '" to determine new image size', WARNING);
             return array(0, 0);
         }
 
@@ -160,7 +160,7 @@ class Resource
     {
         $starttime_local = explode(' ', microtime());
         $cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
-        if (!file_exists($cache_filename))
+        if (!is_file($cache_filename))
         {
             list($width, $height, $mime_type, $attribute) = getimagesize($filename);
             list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
@@ -182,7 +182,7 @@ class Resource
                     break;
 
                 default:
-                    Log::warning('Could not resize "' . $filename . '" since it is not a JPEG, PNG or GIF');
+                    user_error('Could not resize "' . $filename . '" since it is not a JPEG, PNG or GIF', WARNING);
                     return $filename;
             }
 

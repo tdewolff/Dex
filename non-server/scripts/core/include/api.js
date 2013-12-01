@@ -32,5 +32,14 @@ function api(url, data, success, error) {
 
 function apiError(error) {
     $('#api_error').html(error);
-    $('#api_error_link').fancybox().click();
+    $('#api_error_link').fancybox({
+        closeBtn: false,
+        beforeShow: function() {
+            this.skin.css({
+                'background': '#F2DEDE',
+                'color': '#B94A48',
+                'border': 'solid 1px #EED3D7'
+            });
+        }
+    }).click();
 }

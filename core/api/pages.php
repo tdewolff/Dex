@@ -17,7 +17,7 @@ else if (API::action('get_pages'))
     while ($row = $table->fetch())
     {
         $ini_filename = 'templates/' . $row['template_name'] . '/config.ini';
-        if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+        if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
             $row['template_name'] = Common::tryOrEmpty($ini, 'title');
 
         $row['content'] = array();

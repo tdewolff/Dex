@@ -117,7 +117,7 @@ class Common
 
     public static function outputFaviconIco()
     {
-        if (file_exists('favicon.ico'))
+        if (is_file('favicon.ico'))
         {
             header('Content-Type: image/x-icon');
             echo file_get_contents('favicon.ico');

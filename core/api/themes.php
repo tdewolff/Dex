@@ -20,7 +20,7 @@ else if (API::action('get_themes'))
         if (is_dir('themes/' . $theme_name) && $theme_name != '.' && $theme_name != '..')
         {
             $ini_filename = 'themes/' . $theme_name . '/config.ini';
-            if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+            if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
                 $themes[] = array(
                     'name' => $theme_name,
                     'title' => isset($ini['title']) ? $ini['title'] : '',

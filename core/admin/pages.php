@@ -28,7 +28,7 @@ if ($url[2] == 'new')
         if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
         {
             $ini_filename = 'templates/' . $template_name . '/config.ini';
-            if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+            if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
                 $templates[$template_name] = Common::tryOrEmpty($ini, 'title');
         }
     $form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
@@ -86,7 +86,7 @@ else
 
     $form->addSeparator();
 
-    if (!file_exists('templates/' . $link['template_name'] . '/form.php'))
+    if (!is_file('templates/' . $link['template_name'] . '/form.php'))
         user_error('Template name not set', ERROR);
     include_once('templates/' . $link['template_name'] . '/form.php');
 

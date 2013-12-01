@@ -20,7 +20,7 @@ class Error
 			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 	}
 
-	public static function report($type, $error, $file, $line, $context = '')
+	public static function report($type, $message, $file, $line, $context = '')
 	{
 		switch ($type)
 		{
@@ -29,13 +29,13 @@ class Error
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
-				Log::error('(' . $file . ':' . $line . ') ' . $error);
+				Log::error('(' . $file . ':' . $line . ') ' . $message);
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestApi())
-						API::error('<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
+						API::error($message);
 					else
-						echo '<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+						echo $message;
 				}
 				exit;
 
@@ -44,13 +44,13 @@ class Error
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
 			case E_RECOVERABLE_ERROR:
-				Log::warning('(' . $file . ':' . $line . ') ' . $error);
+				Log::warning('(' . $file . ':' . $line . ') ' . $message);
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestApi())
-						API::warning('<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
+						API::warning($message);
 					else if (Common::requestAdmin())
-						echo '<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+						echo $message;
 				}
 				break;
 
@@ -63,9 +63,9 @@ class Error
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestApi())
-						API::notice('<pre><b>NOTICE</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
+						API::notice($message);
 					else if (Common::requestAdmin())
-						echo '<pre><b>NOTICE</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+						echo $message;
 				}
 				break;
 
@@ -74,9 +74,9 @@ class Error
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestApi())
-						API::error('<pre><b>UNKNOWN (' . $type . ')</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
+						API::error($message);
 					else
-						echo '<pre><b>UNKNOWN (' . $type . ')</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+						echo $message;
 				}
 				exit;
 		}

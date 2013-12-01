@@ -111,7 +111,7 @@ class Core extends Dexterous
 			if (is_dir('modules/' . $module_name) && $module_name != '.' && $module_name != '..')
 			{
 				$module_file = 'modules/' . $module_name . '/config.ini';
-				if (file_exists($module_file) !== false)
+				if (is_file($module_file))
 					$fs_modules[$module_name] = 1;
 			}
 

@@ -10,7 +10,9 @@ if (strpos($_SERVER['HTTP_HOST'], 'www.') === 0)
 
 // preliminaries
 $starttime = explode(' ', microtime());
-$config = file_exists('config.ini') ? parse_ini_file('config.ini') : array();
+$config = is_file('config.ini') ? parse_ini_file('config.ini') : array();
+if ($config === false) // for if parse_ini_file fails
+    $config = array();
 
 require_once('include/common.class.php');
 require_once('include/error.class.php');
@@ -77,7 +79,7 @@ if (Common::requestResource())
 
     if (!Resource::isResource($extension))
         user_error('Resource file extension "' . $extension . '" invalid of "' . $request_url . '"', ERROR);
-    else if (!file_exists($filename))
+    else if (!is_file($filename))
         user_error('Could not find resource file "' . $filename . '"', ERROR);
     else
     {
@@ -124,7 +126,7 @@ if (Common::requestApi())
 
     API::load();
     $filename = API::expandUrl($url);
-    if (!file_exists($filename))
+    if (!is_file($filename))
         user_error('Could not find API file "' . $filename . '"', ERROR);
 
     require_once($filename);
@@ -145,7 +147,7 @@ Core::assign('base_url', $base_url);
 
 
 // check whether database needs to be set up
-if (file_exists($db->filename) === false)
+if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 else if (filesize($db->filename) == 0)
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
@@ -189,7 +191,7 @@ while ($row = $table->fetch())
     include_once('modules/' . $row['module_name'] . '/hooks.php');
 
 $theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
-if (file_exists($theme_hooks_filename) !== false)
+if (is_file($theme_hooks_filename) !== false)
     include_once($theme_hooks_filename);
 
 

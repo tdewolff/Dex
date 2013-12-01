@@ -11,7 +11,7 @@ if (API::action('get_templates'))
         if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
         {
             $ini_filename = 'templates/' . $template_name . '/config.ini';
-            if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+            if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
                 $templates[] = array(
                     'name' => $template_name,
                     'title' => Common::tryOrEmpty($ini, 'title'),

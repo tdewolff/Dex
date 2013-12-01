@@ -37,7 +37,12 @@
     <li data-name="{{=it.name}}" class="directory">
         <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#!dir={{=it.dir}}" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
         <div style="width:100px;">-</div>
-        <div style="width:40px;">&nbsp;</div>
+        <div style="width:40px;">
+            {{?it.dir.length}}
+            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}" title="Click to confirm"><i class="icon-trash"></i></a>
+            {{?}}
+        </div>
     </li>
 </script>
 
@@ -85,7 +90,10 @@
     var image_item = doT.template($('#image_item').text());
 
     // loading initial data
-    function loadDir(dir) {
+    var dir = '';
+    function loadDir(newDir) {
+        dir = newDir;
+
         directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
         images.find('li').slideUp('fast', function() { $(this).remove(); });
 
@@ -125,10 +133,10 @@
         });
     }
 
+    // use copy-pastable AJAX links for directory navigation
     if (window.location.hash.substr(0, 6) == '#!dir=')
-        loadDir(window.location.hash.substr(6));
-    else
-        loadDir('');
+        dir = window.location.hash.substr(6);
+    loadDir(dir);
 
     // click events on directories, assets and images
     breadcrumbs.on('click', 'a', function() {
@@ -136,14 +144,39 @@
     });
 
     directories_assets.on('click', '.directory a', function() {
-        loadDir($(this).attr('data-dir'));
+        if (typeof $(this).attr('data-dir') !== 'undefined')
+            loadDir($(this).attr('data-dir'));
     });
 
-    $('#directories_assets, #images').on('click', 'a.sure', function() {
+    // deleting directories, assets or images
+    $('#directories_assets').on('click', 'li.directory a.sure', function() {
+        var item = $(this);
+        api('/' + base_url + 'api/core/assets.php', {
+            action: 'delete_directory',
+            name: item.attr('data-name'),
+            dir: dir
+        }, function() {
+            item.closest('li').slideUp('fast', function() { $(this).remove(); });
+        });
+    });
+
+    $('#directories_assets').on('click', 'li.asset a.sure', function() {
         var item = $(this);
         api('/' + base_url + 'api/core/assets.php', {
             action: 'delete_file',
-            name: item.attr('data-name')
+            name: item.attr('data-name'),
+            dir: dir
+        }, function() {
+            item.closest('li').slideUp('fast', function() { $(this).remove(); });
+        });
+    });
+
+    $('#images').on('click', 'a.sure', function() {
+        var item = $(this);
+        api('/' + base_url + 'api/core/assets.php', {
+            action: 'delete_file',
+            name: item.attr('data-name'),
+            dir: dir
         }, function() {
             item.closest('li').slideUp('fast', function() { $(this).remove(); });
         });
@@ -170,7 +203,8 @@
     $('#create_directory').on('click', 'a', function() {
         api('/' + base_url + 'api/core/assets.php', {
             action: 'create_directory',
-            name: $(this).prev('input').val()
+            name: $(this).prev('input').val(),
+            dir: dir
         }, function(data) {
             $('#create_directory input').val('');
             var item = directory_item(data['directory']);

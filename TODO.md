@@ -1,7 +1,6 @@
 v1.0:
-* Custom 404 on production works but needs better error handling overall!!!
+* Custom 404 on production works but Dexterous needs better error handling overall!!!
 * Upload image in popup
-* Assets: be able to delete directory
 * Assets insert image: scroll to top when going to properties
 * (?) Markdown page preview
 * In Settings, put option to select Favicon image from asset

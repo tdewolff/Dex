@@ -25,7 +25,7 @@ else // didn't go through login screen
 
 if (isset($url[1]) && $url[1] == 'popup' && isset($url[2]))
 {
-	if (!file_exists('core/templates/admin/popup/' . $url[2] . '.tpl'))
+	if (!is_file('core/templates/admin/popup/' . $url[2] . '.tpl'))
 		user_error('Popup "' . $url[2] . '" does not exist', ERROR);
 
 	Core::render('admin/popup/' . $url[2] . '.tpl');
@@ -44,7 +44,7 @@ $table = $db->query("SELECT * FROM module ORDER BY module_name ASC;");
 while ($row = $table->fetch())
 {
 	$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
-	if (file_exists($ini_filename) !== false && ($ini = parse_ini_file($ini_filename)) !== false)
+	if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
 		$admin_links[] = array(
 			'name' => 'module_' . Common::tryOrEmpty($ini, 'name'),
 			'regex' => Common::tryOrEmpty($ini, 'regex'),
@@ -83,7 +83,7 @@ foreach ($admin_links as $i => $admin_link)
 		{
 			Core::assign('current_admin_i', $i);
 
-			if (file_exists($admin_link['file']))
+			if (is_file($admin_link['file']))
 			{
 				$log_error = 'error within admin page';
 				require_once($admin_link['file']);
