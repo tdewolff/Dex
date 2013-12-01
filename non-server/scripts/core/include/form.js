@@ -152,7 +152,7 @@ var Form = function(form) {
         var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
         $.fancybox.open({
             'type': 'ajax',
-            'href': '/' + base_url + 'admin/popup/insert_link/',
+            'href': '/' + base_url + 'admin/auxiliary/insert_link/',
             beforeShow: function() {
                 $('.fancybox-skin').css('background', 'white')
             },
@@ -176,7 +176,7 @@ var Form = function(form) {
         var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
         $.fancybox.open({
             'type': 'ajax',
-            'href': '/' + base_url + 'admin/popup/insert_image/',
+            'href': '/' + base_url + 'admin/auxiliary/insert_image/',
             beforeShow: function() {
                 $('.fancybox-skin').css('background', 'white')
             },
@@ -208,7 +208,7 @@ var Form = function(form) {
         var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
         $.fancybox.open({
             'type': 'ajax',
-            'href': '/' + base_url + 'admin/popup/insert_asset/',
+            'href': '/' + base_url + 'admin/auxiliary/insert_asset/',
             beforeShow: function() {
                 $('.fancybox-skin').css('background', 'white')
             },

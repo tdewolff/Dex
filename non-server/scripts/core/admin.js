@@ -1,6 +1,11 @@
 $(function() {
     if ($('.markdown').length > 0) {
         $('.markdown').markItUp(mySettings);
+
+        $('a[title="Preview"]').trigger('mouseup');
+        $('.markdown').on('keyup', function() {
+            $('a[title="Preview"]').trigger('mouseup');
+        });
     }
 
     if ($.fn.fancybox) {

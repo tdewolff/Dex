@@ -4,12 +4,7 @@
 // Copyright (C) 2008 Jay Salvat
 // http://markitup.jaysalvat.com/
 // -------------------------------------------------------------------
-// MarkDown tags example
-// http://en.wikipedia.org/wiki/Markdown
-// http://daringfireball.net/projects/markdown/
-// -------------------------------------------------------------------
-// Feel free to add more tags
-// -------------------------------------------------------------------
+
 mySettings = {
 	previewParserPath:	'',
 	onShiftEnter:		{keepDefault:false, openWith:'\n\n'},
@@ -25,7 +20,8 @@ mySettings = {
 		{name:'Bulleted List', openWith:'- ' },
 		{name:'Numeric List', openWith:function(markItUp) {
 			return markItUp.line+'. ';
-		}}
+		}},
+		{name:'Preview', call:'preview', className:"hidden"}
 	]
 };
 
@@ -33,10 +29,10 @@ mySettings = {
 miu = {
 	markdownTitle: function(markItUp, c) {
 		heading = '';
-		n = $.trim(markItUp.selection||markItUp.placeHolder).length;
+		n = $.trim(markItUp.selection || markItUp.placeHolder).length;
 		for(i = 0; i < n; i++) {
 			heading += c;
 		}
-		return '\n'+heading;
+		return '\n' + heading;
 	}
 };
