@@ -35,7 +35,7 @@
 
 <script id="directory_item" type="text/x-dot-template">
     <li data-name="{{=it.name}}" class="directory">
-        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
+        <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#!dir={{=it.dir}}" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
         <div style="width:100px;">-</div>
         <div style="width:40px;">&nbsp;</div>
     </li>
@@ -99,7 +99,7 @@
             $.each(data['breadcrumbs'], function(i) {
                 if (i)
                     breadcrumbs.append('&gt;');
-                breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+                breadcrumbs.append('<a href="#!dir=' + this.dir + '" data-dir="' + this.dir + '">' + this.name + '</a>');
             });
         });
 
@@ -124,7 +124,11 @@
             });
         });
     }
-    loadDir('');
+
+    if (window.location.hash.substr(0, 6) == '#!dir=')
+        loadDir(window.location.hash.substr(6));
+    else
+        loadDir('');
 
     // click events on directories, assets and images
     breadcrumbs.on('click', 'a', function() {

@@ -2,7 +2,6 @@ v1.0:
 * Custom 404 on production works but needs better error handling overall!!!
 * Upload image in popup
 * Assets: be able to delete directory
-* Assets: when navigating through directories, change URL with #! parameter to users can copy-paste link to get the same directory
 * Assets insert image: scroll to top when going to properties
 * (?) Markdown page preview
 * In Settings, put option to select Favicon image from asset
