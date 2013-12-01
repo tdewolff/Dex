@@ -31,10 +31,12 @@ class Error
 			case E_USER_ERROR:
 				Log::error('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$display && !Common::requestResource())
+				{
 					if (Common::requestApi())
 						API::error('<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else
 						echo '<pre><b>ERROR</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+				}
 				exit;
 
 			case E_WARNING:
@@ -44,10 +46,12 @@ class Error
 			case E_RECOVERABLE_ERROR:
 				Log::warning('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$display && !Common::requestResource())
+				{
 					if (Common::requestApi())
 						API::warning('<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
-					else
+					else if (Common::requestAdmin())
 						echo '<pre><b>WARNING</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+				}
 				break;
 
 			case E_NOTICE:
@@ -57,19 +61,23 @@ class Error
 			case E_USER_DEPRECATED:
 				Log::notice('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$display && !Common::requestResource())
+				{
 					if (Common::requestApi())
 						API::notice('<pre><b>NOTICE</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
-					else
+					else if (Common::requestAdmin())
 						echo '<pre><b>NOTICE</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+				}
 				break;
 
 			default:
 				Log::error('(' . $file . ':' . $line . ') ' . $error);
 				if (self::$display && !Common::requestResource())
+				{
 					if (Common::requestApi())
 						API::error('<pre><b>UNKNOWN (' . $type . ')</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>');
 					else
 						echo '<pre><b>UNKNOWN (' . $type . ')</b> ' . htmlentities('(' . $file . ':' . $line . ') ' . $error) . '</pre>';
+				}
 				exit;
 		}
 		return true;

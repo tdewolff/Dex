@@ -38,9 +38,6 @@ class Dexterous
 
     public static function getLinkId()
     {
-        if (self::$link_id == '')
-            user_error('Link ID not set', ERROR);
-
         return self::$link_id;
     }
 

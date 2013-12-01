@@ -171,49 +171,53 @@ while ($row = $table->fetch())
 }
 
 // show page
-if ($link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;"))
+$link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;");
+
+Core::addTitle($settings['title']);
+if ($link)
 {
+    Core::addTitle($link['title']);
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
+}
 
-    Core::addTitle($settings['title']);
-    Core::addTitle($link['title']);
+// load in module hooks
+$table = $db->query("SELECT * FROM link_module
+    JOIN module ON link_module.module_name = module.module_name
+    WHERE (link_id = '0'" . (isset($link['link_id']) ? " OR link_id = '" . $db->escape($link['link_id']) . "'" : "") . ") AND module.enabled = 1;");
+while ($row = $table->fetch())
+    include_once('modules/' . $row['module_name'] . '/hooks.php');
 
-    // load in module hooks
-    $table = $db->query("SELECT * FROM link_module
-        JOIN module ON link_module.module_name = module.module_name
-        WHERE (link_id = '0' OR link_id = '" . $db->escape($link['link_id']) . "') AND module.enabled = 1;");
-    while ($row = $table->fetch())
-        include_once('modules/' . $row['module_name'] . '/hooks.php');
-
-    $theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
-    if (file_exists($theme_hooks_filename) !== false)
-        include_once($theme_hooks_filename);
+$theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
+if (file_exists($theme_hooks_filename) !== false)
+    include_once($theme_hooks_filename);
 
 
-    Hooks::emit('site-header');
-    echo '<section class="page-wrapper">';
+Hooks::emit('site-header');
+echo '<section class="page-wrapper">';
 
-    echo '<header>';
-    Hooks::emit('header');
-    echo '</header>';
+echo '<header>';
+Hooks::emit('header');
+echo '</header>';
 
-    echo '<nav class="navigation" role="navigation">';
-    Hooks::emit('navigation');
-    echo '</nav>';
+echo '<nav class="navigation" role="navigation">';
+Hooks::emit('navigation');
+echo '</nav>';
 
+if ($link)
+{
     echo '<article class="main" role="main">';
     Hooks::emit('main');
     echo '</article>';
-
-    echo '<footer>';
-    Hooks::emit('footer');
-    echo '</footer>';
-
-    echo '</section>';
-    Hooks::emit('site-footer');
 }
 else
-    user_error('Request URL "' . $request_url . '" doesn\'t exist in database (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+    echo '<article class="error" role="main">404: could not find page</article>';
+
+echo '<footer>';
+Hooks::emit('footer');
+echo '</footer>';
+
+echo '</section>';
+Hooks::emit('site-footer');
 
 ?>
