@@ -1,7 +1,7 @@
 v1.0:
 * Custom 404 on production works but Dexterous needs better error handling overall!!!
 * Upload image in popup
-* Popbox using title attribute much like GitHub has
+* Tooltip using title attribute much like GitHub has (partly implemented, but is buggy!)
 * Improve Markdown page preview
 * In Settings, put option to select Favicon image from asset
 * Create Header Image module.

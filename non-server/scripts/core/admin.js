@@ -25,6 +25,13 @@ $(function() {
     $('textarea.bottom').each(function () {
         $(this).scrollTop(this.scrollHeight - $(this).height());
     });
+
+    $('.tooltip').tooltip({
+        position: {
+            my: 'center top',
+            at: 'center bottom+5'
+        }
+    });
 });
 
 $('html').on('click', 'a[href="#"]', function (e) {
@@ -66,37 +73,6 @@ $('html').on('mouseleave', 'a.sure', function(e) {
     $(this).fadeOut('fast', function() {
         $(this).parent().find('a.halt').fadeIn('fast');
     });
-});
-
-//popbox
-function showPopbox(item) {
-    var box = $(item).closest('.popbox').find('.box');
-    if (box.css('display') == 'block') {
-        box.fadeOut('fast');
-    } else {
-        $('.arrow', box).css({'left': box.outerWidth()/2 - 13});
-        $('.arrow-border', box).css({'left': box.outerWidth()/2 - 13});
-        box.css({
-            'top': $(item).outerHeight() + 10,
-            'left': $(item).outerWidth()/2 - box.outerWidth()/2
-        });
-        box.fadeIn();
-    }
-}
-
-$('html').click(function() {
-    $('.popbox .box').fadeOut('fast');
-});
-
-$('html').on('click', '.popbox .open', function(e) {
-    e.stopPropagation();
-    showPopbox(this);
-});
-
-$('html').on('click', '.popbox .close', function(e) {
-    e.stopPropagation();
-    var box = $(this).closest('.popbox').find('.box');
-    box.fadeOut('fast');
 });
 
 jQuery.fn.extend({

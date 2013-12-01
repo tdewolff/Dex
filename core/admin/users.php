@@ -5,7 +5,6 @@ if (!Session::isAdmin())
 
 if (!isset($url[2]))
 {
-	Core::addStyle('vendor/popbox.min.css');
 	Core::addStyle('vendor/dropdown.min.css');
 
 	Hooks::emit('admin-header');
