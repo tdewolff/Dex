@@ -1,7 +1,6 @@
 v1.0:
 * Custom 404 on production works but Dexterous needs better error handling overall!!!
 * Upload image in popup
-* Assets insert image: scroll to top when going to properties
 * (?) Markdown page preview
 * In Settings, put option to select Favicon image from asset
 * Create Header Image module.

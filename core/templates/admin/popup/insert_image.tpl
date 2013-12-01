@@ -119,12 +119,18 @@
         popup.animate({
             'margin-left': '-600px'
         });
+        $('.fancybox-inner').animate({
+            'scrollTop': 0
+        });
     });
 
     popup.on('click', '#external-link a', function() {
         $('#insert_url').val($('#external-link input').val());
         popup.animate({
             'margin-left': '-600px'
+        });
+        $('.fancybox-inner').animate({
+            'scrollTop': 0
         });
     });
 
