@@ -1,14 +1,25 @@
 <?php
 
+// set current directory
+$dir = '';
+if (API::has('dir'))
+    $dir = API::get('dir');
+else if (isset($_POST['dir'])) // exception for file upload
+    $dir = $_POST['dir'];
+
+if (!file_exists('assets/' . $dir))
+    user_error('Directory "assets/' . $dir . '" doesn\'t exist', ERROR);
+
 // upload file
 if (isset($_FILES['upload']))
 {
     if ($_FILES['upload']['error'] != 0)
     {
         if ($_FILES['upload']['error'] == 1 || $_FILES['upload']['error'] == 2)
-            user_error('File too big', ERROR);
+            API::set('upload_error', 'File too big');
         else
-            user_error('Unknown error: ' . $_FILES['upload']['error'], ERROR);
+            API::set('upload_error', 'Unknown error: ' . $_FILES['upload']['error']);
+        API::finish();
     }
 
     $name = $_FILES['upload']['name'];
@@ -17,40 +28,30 @@ if (isset($_FILES['upload']))
     $extension = strtolower(substr($name, strrpos($name, '.') + 1));
 
     if (!Resource::isResource($extension))
-        user_error('Wrong extension', ERROR);
+        API::set('upload_error', 'Wrong extension');
+    else if (file_exists('assets/' . $dir . $name))
+        API::set('upload_error', 'Already exists');
+    else if (!move_uploaded_file($_FILES['upload']['tmp_name'], 'assets/' . $dir . $name))
+        API::set('upload_error', 'Unknown error');
+    else
+    {
+        $width = 0;
+        if (Resource::isImage($extension))
+            list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
 
-    if (file_exists('assets/' . $dir . $name))
-        user_error('Already exists', ERROR);
-
-    if (!move_uploaded_file($_FILES['upload']['tmp_name'], 'assets/' . $dir . $name))
-        user_error('Unknown error', ERROR);
-
-    $width = 0;
-    if (Resource::isImage($extension))
-        list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
-
-    API::set('file', array(
-        'url' => '/' . $base_url . 'res/assets/' . $dir . $name,
-        'name' => $name,
-        'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? '/' . $base_url . 'res/core/images/icons/' . $extension . '.png' : '/' . $base_url . 'res/core/images/icons/unknown.png'),
-        'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-        'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
-        'width' => $width,
-        'is_image' => Resource::isImage($extension)
-    ));
+        API::set('file', array(
+            'url' => $dir . $name,
+            'name' => $name,
+            'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+            'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+            'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
+            'width' => $width,
+            'is_image' => Resource::isImage($extension)
+        ));
+    }
     API::finish();
 }
-
-// set current directory
-$dir = '';
-if (API::has('dir'))
-    $dir = API::get('dir');
-
-if (!file_exists('assets/' . $dir))
-    user_error('Directory "assets/' . $dir . '" doesn\'t exist', ERROR);
-
-
-if (API::action('create_directory'))
+else if (API::action('create_directory'))
 {
     if (!API::has('name'))
         user_error('No name set', ERROR);
@@ -58,9 +59,12 @@ if (API::action('create_directory'))
     if (!preg_match('/[a-zA-Z_0-9]+/', API::get('name')))
         user_error('May only contain alphanumeric characters', ERROR);
 
-    mkdir('assets/' . $dir . API::get('name'), 0777);
+    if (file_exists('assets/' . $dir . API::get('name')))
+        user_error('Directory "assets/' . $dir . API::get('name') . '" already exists', ERROR);
+
+    mkdir('assets/' . $dir . API::get('name'), 0755);
     API::set('directory', array(
-        'dir' => '/' . $base_url . 'res/assets/' . $dir . API::get('name'),
+        'dir' => $dir . API::get('name'),
         'name' => API::get('name'),
         'icon' => 'folder.png'
     ));
@@ -142,7 +146,7 @@ else if (API::action('get_assets'))
 
             list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
             $assets[] = array(
-                'url' => 'res/assets/' . $dir . $name,
+                'url' => $dir . $name,
                 'name' => $name,
                 'icon' => (file_exists('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
                 'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,

@@ -3,7 +3,7 @@
         <div id="assets">
             <h2>Images</h2>
             <div id="external-link">
-                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button"><i class="icon-arrow-right"></i>&ensp;Properties</a>
+                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button">Properties&ensp;<i class="icon-arrow-right"></i></a>
             </div>
 
             <div id="breadcrumbs">
@@ -41,14 +41,14 @@
 </script>
 
 <script id="image_item" type="text/x-dot-template">
-    <li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}">
+    <li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}">
         <div class="caption"><strong>{{=it.title}}</strong></div>
-        {{? it.width > 200}}
-        <img src="/<?php echo $_['base_url']; ?>{{=it.url}}?w=200"
+        {{? it.width > 100}}
+        <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=100"
              alt=""
              title="{{=it.title}}">
         {{??}}
-        <img src="/<?php echo $_['base_url']; ?>{{=it.url}}"
+        <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
              alt=""
              title="{{=it.title}}"
              class="small">

@@ -40,16 +40,19 @@ function initializeUpload(upload, done) {
             done_n++;
         },
         done: function(e, data) {
-            if (typeof data.response().result['error'] !== 'undefined') {
-                upload.find('#upload_' + data.i).addClass('fail');
-                ajaxError(data.response().result['error']);
-            } else {
+            console.log(data.response().result);
+            if (typeof data.response().result['upload_error'] !== 'undefined')
+                upload.find('#upload_' + data.i).addClass('fail').append(' (' + data.response().result['upload_error'] + ')');
+            else {
                 upload.find('#upload_' + data.i).addClass('done');
                 done(data.response().result);
             }
         },
         fail: function(e, data) {
-            upload.find('#upload_' + data.i).addClass('fail');
+            console.log(data.response());
+            if (typeof data.response().jqXHR['responseText'] !== 'undefined')
+                apiError(data.response().jqXHR['responseText']);
+            upload.find('#upload_' + data.i).addClass('fail').append(' (Unknown error)');
         }
     });
 

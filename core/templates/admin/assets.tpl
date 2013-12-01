@@ -1,6 +1,7 @@
 <h2>Assets</h2>
 <div id="assets">
     <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
+        <input type="hidden" name="dir" value="">
         <div id="drop">
             <span>Drop Here</span><br>
             <a class="small-button">Browse</a>
@@ -59,13 +60,13 @@
         </div>
         <div class="caption"><strong>{{=it.title}}</strong></div>
         {{? it.width > 200}}
-        <a href="/<?php echo $_['base_url']; ?>{{=it.url}}" data-fancybox-group="gallery" class="fancybox">
-            <img src="/<?php echo $_['base_url']; ?>{{=it.url}}?w=200"
+        <a href="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}" data-fancybox-group="gallery" class="fancybox">
+            <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=200"
                  alt=""
                  title="{{=it.title}}">
         </a>
         {{??}}
-        <img src="/<?php echo $_['base_url']; ?>{{=it.url}}"
+        <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
              alt=""
              title="{{=it.title}}"
              class="small">
@@ -87,6 +88,8 @@
     function loadDir(dir) {
         directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
         images.find('li').slideUp('fast', function() { $(this).remove(); });
+
+        $('#upload input[name="dir"]').val(dir);
 
         api('/' + base_url + 'api/core/assets.php', {
             action: 'get_breadcrumbs',
@@ -144,18 +147,20 @@
 
     // adding directories, assets or images
     function addAlphabetically(list, item, name) {
+        item = $(item).hide();
+
         var added = false;
         list.each(function() {
             if ($(this).attr('data-name') > name)
             {
-                $(this).before(item);
+                item.insertBefore(this).slideDown('fast');
                 added = true;
                 return false;
             }
         });
 
         if (!added)
-            list.last().after(item);
+            item.insertAfter(list.last()).slideDown('fast');
     }
 
     $('#create_directory').on('click', 'a', function() {
@@ -163,16 +168,33 @@
             action: 'create_directory',
             name: $(this).prev('input').val()
         }, function(data) {
-            addAlphabetically(directories_assets.find('.directory'), directory_item(data['directory']), data['directory']['name']);
+            $('#create_directory input').val('');
+            var item = directory_item(data['directory']);
+            if (directories_assets.find('li.directory').length)
+                addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
+            else
+                $(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
         });
     });
 
     $(function() {
         initializeUpload('#upload', function(data) {
-            if (!data.is_image) {
-                addAlphabetically(directories_assets.find('.asset'), asset_item(data), data['name']);
-            } else {
-                addAlphabetically(images, image_item(data), data['name']);
+            console.log(data);
+            if (!data['file'].is_image)
+            {
+                var item = asset_item(data['file']);
+                if (directories_assets.find('li.asset').length)
+                    addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
+                else
+                    $(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+            }
+            else
+            {
+                var item = image_item(data['file']);
+                if (images.find('li').length)
+                    addAlphabetically(images.find('li'), item, data['file']['name']);
+                else
+                    $(item).hide().appendTo(images).slideDown('fast');
             }
         });
     });

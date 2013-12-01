@@ -2,7 +2,7 @@
 
 class API
 {
-    private static $data = array();
+    public static $data = array();
     private static $response = array();
 
     ////////////////

@@ -13,11 +13,13 @@ def compress(type, src_dir, dst_dir): # compress files in src_dir, replacing src
                 src_filename = src_path + src_file
                 dst_filename = dst_path + dst_file
 
-                print src_filename
+                sys.stdout.write(src_filename)
                 if os.path.getmtime(src_filename) > os.path.getmtime(dst_filename): # source must be newer than destination
-                    sys.stdout.write('  Compressing... ')
+                    print '... '
                     os.system('java -jar yuicompressor-2.4.8.jar --type ' + type + ' -o "' + dst_filename + '" "' + src_filename + '"') # use YUICompressor
-                    print str(round(float(os.path.getsize(dst_filename)) / float(os.path.getsize(src_filename)) * 100.0, 1)) + '% ratio'
+                    print '    ' + str(round(float(os.path.getsize(dst_filename)) / float(os.path.getsize(src_filename)) * 100.0, 1)) + '% ratio'
+                else:
+                    print ''
 
 compress('css', 'styles/core/', '../core/resources/styles/')
 compress('js', 'scripts/core/', '../core/resources/scripts/')
