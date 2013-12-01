@@ -6,7 +6,7 @@
 // -------------------------------------------------------------------
 
 mySettings = {
-	previewParserPath:	'',
+	previewParserPath:	'/' + base_url + 'admin/auxiliary/markdown_preview/',
 	onShiftEnter:		{keepDefault:false, openWith:'\n\n'},
 	markupSet: [
 		{name:'Heading 3', key:'3', openWith:'### ', placeHolder:'Your title here...' },
