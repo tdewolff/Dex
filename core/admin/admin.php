@@ -76,7 +76,6 @@ Core::assign('permission', ucfirst(Session::getPermission()));
 Core::assign('is_admin', Session::isAdmin());
 Core::assign('admin_links', $admin_links);
 
-$log_error = 'URL "' . $request_url . '" has no match with to any admin pages';
 foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
 	{
@@ -85,17 +84,14 @@ foreach ($admin_links as $i => $admin_link)
 		{
 			Core::assign('current_admin_i', $i);
 
-			if (is_file($admin_link['file']))
-			{
-				$log_error = 'error within admin page';
-				require_once($admin_link['file']);
-			}
-			else
-				$log_error = 'admin file "' . $admin_link['file'] . '" does not exist';
+			if (!is_file($admin_link['file']))
+				user_error('Admin file "' . $admin_link['file'] . '" does not exist', ERROR);
+
+			require_once($admin_link['file']);
 			break;
 		}
 	}
 
-user_error($log_error, ERROR);
+user_error('Could not find page at "' . $request_url . '"', ERROR);
 
 ?>

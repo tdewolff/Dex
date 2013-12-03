@@ -10,6 +10,7 @@ ini_set('display_errors', false);
 class Error
 {
 	private static $display = false;
+    private static $last = '';
 
 	public static function setDisplay($display)
 	{
@@ -20,25 +21,18 @@ class Error
 			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
 	}
 
+    public static function getLast()
+    {
+        return self::$last;
+    }
+
 	public static function report($type, $message, $file, $line, $context = '')
 	{
+        $display_message = self::$display ? $message : 'Error';
+        self::$last = $display_message;
+
 		switch ($type)
 		{
-			case E_ERROR:
-			case E_PARSE:
-			case E_CORE_ERROR:
-			case E_COMPILE_ERROR:
-			case E_USER_ERROR:
-				Log::error('(' . $file . ':' . $line . ') ' . $message);
-				if (self::$display && !Common::requestResource())
-				{
-					if (Common::requestApi())
-						API::error($message);
-					else
-						echo $message;
-				}
-				exit;
-
 			case E_WARNING:
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
@@ -69,16 +63,23 @@ class Error
 				}
 				break;
 
-			default:
-				Log::error('(' . $file . ':' . $line . ') ' . $error);
-				if (self::$display && !Common::requestResource())
-				{
-					if (Common::requestApi())
-						API::error($message);
-					else
-						echo $message;
-				}
-				exit;
+            case E_ERROR:
+            case E_PARSE:
+            case E_CORE_ERROR:
+            case E_COMPILE_ERROR:
+            case E_USER_ERROR:
+            default:
+                Log::error('(' . $file . ':' . $line . ') ' . $message);
+                if (!Common::requestResource())
+                {
+                    if (Common::requestApi())
+                        API::error($display_message);
+                    else if (Common::requestAdmin())
+                        Hooks::emit('admin-error');
+                    else
+                        Hooks::emit('error');
+                }
+                exit;
 		}
 		return true;
 	}

@@ -15,6 +15,8 @@ if ($config === false) // for if parse_ini_file fails
     $config = array();
 
 require_once('include/common.class.php');
+require_once('include/hooks.class.php');
+require_once('core/hooks.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
 
@@ -139,8 +141,6 @@ ob_start('minifyHtml');
 
 require_once('include/dexterous.class.php');
 require_once('include/form.class.php');
-require_once('include/hooks.class.php');
-require_once('core/hooks.php');
 
 Session::refreshLogin();
 Core::assign('base_url', $base_url);
@@ -194,32 +194,9 @@ $theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
 if (is_file($theme_hooks_filename) !== false)
     include_once($theme_hooks_filename);
 
-
-Hooks::emit('site-header');
-echo '<section class="page-wrapper">';
-
-echo '<header>';
-Hooks::emit('header');
-echo '</header>';
-
-echo '<nav class="navigation" role="navigation">';
-Hooks::emit('navigation');
-echo '</nav>';
-
 if ($link)
-{
-    echo '<article class="main" role="main">';
-    Hooks::emit('main');
-    echo '</article>';
-}
+    Hooks::emit('site');
 else
-    echo '<article class="error" role="main">404: could not find page</article>';
-
-echo '<footer>';
-Hooks::emit('footer');
-echo '</footer>';
-
-echo '</section>';
-Hooks::emit('site-footer');
+    user_error('Page not found', ERROR);
 
 ?>

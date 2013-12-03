@@ -1,5 +1,79 @@
 <?php
 
+Hooks::attach('site', 0, function() {
+    Hooks::emit('site-header');
+    echo '<section class="page-wrapper">';
+
+    echo '<header>';
+    Hooks::emit('header');
+    echo '</header>';
+
+    echo '<nav class="navigation" role="navigation">';
+    Hooks::emit('navigation');
+    echo '</nav>';
+
+    echo '<article class="main" role="main">';
+    Hooks::emit('main');
+    echo '</article>';
+
+    echo '<footer>';
+    Hooks::emit('footer');
+    echo '</footer>';
+
+    echo '</section>';
+    Hooks::emit('site-footer');
+});
+
+$error_loop = false;
+
+Hooks::attach('error', 0, function() {
+	global $error_loop;
+
+	if ($error_loop)
+		echo 'Error fired while displaying an error message, exiting loop';
+	$error_loop = true;
+
+	Core::addTitle('Error');
+	Core::assign('error', Error::getLast());
+
+    Hooks::emit('site-header');
+    echo '<section class="page-wrapper">';
+
+    echo '<header>';
+    Hooks::emit('header');
+    echo '</header>';
+
+    echo '<nav class="navigation" role="navigation">';
+    Hooks::emit('navigation');
+    echo '</nav>';
+
+    echo '<article class="main" role="main">';
+    Core::render('error.tpl');
+    echo '</article>';
+
+    echo '<footer>';
+    Hooks::emit('footer');
+    echo '</footer>';
+
+    echo '</section>';
+    Hooks::emit('site-footer');
+});
+
+Hooks::attach('admin-error', 0, function() {
+	global $error_loop;
+
+	if ($error_loop)
+		echo 'Error fired while displaying an error message, exiting loop';
+	$error_loop = true;
+
+	Core::addTitle('Error');
+	Core::assign('error', Error::getLast());
+
+    Hooks::emit('admin-header');
+    Core::render('admin/error.tpl');
+    Hooks::emit('admin-footer');
+});
+
 ////////////////////////////////////////////////////////////////
 
 Hooks::attach('site-header', 0, function() {
