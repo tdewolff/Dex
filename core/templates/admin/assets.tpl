@@ -40,7 +40,7 @@
         <div style="width:40px;">
             {{?it.dir.length}}
             <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}" title="Click to confirm"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
             {{?}}
         </div>
     </li>
@@ -52,7 +52,7 @@
         <div style="width:100px;">{{=it.size}}</div>
         <div style="width:40px;">
             <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}" title="Click to confirm"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
         </div>
     </li>
 </script>
@@ -61,7 +61,7 @@
     <li data-name="{{=it.name}}">
         <div class="delete">
             <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-name="{{=it.name}}" title="Click to confirm"><i class="icon-trash"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
         </div>
         <div class="caption"><strong>{{=it.title}}</strong></div>
         {{? it.width > 200}}

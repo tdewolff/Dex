@@ -8,8 +8,8 @@
     <div class="text-right">
         <?php echo $_['logs_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
-        <a href="#" class="halt inline-rounded tooltip" title="Double-click to confirm"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-action="clear_logs"><i class="icon-trash"></i></a>
+        <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
+        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_logs"><i class="icon-trash"></i></a>
         <?php endif; ?>
     </div>
 
@@ -27,7 +27,7 @@
         <?php echo $_['cache_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-action="clear_cache" title="Click to confirm"><i class="icon-trash"></i></a>
+        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache" title="Click to confirm"><i class="icon-trash"></i></a>
         <?php endif; ?>
     </div>
 </div>
