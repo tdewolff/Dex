@@ -3,21 +3,15 @@
 $form = new Form('setup');
 
 $form->addSection('Settings', 'General site settings');
-$form->addText('site_title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
-$form->addMultilineText('site_subtitle', 'Site subtitle', 'Displayed in the header', '', array('(.|\n)*', 0, 200, 'Unknown error'));
-$form->addText('site_description', 'Site description', 'Describe the site concisely', '', array('.*', 0, 80, 'Unknown error'));
-$form->addArray('site_keywords', 'Site keywords', '', array('.*', 0, 80, 'Unknown error'));
+$form->addText('title', 'Title', 'Displayed in the titlebar and site header', 'CubicMelonFirm', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
+$form->addMultilineText('subtitle', 'Slogan', 'Displayed below the title in the site header', 'Regain vacant space now!', array('(.|\n)*', 0, 200, 'Unknown error'));
+$form->addMultilineText('description', 'Description', 'Only visible for search engines<br>Describe your site concisely', 'Using cubic melons stacking and transport will be more efficient and economical', array('.*', 0, 80, 'Unknown error'));
+$form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Enter keywords defining your site', array('cubic', 'melons', 'efficient', 'stacking'), array('.*', 0, 80, 'Unknown error'));
 
 $form->addSection('Admin account', 'Admin account gives full access to the admin panel, meant for site owners.');
-$form->addText('admin_username', 'Admin username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
-$form->addPassword('admin_password', 'Admin password', '');
-$form->addPasswordConfirm('admin_password2', 'admin_password', 'Admin password', 'Confirm');
-
-$form->addSection('User account', 'User account gives restricted access to the admin panel, meant for clients. Leave empty to skip.');
-$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
+$form->addText('username', 'Username', '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 $form->addPassword('password', 'Password', '');
-$form->addPasswordConfirm('password2', 'password', 'Password', 'Confirm');
-$form->optionalTogether(array('username', 'password', 'password2'));
+$form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
 
 $form->addSeparator();
 
@@ -79,22 +73,22 @@ if ($form->submitted())
 
         INSERT INTO setting (key, value) VALUES (
             'title',
-            '" . $db->escape($form->get('site_title')) . "'
+            '" . $db->escape($form->get('title')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'subtitle',
-            '" . $db->escape($form->get('site_subtitle')) . "'
+            '" . $db->escape($form->get('subtitle')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'description',
-            '" . $db->escape($form->get('site_description')) . "'
+            '" . $db->escape($form->get('description')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'keywords',
-            '" . $db->escape($form->get('site_keywords')) . "'
+            '" . $db->escape($form->get('keywords')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
@@ -103,25 +97,13 @@ if ($form->submitted())
         );
 
         INSERT INTO user (username, password, permission) VALUES (
-            '" . $db->escape($form->get('admin_username')) . "',
-            '" . $db->escape($bcrypt->hash($form->get('admin_password'))) . "',
+            '" . $db->escape($form->get('username')) . "',
+            '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
             'admin'
         );");
-        $user_id = $db->last_id();
-
-        $username = $form->get('username');
-        if (strlen($username))
-        {
-            $db->exec("
-            INSERT INTO user (username, password, permission) VALUES (
-                '" . $db->escape($form->get('username')) . "',
-                '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
-                'user'
-            );");
-        }
 
         $form->clearSession();
-        Session::logIn($user_id, 'admin');
+        Session::logIn($db->last_id(), 'admin');
 
         $form->setRedirect('/' . $base_url . 'admin/');
     }
@@ -129,16 +111,6 @@ if ($form->submitted())
 }
 
 Core::addTitle('Setup Dexterous');
-Core::addStyle('include/normalize.min.css');
-Core::addStyle('vendor/font-awesome.min.css');
-Core::addStyle('vendor/fancybox.min.css');
-Core::addStyle('admin.min.css');
-Core::addScript('vendor/jquery-2.0.3.min.js');
-Core::addScript('vendor/doT.min.js');
-Core::addScript('include/slidein.min.js');
-Core::addScript('include/api.min.js');
-Core::addDeferredScript('vendor/jquery.fancybox.min.js');
-Core::addDeferredScript('admin.min.js');
 
 Hooks::emit('admin-header');
 

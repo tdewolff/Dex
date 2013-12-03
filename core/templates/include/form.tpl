@@ -18,7 +18,7 @@
 
     <?php else: // input elements with a label ?>
     <p>
-        <label <?php if (empty($item['subtitle'])) { echo 'class="empty_small"'; } ?>><?php echo $item['title']; ?> <span class="small"><?php echo $item['subtitle']; ?></span></label>
+        <label><?php echo $item['title']; ?></label>
 
 
         <?php if ($item['type'] == 'text'): ?>
@@ -27,6 +27,7 @@
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
@@ -36,6 +37,7 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>><?php echo $item['value']; ?></textarea>
 
@@ -46,6 +48,7 @@
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
@@ -56,6 +59,7 @@
             value="<?php echo $item['value']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 
@@ -71,12 +75,14 @@
         <input type="password"
             value=""
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
 
 
         <?php elseif ($item['type'] == 'dropdown'): ?>
         <select
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
             <?php foreach ($item['options'] as $id => $name): ?>
@@ -96,6 +102,7 @@
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             maxlength="<?php echo $item['preg']['max']; ?>"
             placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             class="markdown <?php echo (isset($item['class']) ? $item['class'] : ''); ?>"><?php echo $item['value']; ?></textarea>
 
@@ -104,12 +111,15 @@
         <input type="hidden"
             name="<?php echo $item['name'] . '_' . $form['salt']; ?>"
             value='<?php echo $item['value']; ?>'
+            placeholder='<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>'
             <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
             <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
             data-type="array"
             data-template="template_<?php echo $item['name'] . '_' . $form['salt']; ?>"
             data-ul="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>">
-        <ul id="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>"></ul>
+        <ul
+            id="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>></ul>
         <div class="clear"></div>
 
         <script id="template_<?php echo $item['name'] . '_' . $form['salt']; ?>" type="text/x-dot-template">
@@ -117,7 +127,7 @@
                 <input type="text"
                     value='{{=it.value}}'
                     maxlength="<?php echo $item['preg']['max']; ?>"
-                    placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
+                    placeholder="{{=it.placeholder}}"
                     class="array_item"
                     data-name="<?php echo $item['name'] . '_' . $form['salt']; ?>">
                 <span class="comma">,</span>
@@ -134,7 +144,9 @@
             data-type="parameters"
             data-template="template_<?php echo $item['name'] . '_' . $form['salt']; ?>"
             data-ul="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>">
-        <ul id="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>"></ul>
+        <ul
+            id="ul_<?php echo $item['name'] . '_' . $form['salt']; ?>"
+            <?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>></ul>
         <div class="clear"></div>
 
         <script id="template_<?php echo $item['name'] . '_' . $form['salt']; ?>" type="text/x-dot-template">

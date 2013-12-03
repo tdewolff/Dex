@@ -1,5 +1,7 @@
 <?php
 
+require_once('include/form.class.php');
+
 Core::addTitle('Dexterous');
 Core::addTitle('Admin panel');
 Core::addStyle('include/normalize.min.css');
@@ -14,6 +16,10 @@ Core::addScript('vendor/doT.min.js');
 Core::addScript('include/slidein.min.js');
 Core::addScript('include/api.min.js');
 Core::addDeferredScript('admin.min.js');
+
+// setup
+if (filesize($db->filename) == 0)
+    require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout
 if (Session::isUser() && $request_url == 'admin/logout/')

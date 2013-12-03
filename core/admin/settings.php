@@ -2,11 +2,11 @@
 
 $form = new Form('settings');
 
-$form->addSection('Metadata', 'Site metadata is important for search engine indexing');
-$form->addText('title', 'Site title', 'Displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
-$form->addMultilineText('subtitle', 'Site subtitle', 'Displayed in the header', '', array('(.|\n)*', 0, 200, 'Unknown error'));
-$form->addText('description', 'Site description', 'Describe the site concisely', '', array('.*', 0, 80, 'Unknown error'));
-$form->addArray('keywords', 'Site keywords', '', array('.*', 0, 80, 'Unknown error'));
+$form->addSection('Settings', 'General site settings');
+$form->addText('title', 'Title', 'Displayed in the titlebar and site header', 'CubicMelonFirm', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
+$form->addMultilineText('subtitle', 'Slogan', 'Displayed below the title in the site header', 'Regain vacant space now!', array('(.|\n)*', 0, 200, 'Unknown error'));
+$form->addMultilineText('description', 'Description', 'Only visible for search engines<br>Describe your site concisely', 'Using cubic melons stacking and transport will be more efficient and economical', array('.*', 0, 80, 'Unknown error'));
+$form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Enter keywords defining your site', array('cubic', 'melons', 'efficient', 'stacking'), array('.*', 0, 80, 'Unknown error'));
 
 $form->addSeparator();
 

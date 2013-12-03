@@ -51,8 +51,6 @@ var Form = function(form) {
     };
 
     this.save = function() {
-        console.log('saving');
-
         // put data of multi-input fields into single hidden input
         self.form.find('input[type="hidden"]').each(function(i, hidden) {
             hidden = $(hidden);
@@ -245,16 +243,27 @@ $('form input[data-type="array"]').each(function(i, array) {
     array = $(array);
     var template = doT.template($('#' + array.attr('data-template')).text()),
         ul = $('#' + array.attr('data-ul')),
-        data = [];
+        placeholders = []
+        values = [];
 
     try {
-        data = JSON.parse(array.val());
+        placeholders = JSON.parse(array.attr('placeholder'));
+        values = JSON.parse(array.val());
     } catch (e) {}
-    data.push('');
 
-    $.each(data, function(i, value) {
-        ul.append(template({value: value}));
-    });
+    console.log(placeholders);
+
+    if (!values.length && placeholders.length)
+        $.each(placeholders, function(i, placeholder) {
+            ul.append(template({placeholder: placeholder, value: ''}));
+        });
+    else
+    {
+        values.push('');
+        $.each(values, function(i, value) {
+            ul.append(template({placeholder: '', value: value}));
+        });
+    }
 
     ul.on('input', 'input', function(e) {
         var input = $(this),
@@ -270,14 +279,14 @@ $('form input[data-type="parameters"]').each(function(i, array) {
     array = $(array);
     var template = doT.template($('#' + array.attr('data-template')).text()),
         ul = $('#' + array.attr('data-ul')),
-        data = [];
+        values = [];
 
     try {
-        data = JSON.parse(array.val());
+        values = JSON.parse(array.val());
     } catch (e) {}
-    data.push('');
+    values.push('');
 
-    $.each(data, function(key, value) {
+    $.each(values, function(key, value) {
         ul.append(template({key: key, value: value}));
     });
 

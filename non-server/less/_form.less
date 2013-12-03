@@ -76,8 +76,9 @@ form > p {
 
 .form_item_error {
 	display:none;
-	margin-bottom:5px;
-	margin-left:200px;
+	margin-top:-2px;
+	margin-bottom:8px;
+	margin-left:210px;
 }
 
 .form_item_error .box {
@@ -88,29 +89,30 @@ form > p {
 
 	position:relative;
 	z-index:999;
-	padding:5px;
+	padding:5px 10px;
 }
 
 .form_item_error .box .arrow {
 	width: 0;
 	height: 0;
-	border-left: 11px solid transparent;
-	border-right: 11px solid transparent;
-	border-bottom: 11px solid #F2DEDE;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid #F2DEDE;
 	position:absolute;
+	top:-5px;
 	left:5px;
-	top:-10px;
 	z-index:1001;
 }
 
 .form_item_error .box .arrow-border {
 	width: 0;
 	height: 0;
-	border-left: 11px solid transparent;
-	border-right: 11px solid transparent;
-	border-bottom: 11px solid #EED3D7;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid #EED3D7;
 	position:absolute;
-	top:-12px;
+	top:-7px;
+	left:5px;
 	z-index:1000;
 }
 
@@ -144,23 +146,7 @@ label {
 	white-space: nowrap;
 	overflow:hidden;
 	margin-top:8px;
-	padding-top:1px;
-}
-
-label.empty_small {
-	padding-top:4px;
-}
-
-label > .small {
-	color:#666666;
-	display:block;
-	font-size:11px;
-	font-weight:normal;
-	text-align:right;
-	width:200px;
-	padding-top:2px;
-	white-space: nowrap;
-	overflow:hidden;
+	padding-top:5px;
 }
 
 input, select, textarea {
@@ -183,6 +169,10 @@ input, select, textarea {
 	&.hidden {
 		display:none;
 	}
+}
+
+textarea {
+	min-height:5em;
 }
 
 div.markdown-buttons {
@@ -215,19 +205,21 @@ span.comma {
 	float:left;
 	padding-top:13px;
 	color:#666666;
-	width:1em;
+	width:10px;
 	text-align:center;
 }
 
 form ul {
-	margin:0;
-	margin-top:-32px;
-	margin-left:200px;
+	margin:-32px 30px 0 200px;
 	padding:0;
 }
 
+form ul > li {
+	overflow:hidden;
+}
+
 form ul > li input {
-	margin-bottom:0;
+	margin:8px 0 0 10px;
 }
 
 form ul > li:last-of-type span.comma {

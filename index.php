@@ -1,5 +1,6 @@
 <?php
 
+// ensure www. is omitted
 if (strpos($_SERVER['HTTP_HOST'], 'www.') === 0)
 {
     $s = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
@@ -8,7 +9,10 @@ if (strpos($_SERVER['HTTP_HOST'], 'www.') === 0)
     exit();
 }
 
-// preliminaries
+
+///////////////////
+// preliminaries //
+
 $starttime = explode(' ', microtime());
 $config = is_file('config.ini') ? parse_ini_file('config.ini') : array();
 if ($config === false) // for if parse_ini_file fails
@@ -63,7 +67,10 @@ else if ($request_url == 'favicon.ico')
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
 
-// redirect resources
+
+///////////////
+// resources //
+
 if (Common::requestResource())
 {
     Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
@@ -101,15 +108,27 @@ if (Common::requestResource())
 }
 
 
-// not a resource, so start loading more stuff
+////////////////////
+// not a resource //
+
 session_start();
 
-require_once('include/database.class.php');
 require_once('include/security.php');
+require_once('include/database.class.php');
 require_once('include/session.class.php');
 
-$db = new Database('database.sqlite3');
 $bcrypt = new Bcrypt(8);
+$db = new Database('database.sqlite3');
+if (is_file($db->filename) === false)
+    user_error('Database file never created at "' . $db->filename . '"', ERROR);
+
+Session::refreshLogin();
+
+
+// sitemap
+if ($request_url == 'sitemap.xml')
+    Common::outputSitemapXml(); // always exits
+
 
 register_shutdown_function(function() {
     global $starttime, $db;
@@ -136,33 +155,20 @@ if (Common::requestApi())
 }
 
 
-// setting more stuff for a page
-ob_start('minifyHtml');
+////////////////////////
+// admin or site page //
 
 require_once('include/dexterous.class.php');
-require_once('include/form.class.php');
 
-Session::refreshLogin();
+ob_start('minifyHtml');
 Core::assign('base_url', $base_url);
-
-
-// check whether database needs to be set up
-if (is_file($db->filename) === false)
-    user_error('Database file never created at "' . $db->filename . '"', ERROR);
-else if (filesize($db->filename) == 0)
-    require_once('core/admin/setup.php'); // until site is setup, this will exit!
-
-
-if ($request_url == 'sitemap.xml')
-    Common::outputSitemapXml(); // always exits
-
 
 // handle admin area
 if (Common::requestAdmin())
     require_once('core/admin/admin.php'); // always exits
 
 
-// load all settings
+// load all site ettings
 $settings = array();
 $table = $db->query("SELECT * FROM setting;");
 while ($row = $table->fetch())
@@ -172,16 +178,18 @@ while ($row = $table->fetch())
        Core::assign('setting_' . $row['key'], $row['value']);
 }
 
-// show page
-$link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;");
-
 Core::addTitle($settings['title']);
+
+
+// load page
+$link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;");
 if ($link)
 {
     Core::addTitle($link['title']);
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
 }
+
 
 // load in module hooks
 $table = $db->query("SELECT * FROM link_module
@@ -190,10 +198,14 @@ $table = $db->query("SELECT * FROM link_module
 while ($row = $table->fetch())
     include_once('modules/' . $row['module_name'] . '/hooks.php');
 
+
+// load in theme
 $theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
 if (is_file($theme_hooks_filename) !== false)
     include_once($theme_hooks_filename);
 
+
+// show page
 if ($link)
     Hooks::emit('site');
 else

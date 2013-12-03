@@ -26,10 +26,26 @@ $(function() {
         $(this).scrollTop(this.scrollHeight - $(this).height());
     });
 
-    $('.tooltip').tooltip({
+    $('[data-tooltip]').tooltip({
         position: {
             my: 'center top',
-            at: 'center bottom+5'
+            at: 'center bottom+5',
+            collision: 'fit',
+            using: function(position, feedback) {
+                console.log(position);
+                $(this).css(position);
+                $('<div>').addClass('ui-tooltip-arrow').appendTo(this);
+            }
+        },
+        items: "[data-tooltip]",
+        content: function() {
+            return $(this).attr('data-tooltip');
+        },
+        show: {
+            duration: 100
+        },
+        hide: {
+            duration: 100
         }
     });
 });

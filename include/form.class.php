@@ -165,7 +165,7 @@ class Form
 		);
 	}
 
-	public function addArray($name, $title, $subtitle, $preg)
+	public function addArray($name, $title, $subtitle, $placeholder, $preg)
 	{
 		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
 		$this->items[] = array(
@@ -173,6 +173,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
+			'placeholder' => json_encode($placeholder),
 			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
 			'value' => ''
 		);
