@@ -28,8 +28,12 @@ class Error
 
 	public static function report($type, $message, $file, $line, $context = '')
 	{
+        echo 'error';
         $display_message = self::$display ? $message : 'Error';
         self::$last = $display_message;
+
+        if (Common::requestAjax() && !class_exists('API'))
+            require_once('include/api.class.php');
 
 		switch ($type)
 		{
@@ -41,7 +45,7 @@ class Error
 				Log::warning('(' . $file . ':' . $line . ') ' . $message);
 				if (self::$display && !Common::requestResource())
 				{
-					if (Common::requestApi())
+					if (Common::requestAjax())
 						API::warning($message);
 					else if (Common::requestAdmin())
 						echo $message;
@@ -53,10 +57,10 @@ class Error
 			case E_STRICT:
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				Log::notice('(' . $file . ':' . $line . ') ' . $error);
+				Log::notice('(' . $file . ':' . $line . ') ' . $message);
 				if (self::$display && !Common::requestResource())
 				{
-					if (Common::requestApi())
+					if (Common::requestAjax())
 						API::notice($message);
 					else if (Common::requestAdmin())
 						echo $message;
@@ -72,7 +76,7 @@ class Error
                 Log::error('(' . $file . ':' . $line . ') ' . $message);
                 if (!Common::requestResource())
                 {
-                    if (Common::requestApi())
+                    if (Common::requestAjax())
                         API::error($display_message);
                     else if (class_exists('Hooks'))
                     {

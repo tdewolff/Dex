@@ -32,6 +32,11 @@ class Common
         return strpos($request_url, 'api/') === 0;
     }
 
+    public static function requestAjax()
+    {
+        return (Common::requestApi() || (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ? true : false);
+    }
+
     ////////////////
 
     public static function ensureWritableDirectory($directory)

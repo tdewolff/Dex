@@ -80,7 +80,6 @@ class API
             echo json_encode(self::$response);
             exit;
         }
-        print_r(self::$response);
         exit;
     }
 }

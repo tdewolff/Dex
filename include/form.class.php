@@ -307,7 +307,7 @@ class Form
 						$error = $item['preg']['error'];
 
 					if ($error)
-						$this->item_errors[] = array('name' => $name, 'error' => $error);
+						$this->item_errors[] = array('name' => $item['name'], 'error' => $error);
 				}
 			}
 		}

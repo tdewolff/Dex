@@ -1,5 +1,9 @@
 <h2>Assets</h2>
 <div id="assets">
+    <div id="create_directory">
+        <input type="text"><a href="#" class="small-button"><i class="icon-asterisk"></i>&ensp;Create directory</a>
+    </div>
+
     <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
         <input type="hidden" name="dir" value="">
         <div id="drop">
@@ -13,10 +17,6 @@
         </div>
         <ul></ul>
     </form>
-
-    <div id="create_directory">
-        <input type="text"><a href="#" class="small-button"><i class="icon-asterisk"></i>&ensp;Create directory</a>
-    </div>
 
     <div id="breadcrumbs">
     </div>
@@ -181,24 +181,6 @@
             item.closest('li').slideUp('fast', function() { $(this).remove(); });
         });
     });
-
-    // adding directories, assets or images
-    function addAlphabetically(list, item, name) {
-        item = $(item).hide();
-
-        var added = false;
-        list.each(function() {
-            if ($(this).attr('data-name') > name)
-            {
-                item.insertBefore(this).slideDown('fast');
-                added = true;
-                return false;
-            }
-        });
-
-        if (!added)
-            item.insertAfter(list.last()).slideDown('fast');
-    }
 
     $('#create_directory').on('click', 'a', function() {
         api('/' + base_url + 'api/core/assets.php', {

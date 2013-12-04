@@ -90,6 +90,24 @@ $('html').on('mouseleave', 'a.sure', function(e) {
     });
 });
 
+// adding directories, assets or images
+function addAlphabetically(list, item, name) {
+    item = $(item).hide();
+
+    var added = false;
+    list.each(function() {
+        if ($(this).attr('data-name') > name)
+        {
+            item.insertBefore(this).slideDown('fast');
+            added = true;
+            return false;
+        }
+    });
+
+    if (!added)
+        item.insertAfter(list.last()).slideDown('fast');
+}
+
 jQuery.fn.extend({
     insertAtCaret: function(myValue){
         return this.each(function(i) {

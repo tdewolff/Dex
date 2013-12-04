@@ -16,6 +16,10 @@ Core::addScript('vendor/doT.min.js');
 Core::addScript('include/slidein.min.js');
 Core::addScript('include/api.min.js');
 Core::addDeferredScript('admin.min.js');
+Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
+Core::addDeferredScript('vendor/jquery.fileupload.min.js');
+Core::addDeferredScript('vendor/jquery.knob.min.js');
+Core::addDeferredScript('upload.min.js');
 
 // setup
 if (filesize($db->filename) == 0)
