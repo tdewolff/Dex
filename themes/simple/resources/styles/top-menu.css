@@ -1,10 +1,33 @@
+body {
+    background: rgb(55, 65, 71);
+}
+
+article.main, header, footer, nav {
+    color: #333;
+    border-top: 0;
+    border-bottom: 0;
+    border-right: 1px solid rgb(128, 128, 128);
+    border-left: 1px solid rgb(128, 128, 128);
+}
+
+article.main, header, footer {
+    background: #fff;
+}
+
+article.main>p:first-child {
+    margin-top:0;
+}
+
 nav {
+    z-index: 9998;
     position: fixed;
     left: 0px;
     right: 0px;
     top: 0px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(230, 230, 230, 1);
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
     min-height: 50px;
+    border-bottom: 1px solid rgb(128, 128, 128);
 }
 
 nav>.logo {
@@ -13,6 +36,10 @@ nav>.logo {
 
 #nav {
     margin: 0px;
+}
+
+nav a {
+    color: #333;
 }
 
 nav>.logo, #nav li {
@@ -31,50 +58,71 @@ nav>.logo, #nav li {
 }
 
 #nav li.selected {
-    background-color: rgba(0, 100, 220, 1);
+    background-color: #A9CC66;
+    border-bottom: 1px solid #9EC653;
+    border-top: 1px solid #B4D279;
 }
-
+/*
 #nav li.selected:hover {
-    background-color: rgba(0, 100, 255, 1);
+    background-color: rgba(75, 175, 75, 1);
 }
+*/
 
 #nav li:hover, nav>.logo:hover {
-    background-color: rgba(100, 200, 100, 1);
+    background-color:  #FDE792;
 }
 
 #nav li>a, nav>.logo, nav>.logo>span {
-    color: white;
-    font-weight:bold;
-    font-size: 24px;
+    font-size: 18x;
     line-height: 50px;
     font-family: sans-serif;
     text-decoration: none;
 }
+
 header {
-    top: 0px;
-    border-radius: 25em 0px 25em 0px;
+    z-index: 5;
+    top: 150px;
+    margin-bottom: 150px;
+    border-radius: 25em 0 0 0;
 }
-footer {
-    bottom: 0px;
-    border-radius: 0px 25em 0px 25em;
+
+header h1 {
+    top: -93.5px;
+    position: absolute;
+    color: #FFF;
+    width: 500px;
+    text-align: center;
+    left: 350px;
 }
 header, footer {
-    background-color: rgb(235, 235, 235);
     color: rgb(135, 135, 135);
     padding-top: 50px;
     position: relative;
-    left: 0px;
-    right: 0px;
     text-align: center;
     height: 150px;
-    overflow: hidden;
 }
 header, article, footer {
     margin: 0px auto;
-    width: 960px;
+    width: 1200px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+/*Funky feature...
+header:hover, article.main:hover, footer:hover {
+    z-index: 9999;
+}
+*/
+article.main {
+    position: relative;
+    display: block;
+    z-index: 4;
+    padding: 15px;
+    margin-top: 150px;
+    width: 1170px;
+    background-position: 0px;
 }
 
-article {
-    color: rgb(135, 135, 135);
-    background-position: 0px;
+footer {
+    z-index: 3;
+    bottom: 0px;
+    border-radius: 0 0 25em 0;
 }
