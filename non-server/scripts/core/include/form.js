@@ -2,7 +2,6 @@ var Form = function(form) {
     var self = this;
 
     this.form = $(form);
-    this.salt = this.form.attr('data-salt'),
     this.optionals = JSON.parse(this.form.attr('data-optionals'));
     this.needsSave = false;
 
@@ -11,7 +10,6 @@ var Form = function(form) {
             if (typeof name == 'undefined' || $.inArray(name.slice(0, -9), optional) !== -1) {
                 inputs = $();
                 $.each(optional, function(i, name) {
-                    name += '_' + self.salt;
                     inputs = inputs.add('[name="' + name + '"], [data-name="' + name + '"]');
                 });
 
@@ -79,11 +77,8 @@ var Form = function(form) {
             }
         });
 
-        var data = self.form.serialize();
-        data += '&salt=' + self.salt;
-
         // AJAX
-        api(window.location.href, data, self.success, self.responseError);
+        api(window.location.href, self.form.serialize(), self.success, self.responseError);
     };
 
     this.success = function(data) {

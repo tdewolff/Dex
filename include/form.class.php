@@ -257,10 +257,9 @@ class Form
 		{
 			parse_str(file_get_contents("php://input"), $this->data); // retrieve input
 
-			$_SESSION[$this->name . '_salt'] = $this->data['salt'];
 			foreach ($this->items as $item) // input to session
 				if (isset($item['value']))
-					$_SESSION[$item['name']] = (isset($this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name'] . '_' . $_SESSION[$this->name . '_salt']] : '');
+					$_SESSION[$item['name']] = (isset($this->data[$item['name']]) ? $this->data[$item['name']] : '');
 			return true;
 		}
 		return false;
@@ -272,8 +271,7 @@ class Form
 		{
 			if (isset($item['value']))
 			{
-				$name = $item['name'] . '_' . $_SESSION[$this->name . '_salt'];
-				$value = (isset($this->data[$name]) ? $this->data[$name] : '');
+				$value = (isset($this->data[$item['name']]) ? $this->data[$item['name']] : '');
 
 				$optional = false;
 				foreach ($this->optionals as $optionals)
@@ -281,7 +279,7 @@ class Form
 					{
 						$optional = true;
 						foreach ($optionals as $optionals_name)
-							if (isset($this->data[$optionals_name . '_' . $_SESSION[$this->name . '_salt']]) && strlen($this->data[$optionals_name . '_' . $_SESSION[$this->name . '_salt']]))
+							if (isset($this->data[$optionals_name]) && strlen($this->data[$optionals_name]))
 							{
 								$optional = false;
 								break;
@@ -294,7 +292,7 @@ class Form
 					if (isset($item['name_confirm']))
 					{
 						// '_confirm' is the first value entered, we are now checking it against the second (current) item
-						$value_confirm = (isset($this->data[$item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt']]) ? $this->data[$item['name_confirm'] . '_' . $_SESSION[$this->name . '_salt']] : '');
+						$value_confirm = (isset($this->data[$item['name_confirm']]) ? $this->data[$item['name_confirm']] : '');
 
 						if ($value != $value_confirm)
 							$error = 'Does not confirm';
@@ -318,7 +316,6 @@ class Form
 
 	public function clearSession()
 	{
-		unset($_SESSION[$this->name . '_salt']);
 		foreach ($this->items as $item)
 			if (isset($item['value']))
 				unset($_SESSION[$item['name']]);
@@ -336,15 +333,12 @@ class Form
 
 	public function render()
 	{
-		$_SESSION[$this->name . '_salt'] = Common::random(8);
-
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
 
 		$form = array(
 			'name' => $this->name,
-			'salt' => $_SESSION[$this->name . '_salt'],
 			'items' => $this->items,
 			'submit' => $this->submit,
 			'response' => $this->response,
@@ -371,8 +365,8 @@ class Form
 	// get value of input element, use after validate()
 	public function get($name)
 	{
-		return (isset($this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']])
-		            ? $this->data[$this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt']]
+		return (isset($this->data[$this->name . '_' . $name])
+		            ? $this->data[$this->name . '_' . $name]
 						: false);
 	}
 
@@ -390,7 +384,7 @@ class Form
 
 	public function setError($name, $error)
 	{
-		$this->item_errors[] = array('name' => $this->name . '_' . $name . '_' . $_SESSION[$this->name . '_salt'], 'error' => $error);
+		$this->item_errors[] = array('name' => $this->name . '_' . $name, 'error' => $error);
 	}
 
 	public function appendError($error)
