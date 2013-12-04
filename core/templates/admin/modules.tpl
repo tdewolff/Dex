@@ -1,7 +1,7 @@
 <h2>Modules</h2>
 <ul id="modules" class="table">
   <li>
-	<div style="width:120px;">&nbsp;</div>
+	<div style="width:120px;"></div>
 	<div style="width:120px;">Name</div>
 	<div style="width:120px;">Author</div>
 	<div style="width:540px;">Description</div>

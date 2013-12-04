@@ -2,7 +2,7 @@
 <a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button" style="margin-left:20px;"><i class="icon-plus"></i>&ensp;New page</a>
 <ul id="pages" class="table">
   <li>
-	<div style="width:120px;">&nbsp;</div>
+	<div style="width:120px;"></div>
 	<div style="width:120px;">Title</div>
 	<div style="width:200px;">Link</div>
 	<div style="width:120px;">Template</div>
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<div style="width:120px;">{{=it.title}}</div>
-		<div style="width:200px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/<?php echo $_['base_url']; ?>{{=it.url}}</a></div>
+		<div style="width:200px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/{{=it.url}}</a></div>
 		<div style="width:120px;">{{=it.template_name}}</div>
 		<div style="width:340px;">{{=it.content}}</div>
 	</li>

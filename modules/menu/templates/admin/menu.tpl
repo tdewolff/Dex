@@ -9,8 +9,8 @@
 
 <ul id="menu" class="table draggable">
     <li>
-        <div style="width:40px;">&nbsp;</div>
-        <div style="width:120px;">&nbsp;</div>
+        <div style="width:40px;"></div>
+        <div style="width:120px;"></div>
         <div style="width:240px;">Name</div>
         <div style="width:120px;">Title</div>
         <div style="width:380px;">Link</div>

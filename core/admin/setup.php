@@ -71,6 +71,22 @@ if ($form->submitted())
             FOREIGN KEY(module_name) REFERENCES module(module_name)
         );
 
+        INSERT INTO link (url, title, template_name) VALUES (
+            '',
+            'Home',
+            'static'
+        );
+
+        INSERT INTO content (link_id, name, content) VALUES (
+            '1',
+            'content',
+            'This is a sample home page containing lots of fake latin words.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mattis nulla, imperdiet ornare justo. Aliquam ultrices elit in sem viverra tristique. Nam consectetur scelerisque dolor, sit amet varius erat pretium blandit. Fusce at urna nisi. Mauris vel lorem in ipsum eleifend iaculis. Donec dictum laoreet sem. Donec euismod magna vel lorem rhoncus bibendum. Nunc at tincidunt lorem. Suspendisse congue metus pharetra ultrices vehicula. Vestibulum congue luctus ipsum sit amet vulputate. Nam venenatis dictum risus, vel viverra quam. Sed convallis, magna ut varius pellentesque, velit augue auctor tortor, iaculis pellentesque nisi mauris dapibus nulla. Nam vel enim at velit facilisis laoreet. Aliquam blandit lobortis neque, et scelerisque risus imperdiet vel. Nulla enim diam, semper sed dolor nec, gravida congue arcu. Proin varius est a dui varius, eget posuere nulla aliquam.
+
+Sed quis enim sit amet eros fermentum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque malesuada est vitae feugiat sodales. Curabitur vehicula ullamcorper mauris. Cras eu mauris nisi. Donec in eros dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec aliquam neque sed libero porta mollis. Maecenas vitae varius erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In imperdiet quam nec magna vehicula rhoncus. Phasellus semper malesuada nunc, et porta purus viverra malesuada. Proin nec tempor ante. Nunc aliquam augue nec est vehicula euismod.'
+        );
+
         INSERT INTO setting (key, value) VALUES (
             'title',
             '" . $db->escape($form->get('title')) . "'

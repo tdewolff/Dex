@@ -14,8 +14,21 @@ CREATE TABLE IF NOT EXISTS module_menu (
 if (!$db->querySingle("SELECT * FROM link_module WHERE link_id = '0' AND module_name = 'menu' LIMIT 1"))
     $db->exec("
     INSERT INTO link_module (link_id, module_name) VALUES (
-        0,
+        '0',
         'menu'
     );");
+
+$table = $db->query("SELECT * FROM link");
+while ($row = $table->fetch())
+{
+    $db->exec("
+    INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
+        '" . $db->escape($row['link_id']) . "',
+        '0',
+        '0',
+        '" . $db->escape($row['title']) . "',
+        '1'
+    );");
+}
 
 ?>

@@ -2,7 +2,7 @@
 <a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button" style="margin-left:20px;"><i class="icon-plus"></i>&ensp;New user</a>
 <ul id="users" class="table">
   <li>
-	<div style="width:120px;">&nbsp;</div>
+	<div style="width:120px;"></div>
 	<div style="width:200px;">Username</div>
 	<div style="width:580px;">Permission level</div>
   </li>

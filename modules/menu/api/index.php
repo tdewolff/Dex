@@ -28,7 +28,7 @@ else if (API::action('get_menu'))
         {
             $row['level'] = 0;
             $row['name'] = $row['title'];
-            $row['enabled'] = 0;
+            $row['enabled'] = 1;
             $non_menu[] = $row;
         }
         else

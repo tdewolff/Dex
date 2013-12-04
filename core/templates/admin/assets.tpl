@@ -25,7 +25,7 @@
         <li>
             <div style="width:460px;">Filename</div>
             <div style="width:100px;">Size</div>
-            <div style="width:40px;">&nbsp;</div>
+            <div style="width:40px;"></div>
         </li>
     </ul>
 
