@@ -171,6 +171,7 @@ class Common
     }
 }
 
+ini_set('pcre.recursion_limit', '16777');
 function minifyHtml($text)
 {
     if (!Common::isMinifying()) {
@@ -196,8 +197,11 @@ function minifyHtml($text)
           )             # End alternation group.
         )  # If we made it here, we are not in a blacklist tag.
         %Six';
-    $text = preg_replace($re, " ", $text);
-    if ($text === null) exit("PCRE Error! File too big.\n");
+
+    $text = preg_replace($re, ' ', $text);
+    if ($text === null)
+        user_error('Output HTML too large');
+
     return $text;
 }
 
