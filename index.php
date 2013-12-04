@@ -165,7 +165,7 @@ require_once('core/hooks.php');
 Core::assign('base_url', $base_url);
 
 // handle admin area
-if (Common::requestAdmin())
+if (Common::requestAdmin() || filesize($db->filename) == 0)
     require_once('core/admin/admin.php'); // always exits
 
 

@@ -28,7 +28,6 @@ class Error
 
 	public static function report($type, $message, $file, $line, $context = '')
 	{
-        echo 'error';
         $display_message = self::$display ? $message : 'Error';
         self::$last = $display_message;
 
