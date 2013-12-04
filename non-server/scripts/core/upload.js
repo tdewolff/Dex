@@ -40,7 +40,6 @@ function initializeUpload(upload, done) {
             done_n++;
         },
         done: function(e, data) {
-            console.log(data.response().result);
             if (typeof data.response().result['upload_error'] !== 'undefined')
                 upload.find('#upload_' + data.i).addClass('fail').append(' (' + data.response().result['upload_error'] + ')');
             else {
@@ -49,7 +48,6 @@ function initializeUpload(upload, done) {
             }
         },
         fail: function(e, data) {
-            console.log(data.response());
             if (typeof data.response().jqXHR['responseText'] !== 'undefined')
                 apiError(data.response().jqXHR['responseText']);
             upload.find('#upload_' + data.i).addClass('fail').append(' (Unknown error)');

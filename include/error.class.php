@@ -74,10 +74,15 @@ class Error
                 {
                     if (Common::requestApi())
                         API::error($display_message);
-                    else if (Common::requestAdmin())
-                        Hooks::emit('admin-error');
+                    else if (class_exists('Hooks'))
+                    {
+                        if (Common::requestAdmin())
+                            Hooks::emit('admin-error');
+                        else
+                            Hooks::emit('error');
+                    }
                     else
-                        Hooks::emit('error');
+                        echo $message;
                 }
                 exit;
 		}

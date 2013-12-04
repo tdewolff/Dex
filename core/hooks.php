@@ -27,8 +27,9 @@ Hooks::attach('site', 0, function() {
 $error_loop = false;
 
 Hooks::attach('error', 0, function() {
-	global $error_loop;
+    ob_clean();
 
+	global $error_loop;
 	if ($error_loop)
 		echo 'Error fired while displaying an error message, exiting loop';
 	$error_loop = true;
@@ -60,8 +61,9 @@ Hooks::attach('error', 0, function() {
 });
 
 Hooks::attach('admin-error', 0, function() {
-	global $error_loop;
+    ob_clean();
 
+	global $error_loop;
 	if ($error_loop)
 		echo 'Error fired while displaying an error message, exiting loop';
 	$error_loop = true;

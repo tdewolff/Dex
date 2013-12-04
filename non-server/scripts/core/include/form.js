@@ -246,8 +246,6 @@ $('form input[data-type="array"]').each(function(i, array) {
         values = JSON.parse(array.val());
     } catch (e) {}
 
-    console.log(placeholders);
-
     if (!values.length && placeholders.length)
         $.each(placeholders, function(i, placeholder) {
             ul.append(template({placeholder: placeholder, value: ''}));

@@ -1,3 +1,4 @@
+<?php if (!headers_sent()): ?>
 <!doctype html>
 <html>
     <head>
@@ -17,6 +18,7 @@
     </head>
 
     <?php ob_flush(); flush(); ?>
+<?php endif; ?>
 
     <body>
         <a href="#api_error" id="api_error_link" class="fancybox"></a>
@@ -45,4 +47,5 @@
         <?php else: ?>
         <section class="page-wrapper-slim">
             <h1>Dexterous</h1>
+            <div id="main">
         <?php endif; ?>

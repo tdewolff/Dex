@@ -76,7 +76,6 @@ $admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',       
 $admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'icon-hdd',      'title' => 'Database',  'admin_only' => 1);
 $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'icon-signout',  'title' => 'Log out',   'admin_only' => 0);
 
-
 Core::assign('username', Session::getUsername());
 Core::assign('permission', ucfirst(Session::getPermission()));
 Core::assign('is_admin', Session::isAdmin());

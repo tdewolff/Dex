@@ -33,7 +33,6 @@
     api('/' + base_url + 'api/module/menu/index.php', {
         action: 'get_menu'
     }, function(data) {
-        console.log(data);
         $.each(data['menu'], function() {
             var item = $(menu_item(this));
 

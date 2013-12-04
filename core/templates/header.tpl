@@ -1,3 +1,4 @@
+<?php if (!headers_sent()): ?>
 <!doctype html>
 <html>
     <head>
@@ -16,5 +17,6 @@
     </head>
 
     <?php ob_flush(); flush(); ?>
+<?php endif; ?>
 
     <body>

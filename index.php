@@ -19,8 +19,6 @@ if ($config === false) // for if parse_ini_file fails
     $config = array();
 
 require_once('include/common.class.php');
-require_once('include/hooks.class.php');
-require_once('core/hooks.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
 
@@ -33,12 +31,12 @@ Log::initialize();
 Log::setVerbose(Common::tryOrDefault($config, 'verbose_logging', false));
 Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false));
 
-register_shutdown_function(function() { // PHP errors
+// from here on all PHP errors are caught and handled correctly
+register_shutdown_function(function() {
     $error = error_get_last();
     if ($error['type'] > 0)
         Error::report($error['type'], $error['message'], $error['file'], $error['line']);
 });
-
 
 // form the request URI
 Log::request($_SERVER['REQUEST_URI']);
@@ -158,9 +156,12 @@ if (Common::requestApi())
 ////////////////////////
 // admin or site page //
 
-require_once('include/dexterous.class.php');
-
 ob_start('minifyHtml');
+
+require_once('include/dexterous.class.php');
+require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
+require_once('core/hooks.php');
+
 Core::assign('base_url', $base_url);
 
 // handle admin area

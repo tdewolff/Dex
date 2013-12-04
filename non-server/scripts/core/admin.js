@@ -32,7 +32,6 @@ $(function() {
             at: 'center bottom+5',
             collision: 'fit',
             using: function(position, feedback) {
-                console.log(position);
                 $(this).css(position);
                 $('<div>').addClass('ui-tooltip-arrow').appendTo(this);
             }

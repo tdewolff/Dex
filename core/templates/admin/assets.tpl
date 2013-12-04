@@ -217,7 +217,6 @@
 
     $(function() {
         initializeUpload('#upload', function(data) {
-            console.log(data);
             if (!data['file'].is_image)
             {
                 var item = asset_item(data['file']);
