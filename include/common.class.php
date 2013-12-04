@@ -146,8 +146,19 @@ class Common
         $table = $db->query("SELECT * FROM link;");
         while ($row = $table->fetch())
         {
+            $slashes = preg_match_all('/', $row['url']);
+            $priority = '0.5';
+            if ($row['url'] == '')
+                $priority = '1';
+            else if ($slashes == 1)
+                $priority = '0.8';
+            else if ($slashes == 2)
+                $priority = '0.6';
+
             echo '<url>' .
-                 '<loc>' . self::fullBaseUrl() . $base_url . $row['url'] . '</loc>' .
+                     '<loc>' . self::fullBaseUrl() . $base_url . $row['url'] . '</loc>' .
+                     '<lastmod>' . date('Y-m-d', $row['modify_time']) . '</lastmod>' .
+                     '<priority>' . $priority . '</priority>' .
                  '</url>';
         }
         echo '</urlset>';

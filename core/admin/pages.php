@@ -53,17 +53,19 @@ if ($url[2] == 'new')
                         $db->exec("
                             UPDATE link SET
                                 title = '" . $db->escape($form->get('title')) . "',
-                                template_name = '" . $db->escape($form->get('template_name')) . "'
+                                template_name = '" . $db->escape($form->get('template_name')) . "',
+                                modify_time = '" . $db->escape(time()) . "'
                             WHERE link_id = '" . $db->escape($link['link_id']) . "';");
                     $link_id = $link['link_id'];
                 }
                 else
                 {
                     $db->exec("
-                        INSERT INTO link (url, title, template_name) VALUES (
+                        INSERT INTO link (url, title, template_name, modify_time) VALUES (
                             '" . $db->escape($form->get('url')) . "',
                             '" . $db->escape($form->get('title')) . "',
-                            '" . $db->escape($form->get('template_name')) . "'
+                            '" . $db->escape($form->get('template_name')) . "',
+                            '" . $db->escape(time()) . "'
                         );");
                     $link_id = $db->last_id();
                 }
@@ -105,7 +107,8 @@ else
                 $db->exec("
                     UPDATE link SET
                         url = '" . $db->escape($form->get('url')) . "',
-                        title = '" . $db->escape($form->get('title')) . "'
+                        title = '" . $db->escape($form->get('title')) . "',
+                        modify_time = '" . $db->escape(time()) . "'
                     WHERE link_id = '" . $db->escape($url[2]) . "';");
 
                 foreach ($form->getAll() as $name => $value)
@@ -120,7 +123,7 @@ else
                             WHERE link_id = '" . $db->escape($url[2]) . "' AND name = '" . $db->escape($name) . "';");
                     else
                         $db->exec("
-                            INSERT INTO content (link_id, name, content) VALUES (
+                            INSERT INTO content (link_id, name, content, modify_time) VALUES (
                                 '" . $db->escape($url[2]) . "',
                                 '" . $db->escape($name) . "',
                                 '" . $db->escape($value) . "'
