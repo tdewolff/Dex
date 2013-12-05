@@ -32,7 +32,7 @@ class Error
         self::$last = $display_message;
 
         if (Common::requestAjax() && !class_exists('API'))
-            require_once('include/api.class.php');
+            require_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/include/api.class.php');
 
 		switch ($type)
 		{
@@ -47,7 +47,7 @@ class Error
 					if (Common::requestAjax())
 						API::warning($message);
 					else if (Common::requestAdmin())
-						echo $message;
+						echo $message . '<br>';
 				}
 				break;
 
@@ -62,7 +62,7 @@ class Error
 					if (Common::requestAjax())
 						API::notice($message);
 					else if (Common::requestAdmin())
-						echo $message;
+						echo $message . '<br>';
 				}
 				break;
 
@@ -85,7 +85,7 @@ class Error
                             Hooks::emit('error');
                     }
                     else
-                        echo $message;
+                        echo '<strong>' . $display_message . '</strong><br>';
                 }
                 exit;
 		}

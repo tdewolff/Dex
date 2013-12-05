@@ -61,7 +61,7 @@ class Database
 		return $this->queries;
 	}
 
-	public function last_id()
+	public function lastId()
 	{
 		return $this->handle->lastInsertRowID();
 	}

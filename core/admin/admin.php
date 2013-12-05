@@ -31,7 +31,12 @@ if (Session::isUser() && $request_url == 'admin/logout/')
 
 // login
 if (!Session::isUser())
-	require_once('core/admin/login.php'); // exits if not logged in
+{
+	if (strpos($request_url, 'admin/recover/') === 0)
+		require_once('core/admin/recover.php'); // exits
+	else
+		require_once('core/admin/login.php'); // exits if not logged in
+}
 else // didn't go through login screen
 	Core::checkModules();
 

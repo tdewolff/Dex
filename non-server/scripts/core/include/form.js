@@ -111,7 +111,7 @@ var Form = function(form) {
         if (data['errors'].length || data['item_errors'].length)
             self.responseError();
         else if (data['redirect'].length > 0)
-            window.location.replace(data['redirect']);
+            window.location.href = data['redirect'];
         else
             self.responseSuccess();
     };

@@ -54,11 +54,11 @@ class Resource
     {
         $latest_modify_time = 0;
         foreach ($filenames as $filename)
-            if (!is_file($filename))
+            if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
                 user_error('File "' . $filename . '" could not be found', WARNING);
             else
             {
-                $modify_time = filemtime($filename);
+                $modify_time = filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
                 $latest_modify_time = max($modify_time, $latest_modify_time);
             }
 
@@ -70,14 +70,14 @@ class Resource
     {
         $starttime_local = explode(' ', microtime());
         $cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
-        if (!is_file($cache_filename) || !self::$caching)
+        if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename) || !self::$caching)
         {
             $content = '';
             foreach ($filenames as $filename)
-                if (is_file($filename))
-                    $content .= file_get_contents($filename);
+                if (is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
+                    $content .= file_get_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
 
-            $f = fopen($cache_filename, 'w');
+            $f = fopen(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename, 'w');
             fwrite($f, $content);
             fclose($f);
 
@@ -111,13 +111,13 @@ class Resource
 
     public static function imageSize($filename, $max_width, $max_height = 0, $scale = 0)
     {
-        if (!is_file($filename))
+        if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
         {
             user_error('Could not find "' . $filename . '" to determine new image size', WARNING);
             return array(0, 0);
         }
 
-        list($width, $height, $mime_type, $attribute) = getimagesize($filename);
+        list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
 
         $new_width = $width;
         $new_height = $height;
@@ -159,26 +159,26 @@ class Resource
     public static function imageResize($filename, $max_width, $max_height = 0, $scale = 0)
     {
         $starttime_local = explode(' ', microtime());
-        $cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime($filename)) . '.png';
-        if (!is_file($cache_filename))
+        $cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
+        if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename))
         {
-            list($width, $height, $mime_type, $attribute) = getimagesize($filename);
+            list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
             list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
 
             switch (image_type_to_mime_type($mime_type))
             {
                 case 'image/jpeg':
-                    $image = imagecreatefromjpeg($filename);
+                    $image = imagecreatefromjpeg(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
                     break;
 
                 case 'image/png':
-                    $image = imagecreatefrompng($filename);
+                    $image = imagecreatefrompng(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
                     imagealphablending($image, true);
                     imagesavealpha($image, true);
                     break;
 
                 case 'image/gif':
-                    $image = imagecreatefromgif($filename);
+                    $image = imagecreatefromgif(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
                     break;
 
                 default:

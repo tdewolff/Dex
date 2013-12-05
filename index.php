@@ -53,8 +53,8 @@ $url = explode('/', $request_url);
 if (empty($url[count($url) - 1]))
     unset($url[count($url) - 1]);
 
-if (!Common::validUrl($request_url))
-    user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
+//if (!Common::validUrl($request_url))
+//    user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
 
 
 // robots.txt and favicon.ico
@@ -68,7 +68,6 @@ require_once('include/resource.class.php'); // also needed for header.tpl (conca
 
 ///////////////
 // resources //
-
 if (Common::requestResource())
 {
     Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
@@ -111,15 +110,15 @@ if (Common::requestResource())
 
 session_start();
 
-require_once('include/security.php');
 require_once('include/database.class.php');
+require_once('include/security.php');
 require_once('include/session.class.php');
 
-$bcrypt = new Bcrypt(8);
 $db = new Database('database.sqlite3');
 if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 
+Bcrypt::setRounds(8);
 Session::refreshLogin();
 
 

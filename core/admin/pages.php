@@ -67,7 +67,7 @@ if ($url[2] == 'new')
                             '" . $db->escape($form->get('template_name')) . "',
                             '" . $db->escape(time()) . "'
                         );");
-                    $link_id = $db->last_id();
+                    $link_id = $db->lastId();
                 }
                 $form->setRedirect('/' . $base_url . 'admin/pages/' . $link_id);
             }

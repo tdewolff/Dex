@@ -314,7 +314,7 @@ class Form
 		return count($this->item_errors) == 0;
 	}
 
-	public function clearSession()
+	private function clearSession()
 	{
 		foreach ($this->items as $item)
 			if (isset($item['value']))
@@ -323,6 +323,9 @@ class Form
 
 	public function finish()
 	{
+		if (!count($this->errors) && !count($this->item_errors))
+			$this->clearSession();
+
 		echo json_encode(array(
 			'errors' => $this->errors,
 			'item_errors' => $this->item_errors,

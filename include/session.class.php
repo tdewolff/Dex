@@ -6,8 +6,15 @@ class Session
 {
 	public static function logIn($user_id, $permission)
 	{
+		global $db;
+		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
+		if (!$user)
+			user_error('Could not login', ERROR);
+
 		$_SESSION['login'] = array(
-			'id' => $user_id,
+			'user_id' => $user_id,
+			'username' => $user['username'],
+			'email' => $user['email'],
 			'permission' => $permission,
 			'time' => time()
 		);
@@ -48,19 +55,17 @@ class Session
 
 	public static function getUserId()
 	{
-		return (self::loggedIn() ? $_SESSION['login']['id'] : false);
+		return (self::loggedIn() ? $_SESSION['login']['user_id'] : false);
 	}
 
 	public static function getUsername()
 	{
-		global $db;
+		return (self::loggedIn() ? $_SESSION['login']['username'] : false);
+	}
 
-		if (self::loggedIn())
-		{
-			$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['login']['id'] . "' LIMIT 1;");
-			return $user['username'];
-		}
-		return false;
+	public static function getEmail()
+	{
+		return (self::loggedIn() ? $_SESSION['login']['email'] : false);
 	}
 
 	public static function getPermission()

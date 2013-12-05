@@ -16,13 +16,11 @@ if ($form->submitted())
 	if ($form->validate())
 	{
 		$user = $db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
-		if ($user && $bcrypt->verify($form->get('password'), $user['password']))
+		if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 		{
 			Session::logIn($user['user_id'], $user['permission']);
-
-			$form->clearSession(); // don't remember!
 			$form->setRedirect('/' . $base_url . $request_url);
-			if ($request_url == 'admin/logout/')
+			if ($request_url == 'admin/login/' || $request_url == 'admin/logout/')
 				$form->setRedirect('/' . $base_url . 'admin/');
 		}
 		else

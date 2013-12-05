@@ -51,7 +51,7 @@ class Common
 	{
 		// first part are all allowed characters
 		// second part makes sure no ../ occurs
-		// third part makes sure no more than one / is a t the end
+		// third part makes sure no more than one / is at the end
 		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=& ]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
 	}
 

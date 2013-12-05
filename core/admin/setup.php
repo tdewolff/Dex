@@ -10,6 +10,7 @@ $form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Ente
 
 $form->addSection('Admin account', 'Admin account gives full access to the admin panel, meant for site owners.');
 $form->addText('username', 'Username', '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
+$form->addEmail('email', 'Email address', 'Used for notifications and password recovery');
 $form->addPassword('password', 'Password', '');
 $form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
 
@@ -34,8 +35,17 @@ if ($form->submitted())
         CREATE TABLE user (
             user_id INTEGER PRIMARY KEY,
             username TEXT,
+            email TEXT,
             password TEXT,
             permission TEXT
+        );
+
+        DROP TABLE IF EXISTS recover;
+        CREATE TABLE recover (
+            recover_id INTEGER PRIMARY KEY,
+            user_id INTEGER,
+            token TEXT,
+            expiry_time INTEGER
         );
 
         DROP TABLE IF EXISTS link;
@@ -118,15 +128,14 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
             'default'
         );
 
-        INSERT INTO user (username, password, permission) VALUES (
+        INSERT INTO user (username, email, password, permission) VALUES (
             '" . $db->escape($form->get('username')) . "',
-            '" . $db->escape($bcrypt->hash($form->get('password'))) . "',
+            '" . $db->escape($form->get('email')) . "',
+            '" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
             'admin'
         );");
 
-        $form->clearSession();
-        Session::logIn($db->last_id(), 'admin');
-
+        Session::logIn($db->lastId(), 'admin');
         $form->setRedirect('/' . $base_url . 'admin/');
     }
     $form->finish();

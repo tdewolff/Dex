@@ -43,6 +43,10 @@ function apiError(error) {
                 'color': '#B94A48',
                 'border': 'solid 1px #EED3D7'
             });
+        },
+        overlay : {
+            closeClick : true,
+            locked: false
         }
     }).click();
 }
