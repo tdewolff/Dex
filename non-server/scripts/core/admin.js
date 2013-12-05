@@ -19,6 +19,12 @@ $(function() {
 
             closeEffect : 'elastic',
             closeSpeed  : 150,
+
+            helpers:  {
+                overlay: {
+                    locked: false
+                }
+            }
         });
     }
 
@@ -26,27 +32,7 @@ $(function() {
         $(this).scrollTop(this.scrollHeight - $(this).height());
     });
 
-    $('[data-tooltip]').tooltip({
-        position: {
-            my: 'center top',
-            at: 'center bottom+5',
-            collision: 'fit',
-            using: function(position, feedback) {
-                $(this).css(position);
-                $('<div>').addClass('ui-tooltip-arrow').appendTo(this);
-            }
-        },
-        items: "[data-tooltip]",
-        content: function() {
-            return $(this).attr('data-tooltip');
-        },
-        show: {
-            duration: 100
-        },
-        hide: {
-            duration: 100
-        }
-    });
+    applyTooltips();
 });
 
 $('html').on('click', 'a[href="#"]', function (e) {
@@ -106,6 +92,44 @@ function addAlphabetically(list, item, name) {
 
     if (!added)
         item.insertAfter(list.last()).slideDown('fast');
+}
+
+function switchPopupFrame(popup) {
+    $('.fancybox-inner').animate({'scrollTop': 0});
+
+    var frames = popup.find('> div');
+    frames.eq(1).css('display', 'inline-block');
+    popup.animate({'margin-left': '-' + frames.eq(0).width() + 'px'}, function() {
+        popup.css({
+            'margin-left': '0'
+        });
+        frames.eq(0).css('display', 'none');
+        parent.$.fancybox.update();
+    });
+}
+
+function applyTooltips() {
+    $('[data-tooltip]').tooltip({
+        position: {
+            my: 'center top',
+            at: 'center bottom+5',
+            collision: 'fit',
+            using: function(position, feedback) {
+                $(this).css(position);
+                $('<div>').addClass('ui-tooltip-arrow').appendTo(this);
+            }
+        },
+        items: "[data-tooltip]",
+        content: function() {
+            return $(this).attr('data-tooltip');
+        },
+        show: {
+            duration: 100
+        },
+        hide: {
+            duration: 100
+        }
+    });
 }
 
 jQuery.fn.extend({

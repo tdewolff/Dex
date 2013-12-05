@@ -11,7 +11,10 @@ function api(url, data, success, error) {
                 if (typeof data['error'] !== 'undefined')
                     apiError(data['error'].join('<br>'));
                 else if (typeof success !== 'undefined' && success)
+                {
+                    applyTooltips();
                     success(data);
+                }
             },
             error: function(data) {
                 if (typeof error !== 'undefined' && error)

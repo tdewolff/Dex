@@ -591,17 +591,21 @@ ul.grid-3 {
 }
 
 .popup-wrapper {
-	width:600px;
-	overflow:hidden;
+	/*width:800px;
+	overflow:hidden;*/
 	white-space:nowrap;
 
 	.popup {
 		>div {
+            width:600px;
 			vertical-align: top;
-			width:600px;
   			display:inline-block;
 			white-space:normal;
 		}
+
+        >div:not(:first-of-type) {
+            display:none;
+        }
 
 		#external-link {
 			margin:0 auto;
@@ -629,16 +633,18 @@ ul.grid-3 {
 		}
 
 		#assets {
+            width:800px;
+
 			#upload {
-				width:500px;
+				width:600px;
 			}
 
 			#breadcrumbs {
-				width:500px;
+				width:600px;
 			}
 
 			#directories_assets {
-				width:502px;
+				width:602px;
 
 				li.asset:hover {
 					cursor:pointer;

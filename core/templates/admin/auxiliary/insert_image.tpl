@@ -35,13 +35,15 @@
         </div>
         <div>
             <h2>Properties</h2>
-            <p><label class="empty_small">Title</label> <input id="insert_title" type="text"></p>
-            <p><label class="empty_small">URL</label> <input id="insert_url" type="text"></p>
-            <p><label>Text <span class="small">Alternative text</span></label><input id="insert_text" type="text"></p>
-            <p><label>Width <span class="small">In pixels</span></label><input id="insert_width" type="text"></p>
-            <p><label class="empty_small">Position</label><select id="insert_position"><option value="">Normal</option><option value="left">Left</option><option value="right">Right</option></select></p>
-            <input id="insert_submit" type="hidden">
-            <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+            <form>
+                <p><label>Title</label><input id="insert_title" type="text"></p>
+                <p><label>URL</label><input id="insert_url" type="text"></p>
+                <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Alternative text"></p>
+                <p><label>Width</label><input id="insert_width" type="text" data-tooltip="In pixels"></p>
+                <p><label>Position</label><select id="insert_position"><option value="">Normal</option><option value="left">Left</option><option value="right">Right</option></select></p>
+                <input id="insert_submit" type="hidden">
+                <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+            </form>
         </div>
     </div>
 </div>
@@ -130,22 +132,12 @@
     images.on('click', 'li', function() {
         $('#insert_title').val($(this).attr('data-title'));
         $('#insert_url').val($(this).attr('data-url'));
-        popup.animate({
-            'margin-left': '-600px'
-        });
-        $('.fancybox-inner').animate({
-            'scrollTop': 0
-        });
+        switchPopupFrame(popup);
     });
 
     popup.on('click', '#external-link a', function() {
         $('#insert_url').val($('#external-link input').val());
-        popup.animate({
-            'margin-left': '-600px'
-        });
-        $('.fancybox-inner').animate({
-            'scrollTop': 0
-        });
+        switchPopupFrame(popup);
     });
 
     popup.on('click', 'a.insert', function() {

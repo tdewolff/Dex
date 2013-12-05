@@ -162,6 +162,11 @@ var Form = function(form) {
                     textarea.insertAtCaret('[' + text + '](' + encodeURI(url) + ' "' + title + '")');
                     $('a[title="Preview"]').trigger('mouseup');
                 }
+            },
+            helpers:  {
+                overlay: {
+                    locked: false
+                }
             }
         });
     });
@@ -195,6 +200,11 @@ var Form = function(form) {
                     textarea.insertAtCaret(insert);
                     $('a[title="Preview"]').trigger('mouseup');
                 }
+            },
+            helpers:  {
+                overlay: {
+                    locked: false
+                }
             }
         });
     });
@@ -219,6 +229,11 @@ var Form = function(form) {
 
                     textarea.insertAtCaret('[' + text + '](' + encodeURI(url) + ' "' + title + '")');
                     $('a[title="Preview"]').trigger('mouseup');
+                }
+            },
+            helpers:  {
+                overlay: {
+                    locked: false
                 }
             }
         });

@@ -15,11 +15,13 @@
         </div>
         <div>
             <h2>Properties</h2>
-            <p><label class="empty_small">Title</label> <input id="insert_title" type="text"></p>
-            <p><label class="empty_small">URL</label> <input id="insert_url" type="text"></p>
-            <p><label>Text <span class="small">Clickable text</span></label><input id="insert_text" type="text"></p>
-            <input id="insert_submit" type="hidden">
-            <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+            <form>
+                <p><label>Title</label><input id="insert_title" type="text"></p>
+                <p><label>URL</label><input id="insert_url" type="text"></p>
+                <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
+                <input id="insert_submit" type="hidden">
+                <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+            </form>
         </div>
     </div>
 </div>
@@ -27,7 +29,7 @@
 <script id="link_item" type="text/x-dot-template">
     <li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}">
         <div style="width:120px;">{{=it.title}}</div>
-        <div style="width:380px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/<?php echo $_['base_url']; ?>{{=it.url}}</a></div>
+        <div style="width:380px;"><a href="#">/{{=it.url}}</a></div>
     </li>
 </script>
 
@@ -46,16 +48,12 @@
     links.on('click', 'li', function() {
         $('#insert_title').val($(this).attr('data-title'));
         $('#insert_url').val($(this).attr('data-url'));
-        popup.animate({
-            'margin-left': '-600px'
-        });
+        switchPopupFrame(popup);
     });
 
     popup.on('click', '#external-link a', function() {
         $('#insert_url').val($('#external-link input').val());
-        popup.animate({
-            'margin-left': '-600px'
-        });
+        switchPopupFrame(popup);
     });
 
     popup.on('click', 'a.insert', function() {
