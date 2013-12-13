@@ -36,7 +36,7 @@
                     <?php elseif ($link['admin_only'] == 0 || $_['is_admin']): ?>
                     <li id="admin_link_<?php echo $link['name']; ?>" <?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'class="hidden"'; } ?>>
                         <a href="/<?php echo $_['base_url'] . $link['url']; ?>" <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'id="selected"'; } ?>>
-                            <i class="icon-fixed-width <?php echo (strlen($link['icon']) ? $link['icon'] : 'icon-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
+                            <i class="fa fa-fw <?php echo (strlen($link['icon']) ? $link['icon'] : 'fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
                         </a>
                     </li>
                     <?php endif; ?>

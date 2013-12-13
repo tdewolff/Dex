@@ -16,7 +16,7 @@ $form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
 
 $form->addSeparator();
 
-$form->setSubmit('<i class="icon-asterisk"></i>&ensp;Setup');
+$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Setup');
 $form->setResponse('', '(not setup)');
 
 if ($form->submitted())

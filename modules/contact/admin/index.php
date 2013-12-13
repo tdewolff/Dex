@@ -17,7 +17,7 @@ $form->addText('adr_country-name', 'Country', '', 'U.S.A', array('.*', 0, 20));
 
 $form->addSeparator();
 
-$form->setSubmit('<i class="icon-save"></i>&ensp;Save');
+$form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
 $form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
 
 $form->optional(array('org', 'url', 'email', 'tel'));

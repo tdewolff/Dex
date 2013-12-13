@@ -61,9 +61,9 @@ var Draggable = function(ul) {
                     level = previous_level + 1;
             }
 
-            self.draggee.find('.icon-long-arrow-right').hide();
+            self.draggee.find('.fa-long-arrow-right').hide();
             for (var i = 0; i < level; i++)
-                self.draggee.find('.icon-long-arrow-right').eq(i).show();
+                self.draggee.find('.fa-long-arrow-right').eq(i).show();
 
             // apply CSS
             self.draggee.css('top', top + 'px');
@@ -73,7 +73,7 @@ var Draggable = function(ul) {
             $(document).unbind('mousemove', self.drag);
     };
 
-    this.ul.on('mousedown', '.icon-eye-open', function(e) {
+    this.ul.on('mousedown', '.fa-eye', function(e) {
         e.preventDefault();
 
         var li = $(this).closest('li');
@@ -97,13 +97,13 @@ var Draggable = function(ul) {
         self.needsSave = true;
     });
 
-    this.ul.on('mousedown', '.icon-reorder', function(e) {
+    this.ul.on('mousedown', '.fa-bars', function(e) {
         e.preventDefault();
 
         if (self.draggee === false && e.which == 1) {
             self.draggee = $(this).closest('li');
 
-            self.draggee_x_start = e.pageX - $('.icon-long-arrow-right:visible', self.draggee).length * 40.0;
+            self.draggee_x_start = e.pageX - $('.fa-long-arrow-right:visible', self.draggee).length * 40.0;
             self.draggee_y_offset = e.pageY - (self.draggee.offset().top + 1);
 
             self.placeholder = $('<li>').addClass('placeholder').insertAfter(self.draggee);

@@ -3,7 +3,7 @@
         <div id="assets">
             <h2>Images</h2>
             <div id="external-link">
-                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button">Properties&ensp;<i class="icon-arrow-right"></i></a>
+                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
             </div>
 
             <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
@@ -42,7 +42,7 @@
                 <p><label>Width</label><input id="insert_width" type="text" data-tooltip="In pixels"></p>
                 <p><label>Position</label><select id="insert_position"><option value="">Normal</option><option value="left">Left</option><option value="right">Right</option></select></p>
                 <input id="insert_submit" type="hidden">
-                <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+                <a href="#" class="insert form_button button"><i class="fa fa-check"></i>&ensp;Insert</a>
             </form>
         </div>
     </div>

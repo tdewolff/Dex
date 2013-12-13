@@ -1,7 +1,7 @@
 <h2>Assets</h2>
 <div id="assets">
     <div id="create_directory">
-        <input type="text"><a href="#" class="small-button"><i class="icon-asterisk"></i>&ensp;Create directory</a>
+        <input type="text"><a href="#" class="small-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
     </div>
 
     <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
@@ -39,8 +39,8 @@
         <div style="width:100px;">-</div>
         <div style="width:40px;">
             {{?it.dir.length}}
-            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
+            <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
             {{?}}
         </div>
     </li>
@@ -51,8 +51,8 @@
         <div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
         <div style="width:100px;">{{=it.size}}</div>
         <div style="width:40px;">
-            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
+            <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
         </div>
     </li>
 </script>
@@ -60,8 +60,8 @@
 <script id="image_item" type="text/x-dot-template">
     <li data-name="{{=it.name}}">
         <div class="delete">
-            <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="icon-trash"></i></a>
+            <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
+            <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
         </div>
         <div class="caption"><strong>{{=it.title}}</strong></div>
         {{? it.width > 200}}

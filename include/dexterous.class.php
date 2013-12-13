@@ -124,29 +124,33 @@ class Core extends Dexterous
 			}
 
 		// check with database
+        $remove_modules = array();
 		$db_modules = $db->query("SELECT * FROM module;");
 		while ($db_module = $db_modules->fetch())
 			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
 				unset($fs_modules[$db_module['module_name']]);
 			else // file does not exist but db entry does
-			{
-				Log::notice('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
+                $remove_modules[] = $db_module['module_name'];
 
-                // remove module table, link_module relations of the module, module entry
-				$db->exec("
-                DROP TABLE IF EXISTS module_" . $db->escape($db_module['module_name']) . ";
-                DELETE FROM link_module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';
-                DELETE FROM module WHERE module_name = '" . $db->escape($db_module['module_name']) . "';");
-			}
+        // must be done outside of SELECT query to prevent database locking
+        foreach ($remove_modules as $module_name) // remove module table, link_module relations of the module, module entry
+        {
+            Log::notice('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
 
-		foreach ($fs_modules as $name => $enabled) // file exists but db entry does not
+            $db->exec("
+            DROP TABLE IF EXISTS module_" . $db->escape($module_name) . ";
+            DELETE FROM link_module WHERE module_name = '" . $db->escape($module_name) . "';
+            DELETE FROM module WHERE module_name = '" . $db->escape($module_name) . "';");
+        }
+
+		foreach ($fs_modules as $module_name => $enabled) // file exists but db entry does not
 		{
-			include_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $name . '/admin/setup.php');
+			include_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/admin/setup.php');
 
-            Log::notice('module with module_name "' . $name . '" is inserted into the database');
+            Log::notice('module with module_name "' . $module_name . '" is inserted into the database');
             $db->exec("
             INSERT INTO module (module_name, enabled) VALUES (
-            	'" . $db->escape($name) . "',
+            	'" . $db->escape($module_name) . "',
             	1
             );");
 		}

@@ -1,5 +1,5 @@
 <h2>Users</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button" style="margin-left:20px;"><i class="icon-plus"></i>&ensp;New user</a>
+<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button" style="margin-left:20px;"><i class="fa fa-plus"></i>&ensp;New user</a>
 <ul id="users" class="table">
   <li>
 	<div style="width:120px;"></div>
@@ -12,11 +12,11 @@
     <li id="user_{{=it.user_id}}">
         <div style="width:120px; overflow:visible;">
             <div class="dropdown">
-            <a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="dropdown-select list-button"><i class="icon-pencil"></i>&ensp;Edit</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i></a>
+            <a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="dropdown-select list-button"><i class="fa fa-pencil"></i>&ensp;Edit</a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="#" class="halt{{?it.current}}-stop{{?}}"><i class="icon-fixed-width icon-trash"></i>&ensp;Delete</a>
-                        <a href="#" class="sure" data-user-id="{{=it.user_id}}" title="Click to confirm"><i class="icon-fixed-width icon-trash"></i>&ensp;Really?</a>
+                        <a href="#" class="halt{{?it.current}}-stop{{?}}"><i class="fa fa-fw fa-trash-o"></i>&ensp;Delete</a>
+                        <a href="#" class="sure" data-user-id="{{=it.user_id}}" title="Click to confirm"><i class="fa fa-fw fa-trash-o"></i>&ensp;Really?</a>
                     </li>
                 </ul>
             </div>

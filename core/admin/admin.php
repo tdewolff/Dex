@@ -6,11 +6,11 @@ Core::addTitle('Dexterous');
 Core::addTitle('Admin panel');
 Core::addStyle('include/normalize.min.css');
 Core::addStyle('vendor/font-awesome.min.css');
-Core::addStyle('vendor/jquery-ui-1.10.3.min.css');
+Core::addStyle('vendor/jquery-ui.min.css');
 Core::addStyle('vendor/fancybox.min.css');
 Core::addStyle('admin.min.css');
-Core::addScript('vendor/jquery-2.0.3.min.js');
-Core::addScript('vendor/jquery-ui-1.10.3.min.js');
+Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
 Core::addScript('vendor/jquery.fancybox.min.js');
 Core::addScript('vendor/doT.min.js');
 Core::addScript('include/slidein.min.js');
@@ -50,9 +50,9 @@ if (isset($url[1]) && $url[1] == 'auxiliary' && isset($url[2]))
 }
 
 $admin_links = array();
-$admin_links[] = array('name' => 'index',  'regex' => 'admin/(logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'icon-home',          'title' => 'Admin panel', 'admin_only' => 0);
-$admin_links[] = array('name' => 'pages',  'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'core/admin/pages.php',  'url' => 'admin/pages/',  'icon' => 'icon-file-text-alt', 'title' => 'Pages',       'admin_only' => 0);
-$admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',               'file' => 'core/admin/assets.php', 'url' => 'admin/assets/', 'icon' => 'icon-picture',       'title' => 'Assets',      'admin_only' => 0);
+$admin_links[] = array('name' => 'index',  'regex' => 'admin/(logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'fa-home',        'title' => 'Admin panel', 'admin_only' => 0);
+$admin_links[] = array('name' => 'pages',  'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'core/admin/pages.php',  'url' => 'admin/pages/',  'icon' => 'fa-file-text-o', 'title' => 'Pages',       'admin_only' => 0);
+$admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',               'file' => 'core/admin/assets.php', 'url' => 'admin/assets/', 'icon' => 'fa-picture-o',   'title' => 'Assets',      'admin_only' => 0);
 
 $admin_links[] = array();
 
@@ -77,13 +77,13 @@ while ($row = $table->fetch())
 if (!empty($admin_links[count($admin_links) - 1]))
 	$admin_links[] = array();
 
-$admin_links[] = array('name' => 'settings',  'regex' => 'admin/settings/',             'file' => 'core/admin/settings.php',  'url' => 'admin/settings/',  'icon' => 'icon-wrench',   'title' => 'Settings',  'admin_only' => 0);
-$admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'core/admin/users.php',     'url' => 'admin/users/',     'icon' => 'icon-user',     'title' => 'Users',     'admin_only' => 1);
-$admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'core/admin/modules.php',   'url' => 'admin/modules/',   'icon' => 'icon-sitemap',  'title' => 'Modules',   'admin_only' => 1);
-$admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'core/admin/templates.php', 'url' => 'admin/templates/', 'icon' => 'icon-file-alt', 'title' => 'Templates', 'admin_only' => 1);
-$admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'core/admin/themes.php',    'url' => 'admin/themes/',    'icon' => 'icon-adjust',   'title' => 'Themes',    'admin_only' => 0);
-$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'icon-hdd',      'title' => 'Database',  'admin_only' => 1);
-$admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'icon-signout',  'title' => 'Log out',   'admin_only' => 0);
+$admin_links[] = array('name' => 'settings',  'regex' => 'admin/settings/',             'file' => 'core/admin/settings.php',  'url' => 'admin/settings/',  'icon' => 'fa-wrench',   'title' => 'Settings',  'admin_only' => 0);
+$admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'core/admin/users.php',     'url' => 'admin/users/',     'icon' => 'fa-user',     'title' => 'Users',     'admin_only' => 1);
+$admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'core/admin/modules.php',   'url' => 'admin/modules/',   'icon' => 'fa-sitemap',  'title' => 'Modules',   'admin_only' => 1);
+$admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'core/admin/templates.php', 'url' => 'admin/templates/', 'icon' => 'fa-file-o',   'title' => 'Templates', 'admin_only' => 1);
+$admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'core/admin/themes.php',    'url' => 'admin/themes/',    'icon' => 'fa-adjust',   'title' => 'Themes',    'admin_only' => 0);
+$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'fa-hdd-o',    'title' => 'Database',  'admin_only' => 1);
+$admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'fa-sign-out', 'title' => 'Log out',   'admin_only' => 0);
 
 Core::assign('username', Session::getUsername());
 Core::assign('permission', ucfirst(Session::getPermission()));

@@ -71,11 +71,11 @@ ul.draggable i {
     height:21px;
 }
 
-ul.draggable i.icon-eye-open {
+ul.draggable i.fa-eye {
     cursor:pointer;
 }
 
-ul.draggable i.icon-reorder {
+ul.draggable i.fa-bars {
     cursor:move;
 }
 

@@ -18,7 +18,7 @@
                 <p><label>URL</label><input id="insert_url" type="text"></p>
                 <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
                 <input id="insert_submit" type="hidden">
-                <a href="#" class="insert form_button button"><i class="icon-check"></i>&ensp;Insert</a>
+                <a href="#" class="insert form_button button"><i class="fa fa-check"></i>&ensp;Insert</a>
             </form>
         </div>
     </div>

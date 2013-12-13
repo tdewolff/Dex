@@ -8,13 +8,13 @@
     <div class="text-right">
         <?php echo $_['logs_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
-        <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_logs"><i class="icon-trash"></i></a>
+        <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
+        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_logs"><i class="fa fa-trash-o"></i></a>
         <?php endif; ?>
     </div>
 
     <div style="margin-top:10px;">
-        <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="icon-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
+        <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
     </div>
 </div>
 <div class="halfwidth-column">
@@ -26,8 +26,8 @@
     <div class="text-right">
         <?php echo $_['cache_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
-        <a href="#" class="halt inline-rounded"><i class="icon-trash"></i></a>
-        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache" title="Click to confirm"><i class="icon-trash"></i></a>
+        <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
+        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache" title="Click to confirm"><i class="fa fa-trash-o"></i></a>
         <?php endif; ?>
     </div>
 </div>

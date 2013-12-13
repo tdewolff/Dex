@@ -1,5 +1,5 @@
 <h2>Logs</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/" class="button" style="margin-left:20px;"><i class="icon-chevron-left"></i> Back</a>
+<a href="/<?php echo $_['base_url']; ?>admin/" class="button" style="margin-left:20px;"><i class="fa fa-chevron-left"></i> Back</a>
 <ul id="logs" class="table">
     <li>
         <div style="width:150px;">Date time</div>

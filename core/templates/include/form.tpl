@@ -93,9 +93,9 @@
         <?php elseif ($item['type'] == 'markdown'): ?>
         <div class="clear"></div>
         <div class="markdown-buttons">
-            <a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name']; ?>"><i class="icon-link"></i>&ensp;Insert link</a>
-            <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name']; ?>"><i class="icon-picture"></i>&ensp;Insert image</a>
-            <a href="#" class="small-button insert-asset" data-for-name="<?php echo $item['name']; ?>"><i class="icon-briefcase"></i>&ensp;Insert asset</a>
+            <a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-link"></i>&ensp;Insert link</a>
+            <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-picture"></i>&ensp;Insert image</a>
+            <a href="#" class="small-button insert-asset" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-briefcase"></i>&ensp;Insert asset</a>
         </div>
         <textarea
             name="<?php echo $item['name']; ?>"
@@ -173,7 +173,7 @@
             <div class="arrow"></div>
             <div class="arrow-border"></div>
             <p class="pre_wrap">
-                <i class="icon-exclamation-sign"></i>&ensp;<span></span>
+                <i class="fa fa-exclamation-sign"></i>&ensp;<span></span>
             </p>
         </div>
     </div>

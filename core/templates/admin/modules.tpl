@@ -13,16 +13,16 @@
         <div style="width:120px; overflow:visible;">
             <div class="dropdown">
                 <a href="/<?php echo $_['base_url']; ?>admin/module/{{=it.module_name}}/" class="dropdown-select list-button">
-                    <i class="icon-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="icon-caret-down"></i>
+                    <i class="fa fa-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="#" class="enable" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-ok"></i>&ensp;Enable</a>
-                        <a href="#" class="disable" data-module-name="{{=it.module_name}}"><i class="icon-fixed-width icon-ban-circle"></i>&ensp;Disable</a>
+                        <a href="#" class="enable" data-module-name="{{=it.module_name}}"><i class="fa fa-fw fa-check"></i>&ensp;Enable</a>
+                        <a href="#" class="disable" data-module-name="{{=it.module_name}}"><i class="fa fa-fw fa-ban"></i>&ensp;Disable</a>
                     </li>
                     <li>
-                        <a href="#" class="halt"><i class="icon-fixed-width icon-refresh"></i>&ensp;Reinstall</a>
-                        <a href="#" class="sure" data-module-name="{{=it.module_name}}" title="Click to confirm"><i class="icon-fixed-width icon-refresh"></i>&ensp;Really?</a>
+                        <a href="#" class="halt"><i class="fa fa-fw fa-refresh"></i>&ensp;Reinstall</a>
+                        <a href="#" class="sure" data-module-name="{{=it.module_name}}" title="Click to confirm"><i class="fa fa-fw fa-refresh"></i>&ensp;Really?</a>
                     </li>
                 </ul>
             </div>
