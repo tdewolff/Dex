@@ -34,56 +34,58 @@
 </script>
 
 <script type="text/javascript">
-    var modules = $('#modules');
-    var module_item = doT.template($('#module_item').text());
-    api('/' + base_url + 'api/core/modules.php', {
-        action: 'get_modules'
-    }, function(data) {
-        $.each(data['modules'], function() {
-            var item = $(module_item(this));
-            if (item.hasClass('disabled'))
-                item.find('a.disable').hide();
-            else
-                item.find('a.enable').hide();
-            modules.append(item);
-        });
-    });
-
-    modules.on('click', 'a.enable', function() {
-        var item = $(this);
+    $(function() {
+        var modules = $('#modules');
+        var module_item = doT.template($('#module_item').text());
         api('/' + base_url + 'api/core/modules.php', {
-            action: 'enable_module',
-            module_name: item.attr('data-module-name')
-        }, function() {
-            $('.dropdown-menu').hide();
-            $('#module_' + item.attr('data-module-name')).removeClass('disabled');
-            $('#admin_link_module_' + item.attr('data-module-name')).slideDown();
-            item.hide();
-            item.parent().find('.disable').show();
+            action: 'get_modules'
+        }, function(data) {
+            $.each(data['modules'], function() {
+                var item = $(module_item(this));
+                if (item.hasClass('disabled'))
+                    item.find('a.disable').hide();
+                else
+                    item.find('a.enable').hide();
+                modules.append(item);
+            });
         });
-    });
 
-    modules.on('click', 'a.disable', function() {
-        var item = $(this);
-        api('/' + base_url + 'api/core/modules.php', {
-            action: 'disable_module',
-            module_name: item.attr('data-module-name')
-        }, function() {
-            $('.dropdown-menu').hide();
-            $('#module_' + item.attr('data-module-name')).addClass('disabled');
-            $('#admin_link_module_' + item.attr('data-module-name')).slideUp();
-            item.hide();
-            item.parent().find('.enable').show();
+        modules.on('click', 'a.enable', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/modules.php', {
+                action: 'enable_module',
+                module_name: item.attr('data-module-name')
+            }, function() {
+                $('.dropdown-menu').hide();
+                $('#module_' + item.attr('data-module-name')).removeClass('disabled');
+                $('#admin_link_module_' + item.attr('data-module-name')).slideDown();
+                item.hide();
+                item.parent().find('.disable').show();
+            });
         });
-    });
 
-    modules.on('click', 'a.sure', function() {
-        var item = $(this);
-        api('/' + base_url + 'api/core/modules.php', {
-            action: 'reinstall_module',
-            module_name: item.attr('data-module-name')
-        }, function() {
-            $('.dropdown-menu').hide();
+        modules.on('click', 'a.disable', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/modules.php', {
+                action: 'disable_module',
+                module_name: item.attr('data-module-name')
+            }, function() {
+                $('.dropdown-menu').hide();
+                $('#module_' + item.attr('data-module-name')).addClass('disabled');
+                $('#admin_link_module_' + item.attr('data-module-name')).slideUp();
+                item.hide();
+                item.parent().find('.enable').show();
+            });
+        });
+
+        modules.on('click', 'a.sure', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/modules.php', {
+                action: 'reinstall_module',
+                module_name: item.attr('data-module-name')
+            }, function() {
+                $('.dropdown-menu').hide();
+            });
         });
     });
 </script>

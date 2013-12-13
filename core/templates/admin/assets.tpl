@@ -80,141 +80,143 @@
 </script>
 
 <script type="text/javascript">
-    // preliminaries
-    var breadcrumbs = $('#breadcrumbs');
-    var directories_assets = $('#directories_assets');
-    var images = $('#images');
-
-    var directory_item = doT.template($('#directory_item').text());
-    var asset_item = doT.template($('#asset_item').text());
-    var image_item = doT.template($('#image_item').text());
-
-    // loading initial data
-    var dir = '';
-    function loadDir(newDir) {
-        dir = newDir;
-
-        directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
-        images.find('li').slideUp('fast', function() { $(this).remove(); });
-
-        $('#upload input[name="dir"]').val(dir);
-
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'get_breadcrumbs',
-            dir: dir
-        }, function(data) {
-            breadcrumbs.empty();
-            $.each(data['breadcrumbs'], function(i) {
-                if (i)
-                    breadcrumbs.append('&gt;');
-                breadcrumbs.append('<a href="#!dir=' + this.dir + '" data-dir="' + this.dir + '">' + this.name + '</a>');
-            });
-        });
-
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'get_directories',
-            dir: dir
-        }, function(data) {
-            $.each(data['directories'], function() {
-                $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
-            });
-        });
-
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'get_assets',
-            dir: dir
-        }, function(data) {
-            $.each(data['assets'], function() {
-                if (this.is_image)
-                    $(image_item(this)).hide().appendTo(images).slideDown('fast');
-                else
-                    $(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
-            });
-        });
-    }
-
-    // use copy-pastable AJAX links for directory navigation
-    if (window.location.hash.substr(0, 6) == '#!dir=')
-        dir = window.location.hash.substr(6);
-    loadDir(dir);
-
-    // click events on directories, assets and images
-    breadcrumbs.on('click', 'a', function() {
-        loadDir($(this).attr('data-dir'));
-    });
-
-    directories_assets.on('click', '.directory a', function() {
-        if (typeof $(this).attr('data-dir') !== 'undefined')
-            loadDir($(this).attr('data-dir'));
-    });
-
-    // deleting directories, assets or images
-    $('#directories_assets').on('click', 'li.directory a.sure', function() {
-        var item = $(this);
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'delete_directory',
-            name: item.attr('data-name'),
-            dir: dir
-        }, function() {
-            item.closest('li').slideUp('fast', function() { $(this).remove(); });
-        });
-    });
-
-    $('#directories_assets').on('click', 'li.asset a.sure', function() {
-        var item = $(this);
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'delete_file',
-            name: item.attr('data-name'),
-            dir: dir
-        }, function() {
-            item.closest('li').slideUp('fast', function() { $(this).remove(); });
-        });
-    });
-
-    $('#images').on('click', 'a.sure', function() {
-        var item = $(this);
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'delete_file',
-            name: item.attr('data-name'),
-            dir: dir
-        }, function() {
-            item.closest('li').slideUp('fast', function() { $(this).remove(); });
-        });
-    });
-
-    $('#create_directory').on('click', 'a', function() {
-        api('/' + base_url + 'api/core/assets.php', {
-            action: 'create_directory',
-            name: $(this).prev('input').val(),
-            dir: dir
-        }, function(data) {
-            $('#create_directory input').val('');
-            var item = directory_item(data['directory']);
-            if (directories_assets.find('li.directory').length)
-                addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
-            else
-                $(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
-        });
-    });
-
     $(function() {
-        initializeUpload('#upload', function(data) {
-            if (!data['file'].is_image)
-            {
-                var item = asset_item(data['file']);
-                if (directories_assets.find('li.asset').length)
-                    addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
+        // preliminaries
+        var breadcrumbs = $('#breadcrumbs');
+        var directories_assets = $('#directories_assets');
+        var images = $('#images');
+
+        var directory_item = doT.template($('#directory_item').text());
+        var asset_item = doT.template($('#asset_item').text());
+        var image_item = doT.template($('#image_item').text());
+
+        // loading initial data
+        var dir = '';
+        function loadDir(newDir) {
+            dir = newDir;
+
+            directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
+            images.find('li').slideUp('fast', function() { $(this).remove(); });
+
+            $('#upload input[name="dir"]').val(dir);
+
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'get_breadcrumbs',
+                dir: dir
+            }, function(data) {
+                breadcrumbs.empty();
+                $.each(data['breadcrumbs'], function(i) {
+                    if (i)
+                        breadcrumbs.append('&gt;');
+                    breadcrumbs.append('<a href="#!dir=' + this.dir + '" data-dir="' + this.dir + '">' + this.name + '</a>');
+                });
+            });
+
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'get_directories',
+                dir: dir
+            }, function(data) {
+                $.each(data['directories'], function() {
+                    $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+                });
+            });
+
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'get_assets',
+                dir: dir
+            }, function(data) {
+                $.each(data['assets'], function() {
+                    if (this.is_image)
+                        $(image_item(this)).hide().appendTo(images).slideDown('fast');
+                    else
+                        $(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+                });
+            });
+        }
+
+        // use copy-pastable AJAX links for directory navigation
+        if (window.location.hash.substr(0, 6) == '#!dir=')
+            dir = window.location.hash.substr(6);
+        loadDir(dir);
+
+        // click events on directories, assets and images
+        breadcrumbs.on('click', 'a', function() {
+            loadDir($(this).attr('data-dir'));
+        });
+
+        directories_assets.on('click', '.directory a', function() {
+            if (typeof $(this).attr('data-dir') !== 'undefined')
+                loadDir($(this).attr('data-dir'));
+        });
+
+        // deleting directories, assets or images
+        $('#directories_assets').on('click', 'li.directory a.sure', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'delete_directory',
+                name: item.attr('data-name'),
+                dir: dir
+            }, function() {
+                item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            });
+        });
+
+        $('#directories_assets').on('click', 'li.asset a.sure', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'delete_file',
+                name: item.attr('data-name'),
+                dir: dir
+            }, function() {
+                item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            });
+        });
+
+        $('#images').on('click', 'a.sure', function() {
+            var item = $(this);
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'delete_file',
+                name: item.attr('data-name'),
+                dir: dir
+            }, function() {
+                item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            });
+        });
+
+        $('#create_directory').on('click', 'a', function() {
+            api('/' + base_url + 'api/core/assets.php', {
+                action: 'create_directory',
+                name: $(this).prev('input').val(),
+                dir: dir
+            }, function(data) {
+                $('#create_directory input').val('');
+                var item = directory_item(data['directory']);
+                if (directories_assets.find('li.directory').length)
+                    addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
                 else
-                    $(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
-            }
-            else
-            {
-                var item = image_item(data['file']);
-                if (images.find('li').length)
-                    addAlphabetically(images.find('li'), item, data['file']['name']);
+                    $(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
+            });
+        });
+
+        $(function() {
+            initializeUpload('#upload', function(data) {
+                if (!data['file'].is_image)
+                {
+                    var item = asset_item(data['file']);
+                    if (directories_assets.find('li.asset').length)
+                        addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
+                    else
+                        $(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+                }
                 else
-                    $(item).hide().appendTo(images).slideDown('fast');
-            }
+                {
+                    var item = image_item(data['file']);
+                    if (images.find('li').length)
+                        addAlphabetically(images.find('li'), item, data['file']['name']);
+                    else
+                        $(item).hide().appendTo(images).slideDown('fast');
+                }
+            });
         });
     });
 </script>

@@ -75,6 +75,7 @@ var Draggable = function(ul) {
 
     this.ul.on('mousedown', '.fa-eye', function(e) {
         e.preventDefault();
+        apiIdle();
 
         var li = $(this).closest('li');
         li.toggleClass('unused');
@@ -99,6 +100,7 @@ var Draggable = function(ul) {
 
     this.ul.on('mousedown', '.fa-bars', function(e) {
         e.preventDefault();
+        apiIdle();
 
         if (self.draggee === false && e.which == 1) {
             self.draggee = $(this).closest('li');
@@ -143,6 +145,7 @@ var Draggable = function(ul) {
     });
 
     this.ul.on('keyup', 'input', function() {
+        apiIdle();
         self.needsSave = true;
     });
 
@@ -155,8 +158,7 @@ var Draggable = function(ul) {
     setInterval(self.intervalSave, 1000);
 
     this.save = function() {
-        $('.response > .success, .reponse > .error').hide();
-        $('.response > .loading').fadeIn('fast').css('display', 'inline-block');
+        apiBusy();
 
         var i = 0;
         var data = {};
@@ -177,11 +179,9 @@ var Draggable = function(ul) {
             action: 'modify_menu',
             menu: data
         }, function() {
-            $('.response > .loading').hide();
-            $('.response > .success').fadeIn('fast');
+            apiSuccess('Saved');
         }, function() {
-            $('.response > .loading').hide();
-            $('.response > .error').fadeIn('fast');
+            apiError('Not saved');
         });
     };
 }

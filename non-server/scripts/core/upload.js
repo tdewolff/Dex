@@ -49,7 +49,7 @@ function initializeUpload(upload, done) {
         },
         fail: function(e, data) {
             if (typeof data.response().jqXHR['responseText'] !== 'undefined')
-                apiError(data.response().jqXHR['responseText']);
+                apiFatal(data.response().jqXHR['responseText']);
             upload.find('#upload_' + data.i).addClass('fail').append(' (Unknown error)');
         }
     });

@@ -63,10 +63,15 @@
   color: #303030;
   text-align:left;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .dropdown > .dropdown-menu > li > a.sure {
   display:none;
+}
+
+.dropdown > .dropdown-menu > li > a.halt-stop {
+  text-decoration: line-through;
 }
 
 .dropdown > .dropdown-menu > li > a:hover,

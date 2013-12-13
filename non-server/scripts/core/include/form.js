@@ -32,6 +32,7 @@ var Form = function(form) {
     };
 
     this.input = function(input) {
+        apiIdle();
         var name = input.attr('name');
         if (typeof name == 'undefined')
             name = input.attr('data-name');
@@ -78,6 +79,7 @@ var Form = function(form) {
         });
 
         // AJAX
+        apiBusy();
         api(window.location.href, self.form.serialize(), self.success, self.responseError);
     };
 
@@ -109,21 +111,15 @@ var Form = function(form) {
             self.form.find('.form_item_error').hide();
 
         if (data['errors'].length || data['item_errors'].length)
-            self.responseError();
+            apiError(data['response']['error']);
         else if (data['redirect'].length > 0)
             window.location.href = data['redirect'];
         else
-            self.responseSuccess();
-    };
-
-    this.responseSuccess = function() {
-        self.form.find('.form_response > .error').hide();
-        self.form.find('.form_response > .success').fadeIn('fast');
+            apiSuccess(data['response']['success']);
     };
 
     this.responseError = function(data) {
-        self.form.find('.form_response > .success').hide();
-        self.form.find('.form_response > .error').fadeIn('fast');
+        apiError();
     };
 
     // saving interval if no submit
@@ -137,6 +133,13 @@ var Form = function(form) {
 
     this.form.on('submit', function(e) {
         e.preventDefault();
+        if (self.form.find('button[type="submit"]').length)
+        {
+            self.form.find('button[type="submit"]').blur().attr('disabled', 'disabled');
+            setTimeout(function() {
+                self.form.find('button[type="submit"]').removeAttr('disabled');
+            }, 1000);
+        }
         self.save();
     });
 

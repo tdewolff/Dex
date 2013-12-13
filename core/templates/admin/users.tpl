@@ -27,24 +27,26 @@
 </script>
 
 <script type="text/javascript">
-    var users = $('#users');
-    var user_item = doT.template($('#user_item').text());
-    api('/' + base_url + 'api/core/users.php', {
-        action: 'get_users'
-    }, function(data) {
-        $.each(data['users'], function() {
-            users.append(user_item(this));
+    $(function() {
+        var users = $('#users');
+        var user_item = doT.template($('#user_item').text());
+        api('/' + base_url + 'api/core/users.php', {
+            action: 'get_users'
+        }, function(data) {
+            $.each(data['users'], function() {
+                users.append(user_item(this));
+            });
         });
-    });
 
-    users.on('click', 'a.sure', function() {
-        var item = $(this);
-        api({
-            action: 'delete_user',
-            user_id: item.attr('data-user-id')
-        }, function() {
-            $('.dropdown-menu').fadeOut('fast');
-            $('#user_' + item.attr('data-user-id')).remove();
+        users.on('click', 'a.sure', function() {
+            var item = $(this);
+            api({
+                action: 'delete_user',
+                user_id: item.attr('data-user-id')
+            }, function() {
+                $('.dropdown-menu').fadeOut('fast');
+                $('#user_' + item.attr('data-user-id')).remove();
+            });
         });
     });
 </script>

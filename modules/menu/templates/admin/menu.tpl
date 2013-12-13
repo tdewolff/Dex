@@ -1,12 +1,4 @@
 <h2>Menu</h2>
-
-<div class="response">
-    &nbsp;
-    <span class="loading"></span>
-    <span class="success passed_time">(saved<span></span>)</span>
-    <span class="error">(not saved)</span>
-</div>
-
 <ul id="menu" class="table draggable">
     <li>
         <div style="width:40px;"></div>
@@ -28,20 +20,22 @@
 </script>
 
 <script type="text/javascript">
-    var menu = $('#menu');
-    var menu_item = doT.template($('#menu_item').text());
-    api('/' + base_url + 'api/module/menu/index.php', {
-        action: 'get_menu'
-    }, function(data) {
-        $.each(data['menu'], function() {
-            var item = $(menu_item(this));
+    $(function() {
+        var menu = $('#menu');
+        var menu_item = doT.template($('#menu_item').text());
+        api('/' + base_url + 'api/module/menu/index.php', {
+            action: 'get_menu'
+        }, function(data) {
+            $.each(data['menu'], function() {
+                var item = $(menu_item(this));
 
-            item.find('.fa-long-arrow-right').hide();
-            var level = item.attr('data-level');
-            for (var i = 0; i < level; i++)
-                item.find('.fa-long-arrow-right').eq(i).show();
+                item.find('.fa-long-arrow-right').hide();
+                var level = item.attr('data-level');
+                for (var i = 0; i < level; i++)
+                    item.find('.fa-long-arrow-right').eq(i).show();
 
-            menu.append(item);
+                menu.append(item);
+            });
         });
     });
 </script>

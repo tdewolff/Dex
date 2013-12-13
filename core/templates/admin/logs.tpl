@@ -17,26 +17,28 @@
 </script>
 
 <script type="text/javascript">
-    var logs = $('#logs');
-    var log_item = doT.template($('#log_item').text());
-    api('/' + base_url + 'api/core/index.php', {
-        action: 'get_logs'
-    }, function(data) {
-        $.each(data['logs'], function() {
-            var item = $(log_item(this));
-            if (this['type'] == 'ERROR')
-                item = item.addClass('error');
-            else if (this['type'] == 'WARNING')
-                item = item.addClass('warning');
-            else if (this['type'] == 'NOTICE')
-                item = item.addClass('notice');
-            else if (this['type'] == 'REQUEST')
-                item = item.addClass('request');
-            else if (this['type'] == 'CACHING')
-                item = item.addClass('caching');
-            else
-                item = item.addClass('empty');
-            logs.append(item);
+    $(function() {
+        var logs = $('#logs');
+        var log_item = doT.template($('#log_item').text());
+        api('/' + base_url + 'api/core/index.php', {
+            action: 'get_logs'
+        }, function(data) {
+            $.each(data['logs'], function() {
+                var item = $(log_item(this));
+                if (this['type'] == 'ERROR')
+                    item = item.addClass('error');
+                else if (this['type'] == 'WARNING')
+                    item = item.addClass('warning');
+                else if (this['type'] == 'NOTICE')
+                    item = item.addClass('notice');
+                else if (this['type'] == 'REQUEST')
+                    item = item.addClass('request');
+                else if (this['type'] == 'CACHING')
+                    item = item.addClass('caching');
+                else
+                    item = item.addClass('empty');
+                logs.append(item);
+            });
         });
     });
 </script>

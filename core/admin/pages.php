@@ -35,7 +35,7 @@ if ($url[2] == 'new')
     $form->addSeparator();
 
     $form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
-    $form->setResponse('(created)', '(not created)');
+    $form->setResponse('Created', 'Not created');
 
     if ($form->submitted())
     {
@@ -94,7 +94,7 @@ else
     $form->addSeparator();
 
     $form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-    $form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
+    $form->setResponse('<span class="passed_time">Saved<span></span></span>', 'Not saved');
 
     if ($form->submitted())
     {

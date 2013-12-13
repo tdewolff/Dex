@@ -329,6 +329,7 @@ class Form
 		echo json_encode(array(
 			'errors' => $this->errors,
 			'item_errors' => $this->item_errors,
+			'response' => $this->response,
 			'redirect' => $this->redirect
 		));
 		exit;
@@ -344,7 +345,6 @@ class Form
 			'name' => $this->name,
 			'items' => $this->items,
 			'submit' => $this->submit,
-			'response' => $this->response,
 			'optionals' => json_encode($this->optionals)
 		);
 

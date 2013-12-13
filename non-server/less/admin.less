@@ -547,6 +547,25 @@ ul.grid-3 {
 	padding:0 15px;
 }
 
+#api_status {
+	position:fixed;
+	top:1em;
+	right:1em;
+
+	i {
+		display:none;
+		.text-shadow(0 0 2px rgba(0, 0, 0, 0.75));
+	}
+
+	i.fa-check {
+		color: #24c279;
+	}
+
+	i.fa-times {
+		color: #d11f49;
+	}
+}
+
 #logs li:not(:first-of-type) {
 	font-family:"Lucida Console", Monaco, monospace;
 	font-size:10px;

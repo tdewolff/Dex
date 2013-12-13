@@ -23,6 +23,11 @@
     <body>
         <a href="#api_error" id="api_error_link" class="fancybox"></a>
         <div id="api_error"></div>
+        <div id="api_status">
+            <i class="fa fa-cog fa-2x fa-spin" data-tooltip=""></i>
+            <i class="fa fa-check fa-2x" data-tooltip=""></i>
+            <i class="fa fa-times fa-2x" data-tooltip=""></i>
+        </div>
 
         <?php if (isset($_['admin_links'])): ?>
         <section class="page-wrapper">

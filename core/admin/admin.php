@@ -11,14 +11,14 @@ Core::addStyle('vendor/fancybox.min.css');
 Core::addStyle('admin.min.css');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-Core::addScript('vendor/jquery.fancybox.min.js');
-Core::addScript('vendor/doT.min.js');
 Core::addScript('include/slidein.min.js');
-Core::addScript('include/api.min.js');
-Core::addDeferredScript('admin.min.js');
+Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
 Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
+Core::addDeferredScript('vendor/doT.min.js');
+Core::addDeferredScript('include/api.min.js');
+Core::addDeferredScript('admin.min.js');
 Core::addDeferredScript('upload.min.js');
 
 // setup

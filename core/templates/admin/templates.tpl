@@ -18,13 +18,15 @@
 </script>
 
 <script type="text/javascript">
-    var templates = $('#templates');
-    var template_item = doT.template($('#template_item').text());
-    api('/' + base_url + 'api/core/templates.php', {
-        action: 'get_templates'
-    }, function(data) {
-        $.each(data['templates'], function() {
-            templates.append(template_item(this));
+    $(function() {
+        var templates = $('#templates');
+        var template_item = doT.template($('#template_item').text());
+        api('/' + base_url + 'api/core/templates.php', {
+            action: 'get_templates'
+        }, function(data) {
+            $.each(data['templates'], function() {
+                templates.append(template_item(this));
+            });
         });
     });
 </script>

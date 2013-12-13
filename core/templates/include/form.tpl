@@ -94,7 +94,7 @@
         <div class="clear"></div>
         <div class="markdown-buttons">
             <a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-link"></i>&ensp;Insert link</a>
-            <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-picture"></i>&ensp;Insert image</a>
+            <a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-picture-o"></i>&ensp;Insert image</a>
             <a href="#" class="small-button insert-asset" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-briefcase"></i>&ensp;Insert asset</a>
         </div>
         <textarea
@@ -184,9 +184,5 @@
     <button type="submit" class="form_button button"><?php echo $form['submit']; ?></button>
     <?php endif; ?>
 
-    <div class="form_response">
-        <span class="loading"></span>
-        <span class="success"><?php echo $form['response']['success']; ?></span>
-        <span class="error"><?php echo $form['response']['error']; ?></span>
-    </div>
+    <div class="clear"></div>
 </form>
