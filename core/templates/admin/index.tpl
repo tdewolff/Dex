@@ -41,13 +41,26 @@
 
     $('a.sure').click(function() {
         var action = $(this).attr('data-action');
-        api('/' + base_url + 'api/core/index.php', {
-            action: action
-        }, function(data) {
-            if (action == 'clear_logs')
+        if (action == 'clear_logs') {
+            apiStatusWorking('Clearing logs...');
+            api('/' + base_url + 'api/core/index.php', {
+                action: action
+            }, function(data) {
+                apiStatusSuccess('Cleared logs');
                 resetBar($('#logs_bar'));
-            else if (action == 'clear_cache')
+            }, function() {
+                apiStatusError('Clearing logs');
+            });
+        } else if (action == 'clear_cache') {
+            apiStatusWorking('Clearing cache...');
+            api('/' + base_url + 'api/core/index.php', {
+                action: action
+            }, function(data) {
+                apiStatusSuccess('Cleared cache');
                 resetBar($('#cache_bar'));
-        });
+            }, function() {
+                apiStatusError('Clearing cache');
+            });
+        }
     });
 </script>

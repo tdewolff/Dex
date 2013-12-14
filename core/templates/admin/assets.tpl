@@ -151,50 +151,66 @@
 
         // deleting directories, assets or images
         $('#directories_assets').on('click', 'li.directory a.sure', function() {
+            apiStatusWorking('Deleting directory...');
             var item = $(this);
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'delete_directory',
                 name: item.attr('data-name'),
                 dir: dir
             }, function() {
+                apiStatusSuccess('Deleted directory');
                 item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            }, function() {
+                apiStatusError('Deleting directory failed');
             });
         });
 
         $('#directories_assets').on('click', 'li.asset a.sure', function() {
+            apiStatusWorking('Deleting asset...');
             var item = $(this);
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'delete_file',
                 name: item.attr('data-name'),
                 dir: dir
             }, function() {
+                apiStatusSuccess('Deleted asset');
                 item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            }, function() {
+                apiStatusError('Deleting asset failed');
             });
         });
 
         $('#images').on('click', 'a.sure', function() {
+            apiStatusWorking('Deleting image...');
             var item = $(this);
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'delete_file',
                 name: item.attr('data-name'),
                 dir: dir
             }, function() {
+                apiStatusSuccess('Deleted image');
                 item.closest('li').slideUp('fast', function() { $(this).remove(); });
+            }, function() {
+                apiStatusError('Deleting image failed');
             });
         });
 
         $('#create_directory').on('click', 'a', function() {
+            apiStatusWorking('Creating directory...');
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'create_directory',
                 name: $(this).prev('input').val(),
                 dir: dir
             }, function(data) {
+                apiStatusSuccess('Created directory');
                 $('#create_directory input').val('');
                 var item = directory_item(data['directory']);
                 if (directories_assets.find('li.directory').length)
                     addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
                 else
                     $(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
+            }, function() {
+                apiStatusError('Creating directory failed');
             });
         });
 

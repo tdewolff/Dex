@@ -33,29 +33,6 @@ function api(url, data, success, error) {
         });
 }
 
-function apiIdle() {
-    $('#api_status i.fa-cog, #api_status i.fa-check, #api_status i.fa-times').stop(true).hide();
-}
-
-function apiBusy() {
-    apiIdle();
-    $('#api_status i.fa-cog').delay(800).fadeIn('fast');
-}
-
-function apiSuccess(tooltip) {
-    apiIdle();
-    $('#api_status i.fa-check').fadeIn('fast');
-    if (typeof tooltip !== 'undefined')
-        $('#api_status i.fa-check').attr('data-tooltip', tooltip);
-}
-
-function apiError(tooltip) {
-    apiIdle();
-    $('#api_status i.fa-times').fadeIn('fast');
-    if (typeof tooltip !== 'undefined')
-        $('#api_status i.fa-times').attr('data-tooltip', tooltip);
-}
-
 function apiFatal(error) {
     $('#api_error_link').fancybox({
         closeBtn: false,
@@ -72,3 +49,63 @@ function apiFatal(error) {
         }
     }).click();
 }
+
+function apiStatusClear() {
+    $('#api_status div').stop(true).hide();
+}
+
+function apiStatusWorking(message) {
+    apiStatusClear();
+    $('#api_status div.working').delay(800).fadeIn('fast');
+    if (typeof message !== 'undefined')
+        $('#api_status div.working span').delay(800).html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+}
+
+function apiStatusSuccess(message) {
+    apiStatusClear();
+    $('#api_status div.success').fadeIn('fast');
+    if (typeof message !== 'undefined')
+        $('#api_status div.success span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+}
+
+function apiStatusError(message) {
+    apiStatusClear();
+    $('#api_status div.error').fadeIn('fast');
+    if (typeof message !== 'undefined')
+        $('#api_status div.error span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+}
+
+function apiStatusTime() {
+    $('span[data-time]').each(function () {
+        var self = $(this),
+            time = parseInt(self.attr('data-time'));
+        if (!isNaN(time)) {
+            var diff = Math.round((new Date().getTime() - time) / 1000),
+                then = new Date(time),
+                value;
+
+            if (diff < 10)
+                value = '';
+            else if (diff < 30)
+                value = ' seconds ago';
+            else if (diff < 60)
+                value = ' half a minute ago';
+            else if (diff < 120)
+                value = ' 1 minute ago';
+            else if (diff < 600)
+                value = ' ' + Math.round(diff / 60) + ' minutes ago';
+            else
+                value = ' ' + then.getHours() + ':' + then.getMinutes();
+
+            if (self.text() !== value)
+                self.fadeOut(function () {
+                    self.text(value);
+                }).fadeIn();
+        }
+    });
+}
+
+$(function() {
+    setInterval(apiStatusTime, 5000);
+    apiStatusTime();
+});

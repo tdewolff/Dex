@@ -26,7 +26,7 @@ function initializeUpload(upload, done) {
             data.i = upload_i;
             upload_i++;
 
-            $('<li id="upload_' + data.i + '"><span></span>&ensp;' + data.files[0].name + '</li>').hide().appendTo('#upload ul').slideDown();
+            $('<li id="upload_' + data.i + '"><i class="fa fa-fw fa-cog fa-spin"></i>&ensp;' + data.files[0].name + '</li>').hide().appendTo('#upload ul').slideDown();
             var jqXHR = data.submit();
         },
         progress: function(e, data) {
@@ -41,16 +41,16 @@ function initializeUpload(upload, done) {
         },
         done: function(e, data) {
             if (typeof data.response().result['upload_error'] !== 'undefined')
-                upload.find('#upload_' + data.i).addClass('fail').append(' (' + data.response().result['upload_error'] + ')');
+                upload.find('#upload_' + data.i).addClass('fail').append(' (' + data.response().result['upload_error'] + ')').find('i').attr('class', 'fa fa-fw fa-times');
             else {
-                upload.find('#upload_' + data.i).addClass('done');
+                upload.find('#upload_' + data.i).addClass('done').find('i').attr('class', 'fa fa-fw fa-check');
                 done(data.response().result);
             }
         },
         fail: function(e, data) {
             if (typeof data.response().jqXHR['responseText'] !== 'undefined')
                 apiFatal(data.response().jqXHR['responseText']);
-            upload.find('#upload_' + data.i).addClass('fail').append(' (Unknown error)');
+            upload.find('#upload_' + data.i).addClass('fail').append(' (Unknown error)').find('i').attr('class', 'fa fa-fw fa-times');
         }
     });
 

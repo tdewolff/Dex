@@ -17,7 +17,7 @@ $form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
 $form->addSeparator();
 
 $form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Setup');
-$form->setResponse('', '(not setup)');
+$form->setResponse('', 'Not setup');
 
 if ($form->submitted())
 {

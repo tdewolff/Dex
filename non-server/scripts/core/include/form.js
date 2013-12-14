@@ -3,11 +3,12 @@ var Form = function(form) {
 
     this.form = $(form);
     this.optionals = JSON.parse(this.form.attr('data-optionals'));
-    this.needsSave = false;
+    this.hasChange = false;
+    this.saveTimeout = null;
 
     this.updateUnused = function(name) {
         $.each(self.optionals, function(i, optional) {
-            if (typeof name == 'undefined' || $.inArray(name.slice(0, -9), optional) !== -1) {
+            if (typeof name === 'undefined' || $.inArray(name, optional) !== -1) {
                 inputs = $();
                 $.each(optional, function(i, name) {
                     inputs = inputs.add('[name="' + name + '"], [data-name="' + name + '"]');
@@ -26,35 +27,51 @@ var Form = function(form) {
                     inputs.addClass('unused');
                 else
                     inputs.removeClass('unused');
-                return (typeof name == 'undefined'); // break on false
+                return (typeof name === 'undefined'); // break when it's the initial updateUnused call
             }
         });
     };
+    this.updateUnused();
 
-    this.input = function(input) {
-        apiIdle();
-        var name = input.attr('name');
-        if (typeof name == 'undefined')
+    this.form.on('input', 'input', function(e) {
+        apiStatusClear();
+
+        var input = $(e.currentTarget),
+            name = input.attr('name');
+
+        if (typeof name === 'undefined')
             name = input.attr('data-name');
-
-        if (typeof name != 'undefined')
+        else
             self.updateUnused(name);
-        self.needsSave = true;
-    };
 
-    this.intervalSave = function() {
-        if (self.needsSave == true) {
-            self.needsSave = false;
+        if (!self.form.find('button[type="submit"]').length)
+            self.needSave();
+    });
+
+    this.form.on('change', 'input', function(e) {
+        if (self.hasChange)
+        {
+            clearTimeout(self.saveTimeout);
             self.save();
+            self.hasChange = false;
         }
+    });
+
+    this.needsSave = function() {
+        self.hasChange = true;
+        clearTimeout(self.saveTimeout);
+        self.saveTimeout = setTimeout(self.save, 3000);
     };
 
     this.save = function() {
+        apiStatusWorking();
+        self.hasChange = false;
+
         // put data of multi-input fields into single hidden input
         self.form.find('input[type="hidden"]').each(function(i, hidden) {
             hidden = $(hidden);
             var name = hidden.attr('name');
-            if (typeof name != 'undefined')
+            if (typeof name !== 'undefined')
             {
                 var data = [];
                 self.form.find('[data-name="' + name + '"]').each(function(i, input) {
@@ -78,9 +95,7 @@ var Form = function(form) {
             }
         });
 
-        // AJAX
-        apiBusy();
-        api(window.location.href, self.form.serialize(), self.success, self.responseError);
+        api(window.location.href, self.form.serialize(), self.success, self.error); // AJAX
     };
 
     this.success = function(data) {
@@ -111,29 +126,20 @@ var Form = function(form) {
             self.form.find('.form_item_error').hide();
 
         if (data['errors'].length || data['item_errors'].length)
-            apiError(data['response']['error']);
+            apiStatusError(data['response']['error']);
         else if (data['redirect'].length > 0)
             window.location.href = data['redirect'];
         else
-            apiSuccess(data['response']['success']);
+            apiStatusSuccess(data['response']['success']);
     };
 
-    this.responseError = function(data) {
-        apiError();
+    this.error = function(data) {
+        apiStatusError();
     };
-
-    // saving interval if no submit
-    if (!this.form.find('button[type="submit"]').length)
-        setInterval(self.intervalSave, 1000);
-
-    this.updateUnused();
-    this.form.on('input', 'input', function(e) {
-        self.input($(e.currentTarget));
-    });
 
     this.form.on('submit', function(e) {
         e.preventDefault();
-        if (self.form.find('button[type="submit"]').length)
+        if (self.form.find('button[type="submit"]').length) // make sure you can't double click the submit button
         {
             self.form.find('button[type="submit"]').blur().attr('disabled', 'disabled');
             setTimeout(function() {

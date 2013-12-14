@@ -39,13 +39,17 @@
         });
 
         users.on('click', 'a.sure', function() {
+            apiStatusWorking('Deleting user...');
             var item = $(this);
             api({
                 action: 'delete_user',
                 user_id: item.attr('data-user-id')
             }, function() {
+                apiStatusSuccess('Deleted user');
                 $('.dropdown-menu').fadeOut('fast');
                 $('#user_' + item.attr('data-user-id')).remove();
+            }, function() {
+                apiStatusError('Deleting user failed');
             });
         });
     });

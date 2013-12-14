@@ -11,7 +11,7 @@ $form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Ente
 $form->addSeparator();
 
 $form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-$form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
+$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
 
 if ($form->submitted())
 {

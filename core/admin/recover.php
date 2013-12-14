@@ -35,7 +35,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 	$form->addSeparator();
 
 	$form->setSubmit('<i class="fa fa-refresh"></i>&ensp;Reset');
-	$form->setResponse('', '(not reset)');
+	$form->setResponse('', 'Not reset');
 
 	if ($form->submitted())
 	{
@@ -94,7 +94,7 @@ else
 	$form->addSeparator();
 
 	$form->setSubmit('<i class="fa fa-reply"></i>&ensp;Recover');
-	$form->setResponse('', '(not sent)');
+	$form->setResponse('', 'Not sent');
 
 	if ($form->submitted())
 	{

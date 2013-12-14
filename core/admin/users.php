@@ -34,12 +34,12 @@ else
 
     if ($url[2] != 'new')
     {
-		$form->addPassword('current_password', 'Admin password', 'Confirm with your password');
+		$form->addPassword('current_password', 'Current password', 'Confirm with your current password');
 		$form->optional(array('password', 'password2'));
     }
 
 	$form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-	$form->setResponse('<span class="passed_time">(saved<span></span>)</span>', '(not saved)');
+	$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
 
 	if ($form->submitted())
 	{

@@ -2,7 +2,8 @@ var Draggable = function(ul) {
     var self = this;
 
     this.ul = $(ul);
-    this.needsSave = false;
+    this.hasChange = false;
+    this.saveTimeout = null;
 
     this.draggee = false;
     this.draggee_x_start = 0;
@@ -53,7 +54,7 @@ var Draggable = function(ul) {
                 previous = element;
             });
 
-            if (previous !== false && typeof previous.attr('data-level') != 'undefined')
+            if (previous !== false && typeof previous.attr('data-level') !== 'undefined')
             {
                 level = Math.floor((e.pageX - self.draggee_x_start + 20.0) / 40.0);
                 var previous_level = previous.attr('data-level');
@@ -75,7 +76,7 @@ var Draggable = function(ul) {
 
     this.ul.on('mousedown', '.fa-eye', function(e) {
         e.preventDefault();
-        apiIdle();
+        apiStatusClear();
 
         var li = $(this).closest('li');
         li.toggleClass('unused');
@@ -95,12 +96,12 @@ var Draggable = function(ul) {
                 element.find('input').toggleClass('unused');
             }
         });
-        self.needsSave = true;
+        self.needsSave();
     });
 
     this.ul.on('mousedown', '.fa-bars', function(e) {
         e.preventDefault();
-        apiIdle();
+        apiStatusClear();
 
         if (self.draggee === false && e.which == 1) {
             self.draggee = $(this).closest('li');
@@ -140,25 +141,33 @@ var Draggable = function(ul) {
                 self.draggee.find('input').toggleClass('unused');
             }
             self.draggee = false;
-            self.needsSave = true;
+            self.needsSave();
         }
     });
 
     this.ul.on('keyup', 'input', function() {
-        apiIdle();
-        self.needsSave = true;
+        apiStatusClear();
+        self.needsSave();
     });
 
-    this.intervalSave = function() {
-        if (self.needsSave == true) {
-            self.needsSave = false;
+    this.ul.on('change', 'input', function(e) {
+        if (self.hasChange)
+        {
+            clearTimeout(self.saveTimeout);
             self.save();
+            self.hasChange = false;
         }
+    });
+
+    this.needsSave = function() {
+        self.hasChange = true;
+        clearTimeout(self.saveTimeout);
+        self.saveTimeout = setTimeout(self.save, 1000);
     };
-    setInterval(self.intervalSave, 1000);
 
     this.save = function() {
-        apiBusy();
+        apiStatusWorking('Saving...');
+        self.hasChange = false;
 
         var i = 0;
         var data = {};
@@ -179,9 +188,9 @@ var Draggable = function(ul) {
             action: 'modify_menu',
             menu: data
         }, function() {
-            apiSuccess('Saved');
+            apiStatusSuccess('Saved');
         }, function() {
-            apiError('Not saved');
+            apiStatusError('Not saved');
         });
     };
 }

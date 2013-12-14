@@ -23,14 +23,18 @@
         });
 
         themes.on('click', 'li', function() {
+            apiStatusWorking('Switching theme...');
             var item = $(this);
             if (!item.hasClass('current'))
                 api('/' + base_url + 'api/core/themes.php', {
                     action: 'change_theme',
                     theme_name: item.attr('data-theme-name')
                 }, function() {
+                    apiStatusSuccess('Switched theme');
                     themes.find('li.current').removeClass('current');
                     item.addClass('current');
+                }, function() {
+                    apiStatusError('Switching theme failed');
                 });
         });
     });

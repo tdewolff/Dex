@@ -43,13 +43,17 @@
         });
 
         pages.on('click', 'a.sure', function() {
+            apiStatusWorking('Deleting page...');
         	var item = $(this);
             api('/' + base_url + 'api/core/pages.php', {
                 action: 'delete_page',
                 link_id: $(this).attr('data-link-id')
             }, function() {
+                apiStatusSuccess('Deleted page');
                 $('.dropdown-menu').fadeOut('fast');
                 $('#page_' + item.attr('data-link-id')).remove();
+            }, function() {
+                apiStatusError('Deleting page failed');
             });
         });
     });

@@ -9,7 +9,7 @@ $form->addPassword('password', 'Password', '');
 $form->addSeparator();
 
 $form->setSubmit('<i class="fa fa-sign-in"></i>&ensp;Login');
-$form->setResponse('', '(not logged in)');
+$form->setResponse('', 'Not logged in');
 
 if ($form->submitted())
 {

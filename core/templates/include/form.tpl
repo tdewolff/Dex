@@ -173,7 +173,7 @@
             <div class="arrow"></div>
             <div class="arrow-border"></div>
             <p class="pre_wrap">
-                <i class="fa fa-exclamation-sign"></i>&ensp;<span></span>
+                <i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
             </p>
         </div>
     </div>

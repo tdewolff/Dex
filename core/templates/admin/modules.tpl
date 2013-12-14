@@ -51,40 +51,52 @@
         });
 
         modules.on('click', 'a.enable', function() {
+            apiStatusWorking('Enabling module...');
             var item = $(this);
             api('/' + base_url + 'api/core/modules.php', {
                 action: 'enable_module',
                 module_name: item.attr('data-module-name')
             }, function() {
+                apiStatusSuccess('Enabled module');
                 $('.dropdown-menu').hide();
                 $('#module_' + item.attr('data-module-name')).removeClass('disabled');
                 $('#admin_link_module_' + item.attr('data-module-name')).slideDown();
                 item.hide();
                 item.parent().find('.disable').show();
+            }, function() {
+                apiStatusError('Enabling module failed');
             });
         });
 
         modules.on('click', 'a.disable', function() {
+            apiStatusWorking('Disabling module...');
             var item = $(this);
             api('/' + base_url + 'api/core/modules.php', {
                 action: 'disable_module',
                 module_name: item.attr('data-module-name')
             }, function() {
+                apiStatusSuccess('Disabled module');
                 $('.dropdown-menu').hide();
                 $('#module_' + item.attr('data-module-name')).addClass('disabled');
                 $('#admin_link_module_' + item.attr('data-module-name')).slideUp();
                 item.hide();
                 item.parent().find('.enable').show();
+            }, function() {
+                apiStatusError('Disabling module failed');
             });
         });
 
         modules.on('click', 'a.sure', function() {
+            apiStatusWorking('Reinstalling module...');
             var item = $(this);
             api('/' + base_url + 'api/core/modules.php', {
                 action: 'reinstall_module',
                 module_name: item.attr('data-module-name')
             }, function() {
+                apiStatusSuccess('Reinstalled module');
                 $('.dropdown-menu').hide();
+            }, function() {
+                apiStatusError('Reinstalling module failed');
             });
         });
     });

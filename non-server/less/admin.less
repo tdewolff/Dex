@@ -410,32 +410,17 @@ ul.grid-3 {
 			    height: 16px;
 			    line-height: 16px;
 
-			    span {
-				    display:inline-block;
-				    width: 16px;
-				    height: 16px;
-				    background: url('../core/images/loading_green.gif') no-repeat;
+			    i {
 				    vertical-align: middle;
 				}
 			}
 
 			li.done {
 			    color:#477725;
-
-			    span {
-				    background: url('../core/images/upload_icons.png') no-repeat;
-				    height:13px;
-				}
 			}
 
 			li.fail {
 			    color:#B94A48;
-
-			    span {
-				    background: url('../core/images/upload_icons.png') no-repeat;
-				    background-position: 0 -13px;
-				    height:13px;
-				}
 			}
 		}
 
@@ -552,17 +537,28 @@ ul.grid-3 {
 	top:1em;
 	right:1em;
 
-	i {
+	>div {
 		display:none;
-		.text-shadow(0 0 2px rgba(0, 0, 0, 0.75));
-	}
+		white-space:nowrap;
 
-	i.fa-check {
-		color: #24c279;
-	}
+		>span {
+			color:#F0F0F0;
+	    	font-size:90%;
+	    	vertical-align: middle;
+		}
 
-	i.fa-times {
-		color: #d11f49;
+		>i {
+			.text-shadow(0 0 2px rgba(0, 0, 0, 0.75));
+	    	vertical-align: middle;
+		}
+
+		>i.fa-check {
+			color: #24c279;
+		}
+
+		>i.fa-times {
+			color: #d11f49;
+		}
 	}
 }
 
