@@ -89,13 +89,19 @@ if (Common::requestResource())
         user_error('Could not find resource file "' . $filename . '"', ERROR);
     else
     {
-        // resize images
-        if ($querystring_position !== false && Resource::isImage($extension))
+        if (Resource::isImage($extension))
         {
-            $w = Common::tryOrZero($_GET, 'w');
-            $h = Common::tryOrZero($_GET, 'h');
-            $s = Common::tryOrZero($_GET, 's');
-            $filename = Resource::imageResize($filename, $w, $h, $s);
+            if (is_file(Common::insertMinExtension($filename)))
+                $filename = Common::insertMinExtension($filename);
+
+            if ($querystring_position !== false)
+            {
+                // resize images
+                $w = Common::tryOrZero($_GET, 'w');
+                $h = Common::tryOrZero($_GET, 'h');
+                $s = Common::tryOrZero($_GET, 's');
+                $filename = Resource::imageResize($filename, $w, $h, $s);
+            }
         }
 
         header('Content-Type: ' . Resource::getMime($extension));
@@ -108,8 +114,6 @@ if (Common::requestResource())
 ////////////////////
 // not a resource //
 
-session_start();
-
 require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/session.class.php');
@@ -119,7 +123,6 @@ if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 
 Bcrypt::setRounds(8);
-Session::refreshLogin();
 
 
 // sitemap
@@ -155,12 +158,14 @@ if (Common::requestApi())
 ////////////////////////
 // admin or site page //
 
+session_start();
 ob_start('minifyHtml');
 
 require_once('include/dexterous.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
 require_once('core/hooks.php');
 
+Session::refreshLogin();
 Core::assign('base_url', $base_url);
 
 // handle admin area

@@ -4,22 +4,22 @@ require_once('include/form.class.php');
 
 Core::addTitle('Dexterous');
 Core::addTitle('Admin panel');
-Core::addStyle('include/normalize.min.css');
-Core::addStyle('vendor/font-awesome.min.css');
-Core::addStyle('vendor/jquery-ui.min.css');
-Core::addStyle('vendor/fancybox.min.css');
-Core::addStyle('admin.min.css');
+Core::addStyle('include/normalize.css');
+Core::addStyle('vendor/font-awesome.css');
+Core::addStyle('vendor/jquery-ui.css');
+Core::addStyle('vendor/fancybox.css');
+Core::addStyle('admin.css');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-Core::addScript('include/slidein.min.js');
+Core::addScript('include/slidein.js');
 Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
 Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
-Core::addDeferredScript('include/api.min.js');
-Core::addDeferredScript('admin.min.js');
-Core::addDeferredScript('upload.min.js');
+Core::addDeferredScript('include/api.js');
+Core::addDeferredScript('admin.js');
+Core::addDeferredScript('upload.js');
 
 // setup
 if (filesize($db->filename) == 0)

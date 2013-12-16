@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+if (!Session::isAdmin())
+    user_error('Forbidden access', ERROR);
+
 if (API::action('change_theme'))
 {
     if (!API::has('theme_name'))

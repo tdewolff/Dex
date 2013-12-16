@@ -55,6 +55,22 @@ class Common
 		return !preg_match('/([^a-zA-Z0-9\/\.\-_\?=& ]+)|(\.\.\/)|((.+)[\/]{2,}$)/', $input);
 	}
 
+    public static function hasMinExtension($filename)
+    {
+        $dot_position = strrpos($filename, '.');
+        if ($dot_position !== false)
+            return substr($filename, $dot_position - 4, 4) == '.min';
+        return false;
+    }
+
+    public static function insertMinExtension($filename)
+    {
+        $dot_position = strrpos($filename, '.');
+        if ($dot_position !== false)
+            return substr($filename, 0, $dot_position) . '.min' . substr($filename, $dot_position);
+        return $filename;
+    }
+
 	public static function formatBytes($size, $precision = 2)
 	{
 		if ($size > 0) {

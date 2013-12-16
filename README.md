@@ -6,7 +6,7 @@ Dexterous
 Dexterous is a small and simple CMS designed for small- to medium-sized websites. It aims for high usability and intuitivity for users, while remaining robust and modular for webmasters.
 
 ### Properties
-1. Fast 
+1. Fast
  - Makes use of server and browser caching
  - Concatenates JS and CSS to one file to reduce requests
  - Minifies HTML output
@@ -50,7 +50,8 @@ Make sure that the following Apache modules are enabled:
 - mod_headers
 - mod_rewrite (essential)
 
-And this PHP extension:
+And these PHP extensions:
+- php_curl
 - php_sqlite3 (essential)
 
 ### Installing modules, themes and templates

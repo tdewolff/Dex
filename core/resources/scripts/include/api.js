@@ -9,7 +9,13 @@ function api(url, data, success, error) {
             dataType: 'json',
             success: function(data) {
                 if (typeof data['error'] !== 'undefined')
+                {
+                    if (typeof error !== 'undefined' && error)
+                        if (error(data) === false)
+                            return;
+
                     apiFatal(data['error'].join('<br>'));
+                }
                 else if (typeof success !== 'undefined' && success)
                 {
                     applyTooltips();
@@ -33,8 +39,9 @@ function api(url, data, success, error) {
         });
 }
 
-function apiFatal(error) {
-    $('#api_error_link').fancybox({
+function apiFatal(message) {
+    $.fancybox.open({
+        content: message,
         closeBtn: false,
         beforeShow: function() {
             this.skin.css({
@@ -44,10 +51,10 @@ function apiFatal(error) {
             });
         },
         overlay : {
-            closeClick : true,
+            closeClick: true,
             locked: false
         }
-    }).click();
+    });
 }
 
 function apiStatusClear() {

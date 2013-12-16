@@ -21,8 +21,7 @@
 <?php endif; ?>
 
     <body>
-        <a href="#api_error" id="api_error_link" class="fancybox"></a>
-        <div id="api_error"></div>
+        <div id="api_fatal"></div>
         <div id="api_status">
             <div class="working"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
             <div class="success"><span></span>&ensp;<i class="fa fa-check fa-2x"></i></div>
@@ -32,7 +31,7 @@
         <?php if (isset($_['admin_links'])): ?>
         <section class="page-wrapper">
             <h1>Dexterous</h1>
-            <div id="user"><?php echo $_['username'] . ' (' . $_['permission'] . ')'; ?></div>
+            <div id="current-user"><?php echo $_['username'] . ' (' . $_['permission'] . ')'; ?></div>
             <div id="left-column">
                 <ul>
                     <?php foreach ($_['admin_links'] as $i => $link): ?>

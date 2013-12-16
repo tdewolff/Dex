@@ -1,4 +1,9 @@
 <h2>Admin panel</h2>
+<div class="fullwidth-column">
+    <h3>Dexterous</h3>
+    <textarea id="console"></textarea>
+    <a href="#" class="small-button" data-tooltip="Optimizes files to speed up the site" data-action="optimize_site"><i class="fa fa-magic"></i>&ensp;Optimize site</a>
+</div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
     <div id="logs_bar" class="progress_bar">
@@ -27,7 +32,7 @@
         <?php echo $_['cache_size_percentage']; ?>%
         <?php if ($_['is_admin']): ?>
         <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache" title="Click to confirm"><i class="fa fa-trash-o"></i></a>
+        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache"><i class="fa fa-trash-o"></i></a>
         <?php endif; ?>
     </div>
 </div>
@@ -39,9 +44,44 @@
         bar.next().text('0 B').next().text('0%');
     }
 
-    $('a.sure').click(function() {
+    var updateConsoleTimeout;
+    function updateConsole() {
+        updateConsoleTimeout = setTimeout(function() {
+            api('/' + base_url + 'api/core/index.php', {
+                action: 'status'
+            }, function(data) {
+                if (typeof data['status'] !== 'undefined')
+                {
+                    $('#console').html(data['status']);
+                    $('#console')[0].scrollTop = $('#console')[0].scrollHeight;
+                }
+                updateConsole();
+            });
+        }, 500);
+    }
+
+    function stopConsole() {
+        setTimeout(function() {
+            clearTimeout(updateConsoleTimeout);
+        }, 1000);
+    }
+
+    $('a[data-action]').click(function() {
         var action = $(this).attr('data-action');
-        if (action == 'clear_logs') {
+        if (action == 'optimize_site') {
+            apiStatusWorking('Optimizing site...');
+            updateConsole();
+            api('/' + base_url + 'api/core/index.php', {
+                action: action
+            }, function(data) {
+                stopConsole();
+                apiStatusSuccess('Optimized site');
+            }, function() {
+                stopConsole();
+                apiStatusError('Optimizing site failed');
+                return false;
+            });
+        } else if (action == 'clear_logs') {
             apiStatusWorking('Clearing logs...');
             api('/' + base_url + 'api/core/index.php', {
                 action: action
@@ -49,7 +89,7 @@
                 apiStatusSuccess('Cleared logs');
                 resetBar($('#logs_bar'));
             }, function() {
-                apiStatusError('Clearing logs');
+                apiStatusError('Clearing log failed');
             });
         } else if (action == 'clear_cache') {
             apiStatusWorking('Clearing cache...');
@@ -59,7 +99,7 @@
                 apiStatusSuccess('Cleared cache');
                 resetBar($('#cache_bar'));
             }, function() {
-                apiStatusError('Clearing cache');
+                apiStatusError('Clearing cache failed');
             });
         }
     });

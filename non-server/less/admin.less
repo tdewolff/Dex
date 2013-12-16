@@ -79,7 +79,7 @@ h1 {
 	padding: 40px 60px;
 }
 
-#user {
+#current-user {
 	color:#E0E0E0;
 	font-size:90%;
 	padding-bottom:5px;
@@ -483,9 +483,19 @@ ul.grid-3 {
 		width:602px;
 		margin-bottom:20px;
 
-		img {
-			vertical-align: middle;
-			margin-right:10px;
+		li {
+			img {
+				vertical-align: middle;
+				margin-right:10px;
+			}
+
+			div:last-of-type {
+				display:none;
+			}
+
+			&:hover div:last-of-type {
+				display:block;
+			}
 		}
 	}
 
@@ -495,10 +505,15 @@ ul.grid-3 {
 			vertical-align: top;
 
 			.delete {
+				display:none;
 				position:absolute;
 				top:4px;
 				right:4px;
 				font-size:11px;
+			}
+
+			&:hover .delete {
+				display:block;
 			}
 
 			.caption {
@@ -520,16 +535,6 @@ ul.grid-3 {
 			}
 		}
 	}
-}
-
-#api_error_link {
-	display:none;
-}
-
-#api_error {
-	display:none;
-	white-space: pre;
-	padding:0 15px;
 }
 
 #api_status {
@@ -607,6 +612,15 @@ ul.grid-3 {
 	>div {
 		line-height:100%;
 	}
+}
+
+#console {
+	float:none;
+	width:100%;
+	height:250px;
+	margin-left:0;
+	margin-right:0;
+	font-size:80%;
 }
 
 .popup-wrapper {
@@ -751,11 +765,17 @@ strong {
 	color:#C0C0C0;
 }
 
+.fullwidth-column, .halfwidth-column {
+	margin-top:30px;
+}
+
 .halfwidth-column {
 	float:left;
 	width:50%;
+}
 
-	padding:0 10px;
+.halfwidth-column ~ .halfwidth-column {
+	padding-left:20px;
 }
 
 .progress_bar {

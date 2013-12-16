@@ -116,7 +116,7 @@ class Core extends Dexterous
 		$fs_modules = array();
 		$handle = opendir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/');
 		while (($module_name = readdir($handle)) !== false)
-			if (is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name) && $module_name != '.' && $module_name != '..')
+			if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
 			{
 				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/config.ini';
 				if (is_file($module_file))

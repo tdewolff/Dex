@@ -66,9 +66,16 @@ class Resource
         return sprintf($cache_formatted_filename, sha1($unique_scriptname));
     }
 
-    public static function concatenateFiles($filenames, $extension)
+    public static function cacheFiles($filenames, $extension)
     {
         $starttime_local = explode(' ', microtime());
+
+        if ($extension == 'js' || $extension == 'css') // use minified js and css when available
+            foreach ($filenames as $i => $filename)
+                if (is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . Common::insertMinExtension($filename)) &&
+                    filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename) < filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . Common::insertMinExtension($filename)))
+                    $filenames[$i] = Common::insertMinExtension($filename);
+
         $cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
         if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename) || !self::$caching)
         {
@@ -76,10 +83,7 @@ class Resource
             foreach ($filenames as $filename)
                 if (is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
                     $content .= file_get_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
-
-            $f = fopen(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename, 'w');
-            fwrite($f, $content);
-            fclose($f);
+            file_put_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename, $content);
 
             $endtime_local = explode(' ', microtime());
             $totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);

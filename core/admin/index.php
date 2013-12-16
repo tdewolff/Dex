@@ -21,8 +21,8 @@ while (($cache_name = readdir($handle)) !== false)
 		$cache_size += filesize('cache/' . $cache_name);
 
 $log_name = Log::getFilename();
-$slash = strrpos($log_name, '/');
-$log_name = $slash ? substr($log_name, $slash + 1) : $log_name;
+$slash_position = strrpos($log_name, '/');
+$log_name = $slash_position ? substr($log_name, $slash_position + 1) : $log_name;
 
 Hooks::emit('admin-header');
 

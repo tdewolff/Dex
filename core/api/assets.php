@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+if (!Session::loggedIn())
+    user_error('Forbidden access', ERROR);
+
 // set current directory
 $dir = '';
 if (API::has('dir'))
@@ -23,9 +27,10 @@ if (isset($_FILES['upload']))
     }
 
     $name = $_FILES['upload']['name'];
-    $last_slash = strrpos($name, '/');
-    $title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
-    $extension = strtolower(substr($name, strrpos($name, '.') + 1));
+    $slash_position = strrpos($name, '/');
+    $dot_position = strrpos($name, '.');
+    $title = substr($name, $slash_position ? $slash_position + 1 : 0, $dot_position);
+    $extension = strtolower(substr($name, $dot_position + 1));
 
     if (!Resource::isResource($extension))
         API::set('upload_error', 'Wrong extension');
@@ -152,7 +157,7 @@ else if (API::action('get_assets'))
     $handle = opendir('assets/' . $dir);
     while (($name = readdir($handle)) !== false)
     {
-        if (is_file('assets/' . $dir . $name))
+        if (is_file('assets/' . $dir . $name) && !Common::hasMinExtension($name))
         {
             $last_slash = strrpos($name, '/');
             $title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));

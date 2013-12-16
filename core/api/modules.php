@@ -1,7 +1,8 @@
 <?php
 
+session_start();
 if (!Session::isAdmin())
-    user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+    user_error('Forbidden access', ERROR);
 
 if (API::action('enable_module') || API::action('disable_module'))
 {

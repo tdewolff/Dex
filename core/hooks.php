@@ -129,10 +129,10 @@ function site_header() {
 		Core::assign('header_title', implode(' - ', array_reverse($titles)));
 	Core::assign('header_external_styles', $externalStyles);
 	if (count($styles))
-		Core::assign('header_style', Resource::concatenateFiles($styles, 'css'));
+		Core::assign('header_style', Resource::cacheFiles($styles, 'css'));
 	Core::assign('header_external_scripts', $externalScripts);
 	if (count($scripts))
-		Core::assign('header_script', Resource::concatenateFiles($scripts, 'js'));
+		Core::assign('header_script', Resource::cacheFiles($scripts, 'js'));
 }
 
 function site_footer() {
@@ -141,7 +141,7 @@ function site_footer() {
 
 	Core::assign('footer_external_scripts', $externalScripts);
 	if (count($scripts))
-		Core::assign('footer_script', Resource::concatenateFiles($scripts, 'js'));
+		Core::assign('footer_script', Resource::cacheFiles($scripts, 'js'));
 }
 
 ////////////////////////////////////////////////////////////////

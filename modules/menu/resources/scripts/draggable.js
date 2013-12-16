@@ -190,7 +190,7 @@ var Draggable = function(ul) {
         }, function() {
             apiStatusSuccess('Saved');
         }, function() {
-            apiStatusError('Not saved');
+            apiStatusError('Saving failed');
         });
     };
 }
