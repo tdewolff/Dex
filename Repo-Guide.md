@@ -17,7 +17,7 @@ Your package must contain the following meta-data:
         description: "A short description of your package.",
         picture: "A screenshot or picture for your package, encoded in base64.",
         compatible: ["0.x", "1.0.x, 1.1.x"],
-        email: developer_contact@example.com
+        email: "developer_contact@example.com"
     }
 
 * name: The unique name for your package.
