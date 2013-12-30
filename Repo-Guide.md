@@ -21,10 +21,15 @@ Your package must contain the following meta-data:
     }
 
 name: The unique name for your package.
+
 version: The unique version of your package. The version must be compliant with http://semver.org/ Semantic Versioning 2.0.0. Placing a wildcard 'x' in your package version is not allowed.
+
 type: Either "theme", "template", or "module" as of Dexterous 0.x.
+
 description: A brief description (50-250 characters).
+
 picture: A thumbnail picture for your package, with a width of 150px, heihgt of 150px.
+
 compatible: An array of dexterous versions your package is compatible with. You may use the wildcard 'x' to assume your package is compatible with any subversion. For example, 0.x is compatible with 0.1 and 0.2.3-alpha. You may not use the wildcard 'x' in the top-most version. For example, using ["x"] is not allowed.
 
 Your package may be removed or denied if it is not compatible with a version
@@ -47,9 +52,7 @@ You may provide optional meta-data if you wish:
         email_public: true
     }
 
-The url must work, or your package will be denied or removed. By default,
-your provided email address is private. We only use your email to tell you
-if we accept, remove, or deny your package. By using email_public, you may
-allow the public to contact you via your email address by setting the optional
-field, email_public, to true.
+url: The url must work, or your package will be denied or removed.
+
+public_email: By default, your provided email address is private. We only use your email to tell you if we accept, remove, or deny your package.By using email_public, you may allow the public to contact you via your email address by setting the optional field, email_public, to true.
 
