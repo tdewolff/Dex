@@ -15,6 +15,7 @@ Your package must contain the following meta-data:
         version: "1.0.0-beta",
         type: "theme",
         description: "A short description of your package.",
+        package: "A zip file that is the package, encoded in base64.",
         picture: "A screenshot or picture for your package, encoded in base64.",
         compatible: ["0.x", "1.0.x, 1.1.x"],
         email: "developer_contact@example.com"
@@ -24,6 +25,7 @@ Your package must contain the following meta-data:
 * version: The unique version of your package. The version must be compliant with http://semver.org/ Semantic Versioning 2.0.0. Placing a wildcard 'x' in your package version is not allowed.
 * type: Either "theme", "template", or "module" as of Dexterous 0.x.
 * description: A brief description (50-250 characters).
+* ppackage: The package is a folder, zipped into a .zip file, encoded in base64.
 * picture: A thumbnail picture for your package, with a width of 150px, height of 150px.
 * compatible: An array of dexterous versions your package is compatible with. You may use the wildcard 'x' to assume your package is compatible with any subversion. For example, 0.x is compatible with 0.1 and 0.2.3-alpha. You may not use the wildcard 'x' in the top-most version. For example, using ["x"] is not allowed.
 * email: An email we can use to contact you if we accept your package, or if for some reason we had to deny or remove your package from the repository.
