@@ -1,4 +1,6 @@
 $(function() {
+    $('form:first *:input[type!=hidden]:first').focus();
+
     if ($('.markdown').length > 0) {
         $('.markdown').markItUp(mySettings);
 
