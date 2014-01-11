@@ -1,6 +1,6 @@
 <?php
 
-if (!Session::isAdmin())
+if (!User::isAdmin())
 	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 $database = array();

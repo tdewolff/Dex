@@ -2,18 +2,16 @@
 
 require_once('include/console.class.php');
 
+if (!User::isAdmin())
+    user_error('Forbidden access', ERROR);
+
 if (API::action('status'))
 {
     if (Console::hasOutput())
         API::set('status', Console::getOutput());
     API::finish();
 }
-
-session_start();
-if (!Session::isAdmin())
-    user_error('Forbidden access', ERROR);
-
-if (API::action('publish_site'))
+else if (API::action('publish_site'))
 {
     Console::appendLine('---- Copying develop.db to current.db ----');
 

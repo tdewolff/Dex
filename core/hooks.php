@@ -112,7 +112,7 @@ Hooks::attach('main', 0, function() {
 
 	Core::renderTemplate($template_name);
 
-	if (Session::loggedIn())
+	if (User::loggedIn())
 		echo '<a href="/' . $base_url . 'admin/pages/' . $link_id . '/">Edit page</a>';
 });
 

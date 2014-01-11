@@ -37,7 +37,7 @@ if ($form->submitted())
             username TEXT,
             email TEXT,
             password TEXT,
-            permission TEXT
+            role TEXT
         );
 
         DROP TABLE IF EXISTS recover;
@@ -128,7 +128,7 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
             'default'
         );
 
-        INSERT INTO user (username, email, password, permission) VALUES (
+        INSERT INTO user (username, email, password, role) VALUES (
             '" . $db->escape($form->get('username')) . "',
             '" . $db->escape($form->get('email')) . "',
             '" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
@@ -139,7 +139,7 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
         copy('current.db', 'develop.db');
         $db->exec("ROLLBACK;");
 
-        Session::logIn($db->lastId(), 'admin');
+        User::logIn($db->lastId());
         $form->setRedirect('/' . $base_url . 'admin/');
     }
     $form->finish();

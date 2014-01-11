@@ -116,6 +116,22 @@ label {
 	overflow:hidden;
 	margin-top:8px;
 	padding-top:5px;
+
+	&.radio {
+		float:none;
+		width:auto;
+		font-size:inherit;
+		font-weight:inherit;
+		text-align:left;
+		line-height:29px;
+		margin-top:8px;
+		padding:0;
+
+		& + & {
+			margin:0;
+			margin-left:200px;
+		}
+	}
 }
 
 input, select, textarea {
@@ -137,6 +153,11 @@ input, select, textarea {
 
 	&.hidden {
 		display:none;
+	}
+
+	&[type="radio"] {
+		width:auto;
+		margin-right:8px;
 	}
 }
 

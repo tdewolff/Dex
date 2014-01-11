@@ -13,7 +13,7 @@
     <div class="left"><?php echo $_['logs_size']; ?></div>
     <div class="text-right">
         <?php echo $_['logs_size_percentage']; ?>%
-        <?php if ($_['is_admin']): ?>
+        <?php if ($_['role'] == 'admin'): ?>
         <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
         <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_logs"><i class="fa fa-trash-o"></i></a>
         <?php endif; ?>
@@ -31,7 +31,7 @@
     <div class="left"><?php echo $_['cache_size']; ?></div>
     <div class="text-right">
         <?php echo $_['cache_size_percentage']; ?>%
-        <?php if ($_['is_admin']): ?>
+        <?php if ($_['role'] == 'admin'): ?>
         <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
         <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache"><i class="fa fa-trash-o"></i></a>
         <?php endif; ?>

@@ -117,22 +117,23 @@ if (Common::requestResource())
 
 require_once('include/database.class.php');
 require_once('include/security.php');
-require_once('include/session.class.php');
+require_once('include/user.class.php');
 
 if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db') && filesize('develop.db') != 0)
     copy('develop.db', 'current.db');
-elseif (is_file('current.db') && filesize('current.db') != 0 && (!is_file('develop.db') || filesize('develop.db') == 0))
+else if (is_file('current.db') && filesize('current.db') != 0 && (!is_file('develop.db') || filesize('develop.db') == 0))
     copy('current.db', 'develop.db');
 
-if (Session::isUser())
+Bcrypt::setRounds(8);
+
+session_start();
+if (User::loggedIn() || Common::requestAdmin() || filesize('current.db') == 0) // requestAdmin to handle login and setup
     $db = new Database('develop.db');
 else
     $db = new Database('current.db');
 
 if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
-
-Bcrypt::setRounds(8);
 
 
 // sitemap
@@ -168,19 +169,18 @@ if (Common::requestApi())
 ////////////////////////
 // admin or site page //
 
-session_start();
 ob_start('minifyHtml');
 
 require_once('include/dexterous.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
 require_once('core/hooks.php');
 
-Session::refreshLogin();
+User::refreshLogin();
 Core::assign('base_url', $base_url);
 
 
 // handle admin area
-if (Common::requestAdmin() || filesize($db->filename) == 0)
+if (Common::requestAdmin() || filesize('current.db') == 0)
     require_once('core/admin/admin.php'); // always exits
 
 

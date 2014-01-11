@@ -152,6 +152,19 @@ class Form
 		);
 	}
 
+	public function addRadios($name, $title, $subtitle, $options)
+	{
+		$this->items[] = array(
+			'type' => 'radios',
+			'name' => $this->name . '_' . $name,
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid radiobutton'),
+			'value' => '',
+			'options' => $options
+		);
+	}
+
 	public function addDropdown($name, $title, $subtitle, $options)
 	{
 		$this->items[] = array(

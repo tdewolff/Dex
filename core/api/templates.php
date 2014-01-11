@@ -1,7 +1,6 @@
 <?php
 
-session_start();
-if (!Session::isAdmin())
+if (!User::isAdmin())
     user_error('Forbidden access', ERROR);
 
 if (API::action('get_templates'))

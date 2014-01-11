@@ -90,6 +90,20 @@
         </select>
 
 
+        <?php elseif ($item['type'] == 'radios'): ?>
+        <?php foreach ($item['options'] as $id => $name): ?>
+        <label class="radio">
+            <input type="radio"
+                name="<?php echo $item['name']; ?>"
+                value="<?php echo $id; ?>"
+                <?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
+                <?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
+                <?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>>
+            <?php echo $name; ?>
+        </label>
+        <?php endforeach; ?>
+
+
         <?php elseif ($item['type'] == 'markdown'): ?>
         <div class="clear"></div>
         <div class="markdown-buttons">

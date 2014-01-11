@@ -4,7 +4,7 @@
   <li>
 	<div style="width:120px;"></div>
 	<div style="width:200px;">Username</div>
-	<div style="width:580px;">Permission level</div>
+	<div style="width:580px;">Role</div>
   </li>
 </ul>
 
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div style="width:200px;">{{=it.username}}</div>
-        <div style="width:580px;">{{=it.permission}}</div>
+        <div style="width:580px;">{{=it.role}}</div>
     </li>
 </script>
 

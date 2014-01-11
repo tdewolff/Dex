@@ -755,6 +755,20 @@ label {
   margin-top: 8px;
   padding-top: 5px;
 }
+label.radio {
+  float: none;
+  width: auto;
+  font-size: inherit;
+  font-weight: inherit;
+  text-align: left;
+  line-height: 29px;
+  margin-top: 8px;
+  padding: 0;
+}
+label.radio + label.radio {
+  margin: 0;
+  margin-left: 200px;
+}
 input,
 select,
 textarea {
@@ -793,6 +807,12 @@ input.hidden,
 select.hidden,
 textarea.hidden {
   display: none;
+}
+input[type="radio"],
+select[type="radio"],
+textarea[type="radio"] {
+  width: auto;
+  margin-right: 8px;
 }
 textarea {
   min-height: 5em;

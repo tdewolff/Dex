@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if (!Session::loggedIn())
+if (!User::loggedIn())
     user_error('Forbidden access', ERROR);
 
 if (API::action('modify_menu'))

@@ -22,15 +22,15 @@ Core::addDeferredScript('admin.js');
 Core::addDeferredScript('upload.js');
 
 // setup
-if (filesize($db->filename) == 0)
+if (filesize('current.db') == 0)
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout
-if (Session::isUser() && $request_url == 'admin/logout/')
-	Session::logOut();
+if (User::loggedIn() && $request_url == 'admin/logout/')
+	User::logOut();
 
 // login
-if (!Session::isUser())
+if (!User::loggedIn())
 {
 	if (strpos($request_url, 'admin/recover/') === 0)
 		require_once('core/admin/recover.php'); // exits
@@ -85,9 +85,8 @@ $admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',       
 $admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'fa-hdd-o',    'title' => 'Database',  'admin_only' => 1);
 $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'fa-sign-out', 'title' => 'Log out',   'admin_only' => 0);
 
-Core::assign('username', Session::getUsername());
-Core::assign('permission', ucfirst(Session::getPermission()));
-Core::assign('is_admin', Session::isAdmin());
+Core::assign('username', User::getUsername());
+Core::assign('role', User::getRole());
 Core::assign('admin_links', $admin_links);
 
 foreach ($admin_links as $i => $admin_link)

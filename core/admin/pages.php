@@ -2,7 +2,7 @@
 
 if (!isset($url[2]))
 {
-    Core::addStyle('vendor/dropdown.min.css');
+    Core::addStyle('vendor/dropdown.css');
 
     Hooks::emit('admin-header');
     Core::render('admin/pages.tpl');
@@ -141,10 +141,10 @@ else
     Core::assign('view', $link['url']);
 }
 
-Core::addStyle('vendor/markitup.min.css');
-Core::addStyle('vendor/markdown.min.css');
+Core::addStyle('vendor/markitup.css');
+Core::addStyle('vendor/markdown.css');
 Core::addDeferredScript('vendor/jquery.markitup.min.js');
-Core::addDeferredScript('include/jquery.markitup.markdown.min.js');
+Core::addDeferredScript('include/jquery.markitup.markdown.js');
 
 Hooks::emit('admin-header');
 

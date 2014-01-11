@@ -1,12 +1,11 @@
 <?php
 
-session_start();
-if (!Session::isAdmin())
+if (!User::isAdmin())
 	user_error('Forbidden access', ERROR);
 
 if (API::action('delete_user'))
 {
-	if (!API::has('user_id') || API::get('user_id') == Session::getUserId())
+	if (!API::has('user_id') || API::get('user_id') == User::getUserId())
 		user_error('No user ID set or user ID equals current user ID', ERROR);
 
 	$db->exec("DELETE FROM user WHERE user_id = '" . $db->escape(API::get('user_id')) . "';");
@@ -18,8 +17,8 @@ else if (API::action('get_users'))
     $table = $db->query("SELECT * FROM user;");
     while ($row = $table->fetch())
     {
-    	$row['current'] = $row['user_id'] == Session::getUserId();
-    	$row['permission'] = ucfirst($row['permission']);
+    	$row['current'] = $row['user_id'] == User::getUserId();
+    	$row['role'] = ucfirst($row['role']);
     	$users[] = $row;
     }
     API::set('users', $users);

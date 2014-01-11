@@ -1,9 +1,9 @@
 <?php
 
-if (!Session::isAdmin())
+if (!User::isAdmin())
     user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
-Core::addStyle('vendor/dropdown.min.css');
+Core::addStyle('vendor/dropdown.css');
 
 Hooks::emit('admin-header');
 Core::render('admin/modules.tpl');
