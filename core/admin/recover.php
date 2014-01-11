@@ -112,20 +112,22 @@ else
 					'" . $db->escape(time() + (60 * 30)) . "'
 				);");
 
-				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . $base_url . 'admin/reset/?i=' . $db->lastId() . '&t=' . $token;
+				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . $base_url . 'admin/reset/?i=' . $db->lastId() . '&t=' . urlencode($token);
 
 				require_once('vendor/swift-mailer/swift_required.php');
 
 				$transport = Swift_SmtpTransport::newInstance('localhost', 25);
 				$mailer = Swift_Mailer::newInstance($transport);
-				$message = Swift_Message::newInstance('Wonderful Subject')
-					->setFrom(array('john@doe.com' => 'John Doe'))
-					->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
-					->setBody('Here is the message itself');
+				$message = Swift_Message::newInstance('Dex password recovery')
+					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
+					->setTo(array($user['email']))
+					->setBody('A password recovery request has been made for \'' . $user['username'] . '\' at ' . $_SERVER['HTTP_HOST'] . "\n" .
+						      'Click the link below to change your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
+						      $link . "\n\n" .
+						      'Dex');
 
-				$result = $mailer->send($message);
-
-				// TODO: send email with link, does $token need to be escaped?
+				if (!$mailer->send($message))
+					user_error('Email to \'' . $user['email'] . '\' failed to send', WARNING);
 			}
 
 			// even if user doesn't exist, redirect to sent page so hackers never know whether they're right or wrong
