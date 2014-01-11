@@ -5,26 +5,17 @@ require_once('include/console.class.php');
 if (!User::isAdmin())
     user_error('Forbidden access', ERROR);
 
-if (API::action('status'))
+if (API::action('publish_site'))
 {
-    if (Console::hasOutput())
-        API::set('status', Console::getOutput());
-    API::finish();
-}
-else if (API::action('publish_site'))
-{
-    Console::appendLine('---- Copying develop.db to current.db ----');
+    Console::append('Publishing content...');
 
     $db->exec("BEGIN IMMEDIATE;");
     copy('develop.db', 'current.db');
     $db->exec("ROLLBACK;");
 
     Console::appendLine('done');
-    Console::finish();
-    API::finish();
-}
-else if (API::action('optimize_site'))
-{
+
+
     require_once('vendor/closure-compiler.php');
     require_once('vendor/css-compressor.php');
     require_once('vendor/smush-it.php');
@@ -48,8 +39,6 @@ else if (API::action('optimize_site'))
             }
     }
 
-    Console::appendLine('---- Compressing JS files ----');
-    $hasCompressed = false;
     foreach ($script_directories as $script_directory)
     {
         $root = new RecursiveDirectoryIterator($script_directory);
@@ -62,7 +51,7 @@ else if (API::action('optimize_site'))
                 $info->getMTime() > filemtime($script_min_name)))
             {
                 $hasCompressed = true;
-                Console::append($script_name . '... ');
+                Console::append('Compressing \'' . $script_name . '\'...');
                 $input = file_get_contents($script_name);
                 try {
                     $output = ClosureCompiler::minify($input);
@@ -73,16 +62,11 @@ else if (API::action('optimize_site'))
                     Console::appendLine('failed: ' . $error);
                     continue;
                 }
-                Console::appendLine('done (ratio ' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
+                Console::appendLine('done (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
             }
         }
     }
-    if (!$hasCompressed)
-        Console::appendLine('Nothing to be done');
 
-    Console::appendLine('');
-    Console::appendLine('---- Compressing CSS files ----');
-    $hasCompressed = false;
     foreach ($style_directories as $style_directory)
     {
         $root = new RecursiveDirectoryIterator($style_directory);
@@ -95,20 +79,15 @@ else if (API::action('optimize_site'))
                 $info->getMTime() > filemtime($style_min_name)))
             {
                 $hasCompressed = true;
-                Console::append($style_name . '... ');
+                Console::append('Compressing \'' . $style_name . '\'...');
                 $input = file_get_contents($style_name);
                 $output = CssCompressor::process($input);
                 file_put_contents($style_min_name, $output);
-                Console::appendLine('done (ratio ' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
+                Console::appendLine('done (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
             }
         }
     }
-    if (!$hasCompressed)
-        Console::appendLine('Nothing to be done');
 
-    Console::appendLine('');
-    Console::appendLine('---- Compressing image files ----');
-    $hasCompressed = false;
     $root = new RecursiveDirectoryIterator('assets/');
     foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
     {
@@ -120,7 +99,7 @@ else if (API::action('optimize_site'))
             $info->getMTime() > filemtime($image_min_name)))
         {
             $hasCompressed = true;
-            Console::append($image_name . '... ');
+            Console::append('Compressing \'' . $image_name . '\'...');
             Console::appendLine(Common::fullBaseUrl() . $base_url . 'res/' . $image_name);
             try {
                 $output_info = SmushIt::compress(Common::fullBaseUrl() . $base_url . 'res/' . $image_name);
@@ -133,11 +112,9 @@ else if (API::action('optimize_site'))
 
             $output = file_get_contents($output_info->dest);
             file_put_contents($image_min_name, $output);
-            Console::appendLine('done (ratio ' . ($info->getSize() ? number_format((float) $output_info->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
+            Console::appendLine('done (' . ($info->getSize() ? number_format((float) $output_info->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
         }
     }
-    if (!$hasCompressed)
-        Console::appendLine('Nothing to be done');
 
     Console::finish();
     API::finish();

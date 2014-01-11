@@ -116,3 +116,25 @@ $(function() {
     setInterval(apiStatusTime, 5000);
     apiStatusTime();
 });
+
+var apiUpdateConsoleTimeout;
+function apiUpdateConsole(dest) {
+    apiUpdateConsoleTimeout = setTimeout(function() {
+        api('/' + base_url + 'api/core/index.php', {
+            action: 'console'
+        }, function(data) {
+            if (typeof data['status'] !== 'undefined')
+            {
+                dest.html(data['status']);
+                dest[0].scrollTop = dest[0].scrollHeight;
+            }
+            apiUpdateConsole(dest);
+        });
+    }, 200);
+}
+
+function apiStopConsole() {
+    setTimeout(function() {
+        clearTimeout(apiUpdateConsoleTimeout);
+    }, 1000);
+}

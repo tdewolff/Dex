@@ -87,7 +87,7 @@
 }
 .ui-tooltip {
 	padding:0;
-    z-index:9999;
+    z-index:7000;
     position:absolute;
 	display:inline-block;
 	background-color:#374147;

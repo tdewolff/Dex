@@ -2,8 +2,7 @@
 <div class="fullwidth-column">
     <h3>Dexterous</h3>
     <textarea id="console"></textarea>
-    <a href="#" class="small-button" data-tooltip="Optimizes files to speed up the site" data-action="optimize_site"><i class="fa fa-magic"></i>&ensp;Optimize site</a>
-    <a href="#" class="small-button" data-tooltip="Publish all changed content to the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
+    <a href="#" class="small-button" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
@@ -45,53 +44,18 @@
         bar.next().text('0 B').next().text('0%');
     }
 
-    var updateConsoleTimeout;
-    function updateConsole() {
-        updateConsoleTimeout = setTimeout(function() {
-            api('/' + base_url + 'api/core/index.php', {
-                action: 'status'
-            }, function(data) {
-                if (typeof data['status'] !== 'undefined')
-                {
-                    $('#console').html(data['status']);
-                    $('#console')[0].scrollTop = $('#console')[0].scrollHeight;
-                }
-                updateConsole();
-            });
-        }, 500);
-    }
-
-    function stopConsole() {
-        setTimeout(function() {
-            clearTimeout(updateConsoleTimeout);
-        }, 1000);
-    }
-
     $('a[data-action]').click(function() {
         var action = $(this).attr('data-action');
-        if (action == 'optimize_site') {
-            apiStatusWorking('Optimizing site...');
-            updateConsole();
-            api('/' + base_url + 'api/core/index.php', {
-                action: action
-            }, function(data) {
-                stopConsole();
-                apiStatusSuccess('Optimized site');
-            }, function() {
-                stopConsole();
-                apiStatusError('Optimizing site failed');
-                return false;
-            });
-        } else if (action == 'publish_site') {
+        if (action == 'publish_site') {
             apiStatusWorking('Publishing site...');
-            updateConsole();
+            apiUpdateConsole($('#console'));
             api('/' + base_url + 'api/core/index.php', {
                 action: action
             }, function(data) {
-                stopConsole();
+                apiStopConsole();
                 apiStatusSuccess('Publish site');
             }, function() {
-                stopConsole();
+                apiStopConsole();
                 apiStatusError('Publishing site failed');
                 return false;
             });

@@ -115,6 +115,22 @@ if (Common::requestResource())
 ////////////////////
 // not a resource //
 
+// pre-API; prevent session_start from blocking long-polling with console
+if (Common::requestApi())
+{
+    require_once('include/api.class.php');
+
+    API::load();
+    if (API::action('console'))
+    {
+        require_once('include/console.class.php');
+
+        if (Console::hasOutput())
+            API::set('status', Console::getOutput());
+        API::finish();
+    }
+}
+
 require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/user.class.php');
@@ -151,12 +167,9 @@ register_shutdown_function(function() {
 });
 
 
-// API
+// API; continued
 if (Common::requestApi())
 {
-    require_once('include/api.class.php');
-
-    API::load();
     $filename = API::expandUrl($url);
     if (!is_file($filename))
         user_error('Could not find API file "' . $filename . '"', ERROR);
