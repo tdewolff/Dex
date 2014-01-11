@@ -1,5 +1,9 @@
 <h2>Themes</h2>
 <ul id="themes" class="grid">
+    <li id="load_status" class="api_load_status">
+        <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+        <div class="error"><i class="fa fa-times"></i></div>
+    </li>
 </ul>
 
 <script id="theme_item" type="text/x-dot-template">
@@ -14,12 +18,16 @@
     $(function() {
         var themes = $('#themes');
         var theme_item = doT.template($('#theme_item').text());
+        apiLoadStatusWorking($('#load_status'));
         api('/' + base_url + 'api/core/themes.php', {
             action: 'get_themes'
         }, function(data) {
+            apiLoadStatusSuccess($('#load_status'));
             $.each(data['themes'], function() {
                 themes.append(theme_item(this));
             });
+        }, function() {
+            apiLoadStatusError($('#load_status'));
         });
 
         themes.on('click', 'li', function() {

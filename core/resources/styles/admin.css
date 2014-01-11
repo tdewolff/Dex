@@ -1422,6 +1422,18 @@ ul.grid-3 > li {
 #api_status > div > i.fa-times {
   color: #d11f49;
 }
+.api_load_status > div {
+  display: none;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+}
+.api_load_status > div > i {
+  vertical-align: middle;
+}
+.api_load_status > div > i.fa-times {
+  color: #d11f49;
+}
 #logs li:not(:first-of-type) {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 10px;

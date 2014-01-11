@@ -1,11 +1,15 @@
 <h2>Users</h2>
 <a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button" style="margin-left:20px;"><i class="fa fa-plus"></i>&ensp;New user</a>
 <ul id="users" class="table">
-  <li>
-	<div style="width:120px;"></div>
-	<div style="width:200px;">Username</div>
-	<div style="width:580px;">Role</div>
-  </li>
+    <li>
+        <div style="width:120px;"></div>
+        <div style="width:200px;">Username</div>
+        <div style="width:580px;">Role</div>
+    </li>
+    <li id="load_status" class="api_load_status">
+        <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+        <div class="error"><i class="fa fa-times"></i></div>
+    </li>
 </ul>
 
 <script id="user_item" type="text/x-dot-template">
@@ -30,12 +34,16 @@
     $(function() {
         var users = $('#users');
         var user_item = doT.template($('#user_item').text());
+        apiLoadStatusWorking($('#load_status'));
         api('/' + base_url + 'api/core/users.php', {
             action: 'get_users'
         }, function(data) {
+            apiLoadStatusSuccess($('#load_status'));
             $.each(data['users'], function() {
                 users.append(user_item(this));
             });
+        }, function() {
+            apiLoadStatusError($('#load_status'));
         });
 
         users.on('click', 'a.sure', function() {

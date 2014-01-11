@@ -1,11 +1,15 @@
 <h2>Modules</h2>
 <ul id="modules" class="table">
-  <li>
-	<div style="width:120px;"></div>
-	<div style="width:120px;">Name</div>
-	<div style="width:120px;">Author</div>
-	<div style="width:540px;">Description</div>
-  </li>
+    <li>
+        <div style="width:120px;"></div>
+        <div style="width:120px;">Name</div>
+        <div style="width:120px;">Author</div>
+        <div style="width:540px;">Description</div>
+    </li>
+    <li id="load_status" class="api_load_status">
+        <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+        <div class="error"><i class="fa fa-times"></i></div>
+    </li>
 </ul>
 
 <script id="module_item" type="text/x-dot-template">
@@ -39,9 +43,11 @@
     $(function() {
         var modules = $('#modules');
         var module_item = doT.template($('#module_item').text());
+        apiLoadStatusWorking($('#load_status'));
         api('/' + base_url + 'api/core/modules.php', {
             action: 'get_modules'
         }, function(data) {
+            apiLoadStatusSuccess($('#load_status'));
             $.each(data['modules'], function() {
                 var item = $(module_item(this));
                 if (item.hasClass('disabled'))
@@ -50,6 +56,8 @@
                     item.find('a.enable').hide();
                 modules.append(item);
             });
+        }, function() {
+            apiLoadStatusError($('#load_status'));
         });
 
         modules.on('click', 'a.enable', function() {

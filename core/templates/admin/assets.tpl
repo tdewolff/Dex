@@ -27,9 +27,17 @@
             <div style="width:100px;">Size</div>
             <div style="width:40px;"></div>
         </li>
+        <li id="load_status_directories" class="api_load_status">
+            <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+            <div class="error"><i class="fa fa-times"></i></div>
+        </li>
     </ul>
 
     <ul id="images" class="grid">
+        <li id="load_status_images" class="api_load_status">
+            <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+            <div class="error"><i class="fa fa-times"></i></div>
+        </li>
     </ul>
 </div>
 
@@ -112,25 +120,33 @@
                 });
             });
 
+            apiLoadStatusWorking($('#load_status_directories'));
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'get_directories',
                 dir: dir
             }, function(data) {
+                apiLoadStatusSuccess($('#load_status_directories'));
                 $.each(data['directories'], function() {
                     $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
                 });
+            }, function() {
+                apiLoadStatusError($('#load_status_directories'));
             });
 
+            apiLoadStatusWorking($('#load_status_images'));
             api('/' + base_url + 'api/core/assets.php', {
                 action: 'get_assets',
                 dir: dir
             }, function(data) {
+                apiLoadStatusSuccess($('#load_status_images'));
                 $.each(data['assets'], function() {
                     if (this.is_image)
                         $(image_item(this)).hide().appendTo(images).slideDown('fast');
                     else
                         $(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
                 });
+            }, function() {
+                apiLoadStatusError($('#load_status_images'));
             });
         }
 

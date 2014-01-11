@@ -13,7 +13,6 @@ if (API::action('delete_user'))
 }
 else if (API::action('get_users'))
 {
-    sleep(3);
     $users = array();
     $table = $db->query("SELECT * FROM user;");
     while ($row = $table->fetch())

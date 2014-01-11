@@ -112,6 +112,24 @@ function apiStatusTime() {
     });
 }
 
+function apiLoadStatusClear(load) {
+    load.find('div').stop(true).hide();
+}
+
+function apiLoadStatusWorking(load) {
+    apiLoadStatusClear(load);
+    load.find('div.working').fadeIn('fast');
+}
+
+function apiLoadStatusSuccess(load) {
+    load.remove();
+}
+
+function apiLoadStatusError(load) {
+    apiLoadStatusClear(load);
+    load.find('div.error').fadeIn('fast');
+}
+
 $(function() {
     setInterval(apiStatusTime, 5000);
     apiStatusTime();

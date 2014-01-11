@@ -1,13 +1,17 @@
 <h2>Pages</h2>
 <a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button" style="margin-left:20px;"><i class="fa fa-plus"></i>&ensp;New page</a>
 <ul id="pages" class="table">
-  <li>
-    <div style="width:80px;"></div>
-	<div style="width:200px;">Title</div>
-	<div style="width:200px;">Link</div>
-	<div style="width:380px;">Content</div>
-    <div style="width:40px;"></div>
-  </li>
+    <li>
+        <div style="width:80px;"></div>
+        <div style="width:200px;">Title</div>
+        <div style="width:200px;">Link</div>
+        <div style="width:380px;">Content</div>
+        <div style="width:40px;"></div>
+    </li>
+    <li id="load_status" class="api_load_status">
+        <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+        <div class="error"><i class="fa fa-times"></i></div>
+    </li>
 </ul>
 
 <script id="page_item" type="text/x-dot-template">
@@ -31,12 +35,16 @@
     $(function() {
         var pages = $('#pages');
         var page_item = doT.template($('#page_item').text());
+        apiLoadStatusWorking($('#load_status'));
         api('/' + base_url + 'api/core/pages.php', {
             action: 'get_pages'
         }, function(data) {
+            apiLoadStatusSuccess($('#load_status'));
             $.each(data['pages'], function() {
                 pages.append(page_item(this));
             });
+        }, function() {
+            apiLoadStatusError($('#load_status'));
         });
 
         pages.on('click', 'a.sure', function() {
