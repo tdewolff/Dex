@@ -4,8 +4,8 @@
         <div style="width:40px;"></div>
         <div style="width:120px;"></div>
         <div style="width:240px;">Name</div>
-        <div style="width:120px;">Title</div>
-        <div style="width:380px;">Link</div>
+        <div style="width:200px;">Title</div>
+        <div style="width:300px;">Link</div>
     </li>
 </ul>
 
@@ -14,8 +14,8 @@
         <div style="width:40px;"><i class="fa fa-eye"></i></div>
         <div style="width:120px;"><i class="fa fa-long-arrow-right"></i><i class="fa fa-long-arrow-right"></i><i class="fa fa-bars"></i></div>
         <div style="width:240px;"><input type="text" value="{{=it.name}}" {{?!it.enabled}}class="unused"{{?}}></div>
-        <div style="width:120px;">{{=it.title}}</div>
-        <div style="width:380px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">/{{=it.url}}</a></div>
+        <div style="width:200px;">{{=it.title}}</div>
+        <div style="width:300px;"><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}/{{=it.url}}{{??}}(root){{?}}</a></div>
     </li>
 </script>
 

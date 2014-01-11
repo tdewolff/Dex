@@ -45,7 +45,7 @@ var Form = function(form) {
             self.updateUnused(name);
 
         if (!self.form.find('button[type="submit"]').length)
-            self.needSave();
+            self.needsSave();
     });
 
     this.form.on('change', 'input', function(e) {

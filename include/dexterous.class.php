@@ -30,7 +30,7 @@ class Dexterous
         self::$externalScripts['header'][] = $script;
     }
 
-    public static function addExternalDeferredScript($script) {
+    public static function addDeferredExternalScript($script) {
         self::$externalScripts['footer'][] = $script;
     }
 

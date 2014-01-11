@@ -44,15 +44,15 @@ Download the zipfile from Git and extract. Move the files onto your webserver an
 Accessing the admin panel is done by appending admin/ to the base site URL. Removing database.sqlite3 will reinitiate the setup process.
 
 Make sure that the following Apache modules are enabled:
+- mod_rewrite (essential)
 - mod_deflate
 - mod_expires
 - mod_filter
 - mod_headers
-- mod_rewrite (essential)
 
 And these PHP extensions:
-- php_curl
 - php_sqlite3 (essential)
+- php_curl (or allow_url_fopen = 1)
 
 ### Installing modules, themes and templates
 

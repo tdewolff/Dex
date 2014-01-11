@@ -18,8 +18,8 @@ function api(url, data, success, error) {
                 }
                 else if (typeof success !== 'undefined' && success)
                 {
-                    applyTooltips();
                     success(data);
+                    applyTooltips();
                 }
             },
             error: function(data) {

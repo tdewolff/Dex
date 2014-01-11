@@ -1447,6 +1447,12 @@ ul.grid-3 > li {
   margin-right: 0;
   font-size: 80%;
 }
+#pages li div:last-of-type {
+  display: none;
+}
+#pages li:hover div:last-of-type {
+  display: block;
+}
 .popup-wrapper {
   /*width:800px;
 	overflow:hidden;*/

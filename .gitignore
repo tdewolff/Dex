@@ -8,6 +8,10 @@ assets/
 cache/
 logs/
 
-database.sqlite3
+*.min.css
+*.min.js
+
+current.db
+develop.db
 GRONINGENBIJLES.md
 console.txt

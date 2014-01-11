@@ -13,7 +13,19 @@ session_start();
 if (!Session::isAdmin())
     user_error('Forbidden access', ERROR);
 
-if (API::action('optimize_site'))
+if (API::action('publish_site'))
+{
+    Console::appendLine('---- Copying develop.db to current.db ----');
+
+    $db->exec("BEGIN IMMEDIATE;");
+    copy('develop.db', 'current.db');
+    $db->exec("ROLLBACK;");
+
+    Console::appendLine('done');
+    Console::finish();
+    API::finish();
+}
+else if (API::action('optimize_site'))
 {
     require_once('vendor/closure-compiler.php');
     require_once('vendor/css-compressor.php');
@@ -154,8 +166,6 @@ else if (API::action('clear_cache'))
 }
 else if (API::action('get_logs'))
 {
-    require_once('include/file.php');
-
     $lines = API::has('lines') ? API::get('lines') : 100;
 
     $logs = array();

@@ -53,6 +53,7 @@ $url = explode('/', $request_url);
 if (empty($url[count($url) - 1]))
     unset($url[count($url) - 1]);
 
+// TODO: remove?
 //if (!Common::validUrl($request_url))
 //    user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
 
@@ -91,7 +92,7 @@ if (Common::requestResource())
     {
         if (Resource::isImage($extension))
         {
-            if (is_file(Common::insertMinExtension($filename)))
+            if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
                 $filename = Common::insertMinExtension($filename);
 
             if ($querystring_position !== false)
@@ -118,7 +119,16 @@ require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/session.class.php');
 
-$db = new Database('database.sqlite3');
+if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db') && filesize('develop.db') != 0)
+    copy('develop.db', 'current.db');
+elseif (is_file('current.db') && filesize('current.db') != 0 && (!is_file('develop.db') || filesize('develop.db') == 0))
+    copy('current.db', 'develop.db');
+
+if (Session::isUser())
+    $db = new Database('develop.db');
+else
+    $db = new Database('current.db');
+
 if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 
@@ -167,6 +177,7 @@ require_once('core/hooks.php');
 
 Session::refreshLogin();
 Core::assign('base_url', $base_url);
+
 
 // handle admin area
 if (Common::requestAdmin() || filesize($db->filename) == 0)

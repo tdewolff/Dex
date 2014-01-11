@@ -3,6 +3,7 @@
     <h3>Dexterous</h3>
     <textarea id="console"></textarea>
     <a href="#" class="small-button" data-tooltip="Optimizes files to speed up the site" data-action="optimize_site"><i class="fa fa-magic"></i>&ensp;Optimize site</a>
+    <a href="#" class="small-button" data-tooltip="Publish all changed content to the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
@@ -79,6 +80,19 @@
             }, function() {
                 stopConsole();
                 apiStatusError('Optimizing site failed');
+                return false;
+            });
+        } else if (action == 'publish_site') {
+            apiStatusWorking('Publishing site...');
+            updateConsole();
+            api('/' + base_url + 'api/core/index.php', {
+                action: action
+            }, function(data) {
+                stopConsole();
+                apiStatusSuccess('Publish site');
+            }, function() {
+                stopConsole();
+                apiStatusError('Publishing site failed');
                 return false;
             });
         } else if (action == 'clear_logs') {

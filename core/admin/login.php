@@ -3,7 +3,7 @@
 $form = new Form('login');
 
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');
-$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
+$form->addText('username', 'Username or Email', 'You can log in either with username or email address', '', array('[a-zA-Z0-9-_]*|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 3, 50, 'Must be a valid username or email address format'));
 $form->addPassword('password', 'Password', '');
 
 $form->addSeparator();
@@ -16,6 +16,9 @@ if ($form->submitted())
 	if ($form->validate())
 	{
 		$user = $db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
+        if (!$user)
+            $user = $db->querySingle("SELECT * FROM user WHERE email = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
+
 		if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 		{
 			Session::logIn($user['user_id'], $user['permission']);

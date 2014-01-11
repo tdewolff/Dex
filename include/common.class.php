@@ -76,7 +76,7 @@ class Common
 		if ($size > 0) {
 		    $base = log($size) / log(1000);
 		    $suffixes = array('', 'k', 'M', 'G', 'T');
-		    return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)] . 'B';
+		    return round(pow(1000, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)] . 'B';
 		}
 		return '0 B';
 	}

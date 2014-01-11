@@ -13,7 +13,9 @@
         <div style="width:120px; overflow:visible;">
             <div class="dropdown">
                 <a href="/<?php echo $_['base_url']; ?>admin/module/{{=it.module_name}}/" class="dropdown-select list-button">
-                    <i class="fa fa-arrow-right"></i>&ensp;Go to</a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i>
+                    <i class="fa fa-arrow-right"></i>&ensp;Go to
+                </a><a href="#" class="dropdown-toggle list-button">
+                    <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     <li>

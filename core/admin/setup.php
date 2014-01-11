@@ -135,6 +135,10 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
             'admin'
         );");
 
+        $db->exec("BEGIN IMMEDIATE;");
+        copy('current.db', 'develop.db');
+        $db->exec("ROLLBACK;");
+
         Session::logIn($db->lastId(), 'admin');
         $form->setRedirect('/' . $base_url . 'admin/');
     }

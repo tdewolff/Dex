@@ -1,5 +1,9 @@
 <?php
 
+session_start();
+if (!Session::loggedIn())
+    user_error('Forbidden access', ERROR);
+
 if (API::action('modify_menu'))
 {
     $db->exec("DELETE FROM module_menu;");
