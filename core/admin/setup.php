@@ -133,6 +133,13 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
             '" . $db->escape($form->get('email')) . "',
             '" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
             'admin'
+        );
+
+        DROP TABLE IF EXISTS stats;
+        CREATE TABLE stats (
+            stat_id INTEGER PRIMARY KEY,
+            time INTEGER,
+            ip_address TEXT
         );");
 
         $db->exec("BEGIN IMMEDIATE;");

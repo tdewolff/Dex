@@ -116,6 +116,9 @@ if (API::action('publish_site'))
         }
     }
 
+    Console::appendLine('');
+    Console::appendLine('Finished');
+
     Console::finish();
     API::finish();
 }

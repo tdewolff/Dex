@@ -1,8 +1,7 @@
 <h2>Admin panel</h2>
 <div class="fullwidth-column">
     <h3>Dexterous</h3>
-    <textarea id="console"></textarea>
-    <a href="#" class="small-button" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
+    <a href="#" id="publish_site" class="small-button" data-tooltip="Publish and optimize the content of the site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
@@ -46,20 +45,7 @@
 
     $('a[data-action]').click(function() {
         var action = $(this).attr('data-action');
-        if (action == 'publish_site') {
-            apiStatusWorking('Publishing site...');
-            apiUpdateConsole($('#console'));
-            api('/' + base_url + 'api/core/index.php', {
-                action: action
-            }, function(data) {
-                apiStopConsole();
-                apiStatusSuccess('Publish site');
-            }, function() {
-                apiStopConsole();
-                apiStatusError('Publishing site failed');
-                return false;
-            });
-        } else if (action == 'clear_logs') {
+        if (action == 'clear_logs') {
             apiStatusWorking('Clearing logs...');
             api('/' + base_url + 'api/core/index.php', {
                 action: action

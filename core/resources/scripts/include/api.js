@@ -50,7 +50,7 @@ function apiFatal(message) {
                 'border': 'solid 1px #EED3D7'
             });
         },
-        overlay : {
+        overlay: {
             closeClick: true,
             locked: false
         }

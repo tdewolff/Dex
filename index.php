@@ -186,9 +186,14 @@ ob_start('minifyHtml');
 
 require_once('include/dexterous.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
+require_once('include/stats.class.php');
 require_once('core/hooks.php');
 
-User::refreshLogin();
+if (User::loggedIn())
+    User::refreshLogin();
+//else
+    Stats::registerPageVisit();
+
 Core::assign('base_url', $base_url);
 
 

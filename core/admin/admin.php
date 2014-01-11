@@ -20,6 +20,7 @@ Core::addDeferredScript('vendor/doT.min.js');
 Core::addDeferredScript('include/api.js');
 Core::addDeferredScript('admin.js');
 Core::addDeferredScript('upload.js');
+Core::addDeferredScript('admin-bar.js');
 
 // setup
 if (filesize('current.db') == 0)
