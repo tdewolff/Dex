@@ -8,6 +8,8 @@ if (isset($url[1]) && $url[1] == 'logs')
 	exit;
 }
 
+Stats::pageVisitChart();
+
 $logs_size = 0;
 $handle = opendir('logs/');
 while (($log_name = readdir($handle)) !== false)
