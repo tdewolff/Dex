@@ -1,6 +1,6 @@
 <h2>Admin panel</h2>
 <div class="fullwidth-column">
-    <h3>Dexterous</h3>
+    <h3>Dex</h3>
     <a href="#" id="publish_site" class="small-button" data-tooltip="Publish and optimize the content of the site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
 </div>
 <div class="halfwidth-column">

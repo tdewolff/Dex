@@ -184,7 +184,7 @@ if (Common::requestApi())
 
 ob_start('minifyHtml');
 
-require_once('include/dexterous.class.php');
+require_once('include/dex.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
 require_once('include/stats.class.php');
 require_once('core/hooks.php');

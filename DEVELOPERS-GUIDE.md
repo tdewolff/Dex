@@ -1,7 +1,7 @@
 Developers Guide
 ================
 
-This document contains information about how Dexterous works and is useful for developers of modules, themes or templates.
+This document contains information about how Dex works and is useful for developers of modules, themes or templates.
 
 Creating modules
 ----------------

@@ -1,6 +1,6 @@
 <?php
 
-class Dexterous
+class Dex
 {
 	public static $vars = array();
 	public static $titles = array();
@@ -58,7 +58,7 @@ class Dexterous
     }
 }
 
-class Core extends Dexterous
+class Core extends Dex
 {
 	public static function render($_template) {
 		$_ = self::$vars;
@@ -174,7 +174,7 @@ class Core extends Dexterous
     }
 }
 
-class Module extends Dexterous
+class Module extends Dex
 {
 	public static $module_name = '';
 
@@ -212,7 +212,7 @@ class Module extends Dexterous
 	}
 }
 
-class Theme extends Dexterous
+class Theme extends Dex
 {
 	public static $theme_name = '';
 

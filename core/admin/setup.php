@@ -152,7 +152,7 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
     $form->finish();
 }
 
-Core::addTitle('Setup Dexterous');
+Core::addTitle('Setup Dex');
 
 Hooks::emit('admin-header');
 

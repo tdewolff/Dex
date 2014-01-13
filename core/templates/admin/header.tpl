@@ -30,7 +30,7 @@
 
         <?php if (isset($_['admin_links'])): ?>
         <section class="page-wrapper">
-            <h1>Dexterous</h1>
+            <h1>Dex</h1>
             <div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?></div>
             <div id="left-column">
                 <ul>
@@ -50,6 +50,6 @@
             <div id="right-column">
         <?php else: ?>
         <section class="page-wrapper-slim">
-            <h1>Dexterous</h1>
+            <h1>Dex</h1>
             <div id="main">
         <?php endif; ?>

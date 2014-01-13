@@ -2,7 +2,7 @@
 
 require_once('include/form.class.php');
 
-Core::addTitle('Dexterous');
+Core::addTitle('Dex');
 Core::addTitle('Admin panel');
 Core::addStyle('include/normalize.css');
 Core::addStyle('vendor/font-awesome.css');

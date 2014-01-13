@@ -1,8 +1,8 @@
-Creating Packages for Dexterous
+Creating Packages for Dex
 ===============================
 
-Packages may be installed from the admin panel of any live dexterous
-web-site. This document describes dexterous packages, and how to create
+Packages may be installed from the admin panel of any live Dex
+web-site. This document describes Dex packages, and how to create
 and publish them.
 
 Meta-Data
@@ -23,15 +23,15 @@ Your package must contain the following meta-data:
 
 * name: The unique name for your package.
 * version: The unique version of your package. The version must be compliant with http://semver.org/ Semantic Versioning 2.0.0. Placing a wildcard 'x' in your package version is not allowed.
-* type: Either "theme", "template", or "module" as of Dexterous 0.x.
+* type: Either "theme", "template", or "module" as of Dex 0.x.
 * description: A brief description (50-250 characters).
 * ppackage: The package is a folder, zipped into a .zip file, encoded in base64.
 * picture: A thumbnail picture for your package, with a width of 150px, height of 150px.
-* compatible: An array of dexterous versions your package is compatible with. You may use the wildcard 'x' to assume your package is compatible with any subversion. For example, 0.x is compatible with 0.1 and 0.2.3-alpha. You may not use the wildcard 'x' in the top-most version. For example, using ["x"] is not allowed.
+* compatible: An array of dex versions your package is compatible with. You may use the wildcard 'x' to assume your package is compatible with any subversion. For example, 0.x is compatible with 0.1 and 0.2.3-alpha. You may not use the wildcard 'x' in the top-most version. For example, using ["x"] is not allowed.
 * email: An email we can use to contact you if we accept your package, or if for some reason we had to deny or remove your package from the repository.
 
 Your package may be removed or denied if it is not compatible with a version
-of dexterous it is said to be compatible with. You will receive an email
+of Dex it is said to be compatible with. You will receive an email
 whenever your package is removed or denied.
 
 
