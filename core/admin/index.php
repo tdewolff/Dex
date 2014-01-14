@@ -8,8 +8,6 @@ if (isset($url[1]) && $url[1] == 'logs')
 	exit;
 }
 
-Stats::pageVisitChart();
-
 $logs_size = 0;
 $handle = opendir('logs/');
 while (($log_name = readdir($handle)) !== false)
@@ -25,6 +23,8 @@ while (($cache_name = readdir($handle)) !== false)
 $log_name = Log::getFilename();
 $slash_position = strrpos($log_name, '/');
 $log_name = $slash_position ? substr($log_name, $slash_position + 1) : $log_name;
+
+Core::addExternalScript('//d3js.org/d3.v3.min.js');
 
 Hooks::emit('admin-header');
 

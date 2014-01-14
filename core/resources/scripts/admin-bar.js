@@ -5,8 +5,7 @@ $('#publish-site').on('click', 'a', function() {
 
     apiStatusWorking('Publishing site...');
     apiUpdateConsole($('#console'));
-    api('/' + base_url + 'api/core/index.php', {
-        action: 'publish_site'
+    api('/' + base_url + 'api/core/publish-page.php', {
     }, function(data) {
         apiStopConsole();
         apiStatusSuccess('Published site');

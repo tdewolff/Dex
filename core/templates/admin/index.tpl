@@ -1,7 +1,11 @@
 <h2>Admin panel</h2>
 <div class="fullwidth-column">
     <h3>Visitors</h3>
-    [Page visit statistics graph]
+    <div id="load_stats" class="api_load_status">
+        <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+        <div class="error"><i class="fa fa-times"></i></div>
+    </div>
+    <iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
@@ -42,6 +46,23 @@
         bar.find('div').css('width', '0%').removeClass('bar_alert');
         bar.next().text('0 B').next().text('0%');
     }
+
+    $(function() {
+        apiLoadStatusWorking($('#load_stats'));
+        $('#stats_frame').load(function() {
+            $('#stats_frame').ready(function() {
+                api('/' + base_url + 'api/core/stats.php', {
+                    action: 'page-visits'
+                }, function(data) {
+                    apiLoadStatusSuccess($('#load_stats'));
+                    $('#stats_frame').css('height', '200px');
+                    $('#stats_frame')[0].contentWindow.drawStats(data['page-visits']);
+                }, function() {
+                    apiLoadStatusError($('#load_stats'));
+                });
+            });
+        });
+    });
 
     $('a[data-action]').click(function() {
         var action = $(this).attr('data-action');

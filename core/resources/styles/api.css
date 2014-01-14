@@ -22,7 +22,7 @@
 }
 
 #api_status > div > i {
-    .text-shadow(0 0 2px rgba(0, 0, 0, 0.75));
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
     vertical-align: middle;
 }
 
