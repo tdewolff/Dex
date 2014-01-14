@@ -23,7 +23,7 @@ class Common
     public static function requestAdmin()
     {
         global $request_url;
-        return strpos($request_url, 'admin/') === 0;
+        return strpos($request_url, 'admin/') === 0 || filesize('current.db') == 0;
     }
 
     public static function requestApi()

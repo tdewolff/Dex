@@ -1,7 +1,7 @@
 <h2>Admin panel</h2>
 <div class="fullwidth-column">
-    <h3>Dex</h3>
-    <a href="#" id="publish_site" class="small-button" data-tooltip="Publish and optimize the content of the site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
+    <h3>Visitors</h3>
+    [Page visit statistics graph]
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>

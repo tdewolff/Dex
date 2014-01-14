@@ -19,7 +19,8 @@ function api(url, data, success, error) {
                 else if (typeof success !== 'undefined' && success)
                 {
                     success(data);
-                    applyTooltips();
+                    if (typeof applyTooltips !== 'undefined')
+                        applyTooltips();
                 }
             },
             error: function(data) {

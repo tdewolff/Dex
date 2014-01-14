@@ -143,7 +143,7 @@ else if (is_file('current.db') && filesize('current.db') != 0 && (!is_file('deve
 Bcrypt::setRounds(8);
 
 session_start();
-if (User::loggedIn() || Common::requestAdmin() || filesize('current.db') == 0) // requestAdmin to handle login and setup
+if (User::loggedIn() || Common::requestAdmin())
     $db = new Database('develop.db');
 else
     $db = new Database('current.db');
@@ -190,7 +190,19 @@ require_once('include/stats.class.php');
 require_once('core/hooks.php');
 
 if (User::loggedIn())
+{
     User::refreshLogin();
+
+    Core::addStyle('vendor/font-awesome.css');
+    Core::addStyle('vendor/fancybox.css');
+    Core::addStyle('api.css');
+    Core::addStyle('admin-bar.css');
+    Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+    Core::addDeferredScript('api.js');
+    Core::addDeferredScript('admin-bar.js');
+    Core::assign('username', User::getUsername());
+    Core::assign('role', User::getRole());
+}
 //else
     Stats::registerPageVisit();
 
@@ -198,7 +210,7 @@ Core::assign('base_url', $base_url);
 
 
 // handle admin area
-if (Common::requestAdmin() || filesize('current.db') == 0)
+if (Common::requestAdmin())
     require_once('core/admin/admin.php'); // always exits
 
 

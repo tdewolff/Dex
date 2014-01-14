@@ -919,17 +919,11 @@ body {
   text-align: justify;
 }
 .page-wrapper {
-  display: none;
-  /* gets faded in */
-
   margin: 0 auto;
   width: 1200px;
   color: #303030;
 }
 .page-wrapper-slim {
-  display: none;
-  /* gets faded in */
-
   margin: 0 auto;
   margin-bottom: 40px;
   width: 700px;
@@ -982,12 +976,6 @@ h1 {
   -moz-border-bottom-right-radius: 5px;
   border-bottom-right-radius: 5px;
   padding: 40px 60px;
-}
-#current-user {
-  color: #E0E0E0;
-  font-size: 90%;
-  padding-bottom: 5px;
-  text-align: right;
 }
 #left-column {
   position: absolute;
@@ -1398,42 +1386,6 @@ ul.grid-3 > li {
 #assets #images li img.small {
   margin: 10px 0;
 }
-#api_status {
-  position: fixed;
-  top: 1em;
-  right: 1em;
-}
-#api_status > div {
-  display: none;
-  white-space: nowrap;
-}
-#api_status > div > span {
-  color: #F0F0F0;
-  font-size: 90%;
-  vertical-align: middle;
-}
-#api_status > div > i {
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
-  vertical-align: middle;
-}
-#api_status > div > i.fa-check {
-  color: #24c279;
-}
-#api_status > div > i.fa-times {
-  color: #d11f49;
-}
-.api_load_status > div {
-  display: none;
-  white-space: nowrap;
-  width: 100%;
-  text-align: center;
-}
-.api_load_status > div > i {
-  vertical-align: middle;
-}
-.api_load_status > div > i.fa-times {
-  color: #d11f49;
-}
 #logs li:not(:first-of-type) {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 10px;
@@ -1470,14 +1422,6 @@ ul.grid-3 > li {
 }
 #logs li:not(:first-of-type) > div {
   line-height: 100%;
-}
-#console {
-  float: none;
-  width: 800px;
-  height: 250px;
-  margin-left: 0;
-  margin-right: 0;
-  font-size: 80%;
 }
 #pages li div:last-of-type {
   display: none;

@@ -8,19 +8,19 @@ Core::addStyle('include/normalize.css');
 Core::addStyle('vendor/font-awesome.css');
 Core::addStyle('vendor/jquery-ui.css');
 Core::addStyle('vendor/fancybox.css');
+Core::addStyle('api.css');
 Core::addStyle('admin.css');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-Core::addScript('include/slidein.js');
+Core::addScript('slidein.js');
 Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
 Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
-Core::addDeferredScript('include/api.js');
+Core::addDeferredScript('api.js');
 Core::addDeferredScript('admin.js');
 Core::addDeferredScript('upload.js');
-Core::addDeferredScript('admin-bar.js');
 
 // setup
 if (filesize('current.db') == 0)
@@ -86,8 +86,6 @@ $admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',       
 $admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'fa-hdd-o',    'title' => 'Database',  'admin_only' => 1);
 $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'fa-sign-out', 'title' => 'Log out',   'admin_only' => 0);
 
-Core::assign('username', User::getUsername());
-Core::assign('role', User::getRole());
 Core::assign('admin_links', $admin_links);
 
 foreach ($admin_links as $i => $admin_link)

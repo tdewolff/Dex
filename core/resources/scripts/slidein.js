@@ -2,8 +2,7 @@ $(function() {
     $('.page-wrapper, .page-wrapper-slim')
         .css({
             marginTop: '-10px',
-            opacity: '0',
-            display: 'block'
+            opacity: '0'
         })
         .animate({
             marginTop: '0',

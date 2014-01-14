@@ -28,10 +28,19 @@
             <div class="error"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
         </div>
 
-        <?php if (isset($_['admin_links'])): ?>
+        <?php if (User::loggedIn()) { ?>
+        <div id="admin-bar">
+            <?php if (filemtime('develop.db') > filemtime('current.db')) { ?>
+            <div id="publish-site">
+                <a href="#" class="small-button" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
+            </div>
+            <?php } ?>
+            <div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
+            <div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="/<?php echo $_['base_url']; ?>admin/logout/" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
+        </div>
+        <?php } if (isset($_['admin_links'])): ?>
         <section class="page-wrapper">
             <h1>Dex</h1>
-            <div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?></div>
             <div id="left-column">
                 <ul>
                     <?php foreach ($_['admin_links'] as $i => $link): ?>
