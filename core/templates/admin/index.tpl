@@ -5,7 +5,7 @@
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
         <div class="error"><i class="fa fa-times"></i></div>
     </div>
-    <iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    <iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 </div>
 <div class="halfwidth-column">
     <h3>Logs</h3>
@@ -51,11 +51,11 @@
         apiLoadStatusWorking($('#load_stats'));
         $('#stats_frame').load(function() {
             $('#stats_frame').ready(function() {
-                api('/' + base_url + 'api/core/stats.php', {
+                api('/' + base_url + 'api/core/stats/', {
                     action: 'page-visits'
                 }, function(data) {
                     apiLoadStatusSuccess($('#load_stats'));
-                    $('#stats_frame').css('height', '200px');
+                    $('#stats_frame').slideDown();
                     $('#stats_frame')[0].contentWindow.drawStats(data['page-visits']);
                 }, function() {
                     apiLoadStatusError($('#load_stats'));
@@ -68,7 +68,7 @@
         var action = $(this).attr('data-action');
         if (action == 'clear_logs') {
             apiStatusWorking('Clearing logs...');
-            api('/' + base_url + 'api/core/index.php', {
+            api('/' + base_url + 'api/core/index/', {
                 action: action
             }, function(data) {
                 apiStatusSuccess('Cleared logs');
@@ -78,7 +78,7 @@
             });
         } else if (action == 'clear_cache') {
             apiStatusWorking('Clearing cache...');
-            api('/' + base_url + 'api/core/index.php', {
+            api('/' + base_url + 'api/core/index/', {
                 action: action
             }, function(data) {
                 apiStatusSuccess('Cleared cache');

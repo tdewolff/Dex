@@ -30,11 +30,9 @@
 
         <?php if (User::loggedIn()) { ?>
         <div id="admin-bar">
-            <?php if (filemtime('develop.db') > filemtime('current.db')) { ?>
-            <div id="publish-site">
+            <div id="publish-site" <?php if (filemtime('develop.db') < filemtime('current.db')) { echo 'class="fade"'; } ?>>
                 <a href="#" class="small-button" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-magic"></i>&ensp;Publish site</a>
             </div>
-            <?php } ?>
             <div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
             <div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="/<?php echo $_['base_url']; ?>admin/logout/" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
         </div>

@@ -1,5 +1,14 @@
 <?php
 
+if (!User::loggedIn())
+    user_error('Forbidden access', ERROR);
+
+if (API::action('logout'))
+{
+    User::logOut();
+    API::finish();
+}
+
 if (!User::isAdmin())
 	user_error('Forbidden access', ERROR);
 

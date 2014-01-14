@@ -35,7 +35,7 @@
         var users = $('#users');
         var user_item = doT.template($('#user_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/users.php', {
+        api('/' + base_url + 'api/core/users/', {
             action: 'get_users'
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));
@@ -49,7 +49,7 @@
         users.on('click', 'a.sure', function() {
             apiStatusWorking('Deleting user...');
             var item = $(this);
-            api({
+            api('/' + base_url + 'api/core/users/', {
                 action: 'delete_user',
                 user_id: item.attr('data-user-id')
             }, function() {

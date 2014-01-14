@@ -6,7 +6,7 @@
                 <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
             </div>
 
-            <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
+            <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
                 <input type="hidden" name="dir" value="">
                 <div id="drop">
                     <span>Drop Here</span><br>
@@ -86,7 +86,7 @@
         directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
         images.find('li').slideUp('fast', function() { $(this).remove(); });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_breadcrumbs',
             dir: dir
         }, function(data) {
@@ -98,7 +98,7 @@
             });
         });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_directories',
             dir: dir
         }, function(data) {
@@ -107,7 +107,7 @@
             });
         });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_assets',
             dir: dir
         }, function(data) {

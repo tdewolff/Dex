@@ -36,7 +36,7 @@
 <script type="text/javascript">
     var links = $('#links');
     var link_item = doT.template($('#link_item').text());
-    api('/' + base_url + 'api/core/pages.php', {
+    api('/' + base_url + 'api/core/pages/', {
         action: 'get_pages'
     }, function(data) {
         $.each(data['pages'], function() {

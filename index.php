@@ -135,6 +135,7 @@ require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/user.class.php');
 
+// copy database if one exists but other doesn't
 if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db'))
     copy('develop.db', 'current.db');
 else if (is_file('current.db') && (!is_file('develop.db') || filesize('develop.db') == 0))
@@ -142,14 +143,17 @@ else if (is_file('current.db') && (!is_file('develop.db') || filesize('develop.d
 
 Bcrypt::setRounds(8);
 
-session_start();
-if (User::loggedIn() || Common::requestAdmin())
-    $db = new Database('develop.db');
-else
-    $db = new Database('current.db');
-
+$db = new Database('develop.db');
 if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
+
+session_start();
+if (!User::loggedIn() && filesize('develop.db') != 0) // User::loggedIn() needs a database (develop) loaded
+{
+    $db = new Database('current.db');
+    if (is_file($db->filename) === false)
+        user_error('Database file never created at "' . $db->filename . '"', ERROR);
+}
 
 
 // sitemap
@@ -192,14 +196,6 @@ require_once('core/hooks.php');
 if (User::loggedIn())
 {
     User::refreshLogin();
-
-    Core::addStyle('vendor/font-awesome.css');
-    Core::addStyle('vendor/fancybox.css');
-    Core::addStyle('api.css');
-    Core::addStyle('admin-bar.css');
-    Core::addDeferredScript('vendor/jquery.fancybox.min.js');
-    Core::addDeferredScript('api.js');
-    Core::addDeferredScript('admin-bar.js');
     Core::assign('username', User::getUsername());
     Core::assign('role', User::getRole());
 }
@@ -234,6 +230,20 @@ if ($link)
     Core::addTitle($link['title']);
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
+}
+
+
+// load in admin bar
+if (User::loggedIn())
+{
+    Core::addStyle('vendor/font-awesome.css');
+    Core::addStyle('vendor/fancybox.css');
+    Core::addStyle('api.css');
+    Core::addStyle('admin-bar.css');
+    Core::addDeferredExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+    Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+    Core::addDeferredScript('api.js');
+    Core::addDeferredScript('admin-bar.js');
 }
 
 

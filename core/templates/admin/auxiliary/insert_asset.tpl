@@ -50,7 +50,7 @@
     function loadDir(dir) {
         directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_breadcrumbs',
             dir: dir
         }, function(data) {
@@ -62,7 +62,7 @@
             });
         });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_directories',
             dir: dir
         }, function(data) {
@@ -71,7 +71,7 @@
             });
         });
 
-        api('/' + base_url + 'api/core/assets.php', {
+        api('/' + base_url + 'api/core/assets/', {
             action: 'get_assets',
             dir: dir
         }, function(data) {

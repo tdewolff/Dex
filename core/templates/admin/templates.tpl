@@ -26,7 +26,7 @@
         var templates = $('#templates');
         var template_item = doT.template($('#template_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/templates.php', {
+        api('/' + base_url + 'api/core/templates/', {
             action: 'get_templates'
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));

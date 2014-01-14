@@ -44,7 +44,7 @@
         var modules = $('#modules');
         var module_item = doT.template($('#module_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/modules.php', {
+        api('/' + base_url + 'api/core/modules/', {
             action: 'get_modules'
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));
@@ -63,7 +63,7 @@
         modules.on('click', 'a.enable', function() {
             apiStatusWorking('Enabling module...');
             var item = $(this);
-            api('/' + base_url + 'api/core/modules.php', {
+            api('/' + base_url + 'api/core/modules/', {
                 action: 'enable_module',
                 module_name: item.attr('data-module-name')
             }, function() {
@@ -81,7 +81,7 @@
         modules.on('click', 'a.disable', function() {
             apiStatusWorking('Disabling module...');
             var item = $(this);
-            api('/' + base_url + 'api/core/modules.php', {
+            api('/' + base_url + 'api/core/modules/', {
                 action: 'disable_module',
                 module_name: item.attr('data-module-name')
             }, function() {
@@ -99,7 +99,7 @@
         modules.on('click', 'a.sure', function() {
             apiStatusWorking('Reinstalling module...');
             var item = $(this);
-            api('/' + base_url + 'api/core/modules.php', {
+            api('/' + base_url + 'api/core/modules/', {
                 action: 'reinstall_module',
                 module_name: item.attr('data-module-name')
             }, function() {

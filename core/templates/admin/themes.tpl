@@ -19,7 +19,7 @@
         var themes = $('#themes');
         var theme_item = doT.template($('#theme_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/themes.php', {
+        api('/' + base_url + 'api/core/themes/', {
             action: 'get_themes'
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));
@@ -34,7 +34,7 @@
             apiStatusWorking('Switching theme...');
             var item = $(this);
             if (!item.hasClass('current'))
-                api('/' + base_url + 'api/core/themes.php', {
+                api('/' + base_url + 'api/core/themes/', {
                     action: 'change_theme',
                     theme_name: item.attr('data-theme-name')
                 }, function() {

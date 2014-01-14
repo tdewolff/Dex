@@ -10,6 +10,7 @@ Core::addStyle('vendor/jquery-ui.css');
 Core::addStyle('vendor/fancybox.css');
 Core::addStyle('api.css');
 Core::addStyle('admin.css');
+Core::addStyle('admin-bar.css');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
 Core::addScript('slidein.js');
@@ -20,10 +21,11 @@ Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
 Core::addDeferredScript('api.js');
 Core::addDeferredScript('admin.js');
+Core::addDeferredScript('admin-bar.js');
 Core::addDeferredScript('upload.js');
 
 // setup
-if (filesize('current.db') == 0)
+if (filesize('develop.db') == 0)
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout

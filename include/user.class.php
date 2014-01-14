@@ -33,15 +33,9 @@ class User
 		if (!isset($_SESSION['login']))
 			return false;
 
-		if (!$db || !is_file($db->filename) || filesize($db->filename) == 0)
-			return false;
-
-		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['login']['user_id'] . "' LIMIT 1;");
-		if (!$user)
-			return false;
-
 		if ($_SESSION['login']['time'] + SESSION_TIME > time())
-			return true;
+			if (filesize($db->filename) != 0 && $db->querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['login']['user_id'] . "' LIMIT 1;"))
+				return true;
 
 		self::logOut();
 		return false;

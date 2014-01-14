@@ -4,7 +4,7 @@
         <input type="text"><a href="#" class="small-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
     </div>
 
-    <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets.php" enctype="multipart/form-data">
+    <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
         <input type="hidden" name="dir" value="">
         <div id="drop">
             <span>Drop Here</span><br>
@@ -108,7 +108,7 @@
 
             $('#upload input[name="dir"]').val(dir);
 
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'get_breadcrumbs',
                 dir: dir
             }, function(data) {
@@ -121,7 +121,7 @@
             });
 
             apiLoadStatusWorking($('#load_status_directories'));
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'get_directories',
                 dir: dir
             }, function(data) {
@@ -134,7 +134,7 @@
             });
 
             apiLoadStatusWorking($('#load_status_images'));
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'get_assets',
                 dir: dir
             }, function(data) {
@@ -169,7 +169,7 @@
         $('#directories_assets').on('click', 'li.directory a.sure', function() {
             apiStatusWorking('Deleting directory...');
             var item = $(this);
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'delete_directory',
                 name: item.attr('data-name'),
                 dir: dir
@@ -184,7 +184,7 @@
         $('#directories_assets').on('click', 'li.asset a.sure', function() {
             apiStatusWorking('Deleting asset...');
             var item = $(this);
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'delete_file',
                 name: item.attr('data-name'),
                 dir: dir
@@ -199,7 +199,7 @@
         $('#images').on('click', 'a.sure', function() {
             apiStatusWorking('Deleting image...');
             var item = $(this);
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'delete_file',
                 name: item.attr('data-name'),
                 dir: dir
@@ -213,7 +213,7 @@
 
         $('#create_directory').on('click', 'a', function() {
             apiStatusWorking('Creating directory...');
-            api('/' + base_url + 'api/core/assets.php', {
+            api('/' + base_url + 'api/core/assets/', {
                 action: 'create_directory',
                 name: $(this).prev('input').val(),
                 dir: dir

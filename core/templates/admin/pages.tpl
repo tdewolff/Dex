@@ -36,7 +36,7 @@
         var pages = $('#pages');
         var page_item = doT.template($('#page_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/pages.php', {
+        api('/' + base_url + 'api/core/pages/', {
             action: 'get_pages'
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));
@@ -50,7 +50,7 @@
         pages.on('click', 'a.sure', function() {
             apiStatusWorking('Deleting page...');
         	var item = $(this);
-            api('/' + base_url + 'api/core/pages.php', {
+            api('/' + base_url + 'api/core/pages/', {
                 action: 'delete_page',
                 link_id: $(this).attr('data-link-id')
             }, function() {

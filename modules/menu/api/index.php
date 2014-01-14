@@ -1,6 +1,5 @@
 <?php
 
-session_start();
 if (!User::loggedIn())
     user_error('Forbidden access', ERROR);
 
