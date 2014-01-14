@@ -143,7 +143,7 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
         );");
 
         $db->exec("BEGIN IMMEDIATE;");
-        copy('current.db', 'develop.db');
+        copy('develop.db', 'current.db');
         $db->exec("ROLLBACK;");
 
         User::logIn($db->lastId());

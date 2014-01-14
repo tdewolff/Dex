@@ -135,9 +135,9 @@ require_once('include/database.class.php');
 require_once('include/security.php');
 require_once('include/user.class.php');
 
-if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db') && filesize('develop.db') != 0)
+if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db'))
     copy('develop.db', 'current.db');
-else if (is_file('current.db') && filesize('current.db') != 0 && (!is_file('develop.db') || filesize('develop.db') == 0))
+else if (is_file('current.db') && (!is_file('develop.db') || filesize('develop.db') == 0))
     copy('current.db', 'develop.db');
 
 Bcrypt::setRounds(8);

@@ -7,6 +7,7 @@ class User
 	public static function logIn($user_id)
 	{
 		global $db;
+
 		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
 		if (!$user)
 			user_error('Could not login', ERROR);
@@ -27,7 +28,16 @@ class User
 
 	public static function loggedIn()
 	{
+		global $db;
+
 		if (!isset($_SESSION['login']))
+			return false;
+
+		if (!$db || !is_file($db->filename) || filesize($db->filename) == 0)
+			return false;
+
+		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['login']['user_id'] . "' LIMIT 1;");
+		if (!$user)
 			return false;
 
 		if ($_SESSION['login']['time'] + SESSION_TIME > time())
