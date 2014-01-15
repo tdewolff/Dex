@@ -4,13 +4,20 @@ Options +SymLinksIfOwnerMatch
 
 # Rewrite URL section
 RewriteEngine on
+RewriteBase /
 
 # Trailing slash
 RewriteCond %{REQUEST_URI} !(/$|\.)
-RewriteRule (.*) %{REQUEST_URI}/ [R=301,L]
+RewriteRule .* %{REQUEST_URI}/ [R=301,L]
+
+# Avoid duplicate URL to index.php
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /.*index\.php
+RewriteRule ^index.php/?(.*)$ $1 [R=301,L]
 
 # Rewrite all to index.php
-RewriteCond %{REQUEST_URI} !=/index.php
+#RewriteCond %{REQUEST_URI} !=/index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php
 
 # Compress filetypes by extension
