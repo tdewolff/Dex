@@ -19,11 +19,11 @@
     </li>
 </script>
 
-<script type="text/javascript">
+<script>
     $(function() {
         var menu = $('#menu');
         var menu_item = doT.template($('#menu_item').text());
-        api('/' + base_url + 'api/module/menu/index.php', {
+        api('/' + base_url + 'api/module/menu/index/', {
             action: 'get_menu'
         }, function(data) {
             $.each(data['menu'], function() {

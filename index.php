@@ -49,6 +49,7 @@ if (strncmp($base_url, $request_url, strlen($base_url)))
     user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
 $request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
+
 $url = explode('/', $request_url);
 if (empty($url[count($url) - 1]))
     unset($url[count($url) - 1]);

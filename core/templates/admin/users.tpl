@@ -4,7 +4,8 @@
     <li>
         <div style="width:120px;"></div>
         <div style="width:200px;">Username</div>
-        <div style="width:580px;">Role</div>
+        <div style="width:300px;">Email address</div>
+        <div style="width:280px;">Role</div>
     </li>
     <li id="load_status" class="api_load_status">
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -26,7 +27,8 @@
             </div>
         </div>
         <div style="width:200px;">{{=it.username}}</div>
-        <div style="width:580px;">{{=it.role}}</div>
+        <div style="width:300px;">{{=it.email}}</div>
+        <div style="width:280px;">{{=it.role}}</div>
     </li>
 </script>
 

@@ -24,8 +24,6 @@ $log_name = Log::getFilename();
 $slash_position = strrpos($log_name, '/');
 $log_name = $slash_position ? substr($log_name, $slash_position + 1) : $log_name;
 
-Core::addExternalScript('//d3js.org/d3.v3.min.js');
-
 Hooks::emit('admin-header');
 
 Core::assign('log_name', $log_name);

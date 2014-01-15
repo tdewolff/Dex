@@ -1,6 +1,7 @@
 $(function() {
     $('.page-wrapper, .page-wrapper-slim')
         .css({
+            display: 'block',
             marginTop: '-10px',
             opacity: '0'
         })

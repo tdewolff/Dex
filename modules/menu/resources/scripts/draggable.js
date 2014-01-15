@@ -184,7 +184,7 @@ var Draggable = function(ul) {
             i++;
         });
 
-        api('/' + base_url + 'api/module/menu/index.php', {
+        api('/' + base_url + 'api/module/menu/index/', {
             action: 'modify_menu',
             menu: data
         }, function() {

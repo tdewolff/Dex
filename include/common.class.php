@@ -105,7 +105,7 @@ class Common
         return strcmp($a[self::$column], $b[self::$column]);
     }
 
-    public static function sortOn($array, $column)
+    public static function sortOn(&$array, $column)
     {
         self::$column = $column;
         usort($array, array('Common', 'cmpOn'));

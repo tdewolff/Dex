@@ -919,11 +919,13 @@ body {
   text-align: justify;
 }
 .page-wrapper {
+  display: none;
   margin: 0 auto;
   width: 1200px;
   color: #303030;
 }
 .page-wrapper-slim {
+  display: none;
   margin: 0 auto;
   margin-bottom: 40px;
   width: 700px;
@@ -1116,12 +1118,12 @@ ul.small-table > li:nth-child(odd) {
 ul.table > li:first-of-type,
 ul.small-table > li:first-of-type {
   border-top: 0;
-  -webkit-border-top-left-radius: 5px;
-  -moz-border-top-left-radius: 5px;
-  border-top-left-radius: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-top-right-radius: 5px;
-  border-top-right-radius: 5px;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
   background-color: #f2f2f2;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#f2f2f2));
   background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
@@ -1133,36 +1135,36 @@ ul.small-table > li:first-of-type {
 }
 ul.table > li:first-of-type > div:first-of-type,
 ul.small-table > li:first-of-type > div:first-of-type {
-  -webkit-border-top-left-radius: 5px;
-  -moz-border-top-left-radius: 5px;
-  border-top-left-radius: 5px;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
 }
 ul.table > li:first-of-type > div:last-of-type,
 ul.small-table > li:first-of-type > div:last-of-type {
-  -webkit-border-top-right-radius: 5px;
-  -moz-border-top-right-radius: 5px;
-  border-top-right-radius: 5px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
 }
 ul.table > li:last-of-type,
 ul.small-table > li:last-of-type {
-  -webkit-border-bottom-left-radius: 5px;
-  -moz-border-bottom-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 ul.table > li:last-of-type > div:first-of-type,
 ul.small-table > li:last-of-type > div:first-of-type {
-  -webkit-border-bottom-left-radius: 5px;
-  -moz-border-bottom-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
 }
 ul.table > li:last-of-type > div:last-of-type,
 ul.small-table > li:last-of-type > div:last-of-type {
-  -webkit-border-bottom-right-radius: 5px;
-  -moz-border-bottom-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 4px;
+  -moz-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 ul.table > li:hover:not(:first-of-type) > div,
 ul.small-table > li:hover:not(:first-of-type) > div {
