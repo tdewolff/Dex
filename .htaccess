@@ -4,6 +4,7 @@ Options +SymLinksIfOwnerMatch
 
 # Rewrite URL section
 RewriteEngine on
+RewriteBase /
 
 # Trailing slash
 RewriteCond %{THE_REQUEST} !(/$|\.)
