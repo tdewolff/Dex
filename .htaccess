@@ -15,7 +15,6 @@ RewriteCond %{THE_REQUEST} index\.php$
 RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
 
 # Rewrite all to index.php
-#RewriteCond %{REQUEST_URI} !=/index.php
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* index.php [L]

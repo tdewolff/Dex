@@ -11,7 +11,6 @@ logs/
 *.min.css
 *.min.js
 
-.htaccess
 current.db
 develop.db
 GRONINGENBIJLES.md

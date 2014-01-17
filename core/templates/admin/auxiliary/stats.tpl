@@ -59,8 +59,8 @@ html, body {
             d.visits = +d.visits;
         });
 
-        x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.visits; })]);
+        x.domain([d3.min(data, function(d) { return d.date; }), d3.max(data, function(d) { return d.date; })]);
+        y.domain([0,                                            d3.max(data, function(d) { return d.visits; })]);
 
         svg.append("g")
             .attr("class", "x axis")
