@@ -1556,17 +1556,6 @@ strong {
   font-style: italic;
   color: #C0C0C0;
 }
-.fullwidth-column,
-.halfwidth-column {
-  margin-top: 30px;
-}
-.halfwidth-column {
-  float: left;
-  width: 50%;
-}
-.halfwidth-column ~ .halfwidth-column {
-  padding-left: 20px;
-}
 .progress_bar {
   display: inline-block;
   width: 100%;

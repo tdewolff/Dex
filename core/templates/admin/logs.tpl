@@ -25,8 +25,9 @@
         var logs = $('#logs');
         var log_item = doT.template($('#log_item').text());
         apiLoadStatusWorking($('#load_status'));
-        api('/' + base_url + 'api/core/index/', {
-            action: 'get_logs'
+        api('/' + base_url + 'api/core/logs/', {
+            action: 'get',
+            lines: 100
         }, function(data) {
             apiLoadStatusSuccess($('#load_status'));
             $.each(data['logs'], function() {

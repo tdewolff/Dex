@@ -70,51 +70,10 @@ require_once('include/resource.class.php'); // also needed for header.tpl (conca
 
 ///////////////
 // resources //
+
 if (Common::requestResource())
-{
-    Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
+    require_once('res.php');
 
-    $filename = Resource::expandUrl($url);
-
-    // remove querystring
-    $querystring_position = strrpos($filename, '?');
-    if ($querystring_position !== false)
-        $filename = substr($filename, 0, $querystring_position);
-
-    // check extension
-    $extension_position = strrpos($filename, '.');
-    $extension = strtolower($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
-
-    if (!Resource::isResource($extension))
-        user_error('Resource file extension "' . $extension . '" invalid of "' . $request_url . '"', ERROR);
-    else if (!is_file($filename))
-        user_error('Could not find resource file "' . $filename . '"', ERROR);
-    else
-    {
-        if (Resource::isImage($extension))
-        {
-            if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
-                $filename = Common::insertMinExtension($filename);
-
-            if ($querystring_position !== false)
-            {
-                // resize images
-                $w = Common::tryOrZero($_GET, 'w');
-                $h = Common::tryOrZero($_GET, 'h');
-                $s = Common::tryOrZero($_GET, 's');
-                $filename = Resource::imageResize($filename, $w, $h, $s);
-            }
-        }
-
-        header('Content-Type: ' . Resource::getMime($extension));
-        echo file_get_contents($filename);
-    }
-    exit;
-}
-
-
-////////////////////
-// not a resource //
 
 // pre-API; prevent session_start from blocking long-polling with console
 if (Common::requestApi())
@@ -208,7 +167,7 @@ Core::assign('base_url', $base_url);
 
 // handle admin area
 if (Common::requestAdmin())
-    require_once('core/admin/admin.php'); // always exits
+    require_once('admin.php'); // always exits
 
 
 // load all site ettings

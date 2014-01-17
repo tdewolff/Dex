@@ -3,7 +3,7 @@
 $form = new Form('login');
 
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');
-$form->addText('username', 'Username or Email', 'You can log in either with username or email address', '', array('[a-zA-Z0-9-_]*|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 3, 50, 'Must be a valid username or email address format'));
+$form->addText('username', 'Username or Email', '', '', array('[a-zA-Z0-9-_]*|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 3, 50, 'Must be a valid username or email address format'));
 $form->addPassword('password', 'Password', '');
 
 $form->addSeparator();

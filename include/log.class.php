@@ -42,7 +42,12 @@ class Log
 		return 'logs/' . date('Y-m M') . '.log';
 	}
 
-	public static function getLastLines($n = 100)
+	public static function getAllLines()
+	{
+	    return explode("\r\n", trim(file_get_contents(self::$filename)));
+	}
+
+	public static function getLastLines($n)
 	{
 	    $buffer_size = 1024;
 

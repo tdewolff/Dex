@@ -1,52 +1,32 @@
 <h2>Admin panel</h2>
-<div class="fullwidth-column">
-    <h3>Visitors</h3>
-    <div id="load_stats" class="api_load_status">
+
+<h3>Visitors</h3>
+<div id="load_stats" class="api_load_status">
+    <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+    <div class="error"><i class="fa fa-times"></i></div>
+</div>
+<iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+<h3>Latest errors</h3>
+<ul id="logs" class="table">
+    <li>
+        <div style="width:150px;">Date time</div>
+        <div style="width:750px;">Message</div>
+    </li>
+    <li id="load_logs" class="api_load_status">
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
         <div class="error"><i class="fa fa-times"></i></div>
-    </div>
-    <iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
-</div>
-<div class="halfwidth-column">
-    <h3>Logs</h3>
-    <div id="logs_bar" class="progress_bar">
-        <div class="bar <?php if ($_['logs_size_percentage'] > 80) { echo 'bar_alert'; } ?>" style="width:<?php echo ($_['logs_size_percentage'] > 100 ? '100' : $_['logs_size_percentage']); ?>%;"></div>
-    </div>
-    <div class="left"><?php echo $_['logs_size']; ?></div>
-    <div class="text-right">
-        <?php echo $_['logs_size_percentage']; ?>%
-        <?php if ($_['role'] == 'admin'): ?>
-        <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_logs"><i class="fa fa-trash-o"></i></a>
-        <?php endif; ?>
-    </div>
+    </li>
+</ul>
 
-    <div style="margin-top:10px;">
-        <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
-    </div>
-</div>
-<div class="halfwidth-column">
-    <h3>Cache</h3>
-    <div id="cache_bar" class="progress_bar">
-        <div class="bar <?php if ($_['cache_size_percentage'] > 80) { echo 'bar_alert'; } ?>" style="width:<?php echo ($_['cache_size_percentage'] > 100 ? '100' : $_['cache_size_percentage']); ?>%;"></div>
-    </div>
-    <div class="left"><?php echo $_['cache_size']; ?></div>
-    <div class="text-right">
-        <?php echo $_['cache_size_percentage']; ?>%
-        <?php if ($_['role'] == 'admin'): ?>
-        <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-        <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-action="clear_cache"><i class="fa fa-trash-o"></i></a>
-        <?php endif; ?>
-    </div>
-</div>
-<div class="clear"></div>
+<script id="log_item" type="text/x-dot-template">
+    <li>
+        <div style="width:150px;">{{=it.datetime}}</div>
+        <div style="width:750px;" title="{{=it.message}}">{{=it.message}}</div>
+    </li>
+</script>
 
 <script type="text/javascript">
-    function resetBar(bar) {
-        bar.find('div').css('width', '0%').removeClass('bar_alert');
-        bar.next().text('0 B').next().text('0%');
-    }
-
     $(function() {
         apiLoadStatusWorking($('#load_stats'));
         $('#stats_frame').load(function() {
@@ -62,30 +42,26 @@
                 });
             });
         });
-    });
 
-    $('a[data-action]').click(function() {
-        var action = $(this).attr('data-action');
-        if (action == 'clear_logs') {
-            apiStatusWorking('Clearing logs...');
-            api('/' + base_url + 'api/core/index/', {
-                action: action
-            }, function(data) {
-                apiStatusSuccess('Cleared logs');
-                resetBar($('#logs_bar'));
-            }, function() {
-                apiStatusError('Clearing log failed');
+        var logs = $('#logs');
+        var log_item = doT.template($('#log_item').text());
+        apiLoadStatusWorking($('#load_logs'));
+        api('/' + base_url + 'api/core/logs/', {
+            action: 'get',
+            lines: 5,
+            errors: true
+        }, function(data) {
+            apiLoadStatusSuccess($('#load_logs'));
+            $.each(data['logs'], function() {
+                var item = $(log_item(this));
+                if (this['type'] == 'ERROR')
+                    item = item.addClass('error');
+                else if (this['type'] == 'WARNING')
+                    item = item.addClass('warning');
+                logs.append(item);
             });
-        } else if (action == 'clear_cache') {
-            apiStatusWorking('Clearing cache...');
-            api('/' + base_url + 'api/core/index/', {
-                action: action
-            }, function(data) {
-                apiStatusSuccess('Cleared cache');
-                resetBar($('#cache_bar'));
-            }, function() {
-                apiStatusError('Clearing cache failed');
-            });
-        }
+        }, function() {
+            apiLoadStatusError($('#load_logs'));
+        });
     });
 </script>
