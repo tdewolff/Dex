@@ -7,11 +7,11 @@ RewriteEngine on
 RewriteBase /
 
 # Trailing slash
-RewriteCond %{THE_REQUEST} !(/$|\.)
-RewriteRule .* %{THE_REQUEST}/ [R=301,L]
+RewriteCond %{REQUEST_URI} !(/$|\.)
+RewriteRule .* %{REQUEST_URI}/ [R=301,L]
 
 # Avoid duplicate URL to index.php
-RewriteCond %{THE_REQUEST} index\.php$
+RewriteCond %{REQUEST_URI} index\.php$
 RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
 
 # Rewrite all to index.php
