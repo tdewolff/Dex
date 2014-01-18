@@ -18,6 +18,7 @@ var Draggable = function(ul) {
 
             // restrain Y movement within the list
             var top = e.pageY - self.draggee_y_offset;
+            console.log(top);
             var min_top = elements.first().offset().top + 1;
             var max_top = elements.last().offset().top + 1;
             if (top < min_top)

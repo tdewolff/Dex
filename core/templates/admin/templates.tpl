@@ -9,6 +9,7 @@
     <li id="load_status" class="api_load_status">
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
         <div class="error"><i class="fa fa-times"></i></div>
+        <div class="empty">empty</div>
     </li>
 </ul>
 
@@ -29,6 +30,11 @@
         api('/' + base_url + 'api/core/templates/', {
             action: 'get_templates'
         }, function(data) {
+            if (!data['templates'].length) {
+                apiLoadStatusEmpty($('#load_status'));
+                return;
+            }
+
             apiLoadStatusSuccess($('#load_status'));
             $.each(data['templates'], function() {
                 templates.append(template_item(this));

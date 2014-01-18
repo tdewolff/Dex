@@ -126,6 +126,11 @@ function apiLoadStatusSuccess(load) {
     load.remove();
 }
 
+function apiLoadStatusEmpty(load) {
+    apiLoadStatusClear(load);
+    load.find('div.empty').fadeIn('fast');
+}
+
 function apiLoadStatusError(load) {
     apiLoadStatusClear(load);
     load.find('div.error').fadeIn('fast');

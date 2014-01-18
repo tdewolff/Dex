@@ -157,7 +157,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -212,7 +211,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -299,7 +297,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -324,7 +321,6 @@ BUTTONS
   font-size: 14px;
   margin: 0 4px;
   padding: 4px 12px;
-  font-weight: normal;
 }
 .small-button:hover,
 .small-button:visited:hover,
@@ -358,7 +354,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -383,7 +378,6 @@ BUTTONS
   font-size: 14px;
   margin: 0 4px;
   padding: 4px 12px;
-  font-weight: normal;
   padding: 0px 4px;
   line-height: 17px;
   font-size: 90%;
@@ -420,7 +414,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -455,7 +448,6 @@ BUTTONS
   box-shadow: inset 0 0 3px #f3813d;
   margin: 0 4px;
   padding: 4px 12px;
-  font-weight: normal;
 }
 .small-alert-button:hover,
 .small-alert-button:visited:hover,
@@ -510,7 +502,6 @@ BUTTONS
   padding: 5px 10px;
   color: #ffffff;
   display: inline-block;
-  font-weight: bold;
   text-decoration: none;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
   cursor: pointer;
@@ -545,7 +536,6 @@ BUTTONS
   box-shadow: inset 0 0 3px #f3813d;
   margin: 0 4px;
   padding: 4px 12px;
-  font-weight: normal;
   padding: 0px 4px;
   line-height: 17px;
   font-size: 90%;
@@ -1018,6 +1008,7 @@ h1 {
 }
 #right-column {
   margin-left: 200px;
+  margin-bottom: 10px;
   padding: 30px 50px;
   width: 1006px;
   background: #ffffff;
@@ -1492,6 +1483,70 @@ ul.grid-3 > li {
 }
 .popup-wrapper .popup #assets #images li:hover {
   cursor: pointer;
+}
+#diskspace {
+  overflow: hidden;
+}
+#diskspace > div {
+  float: left;
+  height: 10px;
+}
+#diskspace > div:nth-child(1) {
+  background-color: #0e90d2;
+}
+#diskspace > div:nth-child(2) {
+  background-color: #8058a5;
+}
+#diskspace > div:nth-child(3) {
+  background-color: #5eb95e;
+}
+#diskspace > div:nth-child(4) {
+  background-color: #dd514c;
+}
+#diskspace > div:nth-child(5) {
+  background-color: #f37b1d;
+}
+#diskspace > div:nth-child(6) {
+  background-color: #fad232;
+}
+#diskspace_legend {
+  overflow: hidden;
+  margin-top: 10px;
+}
+#diskspace_legend > div {
+  float: left;
+  font-size: 80%;
+  padding-right: 5px;
+  vertical-align: middle;
+  line-height: 16px;
+}
+#diskspace_legend > div > div {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+#diskspace_legend > div:nth-child(1) > div {
+  background-color: #0e90d2;
+}
+#diskspace_legend > div:nth-child(2) > div {
+  background-color: #8058a5;
+}
+#diskspace_legend > div:nth-child(3) > div {
+  background-color: #5eb95e;
+}
+#diskspace_legend > div:nth-child(4) > div {
+  background-color: #dd514c;
+}
+#diskspace_legend > div:nth-child(5) > div {
+  background-color: #f37b1d;
+}
+#diskspace_legend > div:nth-child(6) > div {
+  background-color: #fad232;
+}
+#diskspace_legend > div > span {
+  color: #808080;
+  font-size: 80%;
 }
 /**********/
 /* simple */

@@ -152,6 +152,8 @@ else if (API::action('get_directories'))
 }
 else if (API::action('get_assets'))
 {
+    $max_width = API::has('max_width') ? API::get('max_width') : 0;
+
     $assets = array();
     $handle = opendir('assets/' . $dir);
     while (($name = readdir($handle)) !== false)
@@ -172,6 +174,9 @@ else if (API::action('get_assets'))
                 'width' => $width,
                 'is_image' => Resource::isImage($extension)
             );
+
+            if (Resource::isImage($extension))
+                $assets[count($assets) - 1]['attr'] = Resource::imageSizeAttributes(explode('/', 'res/assets/' . $dir . $name), $max_width);
         }
     }
     Common::sortOn($assets, 'name');

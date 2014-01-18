@@ -1,15 +1,5 @@
 <?php
 
-// ensure www. is omitted
-if (strpos($_SERVER['HTTP_HOST'], 'www.') === 0)
-{
-    $s = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
-    header('HTTP/1.1 301 Moved Permanently');
-    header('Location: http' . $s . '://' . substr($_SERVER['HTTP_HOST'], 4) . $_SERVER['REQUEST_URI']);
-    exit();
-}
-
-
 ///////////////////
 // preliminaries //
 

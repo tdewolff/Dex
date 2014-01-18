@@ -58,5 +58,30 @@ else if (API::action('get_logs'))
     API::set('logs', $logs);
     API::finish();
 }
+else if (API::action('diskspace_usage'))
+{
+    $total = Common::getDirectorySize('./');
+    $rest = $total;
+
+    $diskspace = array();
+    $directories = array('assets/', 'cache/', 'modules/', 'templates/', 'themes/');
+    foreach ($directories as $directory)
+    {
+        $size = Common::getDirectorySize($directory);
+        $diskspace[] = array(
+            'name' => ucfirst(substr($directory, 0, -1)),
+            'size' => Common::formatBytes($size),
+            'percentage' => $size / $total * 100.0);
+        $rest -= $size;
+    }
+
+    $diskspace[] = array(
+        'name' => 'Dex',
+        'size' => Common::formatBytes($rest),
+        'percentage' => $rest / $total * 100.0);
+
+    API::set('diskspace', $diskspace);
+    API::finish();
+}
 
 ?>

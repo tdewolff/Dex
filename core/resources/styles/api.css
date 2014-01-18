@@ -26,11 +26,11 @@
     vertical-align: middle;
 }
 
-#api_status > div > i.fa-check {
+#api_status > div.success > i {
     color: #24c279;
 }
 
-#api_status > div > i.fa-times {
+#api_status > div.error > i {
     color: #d11f49;
 }
 
@@ -41,11 +41,12 @@
     text-align:center;
 }
 
-.api_load_status > div > i {
-    vertical-align: middle;
+.api_load_status > div.empty {
+    color: #D0D0D0;
+    font-style:italic;
 }
 
-.api_load_status > div > i.fa-times {
+.api_load_status > div.error {
     color: #d11f49;
 }
 

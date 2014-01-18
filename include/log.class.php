@@ -44,7 +44,10 @@ class Log
 
 	public static function getAllLines()
 	{
-	    return explode("\r\n", trim(file_get_contents(self::$filename)));
+		$all = trim(file_get_contents(self::$filename));
+		if (!$all)
+	    	return array();
+	    return explode("\r\n", $all);
 	}
 
 	public static function getLastLines($n)

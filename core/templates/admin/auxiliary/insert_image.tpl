@@ -61,12 +61,14 @@
         <div class="caption"><strong>{{=it.title}}</strong></div>
         {{? it.width > 100}}
         <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=100"
-             alt=""
-             title="{{=it.title}}">
+             alt="{{=it.name}}"
+             title="{{=it.title}}"
+             {{=it.attr}}>
         {{??}}
         <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
-             alt=""
+             alt="{{=it.name}}"
              title="{{=it.title}}"
+             {{=it.attr}}
              class="small">
         {{?}}
     </li>
@@ -109,7 +111,8 @@
 
         api('/' + base_url + 'api/core/assets/', {
             action: 'get_assets',
-            dir: dir
+            dir: dir,
+            max_width: 100
         }, function(data) {
             $.each(data['assets'], function() {
                 if (this.is_image)

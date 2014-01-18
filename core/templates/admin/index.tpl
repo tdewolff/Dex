@@ -16,8 +16,13 @@
     <li id="load_logs" class="api_load_status">
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
         <div class="error"><i class="fa fa-times"></i></div>
+        <div class="empty">empty</div>
     </li>
 </ul>
+
+<div style="margin-top:10px;">
+    <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
+</div>
 
 <script id="log_item" type="text/x-dot-template">
     <li>
@@ -51,6 +56,11 @@
             lines: 5,
             errors: true
         }, function(data) {
+            if (!data['logs'].length) {
+                apiLoadStatusEmpty($('#load_logs'));
+                return;
+            }
+
             apiLoadStatusSuccess($('#load_logs'));
             $.each(data['logs'], function() {
                 var item = $(log_item(this));

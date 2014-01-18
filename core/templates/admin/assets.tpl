@@ -30,6 +30,7 @@
         <li id="load_status_directories" class="api_load_status">
             <div class="working"><i class="fa fa-cog fa-spin"></i></div>
             <div class="error"><i class="fa fa-times"></i></div>
+            <div class="empty">empty</div>
         </li>
     </ul>
 
@@ -37,6 +38,7 @@
         <li id="load_status_images" class="api_load_status">
             <div class="working"><i class="fa fa-cog fa-spin"></i></div>
             <div class="error"><i class="fa fa-times"></i></div>
+            <div class="empty">empty</div>
         </li>
     </ul>
 </div>
@@ -75,13 +77,15 @@
         {{? it.width > 200}}
         <a href="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}" data-fancybox-group="gallery" class="fancybox">
             <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=200"
-                 alt=""
-                 title="{{=it.title}}">
+                 alt="{{=it.name}}"
+                 title="{{=it.title}}"
+                 {{=it.attr}}>
         </a>
         {{??}}
         <img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
-             alt=""
+             alt="{{=it.name}}"
              title="{{=it.title}}"
+             {{=it.attr}}
              class="small">
         {{?}}
     </li>
@@ -125,6 +129,11 @@
                 action: 'get_directories',
                 dir: dir
             }, function(data) {
+                if (!data['directories'].length) {
+                    apiLoadStatusEmpty($('#load_status_directories'));
+                    return;
+                }
+
                 apiLoadStatusSuccess($('#load_status_directories'));
                 $.each(data['directories'], function() {
                     $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
@@ -136,8 +145,14 @@
             apiLoadStatusWorking($('#load_status_images'));
             api('/' + base_url + 'api/core/assets/', {
                 action: 'get_assets',
-                dir: dir
+                dir: dir,
+                max_width: 200
             }, function(data) {
+                if (!data['assets'].length) {
+                    apiLoadStatusEmpty($('#load_status_images'));
+                    return;
+                }
+
                 apiLoadStatusSuccess($('#load_status_images'));
                 $.each(data['assets'], function() {
                     if (this.is_image)

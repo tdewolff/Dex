@@ -111,6 +111,25 @@ class Common
         usort($array, array('Common', 'cmpOn'));
     }
 
+    public static function getDirectorySize($dir)
+    {
+        $size = 0;
+        if (!($handle = opendir($dir)))
+            return false;
+
+        while ($name = readdir($handle))
+        {
+            if (is_file($dir . $name))
+                $size += filesize($dir . $name);
+
+            if (is_dir($dir . $name) && $name != '.' && $name != '..')
+                $size += self::getDirectorySize($dir . $name . '/');
+        }
+
+        closedir($handle);
+        return $size;
+    }
+
     ////////////////
 
 	public static function tryOrEmpty($array, $index)

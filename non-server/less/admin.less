@@ -124,6 +124,7 @@ h1 {
 
 #right-column {
 	margin-left:200px;
+	margin-bottom:10px;
 	padding:30px 50px;
 	width: 1006px;
 	background:@light;
@@ -662,6 +663,88 @@ ul.grid-3 {
 			#images li:hover {
 				cursor:pointer;
 			}
+		}
+	}
+}
+
+#diskspace {
+	overflow:hidden;
+
+	>div {
+		float:left;
+		height:10px;
+
+		&:nth-child(1) {
+			background-color:#0e90d2;
+		}
+
+		&:nth-child(2) {
+			background-color:rgb(128, 88, 165);
+		}
+
+		&:nth-child(3) {
+			background-color:#5eb95e;
+		}
+
+		&:nth-child(4) {
+			background-color:#dd514c;
+		}
+
+		&:nth-child(5) {
+			background-color:rgb(243, 123, 29);
+		}
+
+		&:nth-child(6) {
+			background-color:rgb(250, 210, 50);
+		}
+	}
+}
+
+#diskspace_legend {
+	overflow:hidden;
+	margin-top:10px;
+
+	>div {
+		float:left;
+		font-size:80%;
+		padding-right:5px;
+		vertical-align: middle;
+		line-height:16px;
+
+		>div {
+			display:inline-block;
+			width:10px;
+			height:10px;
+			border-radius: 50%;
+		}
+
+		&:nth-child(1) > div {
+			background-color:#0e90d2;
+		}
+
+		&:nth-child(2) > div {
+			background-color:rgb(128, 88, 165);
+		}
+
+		&:nth-child(3) > div {
+			background-color:#5eb95e;
+		}
+
+		&:nth-child(4) > div {
+			background-color:#dd514c;
+		}
+
+		&:nth-child(5) > div {
+			background-color:rgb(243, 123, 29);
+		}
+
+		&:nth-child(6) > div {
+			background-color:rgb(250, 210, 50);
+		}
+
+		>span {
+			color:#808080;
+			font-size:80%;
 		}
 	}
 }

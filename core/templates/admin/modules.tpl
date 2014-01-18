@@ -9,6 +9,7 @@
     <li id="load_status" class="api_load_status">
         <div class="working"><i class="fa fa-cog fa-spin"></i></div>
         <div class="error"><i class="fa fa-times"></i></div>
+        <div class="empty">empty</div>
     </li>
 </ul>
 
@@ -47,6 +48,11 @@
         api('/' + base_url + 'api/core/modules/', {
             action: 'get_modules'
         }, function(data) {
+            if (!data['modules'].length) {
+                apiLoadStatusEmpty($('#load_status'));
+                return;
+            }
+
             apiLoadStatusSuccess($('#load_status'));
             $.each(data['modules'], function() {
                 var item = $(module_item(this));
