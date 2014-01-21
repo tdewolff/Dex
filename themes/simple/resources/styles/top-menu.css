@@ -1,5 +1,6 @@
 body {
     background: rgb(55, 65, 71);
+    font-family: 'lora', sans-serif;
 }
 
 article.main, header, footer, nav {
