@@ -1,4 +1,4 @@
-$('#publish-site').on('click', 'a', function() {
+$('#publish-site').click(function() {
     $.fancybox.open({
         content: '<textarea id="console" readonly></textarea>'
     });
@@ -9,11 +9,16 @@ $('#publish-site').on('click', 'a', function() {
     }, function(data) {
         apiStopConsole();
         apiStatusSuccess('Published site');
-        $('#publish-site').addClass('fade');
     }, function() {
         apiStopConsole();
         apiStatusError('Publishing site failed');
         return false;
+    });
+});
+
+$('#edit').on('click', 'a', function() {
+    $('#edit').fadeOut('fast', function() {
+        $('#save').fadeIn('fast');
     });
 });
 

@@ -1,8 +1,6 @@
 <?php
 
 Hooks::attach('site-header', -1, function () {
-    Theme::set('pure');
-
     Theme::addExternalStyle('http://yui.yahooapis.com/pure/0.3.0/pure-min.css');
     Theme::addStyle('side-menu.css');
 

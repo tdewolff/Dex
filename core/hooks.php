@@ -12,9 +12,9 @@ Hooks::attach('site', 0, function() {
     Hooks::emit('navigation');
     echo '</nav>';
 
-    echo '<article class="main" role="main">';
+    //echo '<article class="main" role="main">';
     Hooks::emit('main');
-    echo '</article>';
+    //echo '</article>';
 
     echo '<footer>';
     Hooks::emit('footer');
@@ -100,7 +100,7 @@ Hooks::attach('admin-footer', 0, function() {
 
 ////////////////////////////////////////////////////////////////
 
-Hooks::attach('main', 0, function() {
+/*Hooks::attach('main', 0, function() {
     global $db, $base_url;
 
     $link_id = Core::getLinkId();
@@ -111,10 +111,7 @@ Hooks::attach('main', 0, function() {
     	Core::assign($row['name'], $row['content']);
 
 	Core::renderTemplate($template_name);
-
-	if (User::loggedIn())
-		echo '<a href="/' . $base_url . 'admin/pages/' . $link_id . '/">Edit page</a>';
-});
+});*/
 
 ////////////////////////////////////////////////////////////////
 

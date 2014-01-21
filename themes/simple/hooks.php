@@ -1,8 +1,6 @@
 <?php
 
 Hooks::attach('site-header', -1, function () {
-    Theme::set('simple');
-
     Theme::addExternalStyle('http://yui.yahooapis.com/pure/0.3.0/pure-min.css');
     Theme::addStyle('top-menu.css');
     Theme::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');

@@ -86,9 +86,9 @@ require_once('include/security.php');
 require_once('include/user.class.php');
 
 // copy database if one exists but other doesn't
-if ((!is_file('current.db') || filesize('current.db') == 0) && is_file('develop.db'))
+if (!is_file('current.db') && is_file('develop.db'))
     copy('develop.db', 'current.db');
-else if (is_file('current.db') && (!is_file('develop.db') || filesize('develop.db') == 0))
+else if (is_file('current.db') && !is_file('develop.db'))
     copy('current.db', 'develop.db');
 
 Bcrypt::setRounds(8);
@@ -98,7 +98,19 @@ if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 
 session_start();
-if (!User::loggedIn() && filesize('develop.db') != 0) // User::loggedIn() needs a database (develop) loaded
+register_shutdown_function(function() {
+    global $starttime, $db;
+
+    session_write_close();
+
+    $endtime = explode(' ', microtime());
+    $totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
+
+    Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
+});
+
+
+if (!User::loggedIn() && is_file('current.db')) // User::loggedIn() needs a database (develop) loaded
 {
     $db = new Database('current.db');
     if (is_file($db->filename) === false)
@@ -109,17 +121,6 @@ if (!User::loggedIn() && filesize('develop.db') != 0) // User::loggedIn() needs 
 // sitemap
 if ($request_url == 'sitemap.xml')
     Common::outputSitemapXml(); // always exits
-
-
-register_shutdown_function(function() {
-    global $starttime, $db;
-
-    $endtime = explode(' ', microtime());
-    $totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
-
-    Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
-});
-
 
 // API; continued
 if (Common::requestApi())
@@ -149,7 +150,7 @@ if (User::loggedIn())
     Core::assign('username', User::getUsername());
     Core::assign('role', User::getRole());
 }
-//else
+else
     Stats::registerPageVisit();
 
 Core::assign('base_url', $base_url);
@@ -171,6 +172,7 @@ while ($row = $table->fetch())
 }
 
 Core::addTitle($settings['title']);
+Core::$theme_name = $settings['theme'];
 
 
 // load page
@@ -180,6 +182,8 @@ if ($link)
     Core::addTitle($link['title']);
     Core::$link_id = $link['link_id'];
     Core::$template_name = $link['template_name'];
+
+    Core::assign('link_id', $link['link_id']);
 }
 
 
@@ -190,7 +194,7 @@ if (User::loggedIn())
     Core::addStyle('vendor/fancybox.css');
     Core::addStyle('api.css');
     Core::addStyle('admin-bar.css');
-    Core::addDeferredExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+    Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
     Core::addDeferredScript('vendor/jquery.fancybox.min.js');
     Core::addDeferredScript('api.js');
     Core::addDeferredScript('admin-bar.js');
@@ -206,9 +210,13 @@ while ($row = $table->fetch())
 
 
 // load in theme
-$theme_hooks_filename = 'themes/' . $settings['theme'] . '/hooks.php';
-if (is_file($theme_hooks_filename) !== false)
-    include_once($theme_hooks_filename);
+if (is_file('themes/' . Core::getThemeName() . '/hooks.php') !== false)
+    include_once('themes/' . Core::getThemeName() . '/hooks.php');
+
+
+// load in template
+if (is_file('templates/' . Core::getTemplateName() . '/hooks.php') !== false)
+    include_once('templates/' . Core::getTemplateName() . '/hooks.php');
 
 
 // show page

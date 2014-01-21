@@ -18,7 +18,7 @@
 <script id="page_item" type="text/x-dot-template">
 	<li id="page_{{=it.link_id}}">
         <div style="width:80px;">
-            <a href="/<?php echo $_['base_url']; ?>admin/pages/{{=it.link_id}}/" class="list-button">
+            <a href="/<?php echo $_['base_url']; ?>{{=it.url}}" class="list-button">
                 <i class="fa fa-pencil"></i>&ensp;Edit
             </a>
         </div>

@@ -22,6 +22,7 @@ if ($form->submitted())
 		if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 		{
 			User::logIn($user['user_id']);
+
 			$form->setRedirect('/' . $base_url . $request_url);
 			if ($request_url == 'admin/login/' || $request_url == 'admin/logout/')
 				$form->setRedirect('/' . $base_url . 'admin/');
