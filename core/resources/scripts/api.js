@@ -65,22 +65,28 @@ function apiStatusClear() {
 function apiStatusWorking(message) {
     apiStatusClear();
     $('#api_status div.working').delay(800).fadeIn('fast');
-    if (typeof message !== 'undefined')
+    if (typeof message !== 'undefined') {
         $('#api_status div.working span').delay(800).html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+        apiStatusTime();
+    }
 }
 
 function apiStatusSuccess(message) {
     apiStatusClear();
     $('#api_status div.success').fadeIn('fast');
-    if (typeof message !== 'undefined')
+    if (typeof message !== 'undefined') {
         $('#api_status div.success span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+        apiStatusTime();
+    }
 }
 
 function apiStatusError(message) {
     apiStatusClear();
     $('#api_status div.error').fadeIn('fast');
-    if (typeof message !== 'undefined')
+    if (typeof message !== 'undefined') {
         $('#api_status div.error span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+        apiStatusTime();
+    }
 }
 
 function apiStatusTime() {
@@ -92,20 +98,20 @@ function apiStatusTime() {
                 then = new Date(time),
                 value;
 
-            if (diff < 10)
-                value = '';
-            else if (diff < 30)
-                value = ' seconds ago';
-            else if (diff < 60)
+            if (diff < 15)
+                value = ' just now';
+            else if (diff < 45)
                 value = ' half a minute ago';
-            else if (diff < 120)
+            else if (diff < 90)
                 value = ' 1 minute ago';
             else if (diff < 600)
                 value = ' ' + Math.round(diff / 60) + ' minutes ago';
             else
                 value = ' ' + then.getHours() + ':' + then.getMinutes();
 
-            if (self.text() !== value)
+            if (self.text() == '')
+                self.text(value);
+            else if (self.text() !== value)
                 self.fadeOut(function () {
                     self.text(value);
                 }).fadeIn();

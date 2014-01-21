@@ -23,6 +23,7 @@ class User
 
 	public static function logOut()
 	{
+		Log::notice('LOGOUT');
 		unset($_SESSION['login']);
 	}
 

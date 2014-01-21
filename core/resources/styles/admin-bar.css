@@ -10,7 +10,7 @@ body {
     height:33px;
     background-color:#282F33;
     border-bottom:1px solid #414D54;
-    padding:2px 10px;
+    padding:2px 0;
     z-index:7999;
 
     font-family: Arial,Helvetica,sans-serif;
@@ -32,32 +32,68 @@ body {
     color:darken(#D1570D, 5%);
 }
 
-#admin-bar div {
-    display:inline-block;
+#admin-bar > div {
     height:28px;
 }
 
-#admin-bar #publish-site {
+#admin-bar #publish-site  {
     float:left;
-    margin-right:20px;
+    margin-left:20px;
 }
 
 #admin-bar #publish-site.fade {
     opacity:0.2;
 }
 
-#admin-bar #publish-site a.small-button {
+#admin-bar #navigate {
+    display:inline-block;
+    float:left;
+    margin-left:20px;
+    line-height:28px;
+    font-size:90%;
+}
+
+#admin-bar #navigate a {
+    text-decoration:none;
+}
+
+#admin-bar #current-user {
+    display:inline-block;
+    float:right;
+    line-height:28px;
+    color:#E0E0E0;
+    font-size:90%;
+    margin-right:20px;
+}
+
+#admin-bar #current-user a {
+    margin-left:5px;
+}
+
+#admin-bar #edit,
+#admin-bar #save {
+    z-index:-1;
+    position:absolute;
+    width:100%;
+    text-align: center;
+}
+
+#admin-bar #save {
+    display:none;
+}
+
+#admin-bar #publish-site,
+#admin-bar #edit > a,
+#admin-bar #save > a {
+    display:inline-block;
+
     border: 1px solid #294415;
     border-top-color: #375c1d;
     border-left-color: #375c1d;
-    padding: 5px 10px;
     color: #ffffff;
-    display: inline-block;
-    font-weight: bold;
     text-decoration: none;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
     cursor: pointer;
-    margin-bottom: 20px;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -ms-transition: all 0.2s ease-in-out;
@@ -75,31 +111,21 @@ body {
     -webkit-box-shadow: inset 0 0 3px #6cb538;
     -moz-box-shadow: inset 0 0 3px #6cb538;
     box-shadow: inset 0 0 3px #6cb538;
-    font-size: 14px;
-    margin: 0 4px;
-    padding: 4px 12px;
-    font-weight: normal;
 
+    font-size: 14px;
+    padding: 4px 12px;
     margin-top:1px;
 }
 
-#admin-bar #navigate {
-    float:left;
-    line-height:28px;
-    font-size:90%;
-}
+[contenteditable] {
+    margin:-1px;
+    border: 1px solid #3b641f;
 
-#admin-bar #navigate a {
-    text-decoration:none;
-}
+    -webkit-box-shadow: 0 0 3px #3b641f;
+    -moz-box-shadow: 0 0 3px #3b641f;
+    box-shadow: 0 0 3px #3b641f;
 
-#admin-bar #current-user {
-    float:right;
-    line-height:28px;
-    color:#E0E0E0;
-    font-size:90%;
-}
-
-#admin-bar #current-user a {
-    margin-left:5px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
 }

@@ -28,6 +28,8 @@ class API
                 $filename = 'core/api/' . implode('/', array_splice($url, 2)) . '.php';
             else if ($url[1] == 'module')
                 $filename = 'modules/' . $url[2] . '/api/' . implode('/', array_splice($url, 3)) . '.php';
+            else if ($url[1] == 'template')
+                $filename = 'templates/' . $url[2] . '/api/' . implode('/', array_splice($url, 3)) . '.php';
 
         if (empty($filename))
             user_error('Could not expand URL "' . implode('/', $url) . '" to API', ERROR);

@@ -144,7 +144,7 @@ else
 Core::addStyle('vendor/markitup.css');
 Core::addStyle('vendor/markdown.css');
 Core::addDeferredScript('vendor/jquery.markitup.min.js');
-Core::addDeferredScript('include/jquery.markitup.markdown.js');
+Core::addDeferredScript('jquery.markitup.markdown.js');
 
 Hooks::emit('admin-header');
 

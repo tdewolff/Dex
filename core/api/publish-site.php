@@ -56,7 +56,6 @@ foreach ($script_directories as $script_directory)
                 file_put_contents($script_min_name, $output);
             } catch (Exception $e) {
                 $error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
-                user_error($error, WARNING);
                 Console::appendLine('failed: ' . $error);
                 continue;
             }
@@ -103,7 +102,6 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
             $output_info = SmushIt::compress(Common::fullBaseUrl() . $base_url . 'res/' . $image_name);
         } catch (Exception $e) {
             $error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
-            user_error($error, WARNING);
             Console::appendLine('failed: ' . $error);
             continue;
         }

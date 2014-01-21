@@ -4,7 +4,7 @@ require_once('include/form.class.php');
 
 Core::addTitle('Dex');
 Core::addTitle('Admin panel');
-Core::addStyle('include/normalize.css');
+Core::addStyle('normalize.css');
 Core::addStyle('vendor/font-awesome.css');
 Core::addStyle('vendor/jquery-ui.css');
 Core::addStyle('vendor/fancybox.css');
@@ -25,7 +25,7 @@ Core::addDeferredScript('admin-bar.js');
 Core::addDeferredScript('upload.js');
 
 // setup
-if (filesize('develop.db') == 0)
+if (!is_file('develop.db'))
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout

@@ -1,9 +1,5 @@
 <?php
 
-Hooks::attach('site-header', -1, function () {
-    Theme::set('default');
-});
-
 Hooks::attach('header', 0, function() {
     global $settings;
 

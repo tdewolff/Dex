@@ -10,6 +10,7 @@ class Dex
 	public static $scripts = array();
 
 	public static $link_id = 0;
+    public static $theme_name = '';
     public static $template_name = '';
 
 	////////////////
@@ -49,6 +50,14 @@ class Dex
         return self::$link_id;
     }
 
+    public static function getThemeName()
+    {
+        if (self::$theme_name == '')
+            user_error('Theme name not set', ERROR);
+
+        return self::$theme_name;
+    }
+
     public static function getTemplateName()
     {
         if (self::$template_name == '')
@@ -64,14 +73,6 @@ class Core extends Dex
 		$_ = self::$vars;
 		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/' . $_template);
 	}
-
-    public static function renderTemplate() {
-        if (self::$template_name == '')
-            user_error('Template name not set', ERROR);
-
-        $_ = self::$vars;
-        include(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . self::$template_name . '/template.php');
-    }
 
 	public static function addStyle($style) {
 		self::$styles[] = 'core/resources/styles/' . $style;
@@ -214,40 +215,66 @@ class Module extends Dex
 
 class Theme extends Dex
 {
-	public static $theme_name = '';
+    public static function render($_template) {
+        if (self::$theme_name == '')
+            user_error('Theme name not set', ERROR);
 
-	public static function set($theme_name) {
-		self::$theme_name = $theme_name;
-	}
+        $_ = self::$vars;
+        include(dirname($_SERVER['SCRIPT_FILENAME']) . '/themes/' . self::$theme_name . '/templates/' . $_template);
+    }
 
-	public static function render($_template) {
-    	if (self::$theme_name == '')
-    		user_error('Theme name not set', ERROR);
+    public static function addStyle($style) {
+        if (self::$theme_name == '')
+            user_error('Theme name not set', ERROR);
 
-		$_ = self::$vars;
-		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/themes/' . self::$theme_name . '/templates/' . $_template);
-	}
+        self::$styles[] = 'themes/' . self::$theme_name . '/resources/styles/' . $style;
+    }
 
-	public static function addStyle($style) {
-    	if (self::$theme_name == '')
-    		user_error('Theme name not set', ERROR);
+    public static function addScript($script) {
+        if (self::$theme_name == '')
+            user_error('Theme name not set', ERROR);
 
-		self::$styles[] = 'themes/' . self::$theme_name . '/resources/styles/' . $style;
-	}
+        self::$scripts['header'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+    }
 
-	public static function addScript($script) {
-    	if (self::$theme_name == '')
-    		user_error('Theme name not set', ERROR);
+    public static function addDeferredScript($script) {
+        if (self::$theme_name == '')
+            user_error('Theme name not set', ERROR);
 
-		self::$scripts['header'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
-	}
+        self::$scripts['footer'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+    }
+}
 
-	public static function addDeferredScript($script) {
-    	if (self::$theme_name == '')
-    		user_error('Theme name not set', ERROR);
+class Template extends Dex
+{
+    public static function render($_template) {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
 
-		self::$scripts['footer'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
-	}
+        $_ = self::$vars;
+        include(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . self::$template_name . '/templates/' . $_template);
+    }
+
+    public static function addStyle($style) {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
+
+        self::$styles[] = 'templates/' . self::$template_name . '/resources/styles/' . $style;
+    }
+
+    public static function addScript($script) {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
+
+        self::$scripts['header'][] = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+    }
+
+    public static function addDeferredScript($script) {
+        if (self::$template_name == '')
+            user_error('Template name not set', ERROR);
+
+        self::$scripts['footer'][] = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+    }
 }
 
 ?>
