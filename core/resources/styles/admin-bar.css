@@ -117,7 +117,7 @@ body {
     margin-top:1px;
 }
 
-[contenteditable] {
+[contenteditable="true"] {
     margin:-1px;
     border: 1px solid #3b641f;
 

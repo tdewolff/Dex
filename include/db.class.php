@@ -42,7 +42,7 @@ class Db
 
 	public static function isValid()
 	{
-		return self::$handle && filesize(self::$filename) !== 0;
+		return self::$handle && is_file(self::$filename) && filesize(self::$filename) !== 0;
 	}
 
 	public static function exec($sql)
