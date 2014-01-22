@@ -4,14 +4,19 @@ class Stats
 {
     public static function registerPageVisit()
     {
-        if (Db::isValid())
+        if (!Db::isValid())
             return false;
 
-        if (!Db::querySingle("SELECT * FROM stats WHERE time >= '" . Db::escape(time() - 60 * 60) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1;"))
-            Db::exec("INSERT INTO stats (time, ip_address) VALUES (
+        if (!Db::querySingle("SELECT * FROM stats WHERE time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1;"))
+            Db::exec("INSERT INTO stats (n, time, ip_address, request_url, referral) VALUES (
+                '1',
                 '" . Db::escape(time()) . "',
-                '" . Db::escape($_SERVER['REMOTE_ADDR']) . "'
+                '" . Db::escape($_SERVER['REMOTE_ADDR']) . "',
+                '" . Db::escape(Common::$request_url) . "',
+                '" . Db::escape($_SERVER["HTTP_REFERER"]) . "'
             );");
+        else
+            Db::exec("UPDATE stats SET n = n + 1 WHERE time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "';");
     }
 
     public static function pageVisitChart()

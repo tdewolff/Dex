@@ -23,15 +23,13 @@ if ($form->submitted())
 {
     if ($form->validate())
     {
-        Db::exec("
-        DROP TABLE IF EXISTS setting;
+        $valid = Db::exec("
         CREATE TABLE setting (
             setting_id INTEGER PRIMARY KEY,
             key TEXT,
             value TEXT
         );
 
-        DROP TABLE IF EXISTS user;
         CREATE TABLE user (
             user_id INTEGER PRIMARY KEY,
             username TEXT,
@@ -40,7 +38,6 @@ if ($form->submitted())
             role TEXT
         );
 
-        DROP TABLE IF EXISTS recover;
         CREATE TABLE recover (
             recover_id INTEGER PRIMARY KEY,
             user_id INTEGER,
@@ -48,7 +45,6 @@ if ($form->submitted())
             expiry_time INTEGER
         );
 
-        DROP TABLE IF EXISTS link;
         CREATE TABLE link (
             link_id INTEGER PRIMARY KEY,
             url TEXT,
@@ -57,7 +53,6 @@ if ($form->submitted())
             modify_time INTEGER
         );
 
-        DROP TABLE IF EXISTS content;
         CREATE TABLE content (
             content_id INTEGER PRIMARY KEY,
             link_id INTEGER,
@@ -66,14 +61,12 @@ if ($form->submitted())
             FOREIGN KEY(link_id) REFERENCES link(link_id)
         );
 
-        DROP TABLE IF EXISTS module;
         CREATE TABLE module (
             module_id INTEGER PRIMARY KEY,
             module_name TEXT,
             enabled INTEGER
         );
 
-        DROP TABLE IF EXISTS link_module;
         CREATE TABLE link_module (
             link_module_id INTEGER PRIMARY KEY,
             link_id INTEGER,
@@ -92,15 +85,15 @@ if ($form->submitted())
         INSERT INTO content (link_id, name, content) VALUES (
             '1',
             'content',
-            '<h3>Sample content</h3>
+            '" . Db::escape('<h3>Sample content</h3>
              <p>This is a sample page to get you going!</p>
              <p>When logged in you can click on \'Edit\' above and start typing right away. Select this piece of text for example and start styling with <b>bold</b> and <i>italic</i>.</p>
              <ul><li>Create a bulleted list by typing \'-\' or \'*\' and hitting enter</li></ul>
              <ol><li>Or list things by starting the line with \'1. \'</li><li>etc.</li></ol>
              <hr>
              <p>Two enters creates a divider and you can quote someone:</p>
-             <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mattis nulla, imperdiet ornare justo. Aliquam ultrices elit in sem viverra tristique. Nam consectetur scelerisque dolor, sit amet varius erat pretium blandit. Fusce at urna nisi. Mauris vel lorem in ipsum eleifend iaculis. Donec dictum laoreet sem. Donec euismod magna vel lorem rhoncus bibendum. Nunc at tincidunt lorem. Suspendisse congue metus pharetra ultrices vehicula. Vestibulum congue luctus ipsum sit amet vulputate. Nam venenatis dictum risus, vel viverra quam. Sed convallis, magna ut varius pellentesque, velit augue auctor tortor, iaculis pellentesque nisi mauris dapibus nulla. Nam vel enim at velit facilisis laoreet. Aliquam blandit lobortis neque, et scelerisque risus imperdiet vel. Nulla enim diam, semper sed dolor nec, gravida congue arcu. Proin varius est a dui varius, eget posuere nulla aliquam.</blockquote>
-            '
+             <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\'t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
+            ') . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
@@ -135,12 +128,21 @@ if ($form->submitted())
             'admin'
         );
 
-        DROP TABLE IF EXISTS stats;
         CREATE TABLE stats (
             stat_id INTEGER PRIMARY KEY,
+            n INTEGER,
             time INTEGER,
-            ip_address TEXT
+            ip_address TEXT,
+            request_url TEXT,
+            referral TEXT
         );");
+
+        if (!$valid)
+        {
+            Db::close();
+            unlink('develop.db');
+            user_error('could not setup site', ERROR);
+        }
 
         Db::exec("BEGIN IMMEDIATE;");
         copy('develop.db', 'current.db');
