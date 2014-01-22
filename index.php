@@ -31,28 +31,24 @@ register_shutdown_function(function() {
 // form the request URI
 Log::request($_SERVER['REQUEST_URI']);
 
-$base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
-$base_url = preg_replace('/\/+$/', '/', $base_url); // remove added slashes to base url
+Common::$base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
+Common::$base_url = preg_replace('/\/+$/', '/', Common::$base_url); // remove added slashes to base url
 
-$request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
-if (strncmp($base_url, $request_url, strlen($base_url)))
+Common::$request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
+if (strncmp(Common::$base_url, Common::$request_url, strlen(Common::$base_url)))
     user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
-$request_url = urldecode(substr($request_url, strlen($base_url))); // remove basedir from URI
+Common::$request_url = urldecode(substr(Common::$request_url, strlen(Common::$base_url))); // remove basedir from URI
 
-$url = explode('/', $request_url);
+$url = explode('/', Common::$request_url);
 if (empty($url[count($url) - 1]))
     unset($url[count($url) - 1]);
 
-// TODO: remove?
-//if (!Common::validUrl($request_url))
-//    user_error('Request URL doesn\'t validate (' . $request_url . ')', ERROR);
-
 
 // robots.txt and favicon.ico
-if ($request_url == 'robots.txt')
+if (Common::$request_url == 'robots.txt')
     Common::outputRobotsTxt(); // always exits
-else if ($request_url == 'favicon.ico')
+else if (Common::$request_url == 'favicon.ico')
     Common::outputFaviconIco();
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
@@ -82,7 +78,7 @@ if (Common::requestApi())
 }
 
 require_once('include/security.php');
-require_once('include/database.class.php');
+require_once('include/db.class.php');
 require_once('include/user.class.php');
 
 Bcrypt::setRounds(8);
@@ -95,33 +91,26 @@ if (!is_file('current.db') && is_file('develop.db'))
 }
 
 // User::loggedIn() needs a database (develop) loaded
-$db = new Database('develop.db');
-if (is_file($db->filename) === false)
-    user_error('Database file never created at "' . $db->filename . '"', ERROR);
-
+Db::open('develop.db');
 
 if (!session_start())
     user_error('Could not start session', ERROR);
 
 register_shutdown_function(function() {
-    global $starttime, $db;
+    global $starttime;
 
     $endtime = explode(' ', microtime());
     $totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
-    Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
+    Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . Db::queries() . ' queries');
 });
 
 if (!User::loggedIn() && !Common::requestAdmin())
-{
-    $db = new Database('current.db');
-    if (is_file($db->filename) === false)
-        user_error('Database file never created at "' . $db->filename . '"', ERROR);
-}
+    Db::open('current.db');
 
 
 // sitemap
-if ($request_url == 'sitemap.xml')
+if (Common::$request_url == 'sitemap.xml')
     Common::outputSitemapXml(); // always exits
 
 // API; continued
@@ -155,7 +144,7 @@ if (User::loggedIn())
 else
     Stats::registerPageVisit();
 
-Core::assign('base_url', $base_url);
+Core::assign('base_url', Common::$base_url);
 
 
 // handle admin area
@@ -165,7 +154,7 @@ if (Common::requestAdmin())
 
 // load all site ettings
 $settings = array();
-$table = $db->query("SELECT * FROM setting;");
+$table = Db::query("SELECT * FROM setting;");
 while ($row = $table->fetch())
 {
     $settings[$row['key']] = $row['value'];
@@ -178,7 +167,7 @@ Core::$theme_name = $settings['theme'];
 
 
 // load page
-$link = $db->querySingle("SELECT * FROM link WHERE '" . $db->escape($request_url) . "' REGEXP url or '/" . $db->escape($request_url) . "' = url LIMIT 1;");
+$link = Db::querySingle("SELECT * FROM link WHERE '" . Db::escape(Common::$request_url) . "' REGEXP url or '/" . Db::escape(Common::$request_url) . "' = url LIMIT 1;");
 if ($link)
 {
     Core::addTitle($link['title']);
@@ -190,7 +179,7 @@ if ($link)
 
 
 // load in admin bar
-if (User::loggedIn())
+if (User::getTimeLeft() !== false)
 {
     Core::addStyle('vendor/font-awesome.css');
     Core::addStyle('vendor/fancybox.css');
@@ -204,9 +193,9 @@ if (User::loggedIn())
 
 
 // load in module hooks
-$table = $db->query("SELECT * FROM link_module
+$table = Db::query("SELECT * FROM link_module
     JOIN module ON link_module.module_name = module.module_name
-    WHERE (link_id = '0'" . (isset($link['link_id']) ? " OR link_id = '" . $db->escape($link['link_id']) . "'" : "") . ") AND module.enabled = 1;");
+    WHERE (link_id = '0'" . (isset($link['link_id']) ? " OR link_id = '" . Db::escape($link['link_id']) . "'" : "") . ") AND module.enabled = 1;");
 while ($row = $table->fetch())
     include_once('modules/' . $row['module_name'] . '/hooks.php');
 

@@ -14,7 +14,7 @@ $extension_position = strrpos($filename, '.');
 $extension = strtolower($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
 
 if (!Resource::isResource($extension))
-    user_error('Resource file extension "' . $extension . '" invalid of "' . $request_url . '"', ERROR);
+    user_error('Resource file extension "' . $extension . '" invalid of "' . Common::$request_url . '"', ERROR);
 else if (!is_file($filename))
     user_error('Could not find resource file "' . $filename . '"', ERROR);
 else

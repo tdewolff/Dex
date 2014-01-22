@@ -1,11 +1,10 @@
 <?php
 
 function contact_render() {
-    global $db;
     Module::set('contact');
 
     $contact = array();
-    $table = $db->query("SELECT * FROM module_contact;");
+    $table = Db::query("SELECT * FROM module_contact;");
     while ($row = $table->fetch())
         if (!empty($row['value']))
         {

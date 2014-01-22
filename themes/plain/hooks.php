@@ -11,8 +11,8 @@ Hooks::attach('site-header', -1, function () {
 });
 
 Hooks::attach('navigation', -1, function () {
-    global $base_url, $settings;
-    echo '<a href="/' . $base_url . '" class="logo">' . $settings['title'] . '</a>';
+    global $settings;
+    echo '<a href="/' . Common::$base_url . '" class="logo">' . $settings['title'] . '</a>';
 });
 
 Hooks::attach('header', 0, function() {

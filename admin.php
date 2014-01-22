@@ -29,13 +29,13 @@ if (filesize('develop.db') === 0)
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout
-if (User::loggedIn() && $request_url == 'admin/logout/')
+if (User::loggedIn() && Common::$request_url == 'admin/logout/')
 	User::logOut();
 
 // login
 if (!User::loggedIn())
 {
-	if (strpos($request_url, 'admin/recover/') === 0)
+	if (strpos(Common::$request_url, 'admin/recover/') === 0)
 		require_once('core/admin/recover.php'); // exits
 	else
 		require_once('core/admin/login.php'); // exits if not logged in
@@ -60,7 +60,7 @@ $admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',          
 $admin_links[] = array();
 
 $modules = array();
-$table = $db->query("SELECT * FROM module ORDER BY module_name ASC;");
+$table = Db::query("SELECT * FROM module ORDER BY module_name ASC;");
 while ($row = $table->fetch())
 {
 	$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
@@ -95,7 +95,7 @@ foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
 	{
 		$admin_link['regex'] = preg_replace('/\//', '\/', $admin_link['regex']);
-		if (preg_match('/^' . $admin_link['regex'] . '$/', $request_url))
+		if (preg_match('/^' . $admin_link['regex'] . '$/', Common::$request_url))
 		{
 			Core::assign('current_admin_i', $i);
 
@@ -107,6 +107,6 @@ foreach ($admin_links as $i => $admin_link)
 		}
 	}
 
-user_error('Could not find page at "' . $request_url . '"', ERROR);
+user_error('Could not find page at "' . Common::$request_url . '"', ERROR);
 
 ?>

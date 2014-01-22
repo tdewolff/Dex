@@ -4,17 +4,17 @@ if (!User::isAdmin())
 	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 
 $database = array();
-$tables = $db->query("SELECT * FROM sqlite_master WHERE type = 'table';");
+$tables = Db::query("SELECT * FROM sqlite_master WHERE type = 'table';");
 while ($table = $tables->fetch())
 {
 	$table_columns = array();
 	$table_rows = array();
 
-	$columns = $db->query("PRAGMA table_info(" . $db->escape($table['name']) . ");");
+	$columns = Db::query("PRAGMA table_info(" . Db::escape($table['name']) . ");");
 	while ($column = $columns->fetch())
 		$table_columns[] = $column['name'] . ' (' . $column['type'] . ')';
 
-	$rows = $db->query("SELECT * FROM " . $db->escape($table['name']) . ";");
+	$rows = Db::query("SELECT * FROM " . Db::escape($table['name']) . ";");
 	while ($row = $rows->fetch())
 	{
 		$table_row = array();

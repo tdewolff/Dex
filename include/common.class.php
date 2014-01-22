@@ -2,6 +2,11 @@
 
 class Common
 {
+    public static $request_url = '';
+    public static $base_url = '';
+
+    ////////////////
+
     private static $minifying = false;
 
     public static function setMinifying($minifying) {
@@ -16,20 +21,17 @@ class Common
 
     public static function requestResource()
     {
-        global $request_url;
-        return strpos($request_url, 'res/') === 0;
+        return strpos(self::$request_url, 'res/') === 0;
     }
 
     public static function requestAdmin()
     {
-        global $request_url;
-        return strpos($request_url, 'admin/') === 0 || filesize('develop.db') === 0;
+        return strpos(self::$request_url, 'admin/') === 0 || !Db::isValid();
     }
 
     public static function requestApi()
     {
-        global $request_url;
-        return strpos($request_url, 'api/') === 0;
+        return strpos(self::$request_url, 'api/') === 0;
     }
 
     public static function requestAjax()
@@ -47,7 +49,7 @@ class Common
             chmod($directory, 0755);
     }
 
-	public static function validUrl($input)
+	public static function validUrl($input) // unused
 	{
 		// first part are all allowed characters
 		// second part makes sure no ../ occurs
@@ -167,23 +169,19 @@ class Common
 
     public static function outputRobotsTxt()
     {
-        global $base_url;
-
         header('Content-Type: text');
         echo "User-agent: *\n" .
              "Disallow: /admin/\n" .
-             "Sitemap: " . self::fullBaseUrl() . $base_url . "sitemap.xml";
+             "Sitemap: " . self::fullBaseUrl() . self::$base_url . "sitemap.xml";
         exit;
     }
 
     public static function outputSitemapXml()
     {
-        global $db, $base_url;
-
         header('Content-Type: text/xml');
         echo '<?xml version="1.0" encoding="UTF-8"?>' .
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-        $table = $db->query("SELECT * FROM link;");
+        $table = Db::query("SELECT * FROM link;");
         while ($row = $table->fetch())
         {
             $slashes = preg_match_all('/', $row['url']);
@@ -196,7 +194,7 @@ class Common
                 $priority = '0.6';
 
             echo '<url>' .
-                     '<loc>' . self::fullBaseUrl() . $base_url . $row['url'] . '</loc>' .
+                     '<loc>' . self::fullBaseUrl() . self::$base_url . $row['url'] . '</loc>' .
                      '<lastmod>' . date('Y-m-d', $row['modify_time']) . '</lastmod>' .
                      '<priority>' . $priority . '</priority>' .
                  '</url>';

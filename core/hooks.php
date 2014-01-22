@@ -101,12 +101,10 @@ Hooks::attach('admin-footer', 0, function() {
 ////////////////////////////////////////////////////////////////
 
 /*Hooks::attach('main', 0, function() {
-    global $db, $base_url;
-
     $link_id = Core::getLinkId();
     $template_name = Core::getTemplateName();
 
-    $table = $db->query("SELECT * FROM content WHERE link_id = '" . $db->escape($link_id) . "';");
+    $table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "';");
     while ($row = $table->fetch())
     	Core::assign($row['name'], $row['content']);
 

@@ -16,7 +16,7 @@ else
 {
     if ($url[2] != 'new')
     {
-		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $db->escape($url[2]) . "' LIMIT 1;");
+		$user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
 		if (!$user)
 			user_error('User ID "' . $url[2] . '" doesn\'t exist', ERROR);
 	}
@@ -45,8 +45,8 @@ else
 	{
 		if ($form->validate())
 		{
-			$current_user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $db->escape(User::getUserId()) . "' LIMIT 1;");
-            if ($db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' AND user_id != '" . $db->escape($url[2]) . "' LIMIT 1;"))
+			$current_user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . Db::escape(User::getUserId()) . "' LIMIT 1;");
+            if (Db::querySingle("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
             else if (!$current_user)
                 $form->appendError('Unknown error');
@@ -58,31 +58,31 @@ else
 				if ($url[2] != 'new')
 				{
 					if ($form->get('password') != '')
-						$db->exec("
+						Db::exec("
 						UPDATE user SET
-							username = '" . $db->escape($form->get('username')) . "',
-							email = '" . $db->escape($form->get('email')) . "',
-							password = '" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
-							role = '" . $db->escape($form->get('role')) . "'
-						WHERE user_id = '" . $db->escape($url[2]) . "';");
+							username = '" . Db::escape($form->get('username')) . "',
+							email = '" . Db::escape($form->get('email')) . "',
+							password = '" . Db::escape(Bcrypt::hash($form->get('password'))) . "',
+							role = '" . Db::escape($form->get('role')) . "'
+						WHERE user_id = '" . Db::escape($url[2]) . "';");
 					else
-						$db->exec("
+						Db::exec("
 						UPDATE user SET
-							username = '" . $db->escape($form->get('username')) . "',
-							email = '" . $db->escape($form->get('email')) . "',
-							role = '" . $db->escape($form->get('role')) . "'
-						WHERE user_id = '" . $db->escape($url[2]) . "';");
+							username = '" . Db::escape($form->get('username')) . "',
+							email = '" . Db::escape($form->get('email')) . "',
+							role = '" . Db::escape($form->get('role')) . "'
+						WHERE user_id = '" . Db::escape($url[2]) . "';");
 				}
 				else
 				{
-					$db->exec("
+					Db::exec("
 					INSERT INTO user (username, email, password, role) VALUES (
-						'" . $db->escape($form->get('username')) . "',
-						'" . $db->escape($form->get('email')) . "',
-						'" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
-						'" . $db->escape($form->get('role')) . "'
+						'" . Db::escape($form->get('username')) . "',
+						'" . Db::escape($form->get('email')) . "',
+						'" . Db::escape(Bcrypt::hash($form->get('password'))) . "',
+						'" . Db::escape($form->get('role')) . "'
 					);");
-					$form->setRedirect('/' . $base_url . 'admin/users/');
+					$form->setRedirect('/' . Common::$base_url . 'admin/users/');
 				}
 		}
 		$form->finish();

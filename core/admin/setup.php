@@ -23,7 +23,7 @@ if ($form->submitted())
 {
     if ($form->validate())
     {
-        $db->exec("
+        Db::exec("
         DROP TABLE IF EXISTS setting;
         CREATE TABLE setting (
             setting_id INTEGER PRIMARY KEY,
@@ -86,41 +86,41 @@ if ($form->submitted())
             '',
             'Home',
             'static',
-            '" . $db->escape(time()) . "'
+            '" . Db::escape(time()) . "'
         );
 
         INSERT INTO content (link_id, name, content) VALUES (
             '1',
             'content',
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mattis nulla, imperdiet ornare justo. Aliquam ultrices elit in sem viverra tristique. Nam consectetur scelerisque dolor, sit amet varius erat pretium blandit. Fusce at urna nisi. Mauris vel lorem in ipsum eleifend iaculis. Donec dictum laoreet sem. Donec euismod magna vel lorem rhoncus bibendum. Nunc at tincidunt lorem. Suspendisse congue metus pharetra ultrices vehicula. Vestibulum congue luctus ipsum sit amet vulputate. Nam venenatis dictum risus, vel viverra quam. Sed convallis, magna ut varius pellentesque, velit augue auctor tortor, iaculis pellentesque nisi mauris dapibus nulla. Nam vel enim at velit facilisis laoreet. Aliquam blandit lobortis neque, et scelerisque risus imperdiet vel. Nulla enim diam, semper sed dolor nec, gravida congue arcu. Proin varius est a dui varius, eget posuere nulla aliquam.
-
-Sed quis enim sit amet eros fermentum aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque malesuada est vitae feugiat sodales. Curabitur vehicula ullamcorper mauris. Cras eu mauris nisi. Donec in eros dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec aliquam neque sed libero porta mollis. Maecenas vitae varius erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In imperdiet quam nec magna vehicula rhoncus. Phasellus semper malesuada nunc, et porta purus viverra malesuada. Proin nec tempor ante. Nunc aliquam augue nec est vehicula euismod.
-
-Aliquam erat volutpat. Ut semper dolor magna, non faucibus elit fermentum ut. Sed mattis mauris non dolor lacinia gravida non eget lectus. Etiam malesuada, lacus in luctus ullamcorper, purus lectus vehicula dolor, sit amet ullamcorper augue odio vel ligula. Morbi sodales lacus ac dignissim interdum. Quisque nec nisi blandit, aliquam diam vitae, porttitor neque. Quisque vel eros eu enim mollis sodales nec sit amet lectus. Praesent scelerisque nisl at pharetra blandit. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Suspendisse consequat eleifend turpis, nec molestie risus varius et. Duis iaculis neque enim, sit amet lacinia diam suscipit quis. Nullam feugiat, risus id volutpat tempus, tellus justo aliquet metus, id lobortis lectus est id leo. Mauris vestibulum odio in dui lobortis, a pharetra massa vulputate. Nulla sed posuere augue.
-
-Phasellus sit amet consectetur nunc. Quisque lacinia accumsan tellus, nec cursus lectus. Phasellus eros massa, vulputate id purus sit amet, dignissim imperdiet quam. Aenean vitae fringilla purus, pulvinar congue magna. Cras vel dolor justo. Mauris scelerisque placerat justo, vel interdum elit mattis quis. Maecenas porta, leo non vestibulum auctor, sem enim viverra erat, in luctus nisl nunc eleifend ipsum. Fusce diam nibh, rutrum quis rhoncus id, egestas mattis eros.
-
-Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehicula, varius nibh pellentesque, sagittis nisl. Fusce ut erat non mauris pulvinar congue id nec libero. Pellentesque vel vulputate nunc. Maecenas adipiscing scelerisque placerat. Praesent lobortis sem lorem, commodo gravida orci ullamcorper cursus. Etiam id consequat libero, euismod dapibus libero. Suspendisse ligula lectus, rhoncus et erat vitae, lacinia rutrum nisi.'
+            '<h3>Sample content</h3>
+             <p>This is a sample page to get you going!</p>
+             <p>When logged in you can click on \'Edit\' above and start typing right away. Select this piece of text for example and start styling with <b>bold</b> and <i>italic</i>.</p>
+             <ul><li>Create a bulleted list by typing \'-\' or \'*\' and hitting enter</li></ul>
+             <ol><li>Or list things by starting the line with \'1. \'</li><li>etc.</li></ol>
+             <hr>
+             <p>Two enters creates a divider and you can quote someone:</p>
+             <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean et mattis nulla, imperdiet ornare justo. Aliquam ultrices elit in sem viverra tristique. Nam consectetur scelerisque dolor, sit amet varius erat pretium blandit. Fusce at urna nisi. Mauris vel lorem in ipsum eleifend iaculis. Donec dictum laoreet sem. Donec euismod magna vel lorem rhoncus bibendum. Nunc at tincidunt lorem. Suspendisse congue metus pharetra ultrices vehicula. Vestibulum congue luctus ipsum sit amet vulputate. Nam venenatis dictum risus, vel viverra quam. Sed convallis, magna ut varius pellentesque, velit augue auctor tortor, iaculis pellentesque nisi mauris dapibus nulla. Nam vel enim at velit facilisis laoreet. Aliquam blandit lobortis neque, et scelerisque risus imperdiet vel. Nulla enim diam, semper sed dolor nec, gravida congue arcu. Proin varius est a dui varius, eget posuere nulla aliquam.</blockquote>
+            '
         );
 
         INSERT INTO setting (key, value) VALUES (
             'title',
-            '" . $db->escape($form->get('title')) . "'
+            '" . Db::escape($form->get('title')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'subtitle',
-            '" . $db->escape($form->get('subtitle')) . "'
+            '" . Db::escape($form->get('subtitle')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'description',
-            '" . $db->escape($form->get('description')) . "'
+            '" . Db::escape($form->get('description')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
             'keywords',
-            '" . $db->escape($form->get('keywords')) . "'
+            '" . Db::escape($form->get('keywords')) . "'
         );
 
         INSERT INTO setting (key, value) VALUES (
@@ -129,9 +129,9 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
         );
 
         INSERT INTO user (username, email, password, role) VALUES (
-            '" . $db->escape($form->get('username')) . "',
-            '" . $db->escape($form->get('email')) . "',
-            '" . $db->escape(Bcrypt::hash($form->get('password'))) . "',
+            '" . Db::escape($form->get('username')) . "',
+            '" . Db::escape($form->get('email')) . "',
+            '" . Db::escape(Bcrypt::hash($form->get('password'))) . "',
             'admin'
         );
 
@@ -142,12 +142,12 @@ Nunc vehicula risus sem, id suscipit metus luctus quis. Cras egestas libero vehi
             ip_address TEXT
         );");
 
-        $db->exec("BEGIN IMMEDIATE;");
+        Db::exec("BEGIN IMMEDIATE;");
         copy('develop.db', 'current.db');
-        $db->exec("ROLLBACK;");
+        Db::exec("ROLLBACK;");
 
-        User::logIn($db->lastId());
-        $form->setRedirect('/' . $base_url . 'admin/');
+        User::logIn(Db::lastId());
+        $form->setRedirect('/' . Common::$base_url . 'admin/');
     }
     $form->finish();
 }

@@ -45,43 +45,43 @@ if ($url[2] == 'new')
             else
             {
                 $link_id = 0;
-                $link = $db->querySingle("
-                    SELECT * FROM link WHERE url = '" . $db->escape($form->get('url')) . "' LIMIT 1");
+                $link = Db::querySingle("
+                    SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
                 if ($link)
                 {
                     if ($form->get('title') != $link['title'])
-                        $db->exec("
+                        Db::exec("
                             UPDATE link SET
-                                title = '" . $db->escape($form->get('title')) . "',
-                                template_name = '" . $db->escape($form->get('template_name')) . "',
-                                modify_time = '" . $db->escape(time()) . "'
-                            WHERE link_id = '" . $db->escape($link['link_id']) . "';");
+                                title = '" . Db::escape($form->get('title')) . "',
+                                template_name = '" . Db::escape($form->get('template_name')) . "',
+                                modify_time = '" . Db::escape(time()) . "'
+                            WHERE link_id = '" . Db::escape($link['link_id']) . "';");
                     $link_id = $link['link_id'];
                 }
                 else
                 {
-                    $db->exec("
+                    Db::exec("
                         INSERT INTO link (url, title, template_name, modify_time) VALUES (
-                            '" . $db->escape($form->get('url')) . "',
-                            '" . $db->escape($form->get('title')) . "',
-                            '" . $db->escape($form->get('template_name')) . "',
-                            '" . $db->escape(time()) . "'
+                            '" . Db::escape($form->get('url')) . "',
+                            '" . Db::escape($form->get('title')) . "',
+                            '" . Db::escape($form->get('template_name')) . "',
+                            '" . Db::escape(time()) . "'
                         );");
-                    $link_id = $db->lastId();
+                    $link_id = Db::lastId();
                 }
-                $form->setRedirect('/' . $base_url . 'admin/pages/' . $link_id);
+                $form->setRedirect('/' . Common::$base_url . 'admin/pages/' . $link_id);
             }
         $form->finish();
     }
 }
 else
 {
-    $link = $db->querySingle("SELECT * FROM link WHERE link_id = '" . $db->escape($url[2]) . "' LIMIT 1;");
+    $link = Db::querySingle("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
     if (!$link)
         user_error('Link with link_id "' . $url[2] . '" doesn\'t exist', ERROR);
 
     $content = array();
-    $table = $db->query("SELECT * FROM content WHERE link_id = '" . $db->escape($url[2]) . "';");
+    $table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($url[2]) . "';");
     while ($row = $table->fetch())
         $content[$row['name']] = $row['content'];
 
@@ -104,12 +104,12 @@ else
                  $form->setError('url', $error);
             else
             {
-                $db->exec("
+                Db::exec("
                     UPDATE link SET
-                        url = '" . $db->escape($form->get('url')) . "',
-                        title = '" . $db->escape($form->get('title')) . "',
-                        modify_time = '" . $db->escape(time()) . "'
-                    WHERE link_id = '" . $db->escape($url[2]) . "';");
+                        url = '" . Db::escape($form->get('url')) . "',
+                        title = '" . Db::escape($form->get('title')) . "',
+                        modify_time = '" . Db::escape(time()) . "'
+                    WHERE link_id = '" . Db::escape($url[2]) . "';");
 
                 foreach ($form->getAll() as $name => $value)
                 {
@@ -117,16 +117,16 @@ else
                         continue;
 
                     if (isset($content[$name]))
-                        $db->exec("
+                        Db::exec("
                             UPDATE content SET
-                                content = '" . $db->escape($value) . "'
-                            WHERE link_id = '" . $db->escape($url[2]) . "' AND name = '" . $db->escape($name) . "';");
+                                content = '" . Db::escape($value) . "'
+                            WHERE link_id = '" . Db::escape($url[2]) . "' AND name = '" . Db::escape($name) . "';");
                     else
-                        $db->exec("
+                        Db::exec("
                             INSERT INTO content (link_id, name, content, modify_time) VALUES (
-                                '" . $db->escape($url[2]) . "',
-                                '" . $db->escape($name) . "',
-                                '" . $db->escape($value) . "'
+                                '" . Db::escape($url[2]) . "',
+                                '" . Db::escape($name) . "',
+                                '" . Db::escape($value) . "'
                             );");
                 }
             }

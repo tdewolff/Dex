@@ -8,13 +8,13 @@ if (API::action('change_theme'))
     if (!API::has('theme_name'))
         user_error('No theme name set', ERROR);
 
-    $db->exec("UPDATE setting SET value = '" . $db->escape(API::get('theme_name')) . "' WHERE key = 'theme';");
+    Db::exec("UPDATE setting SET value = '" . Db::escape(API::get('theme_name')) . "' WHERE key = 'theme';");
     API::finish();
 }
 else if (API::action('get_themes'))
 {
     $current_theme = '';
-    if ($theme = $db->querySingle("SELECT * FROM setting WHERE key = 'theme';"))
+    if ($theme = Db::querySingle("SELECT * FROM setting WHERE key = 'theme';"))
         $current_theme = $theme['value'];
 
     $themes = array();

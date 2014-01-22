@@ -15,17 +15,17 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		$user = $db->querySingle("SELECT * FROM user WHERE username = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
+		$user = Db::querySingle("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
         if (!$user)
-            $user = $db->querySingle("SELECT * FROM user WHERE email = '" . $db->escape($form->get('username')) . "' LIMIT 1;");
+            $user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
 
 		if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 		{
 			User::logIn($user['user_id']);
 
-			$form->setRedirect('/' . $base_url . $request_url);
-			if ($request_url == 'admin/login/' || $request_url == 'admin/logout/')
-				$form->setRedirect('/' . $base_url . 'admin/');
+			$form->setRedirect('/' . Common::$base_url . Common::$request_url);
+			if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')
+				$form->setRedirect('/' . Common::$base_url . 'admin/');
 		}
 		else
 			$form->appendError('Username and password combination is incorrect');

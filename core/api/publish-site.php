@@ -7,9 +7,9 @@ if (!User::isAdmin())
 
 Console::append('Publishing content...');
 
-$db->exec("BEGIN IMMEDIATE;");
+Db::exec("BEGIN IMMEDIATE;");
 copy('develop.db', 'current.db');
-$db->exec("ROLLBACK;");
+Db::exec("ROLLBACK;");
 Log::notice('develop.db is copied to current.db');
 
 Console::appendLine('done');
@@ -98,9 +98,9 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
     {
         $hasCompressed = true;
         Console::append('Compressing \'' . $image_name . '\'...');
-        Console::appendLine(Common::fullBaseUrl() . $base_url . 'res/' . $image_name);
+        Console::appendLine(Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name);
         try {
-            $output_info = SmushIt::compress(Common::fullBaseUrl() . $base_url . 'res/' . $image_name);
+            $output_info = SmushIt::compress(Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name);
         } catch (Exception $e) {
             $error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
             Console::appendLine('failed: ' . $error);

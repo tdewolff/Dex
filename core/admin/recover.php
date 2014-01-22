@@ -21,7 +21,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 	$recover = false;
 	if (isset($_GET['i']) && isset($_GET['t']))
 	{
-		$recover = $db->querySingle("SELECT * FROM recover WHERE recover_id = '" . $db->escape($_GET['i']) . "' LIMIT 1;");
+		$recover = Db::querySingle("SELECT * FROM recover WHERE recover_id = '" . Db::escape($_GET['i']) . "' LIMIT 1;");
 		if (!Bcrypt::verify($_GET['t'], $recover['token']))
 			$recover = false;
 	}
@@ -43,15 +43,15 @@ else if (isset($url[2]) && $url[2] == 'reset')
 		{
 			if ($recover && $recover['expiry_time'] > time())
 			{
-				$db->exec("
+				Db::exec("
 				UPDATE user SET
-					password = '" . $db->escape(Bcrypt::hash($form->get('password'))) . "'
-				WHERE user_id = '" . $db->escape($recover['user_id']) . "';");
+					password = '" . Db::escape(Bcrypt::hash($form->get('password'))) . "'
+				WHERE user_id = '" . Db::escape($recover['user_id']) . "';");
 			}
 			else if ($recover)
 				$form->appendError('Token has expired, request a new one at the <a href="/' . $_['base_url'] . 'admin/recover/">password recovery</a>.');
 
-			$form->setRedirect('/' . $base_url . 'admin/recover/success/');
+			$form->setRedirect('/' . Common::$base_url . 'admin/recover/success/');
 		}
 		$form->finish();
 	}
@@ -62,7 +62,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 
 		if ($recover && $recover['expiry_time'] <= time())
 		{
-			$db->exec("DELETE FROM recover WHERE recover_id = '" . $db->escape($recover['recover_id']) . "';");
+			Db::exec("DELETE FROM recover WHERE recover_id = '" . Db::escape($recover['recover_id']) . "';");
 			Core::assign('expired', true);
 		}
 		else
@@ -84,7 +84,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 // send email
 else
 {
-	$db->exec("DELETE FROM recover WHERE expiry_time <= '" . $db->escape(time() - (60 * 60 * 24 * 7)) . "';"); // remove tokens a week old
+	Db::exec("DELETE FROM recover WHERE expiry_time <= '" . Db::escape(time() - (60 * 60 * 24 * 7)) . "';"); // remove tokens a week old
 
 	$form = new Form('recover');
 
@@ -100,19 +100,19 @@ else
 	{
 		if ($form->validate())
 		{
-			$user = $db->querySingle("SELECT * FROM user WHERE email = '" . $db->escape($form->get('email')) . "' LIMIT 1;");
+			$user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('email')) . "' LIMIT 1;");
 			if ($user)
 			{
 				$token = random(24);
-				$db->exec("
-				DELETE FROM recover WHERE user_id = '" . $db->escape($user['user_id']) . "';
+				Db::exec("
+				DELETE FROM recover WHERE user_id = '" . Db::escape($user['user_id']) . "';
 				INSERT INTO recover (user_id, token, expiry_time) VALUES (
-					'" . $db->escape($user['user_id']) . "',
-					'" . $db->escape(Bcrypt::hash($token)) . "',
-					'" . $db->escape(time() + (60 * 30)) . "'
+					'" . Db::escape($user['user_id']) . "',
+					'" . Db::escape(Bcrypt::hash($token)) . "',
+					'" . Db::escape(time() + (60 * 30)) . "'
 				);");
 
-				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . $base_url . 'admin/reset/?i=' . $db->lastId() . '&t=' . urlencode($token);
+				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . Common::$base_url . 'admin/reset/?i=' . Db::lastId() . '&t=' . urlencode($token);
 
 				require_once('vendor/swift-mailer/swift_required.php');
 
@@ -131,7 +131,7 @@ else
 			}
 
 			// even if user doesn't exist, redirect to sent page so hackers never know whether they're right or wrong
-			$form->setRedirect('/' . $base_url . 'admin/recover/sent/');
+			$form->setRedirect('/' . Common::$base_url . 'admin/recover/sent/');
 		}
 		$form->finish();
 	}

@@ -1,14 +1,12 @@
 <?php
 
-define('SESSION_TIME', 1800); // 30 minutes
+define('SESSION_TIME', 5);//1800); // 30 minutes
 
 class User
 {
 	public static function logIn($user_id)
 	{
-		global $db;
-
-		$user = $db->querySingle("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
+		$user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
 		if (!$user)
 			user_error('Could not login', ERROR);
 
@@ -28,16 +26,13 @@ class User
 
 	public static function loggedIn()
 	{
-		global $db;
-
 		if (!isset($_SESSION['user']))
 			return false;
 
 		if ($_SESSION['user']['time'] + SESSION_TIME > time())
-			if (filesize($db->filename) != 0 && $db->querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;"))
+			if (Db::isValid() && Db::querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;"))
 				return true;
 
-		self::logOut();
 		return false;
 	}
 
@@ -79,7 +74,7 @@ class User
 
 	public static function getTimeleft()
 	{
-		return (self::loggedIn() ? ($_SESSION['user']['time'] + SESSION_TIME - time()) : false);
+		return (isset($_SESSION['user']) ? ($_SESSION['user']['time'] + SESSION_TIME - time()) : false);
 	}
 }
 

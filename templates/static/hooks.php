@@ -14,10 +14,8 @@ Hooks::attach('site-header', -1, function () {
 });
 
 Hooks::attach('main', 0, function() {
-    global $db, $base_url;
-
     $link_id = Core::getLinkId();
-    $content = $db->querySingle("SELECT * FROM content WHERE link_id = '" . $db->escape($link_id) . "' LIMIT 1;");
+    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' LIMIT 1;");
 
     Template::assign('content', SmartyPants($content['content']));
     Template::render('index.tpl');

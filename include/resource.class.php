@@ -153,9 +153,9 @@ class Resource
         return array($new_width, $new_height);
     }
 
-    public static function imageSizeAttributes($request_url, $max_width, $max_height = 0, $scale = 0)
+    public static function imageSizeAttributes(Common::$request_url, $max_width, $max_height = 0, $scale = 0)
     {
-        $filename = self::expandUrl($request_url);
+        $filename = self::expandUrl(Common::$request_url);
         list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
         return 'width="' . $new_width . '" height="' . $new_height . '"';
     }

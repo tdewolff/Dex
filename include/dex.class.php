@@ -112,8 +112,6 @@ class Core extends Dex
 
 	public static function checkModules()
 	{
-		global $db;
-
 		$fs_modules = array();
 		$handle = opendir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/');
 		while (($module_name = readdir($handle)) !== false)
@@ -126,7 +124,7 @@ class Core extends Dex
 
 		// check with database
         $remove_modules = array();
-		$db_modules = $db->query("SELECT * FROM module;");
+		$db_modules = Db::query("SELECT * FROM module;");
 		while ($db_module = $db_modules->fetch())
 			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
 				unset($fs_modules[$db_module['module_name']]);
@@ -138,10 +136,10 @@ class Core extends Dex
         {
             Log::notice('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
 
-            $db->exec("
-            DROP TABLE IF EXISTS module_" . $db->escape($module_name) . ";
-            DELETE FROM link_module WHERE module_name = '" . $db->escape($module_name) . "';
-            DELETE FROM module WHERE module_name = '" . $db->escape($module_name) . "';");
+            Db::exec("
+            DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
+            DELETE FROM link_module WHERE module_name = '" . Db::escape($module_name) . "';
+            DELETE FROM module WHERE module_name = '" . Db::escape($module_name) . "';");
         }
 
 		foreach ($fs_modules as $module_name => $enabled) // file exists but db entry does not
@@ -149,9 +147,9 @@ class Core extends Dex
 			include_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/admin/setup.php');
 
             Log::notice('module with module_name "' . $module_name . '" is inserted into the database');
-            $db->exec("
+            Db::exec("
             INSERT INTO module (module_name, enabled) VALUES (
-            	'" . $db->escape($module_name) . "',
+            	'" . Db::escape($module_name) . "',
             	1
             );");
 		}
@@ -159,12 +157,10 @@ class Core extends Dex
 
     public static function verifyLinkUrl($url, $link_id = 0)
     {
-        global $db;
-
         if (!Common::validUrl($url))
             return 'Must be valid URL';
 
-        if ($db->querySingle("SELECT * FROM link WHERE url = '" . $db->escape($url) . "' AND link_id != '" . $db->escape($link_id) . "' LIMIT 1;"))
+        if (Db::querySingle("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
             return 'Already used';
 
         $url_base = substr($url, 0, strpos($url, '/') + 1);

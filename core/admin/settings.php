@@ -16,15 +16,15 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		$db->exec("UPDATE setting SET value = '" . $db->escape($form->get('title')) . "' WHERE key = 'title';");
-		$db->exec("UPDATE setting SET value = '" . $db->escape($form->get('subtitle')) . "' WHERE key = 'subtitle';");
-		$db->exec("UPDATE setting SET value = '" . $db->escape($form->get('description')) . "' WHERE key = 'description';");
-		$db->exec("UPDATE setting SET value = '" . $db->escape($form->get('keywords')) . "' WHERE key = 'keywords';");
+		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('title')) . "' WHERE key = 'title';");
+		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';");
+		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';");
+		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';");
 	}
 	$form->finish();
 }
 
-$settings = $db->query("SELECT * FROM setting;");
+$settings = Db::query("SELECT * FROM setting;");
 while ($setting = $settings->fetch())
 	$form->set($setting['key'], $setting['value']);
 

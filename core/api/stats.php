@@ -6,7 +6,7 @@ if (!User::isAdmin())
 if (API::action('page-visits'))
 {
     $page_visits = array();
-    /*$table = $db->query("SELECT * FROM stats;");
+    /*$table = Db::query("SELECT * FROM stats;");
     while ($row = $table->fetch())
     {
         if (!isset($page_visits[date('M j', time())]))

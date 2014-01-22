@@ -23,7 +23,7 @@ $form->optional(array('org', 'url', 'email', 'tel'));
 $form->optionalTogether(array('adr_street-address', 'adr_locality', 'adr_region', 'adr_postal-code', 'adr_country-name'));
 
 $contact = array();
-$table = $db->query("SELECT * FROM module_contact;");
+$table = Db::query("SELECT * FROM module_contact;");
 while ($row = $table->fetch())
     $contact[$row['key']] = $row['value'];
 
@@ -31,10 +31,10 @@ if ($form->submitted())
 {
     if ($form->validate())
         foreach ($contact as $key => $value)
-            $db->exec("
+            Db::exec("
             UPDATE module_contact SET
-                value = '" . $db->escape($form->get($key)) . "'
-            WHERE key = '" . $db->escape($key) . "';");
+                value = '" . Db::escape($form->get($key)) . "'
+            WHERE key = '" . Db::escape($key) . "';");
     $form->finish();
 }
 

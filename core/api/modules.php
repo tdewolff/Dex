@@ -8,9 +8,9 @@ if (API::action('enable_module') || API::action('disable_module'))
     if (!API::has('module_name'))
         user_error('No module name set', ERROR);
 
-    $db->exec("
-        UPDATE module SET enabled = '" . $db->escape(API::action('enable_module') ? '1' : '0') . "'
-        WHERE module_name = '" . $db->escape(API::get('module_name')) . "';");
+    Db::exec("
+        UPDATE module SET enabled = '" . Db::escape(API::action('enable_module') ? '1' : '0') . "'
+        WHERE module_name = '" . Db::escape(API::get('module_name')) . "';");
     API::finish();
 }
 else if (API::action('reinstall_module'))
@@ -24,7 +24,7 @@ else if (API::action('reinstall_module'))
 else if (API::action('get_modules'))
 {
     $modules = array();
-    $table = $db->query("SELECT * FROM module ORDER BY module_name ASC;");
+    $table = Db::query("SELECT * FROM module ORDER BY module_name ASC;");
     while ($row = $table->fetch())
     {
         $ini_filename = 'modules/' . $row['module_name'] . '/config.ini';

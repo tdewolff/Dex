@@ -33,7 +33,7 @@ $('#log-out').click(function() {
             this.remove();
         });
         $('body').animate({
-            'top': '0'
+            'padding-top': '0'
         });
     }, function() {
         apiStatusError('Logging out failed');

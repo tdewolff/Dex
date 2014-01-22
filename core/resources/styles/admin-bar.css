@@ -9,6 +9,7 @@ body {
     width:100%;
     height:33px;
     background-color:#282F33;
+    color:#E0E0E0;
     border-bottom:1px solid #414D54;
     padding:2px 0;
     z-index:7999;
@@ -61,7 +62,6 @@ body {
     display:inline-block;
     float:right;
     line-height:28px;
-    color:#E0E0E0;
     font-size:90%;
     margin-right:20px;
 }
