@@ -10,6 +10,7 @@ Console::append('Publishing content...');
 $db->exec("BEGIN IMMEDIATE;");
 copy('develop.db', 'current.db');
 $db->exec("ROLLBACK;");
+Log::notice('develop.db is copied to current.db');
 
 Console::appendLine('done');
 

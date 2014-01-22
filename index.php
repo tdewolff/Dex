@@ -81,27 +81,30 @@ if (Common::requestApi())
     }
 }
 
-require_once('include/database.class.php');
 require_once('include/security.php');
+require_once('include/database.class.php');
 require_once('include/user.class.php');
-
-// copy database if one exists but other doesn't
-if (!is_file('current.db') && is_file('develop.db'))
-    copy('develop.db', 'current.db');
-else if (is_file('current.db') && !is_file('develop.db'))
-    copy('current.db', 'develop.db');
 
 Bcrypt::setRounds(8);
 
+// copy database if one exists but other doesn't
+if (!is_file('current.db') && is_file('develop.db'))
+{
+    copy('develop.db', 'current.db');
+    Log::notice('develop.db is copied to current.db');
+}
+
+// User::loggedIn() needs a database (develop) loaded
 $db = new Database('develop.db');
 if (is_file($db->filename) === false)
     user_error('Database file never created at "' . $db->filename . '"', ERROR);
 
-session_start();
+
+if (!session_start())
+    user_error('Could not start session', ERROR);
+
 register_shutdown_function(function() {
     global $starttime, $db;
-
-    session_write_close();
 
     $endtime = explode(' ', microtime());
     $totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
@@ -109,8 +112,7 @@ register_shutdown_function(function() {
     Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . $db->queries() . ' queries');
 });
 
-
-if (!User::loggedIn() && is_file('current.db')) // User::loggedIn() needs a database (develop) loaded
+if (!User::loggedIn() && !Common::requestAdmin())
 {
     $db = new Database('current.db');
     if (is_file($db->filename) === false)

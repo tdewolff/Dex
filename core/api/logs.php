@@ -16,7 +16,17 @@ if (API::action('get'))
     foreach ($logfile as $logline)
     {
         $logline = explode(' ', $logline);
-        $datetime = new DateTime(substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1));
+        if (count($logline) < 4)
+            continue;
+
+        try
+        {
+            $datetime = new DateTime(substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1));
+        }
+        catch (Exception $e)
+        {
+            continue;
+        }
 
         if ($errors)
         {

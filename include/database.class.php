@@ -30,6 +30,7 @@ class Database
 
 	public function __destruct()
 	{
+		Log::notice('Database close: ' . $this->filename);
 		$this->handle->close();
 	}
 

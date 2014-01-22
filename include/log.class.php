@@ -109,8 +109,19 @@ class Log
 		if (self::$file)
 		{
 			$message = '[' . date('Y-m-d H:i:s') . '] ' . self::$ipaddress . ' ' . $type . ' ' . $message . "\r\n";
-		    fwrite(self::$file, $message);
-		    fflush(self::$file);
+
+			// try a few times to acquire file lock, if we don't lock simultaneous write might occur!
+			for ($i = 0; $i < 10; $i++)
+			{
+				if (flock(self::$file, LOCK_EX))
+				{
+			    	fwrite(self::$file, $message);
+			    	fflush(self::$file);
+			    	flock(self::$file, LOCK_UN);
+			    	break;
+			    }
+			    usleep(1);
+			}
 		}
 	}
 }
