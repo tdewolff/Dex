@@ -1,6 +1,6 @@
 <?php
 
-define('SESSION_TIME', 5);//1800); // 30 minutes
+define('SESSION_TIME', 1800); // 30 minutes
 
 class User
 {
