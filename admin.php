@@ -25,7 +25,7 @@ Core::addDeferredScript('admin-bar.js');
 Core::addDeferredScript('upload.js');
 
 // setup
-if (filesize('develop.db') === 0)
+if (!Db::isValid())
     require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout

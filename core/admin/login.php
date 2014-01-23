@@ -16,8 +16,8 @@ if ($form->submitted())
 	if ($form->validate())
 	{
 		$user = Db::querySingle("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
-        if (!$user)
-            $user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
+		if (!$user)
+			$user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
 
 		if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 		{
