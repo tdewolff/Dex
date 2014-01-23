@@ -8,6 +8,8 @@ assets/
 cache/
 logs/
 
+*.min.js
+*.min.css
 
 current.db
 develop.db
