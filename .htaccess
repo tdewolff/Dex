@@ -10,18 +10,19 @@ Options -MultiViews
     RewriteEngine on
     RewriteBase /
 
+    # Omit www.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
     # Trailing slash
     RewriteCond %{REQUEST_URI} !(/$|\.)
     RewriteRule .* %{REQUEST_URI}/ [R=301,L]
 
-    # Avoid duplicate URL to index.php
-    RewriteCond %{REQUEST_URI} index\.php$
-    RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
-
     # Rewrite all to index.php
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule .* index.php [L]
+    RewriteCond %{REQUEST_URI} !(index\.php)$
+    RewriteCond $1#%{REQUEST_URI} ([^#]*)#(.*)\1$
+    RewriteRule ^(.*)$ %2index.php [QSA,L]
 </IfModule>
 
 <IfModule mod_deflate.c>
