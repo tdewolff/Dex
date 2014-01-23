@@ -9,7 +9,7 @@ article.main>p:first-child {
 }
 
 nav {
-    z-index: 9998;
+    z-index: 7998;
     position: fixed;
     left: 0px;
     right: 0px;

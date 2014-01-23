@@ -1,10 +1,10 @@
 <?php
 
 Hooks::attach('site-header', -1, function () {
-    Theme::addExternalStyle('http://yui.yahooapis.com/pure/0.3.0/pure-min.css');
-    Theme::addExternalStyle('http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic');
     Theme::addStyle('style.css');
-    Theme::addExternalScript('http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+    Theme::addStyle('yui-pure.min.css');
+    Theme::addStyle('lora.font.css');
+    Theme::addDeferredScript('jquery.min.js');
     Theme::addDeferredScript('script.js');
 });
 
@@ -21,3 +21,15 @@ Hooks::attach('header', 0, function() {
     if (isset($settings['subtitle']))
         echo '<h2>' . nl2br($settings['subtitle']) . '</h2>';
 });
+
+/* First run setup */
+if (!file_exists('assets/fonts/lora')) {
+    if (!file_exists('assets/fonts')) {
+        mkdir('assets/fonts');
+    }
+    mkdir('assets/fonts/lora');
+    copy('themes/plain/resources/fonts/lora/lora.woff', 'assets/fonts/lora/lora.woff');
+    copy('themes/plain/resources/fonts/lora/lora-bold.woff', 'assets/fonts/lora/lora-bold.woff');
+    copy('themes/plain/resources/fonts/lora/lora-italic.woff', 'assets/fonts/lora/lora-italic.woff');
+    copy('themes/plain/resources/fonts/lora/lora-bold-italic.woff', 'assets/fonts/lora/lora-bold-italic.woff');
+}
