@@ -13,7 +13,7 @@ class Stats
                 '" . Db::escape(time()) . "',
                 '" . Db::escape($_SERVER['REMOTE_ADDR']) . "',
                 '" . Db::escape(Common::$request_url) . "',
-                '" . Db::escape($_SERVER["HTTP_REFERER"]) . "'
+                '" . Db::escape(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['TTP_REFERER'] : '') . "'
             );");
         else
             Db::exec("UPDATE stats SET n = n + 1 WHERE time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "';");
