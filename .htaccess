@@ -1,23 +1,28 @@
-AddDefaultCharset UTF-8
-Options -Indexes
-Options +SymLinksIfOwnerMatch
+Options -MultiViews
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
 
-# Rewrite URL section
-RewriteEngine on
-RewriteBase /
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
 
-# Trailing slash
-RewriteCond %{REQUEST_URI} !(/$|\.)
-RewriteRule .* %{REQUEST_URI}/ [R=301,L]
+    # Rewrite URL section
+    RewriteEngine on
+    RewriteBase /
 
-# Avoid duplicate URL to index.php
-RewriteCond %{REQUEST_URI} index\.php$
-RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
+    # Trailing slash
+    RewriteCond %{REQUEST_URI} !(/$|\.)
+    RewriteRule .* %{REQUEST_URI}/ [R=301,L]
 
-# Rewrite all to index.php
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php [L]
+    # Avoid duplicate URL to index.php
+    RewriteCond %{REQUEST_URI} index\.php$
+    RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
+
+    # Rewrite all to index.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule .* index.php [L]
+</IfModule>
 
 <IfModule mod_deflate.c>
     <IfModule mod_setenvif.c>
