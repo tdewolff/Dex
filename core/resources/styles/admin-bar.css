@@ -118,9 +118,6 @@ body {
 }
 
 [contenteditable="true"] {
-    margin:-1px;
-    border: 1px solid #3b641f;
-
     -webkit-box-shadow: 0 0 3px #3b641f;
     -moz-box-shadow: 0 0 3px #3b641f;
     box-shadow: 0 0 3px #3b641f;
