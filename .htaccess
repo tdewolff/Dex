@@ -4,12 +4,10 @@ Options -MultiViews
 </IfModule>
 
 <IfModule mod_rewrite.c>
-    Options +FollowSymlinks
+    Options +SymLinksIfOwnerMatch
 
     # Rewrite URL section
     RewriteEngine on
-    RewriteLog "F:/WAMP/logs/rewrite.log"
-    RewriteLogLevel 3
     RewriteBase /
 
     # Omit www.
@@ -63,8 +61,6 @@ AddDefaultCharset UTF-8
       Header unset Pragma
       Header unset ETag
       Header unset Last-Modified
-      Header unset Cookie
-      Header unset Set-Cookie
 
       <filesMatch "\.(ico|jpe?g|png|gif|swf|woff|ttf|svg|eot)$">
             Header set Cache-Control "public"
