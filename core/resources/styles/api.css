@@ -2,6 +2,7 @@
     position:fixed;
     top:48px;
     right:15px;
+    z-index:7999;
 }
 
 #api_status > div {

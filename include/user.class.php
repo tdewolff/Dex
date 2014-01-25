@@ -76,6 +76,27 @@ class User
 	{
 		return (isset($_SESSION['user']) ? ($_SESSION['user']['time'] + SESSION_TIME - time()) : false);
 	}
+
+    public static function isBlocked($username)
+    {
+        Db::exec("DELETE FROM bruteforce WHERE time >= '" . Db::escape(time() - 60 * 15) . "';");
+        $bruteforce = Db::query("SELECT SUM(n) AS attempts FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' OR username = '" . Db::escape($username) . "';");
+        return $bruteforce['attempts'] >= 10; // eleventh attempt
+    }
+
+    public static function addAttempt($username)
+    {
+        $bruteforce = Db::querySingle("SELECT * FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' AND username = '" . Db::escape($username) . "' LIMIT 1;");
+        if (!$bruteforce)
+            Db::exec("INSERT INTO bruteforce (n, time, ip_address, username) VALUES (
+                '1',
+                '" . Db::escape(time()) . "',
+                '" . Db::escape($_SERVER['REMOTE_ADDR']) . "',
+                '" . Db::escape($username) . "'
+            );");
+        else
+            Db::exec("UPDATE bruteforce SET n = n + 1, time = '" . Db::escape(time()) . "' WHERE bruteforce_id = '" . Db::escape($bruteforce['bruteforce_id']) . "';");
+    }
 }
 
 ?>

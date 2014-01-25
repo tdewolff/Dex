@@ -84,8 +84,16 @@ var Form = function(form) {
                 {
                     if (hidden.attr('data-type') == 'password' && data.length == 1)
                     {
-                        if (data[0] != '********')
-                            hidden.val(Sha1.hash(data[0]));
+                        if (data[0] != '********') // hidden already has the original password value, so don't overwrite
+                        {
+                            // TODO: uncomment lines below
+                            //if (data[0].length < 8)
+                            //    hidden.val('tooshort');
+                            //else if (!/[a-z]/.test(data[0]) || !/[A-Z]/.test(data[0]) || !/[0-9]/.test(data[0]))
+                            //    hidden.val('incomplex');
+                            //else
+                                hidden.val(Sha1.hash(data[0]));
+                        }
                     }
                     else
                         hidden.val(JSON.stringify(data));

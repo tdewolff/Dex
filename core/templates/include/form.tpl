@@ -3,6 +3,10 @@
     onsubmit="return false;"
     data-optionals='<?php echo $form['optionals']; ?>'>
 
+    <input type="hidden"
+        name="nonce"
+        value="<?php echo $form['nonce']; ?>">
+
     <div class="form_errors"></div>
 
     <?php foreach ($form['items'] as $item): ?>

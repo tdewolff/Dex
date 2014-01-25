@@ -280,6 +280,12 @@ class Form
 
 	public function validate()
 	{
+		if (!isset($this->data['nonce']) || $this->data['nonce'] != $_SESSION['form_nonce'])
+		{
+			$this->errors[] = 'Form submission from external source is forbidden';
+			return false;
+		}
+
 		foreach ($this->items as $k => $item)
 		{
 			if (isset($item['value']))
@@ -312,6 +318,10 @@ class Form
 					}
 					else if ($item['preg']['min'] > 0 && strlen($value) == 0)
 						$error = 'Cannot be empty';
+					else if ($item['type'] == 'password' && $value == 'tooshort')
+						$error = 'Too short, must be atleast 8 characters long';
+					else if ($item['type'] == 'password' && $value == 'incomplex')
+						$error = 'Needs at least one lowercase, one uppercase and one numeric character';
 					else if (strlen($value) < $item['preg']['min'])
 						$error = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
 					else if (strlen($value) > $item['preg']['max'])
@@ -354,11 +364,14 @@ class Form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
 
+		$_SESSION['form_nonce'] = random();
+
 		$form = array(
 			'name' => $this->name,
 			'items' => $this->items,
 			'submit' => $this->submit,
-			'optionals' => json_encode($this->optionals)
+			'optionals' => json_encode($this->optionals),
+			'nonce' => $_SESSION['form_nonce']
 		);
 
 		include('core/templates/include/form.tpl');
