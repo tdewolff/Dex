@@ -14,7 +14,7 @@ class Stats
                 '" . Db::escape(time()) . "',
                 '" . Db::escape($_SERVER['REMOTE_ADDR']) . "',
                 '" . Db::escape(Common::$request_url) . "',
-                '" . Db::escape(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['TTP_REFERER'] : '') . "'
+                '" . Db::escape(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '') . "'
             );");
         else
             Db::exec("UPDATE stats SET n = n + 1 WHERE stat_id = '" . Db::escape($stat['stat_id']) . "';");

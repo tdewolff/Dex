@@ -71,7 +71,7 @@ var Form = function(form) {
         self.form.find('input[type="hidden"]').each(function(i, hidden) {
             hidden = $(hidden);
             var name = hidden.attr('name');
-            if (typeof name !== 'undefined')
+            if (typeof name !== 'undefined' && name != 'nonce')
             {
                 var data = [];
                 self.form.find('[data-name="' + name + '"]').each(function(i, input) {

@@ -96,8 +96,6 @@ Db::open('develop.db');
 if (!session_start())
 	user_error('Could not start session', ERROR);
 
-Log::notice('Session ID: ' . session_id());
-
 register_shutdown_function(function() {
 	global $starttime;
 

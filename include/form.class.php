@@ -280,7 +280,7 @@ class Form
 
 	public function validate()
 	{
-		if (!isset($this->data['nonce']) || $this->data['nonce'] != $_SESSION['form_nonce'])
+		if (!isset($this->data['nonce']) || !isset($_SESSION['form_nonce']) || $this->data['nonce'] != $_SESSION['form_nonce'])
 		{
 			$this->errors[] = 'Form submission from external source is forbidden';
 			return false;
