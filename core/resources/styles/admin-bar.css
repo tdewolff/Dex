@@ -118,12 +118,9 @@ body {
 }
 
 [contenteditable="true"] {
-    margin:-1px;
-    border: 1px solid #3b641f;
-
-    -webkit-box-shadow: 0 0 3px #3b641f;
-    -moz-box-shadow: 0 0 3px #3b641f;
-    box-shadow: 0 0 3px #3b641f;
+    -webkit-box-shadow: inset 0 0 2px #3b641f;
+    -moz-box-shadow: inset 0 0 2px #3b641f;
+    box-shadow: inset 0 0 2px #3b641f;
 
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
