@@ -2,12 +2,12 @@
 
 if (!isset($url[2]))
 {
-	Core::addStyle('vendor/dropdown.css');
+    Core::addStyle('vendor/dropdown.css');
 
-	Hooks::emit('admin-header');
-	Core::render('admin/pages.tpl');
-	Hooks::emit('admin-footer');
-	exit;
+    Hooks::emit('admin-header');
+    Core::render('admin/pages.tpl');
+    Hooks::emit('admin-footer');
+    exit;
 }
 
 $form = new Form('page');
@@ -21,124 +21,130 @@ $form->setId('url', 'url');
 
 if ($url[2] == 'new')
 {
-	$templates = array();
-	$handle = opendir('templates/');
-	while (($template_name = readdir($handle)) !== false)
-		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
-		{
-			$ini_filename = 'templates/' . $template_name . '/config.ini';
-			if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-				$templates[$template_name] = Common::tryOrEmpty($ini, 'title');
-		}
-	$form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
+    $templates = array();
+    $handle = opendir('templates/');
+    while (($template_name = readdir($handle)) !== false)
+        if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
+        {
+            $ini_filename = 'templates/' . $template_name . '/config.ini';
+            if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
+                $templates[$template_name] = Common::tryOrEmpty($ini, 'title');
+        }
+    $form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
 
-	$form->addSeparator();
+    $form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
-	$form->setResponse('Created<span data-time=""></span>', 'Not created');
+    $form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
+    $form->setResponse('Created<span data-time=""></span>', 'Not created');
 
-	if ($form->submitted())
-	{
-		if ($form->validate())
-			if (($error = Core::verifyLinkUrl($form->get('url'))) !== true)
-				 $form->setError('url', $error);
-			else
-			{
-				$link_id = 0;
-				$link = Db::querySingle("
-					SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
-				if ($link)
-				{
-					if ($form->get('title') != $link['title'])
-						Db::exec("
-							UPDATE link SET
-								title = '" . Db::escape($form->get('title')) . "',
-								template_name = '" . Db::escape($form->get('template_name')) . "',
-								modify_time = '" . Db::escape(time()) . "'
-							WHERE link_id = '" . Db::escape($link['link_id']) . "';");
-					$link_id = $link['link_id'];
-				}
-				else
-				{
-					Db::exec("
-						INSERT INTO link (url, title, template_name, modify_time) VALUES (
-							'" . Db::escape($form->get('url')) . "',
-							'" . Db::escape($form->get('title')) . "',
-							'" . Db::escape($form->get('template_name')) . "',
-							'" . Db::escape(time()) . "'
-						);");
-					$link_id = Db::lastId();
-				}
-				$form->setRedirect('/' . Common::$base_url . 'admin/pages/' . $link_id);
-			}
-		$form->finish();
-	}
+    if ($form->submitted())
+    {
+        Log::notice(print_r($form->getAll(), true));
+        if ($form->validate())
+            if (($error = Core::verifyLinkUrl($form->get('url'))) !== true)
+                 $form->setError('url', $error);
+            else
+            {
+                $link_id = 0;
+                $link = Db::querySingle("
+                    SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
+                if ($link)
+                {
+                    if ($form->get('title') != $link['title'])
+                        Db::exec("
+                            UPDATE link SET
+                                title = '" . Db::escape($form->get('title')) . "',
+                                template_name = '" . Db::escape($form->get('template_name')) . "',
+                                modify_time = '" . Db::escape(time()) . "'
+                            WHERE link_id = '" . Db::escape($link['link_id']) . "';");
+                    $link_id = $link['link_id'];
+                }
+                else
+                {
+                    Db::exec("
+                        INSERT INTO link (url, title, template_name, modify_time) VALUES (
+                            '" . Db::escape($form->get('url')) . "',
+                            '" . Db::escape($form->get('title')) . "',
+                            '" . Db::escape($form->get('template_name')) . "',
+                            '" . Db::escape(time()) . "'
+                        );");
+                    $link_id = Db::lastId();
+                    Db::exec("
+                        INSERT INTO content (link_id, name) VALUES (
+                            '" . Db::escape($link_id) . "',
+                            'content'
+                        );");
+                }
+
+                $form->setRedirect('/' . Common::$base_url . $form->get('url'));
+            }
+        $form->finish();
+    }
 }
 else
 {
-	$link = Db::querySingle("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
-	if (!$link)
-		user_error('Link with link_id "' . $url[2] . '" doesn\'t exist', ERROR);
+    $link = Db::querySingle("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
+    if (!$link)
+        user_error('Link with link_id "' . $url[2] . '" doesn\'t exist', ERROR);
 
-	$content = array();
-	$table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($url[2]) . "';");
-	while ($row = $table->fetch())
-		$content[$row['name']] = $row['content'];
+    $content = array();
+    $table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($url[2]) . "';");
+    while ($row = $table->fetch())
+        $content[$row['name']] = $row['content'];
 
-	$form->addSeparator();
+    $form->addSeparator();
 
-	if (!is_file('templates/' . $link['template_name'] . '/form.php'))
-		user_error('Template name not set', ERROR);
-	include_once('templates/' . $link['template_name'] . '/form.php');
+    if (!is_file('templates/' . $link['template_name'] . '/form.php'))
+        user_error('Template name not set', ERROR);
+    include_once('templates/' . $link['template_name'] . '/form.php');
 
-	$form->addSeparator();
+    $form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-	$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
+    $form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
+    $form->setResponse('Saved<span data-time=""></span>', 'Not saved');
 
-	if ($form->submitted())
-	{
-		if ($form->validate())
-		{
-			if (($error = Core::verifyLinkUrl($form->get('url'), $url[2])) !== true)
-				 $form->setError('url', $error);
-			else
-			{
-				Db::exec("
-					UPDATE link SET
-						url = '" . Db::escape($form->get('url')) . "',
-						title = '" . Db::escape($form->get('title')) . "',
-						modify_time = '" . Db::escape(time()) . "'
-					WHERE link_id = '" . Db::escape($url[2]) . "';");
+    if ($form->submitted())
+    {
+        if ($form->validate())
+        {
+            if (($error = Core::verifyLinkUrl($form->get('url'), $url[2])) !== true)
+                 $form->setError('url', $error);
+            else
+            {
+                Db::exec("
+                    UPDATE link SET
+                        url = '" . Db::escape($form->get('url')) . "',
+                        title = '" . Db::escape($form->get('title')) . "',
+                        modify_time = '" . Db::escape(time()) . "'
+                    WHERE link_id = '" . Db::escape($url[2]) . "';");
+                foreach ($form->getAll() as $name => $value)
+                {
+                    if ($name == 'title' || $name == 'url')
+                        continue;
 
-				foreach ($form->getAll() as $name => $value)
-				{
-					if ($name == 'title' || $name == 'url')
-						continue;
+                    if (isset($content[$name]))
+                        Db::exec("
+                            UPDATE content SET
+                                content = '" . Db::escape($value) . "'
+                            WHERE link_id = '" . Db::escape($url[2]) . "' AND name = '" . Db::escape($name) . "';");
+                    else
+                        Db::exec("
+                            INSERT INTO content (link_id, name, content, modify_time) VALUES (
+                                '" . Db::escape($url[2]) . "',
+                                '" . Db::escape($name) . "',
+                                '" . Db::escape($value) . "'
+                            );");
+                }
+            }
+        }
+        $form->finish();
+    }
 
-					if (isset($content[$name]))
-						Db::exec("
-							UPDATE content SET
-								content = '" . Db::escape($value) . "'
-							WHERE link_id = '" . Db::escape($url[2]) . "' AND name = '" . Db::escape($name) . "';");
-					else
-						Db::exec("
-							INSERT INTO content (link_id, name, content, modify_time) VALUES (
-								'" . Db::escape($url[2]) . "',
-								'" . Db::escape($name) . "',
-								'" . Db::escape($value) . "'
-							);");
-				}
-			}
-		}
-		$form->finish();
-	}
+    $form->set('title', $link['title']);
+    $form->set('url', $link['url']);
+    $form->setAll($content);
 
-	$form->set('title', $link['title']);
-	$form->set('url', $link['url']);
-	$form->setAll($content);
-
-	Core::assign('view', $link['url']);
+    Core::assign('view', $link['url']);
 }
 
 Core::addStyle('vendor/markitup.css');
