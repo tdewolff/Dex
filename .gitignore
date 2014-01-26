@@ -11,7 +11,6 @@ logs/
 *.min.css
 *.min.js
 
-current.db
-develop.db
+dex.db
 GRONINGENBIJLES.md
 console.txt
