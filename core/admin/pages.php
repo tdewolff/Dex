@@ -9,18 +9,20 @@ if (!isset($url[2]))
     Hooks::emit('admin-footer');
     exit;
 }
-
-$form = new Form('page');
-
-$form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
-$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
-$form->addLinkUrl('url', 'URL', 'Leave empty for homepage');
-
-$form->setId('title', 'url-feed');
-$form->setId('url', 'url');
-
-if ($url[2] == 'new')
+else
 {
+    if ($url[2] != 'new')
+        user_error('Page ID "' . $url[2] . '" doesn\'t exist', ERROR);
+
+    $form = new Form('page');
+
+    $form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
+    $form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
+    $form->addLinkUrl('url', 'URL', 'Leave empty for homepage');
+
+    $form->setId('title', 'url-feed');
+    $form->setId('url', 'url');
+
     $templates = array();
     $handle = opendir('templates/');
     while (($template_name = readdir($handle)) !== false)
@@ -39,7 +41,6 @@ if ($url[2] == 'new')
 
     if ($form->submitted())
     {
-        Log::notice(print_r($form->getAll(), true));
         if ($form->validate())
             if (($error = Core::verifyLinkUrl($form->get('url'))) !== true)
                  $form->setError('url', $error);
@@ -69,95 +70,19 @@ if ($url[2] == 'new')
                             '" . Db::escape(time()) . "'
                         );");
                     $link_id = Db::lastId();
-                    Db::exec("
-                        INSERT INTO content (link_id, name) VALUES (
-                            '" . Db::escape($link_id) . "',
-                            'content'
-                        );");
                 }
-
                 $form->setRedirect('/' . Common::$base_url . $form->get('url'));
             }
         $form->finish();
     }
+
+    Hooks::emit('admin-header');
+
+    Core::assign('page', $form);
+    Core::render('admin/page.tpl');
+
+    Hooks::emit('admin-footer');
+    exit;
 }
-else
-{
-    $link = Db::querySingle("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
-    if (!$link)
-        user_error('Link with link_id "' . $url[2] . '" doesn\'t exist', ERROR);
-
-    $content = array();
-    $table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($url[2]) . "';");
-    while ($row = $table->fetch())
-        $content[$row['name']] = $row['content'];
-
-    $form->addSeparator();
-
-    if (!is_file('templates/' . $link['template_name'] . '/form.php'))
-        user_error('Template name not set', ERROR);
-    include_once('templates/' . $link['template_name'] . '/form.php');
-
-    $form->addSeparator();
-
-    $form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-    $form->setResponse('Saved<span data-time=""></span>', 'Not saved');
-
-    if ($form->submitted())
-    {
-        if ($form->validate())
-        {
-            if (($error = Core::verifyLinkUrl($form->get('url'), $url[2])) !== true)
-                 $form->setError('url', $error);
-            else
-            {
-                Db::exec("
-                    UPDATE link SET
-                        url = '" . Db::escape($form->get('url')) . "',
-                        title = '" . Db::escape($form->get('title')) . "',
-                        modify_time = '" . Db::escape(time()) . "'
-                    WHERE link_id = '" . Db::escape($url[2]) . "';");
-                foreach ($form->getAll() as $name => $value)
-                {
-                    if ($name == 'title' || $name == 'url')
-                        continue;
-
-                    if (isset($content[$name]))
-                        Db::exec("
-                            UPDATE content SET
-                                content = '" . Db::escape($value) . "'
-                            WHERE link_id = '" . Db::escape($url[2]) . "' AND name = '" . Db::escape($name) . "';");
-                    else
-                        Db::exec("
-                            INSERT INTO content (link_id, name, content, modify_time) VALUES (
-                                '" . Db::escape($url[2]) . "',
-                                '" . Db::escape($name) . "',
-                                '" . Db::escape($value) . "'
-                            );");
-                }
-            }
-        }
-        $form->finish();
-    }
-
-    $form->set('title', $link['title']);
-    $form->set('url', $link['url']);
-    $form->setAll($content);
-
-    Core::assign('view', $link['url']);
-}
-
-Core::addStyle('vendor/markitup.css');
-Core::addStyle('vendor/markdown.css');
-Core::addDeferredScript('vendor/jquery.markitup.min.js');
-Core::addDeferredScript('jquery.markitup.markdown.js');
-
-Hooks::emit('admin-header');
-
-Core::assign('page', $form);
-Core::render('admin/page.tpl');
-
-Hooks::emit('admin-footer');
-exit;
 
 ?>

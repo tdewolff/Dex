@@ -15,9 +15,16 @@ Hooks::attach('site-header', -1, function () {
 
 Hooks::attach('main', 0, function() {
     $link_id = Core::getLinkId();
-    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' LIMIT 1;");
+    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' LIMIT 1;");
+    if (!$content)
+        Db::exec("
+           INSERT INTO content (link_id, name) VALUES (
+               '" . Db::escape($link_id) . "',
+               'content'
+           );");
+    else
+        Template::assign('content', SmartyPants($content['content']));
 
-    Template::assign('content', SmartyPants($content['content']));
     Template::render('index.tpl');
 });
 

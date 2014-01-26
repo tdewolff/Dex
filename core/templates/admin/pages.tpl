@@ -22,8 +22,8 @@
                 <i class="fa fa-pencil"></i>&ensp;Edit
             </a>
         </div>
-		<div style="width:200px;">{{=it.title}}</div>
-		<div style="width:200px;">/{{=it.url}}</div>
+		<div style="width:200px;"><input type="text" value="{{=it.title}}"></div>
+		<div style="width:200px;"><input type="text" value="{{=it.url}}"></div>
 		<div style="width:380px;">{{=it.content}}</div>
         <div style="width:40px;">
             <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>

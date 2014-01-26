@@ -149,7 +149,7 @@ if ($form->submitted())
 		{
 			Db::close();
 			unlink('develop.db');
-			user_error('could not setup site', ERROR);
+			user_error('Could not setup site', ERROR);
 		}
 
 		Db::exec("BEGIN IMMEDIATE;");
