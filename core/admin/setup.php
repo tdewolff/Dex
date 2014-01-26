@@ -66,6 +66,7 @@ if ($form->submitted())
 			link_id INTEGER,
 			name TEXT,
 			content TEXT,
+			modify_time INTEGER,
 			FOREIGN KEY(link_id) REFERENCES link(link_id)
 		);
 
@@ -90,7 +91,7 @@ if ($form->submitted())
 			'" . Db::escape(time()) . "'
 		);
 
-		INSERT INTO content (link_id, name, content) VALUES (
+		INSERT INTO content (link_id, name, content, modify_time) VALUES (
 			'1',
 			'content',
 			'" . Db::escape('<h3>Sample content</h3>
@@ -101,7 +102,8 @@ if ($form->submitted())
 			 <hr>
 			 <p>Two enters creates a divider and you can quote someone:</p>
 			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\'t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
-			') . "'
+			') . "',
+			'" . Db::escape(time()) . "'
 		);
 
 		INSERT INTO setting (key, value) VALUES (
@@ -147,14 +149,9 @@ if ($form->submitted())
 
 		if (!$valid)
 		{
-			Db::close();
-			unlink('develop.db');
-			user_error('Could not setup site', ERROR);
+			Db::unlink();
+			user_error('Could not setup site, database error', ERROR);
 		}
-
-		Db::exec("BEGIN IMMEDIATE;");
-		copy('develop.db', 'current.db');
-		Db::exec("ROLLBACK;");
 
 		User::logIn(Db::lastId());
 		$form->setRedirect('/' . Common::$base_url . 'admin/');

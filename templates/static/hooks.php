@@ -1,8 +1,5 @@
 <?php
 
-use \Michelf\Markdown;
-require_once('vendor/smartypants.php');
-
 Hooks::attach('site-header', -1, function () {
     if (User::loggedIn())
     {
@@ -15,15 +12,9 @@ Hooks::attach('site-header', -1, function () {
 
 Hooks::attach('main', 0, function() {
     $link_id = Core::getLinkId();
-    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' LIMIT 1;");
-    if (!$content)
-        Db::exec("
-           INSERT INTO content (link_id, name) VALUES (
-               '" . Db::escape($link_id) . "',
-               'content'
-           );");
-    else
-        Template::assign('content', SmartyPants($content['content']));
+    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' ORDER BY modify_time " . (User::loggedIn() ? "DESC" : "ASC") . " LIMIT 1;");
+    if ($content)
+        Template::assign('content', $content['content']);
 
     Template::render('index.tpl');
 });
