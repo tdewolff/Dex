@@ -12,7 +12,6 @@ if (API::action('delete_page'))
     Db::exec("
         DELETE FROM content WHERE link_id = '" . $link_id . "';
         DELETE FROM link WHERE link_id = '" . $link_id . "';
-        DELETE FROM module_menu WHERE link_id = '" . $link_id . "';
     ");
     API::finish();
 }
