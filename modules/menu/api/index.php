@@ -3,21 +3,30 @@
 if (!User::loggedIn())
     user_error('Forbidden access', ERROR);
 
-$link_query = Db::query('SELECT link_id FROM link ORDER BY link_id ASC');
-$menu_query = Db::query('SELECT link_id FROM module_menu ORDER BY link_id ASC');
-$links = $link_query->fetchAll('link_id');
-$menus = $menu_query->fetchAll('link_id');
-$diff = array_diff($menus, $links);
-if (count($diff) > 0)
-{
+/**
+ * Clean up extra menu items:
+ **/
+    $doDelete = false;
+    $delete_menu_items_query = Db::query('
+        SELECT link_id FROM module_menu
+        WHERE link_id NOT IN (
+            SELECT link_id FROM link
+        )');
     $delete_query = "DELETE FROM module_menu WHERE";
-    foreach ($diff as $link_id)
+    while ($link_id = $delete_menu_items_query->fetch('link_id'))
     {
+        $doDelete = true;
         $delete_query .= ' link_id = ' . $link_id . ' OR';
     }
     $delete_query = substr($delete_query, 0, strlen($delete_query) - 3);
-    Db::exec($delete_query);
-}
+    if ($doDelete)
+    {
+        Db::exec($delete_query);
+    }
+/**
+ * Done cleaning up
+ **/
+
 
 if (API::action('modify_menu'))
 {
