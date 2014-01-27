@@ -33,7 +33,7 @@ var Form = function(form) {
     };
     this.updateUnused();
 
-    this.form.on('input', 'input', function(e) {
+    this.form.on('input', 'input,textarea', function(e) {
         apiStatusClear();
 
         var input = $(e.currentTarget),
@@ -48,7 +48,7 @@ var Form = function(form) {
             self.needsSave();
     });
 
-    this.form.on('change', 'input', function(e) {
+    this.form.on('change', 'input,textarea,select', function(e) {
         if (self.hasChange)
         {
             clearTimeout(self.saveTimeout);
@@ -293,7 +293,7 @@ $('form input[data-type="array"]').each(function(i, array) {
         });
     }
 
-    ul.on('input', 'input', function(e) {
+    ul.on('input', 'input,textarea', function(e) {
         var input = $(this),
             li = input.closest('li');
 
@@ -318,7 +318,7 @@ $('form input[data-type="parameters"]').each(function(i, array) {
         ul.append(template({key: key, value: value}));
     });
 
-    ul.on('input', 'input', function(e) {
+    ul.on('input', 'input,textarea', function(e) {
         var input = $(this),
             li = input.closest('li');
 
