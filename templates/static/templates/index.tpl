@@ -1,5 +1,5 @@
 <article role="main" class="main">
-    <?php echo $_['content']; ?>
+    <?php echo (isset($_['content']) ? $_['content'] : ''); ?>
 </article>
 
 <?php if (User::loggedIn()) { ?>

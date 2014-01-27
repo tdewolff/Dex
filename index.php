@@ -82,21 +82,10 @@ require_once('include/db.class.php');
 require_once('include/user.class.php');
 
 Bcrypt::setRounds(8);
-
-// copy database if one exists but other doesn't
-if (!is_file('current.db') && is_file('develop.db'))
-{
-	copy('develop.db', 'current.db');
-	Log::notice('develop.db is copied to current.db');
-}
-
-// User::loggedIn() needs a database (develop) loaded
-Db::open('develop.db');
+Db::open('dex.db');
 
 if (!session_start())
 	user_error('Could not start session', ERROR);
-
-Log::notice('Session ID: ' . session_id());
 
 register_shutdown_function(function() {
 	global $starttime;
@@ -106,9 +95,6 @@ register_shutdown_function(function() {
 
 	Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . Db::queries() . ' queries');
 });
-
-if (!User::loggedIn() && !Common::requestAdmin())
-	Db::open('current.db');
 
 
 // sitemap

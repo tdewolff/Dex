@@ -40,6 +40,12 @@ class Db
 		self::$handle = null;
 	}
 
+	public static function unlink()
+	{
+		self::close();
+		unlink(self::$filename);
+	}
+
 	public static function isValid()
 	{
 		return self::$handle && is_file(self::$filename) && filesize(self::$filename) !== 0;

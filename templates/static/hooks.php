@@ -1,8 +1,5 @@
 <?php
 
-use \Michelf\Markdown;
-require_once('vendor/smartypants.php');
-
 Hooks::attach('site-header', -1, function () {
     if (User::loggedIn())
     {
@@ -15,9 +12,10 @@ Hooks::attach('site-header', -1, function () {
 
 Hooks::attach('main', 0, function() {
     $link_id = Core::getLinkId();
-    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' LIMIT 1;");
+    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' ORDER BY modify_time " . (User::loggedIn() ? "DESC" : "ASC") . " LIMIT 1;");
+    if ($content)
+        Template::assign('content', $content['content']);
 
-    Template::assign('content', SmartyPants($content['content']));
     Template::render('index.tpl');
 });
 

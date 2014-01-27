@@ -150,7 +150,7 @@ $(function() {
 var apiUpdateConsoleTimeout;
 function apiUpdateConsole(dest) {
     apiUpdateConsoleTimeout = setTimeout(function() {
-        api('/' + base_url + 'api/core/index/', {
+        api('/' + base_url + 'api/core/console/', {
             action: 'console'
         }, function(data) {
             if (typeof data['status'] !== 'undefined')

@@ -85,8 +85,7 @@ $admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|n
 $admin_links[] = array('name' => 'modules',   'regex' => 'admin/modules/',              'file' => 'core/admin/modules.php',   'url' => 'admin/modules/',   'icon' => 'fa-sitemap',  'title' => 'Modules',        'admin_only' => 1);
 $admin_links[] = array('name' => 'templates', 'regex' => 'admin/templates/',            'file' => 'core/admin/templates.php', 'url' => 'admin/templates/', 'icon' => 'fa-file-o',   'title' => 'Templates',      'admin_only' => 1);
 $admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',               'file' => 'core/admin/themes.php',    'url' => 'admin/themes/',    'icon' => 'fa-adjust',   'title' => 'Themes',         'admin_only' => 0);
-$admin_links[] = array('name' => 'database',  'regex' => 'admin/admin/',                'file' => 'core/admin/admin.php',     'url' => 'admin/admin/',     'icon' => 'fa-gears',    'title' => 'Administration', 'admin_only' => 1);
-$admin_links[] = array('name' => 'database',  'regex' => 'admin/database/',             'file' => 'core/admin/database.php',  'url' => 'admin/database/',  'icon' => 'fa-hdd-o',    'title' => 'Database',       'admin_only' => 1);
+$admin_links[] = array('name' => 'admin',     'regex' => 'admin/admin/',                'file' => 'core/admin/admin.php',     'url' => 'admin/admin/',     'icon' => 'fa-book',     'title' => 'Admin',          'admin_only' => 1);
 $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'fa-sign-out', 'title' => 'Log out',        'admin_only' => 0);
 
 Core::assign('admin_links', $admin_links);

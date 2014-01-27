@@ -1,78 +1,128 @@
+Options -MultiViews
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    Options +SymLinksIfOwnerMatch
+
+    # Rewrite URL section
+    RewriteEngine on
+    RewriteBase /
+
+    # Omit www.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+
+    # Trailing slash
+    RewriteCond %{REQUEST_URI} !(/$|\.)
+    RewriteRule .* %{REQUEST_URI}/ [R=301,L]
+
+    # Rewrite all to index.php
+    RewriteCond %{REQUEST_URI} !(index\.php)$
+    RewriteCond $1#%{REQUEST_URI} ([^#]*)#(.*)\1$
+    RewriteRule ^(.*)$ %2index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_deflate.c>
+    <IfModule mod_setenvif.c>
+        <IfModule mod_headers.c>
+            SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+            RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+        </IfModule>
+    </IfModule>
+    <IfModule mod_filter.c>
+        AddOutputFilterByType DEFLATE text/html text/xml text/css text/plain text/x-component
+        AddOutputFilterByType DEFLATE image/svg+xml application/xhtml+xml application/xml image/x-icon
+        AddOutputFilterByType DEFLATE application/rdf+xml application/rss+xml application/atom+xml
+        AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript application/json application/x-web-app-manifest+json
+        AddOutputFilterByType DEFLATE application/x-font-ttf application/x-font-otf
+        AddOutputFilterByType DEFLATE font/truetype font/opentype
+    </IfModule>
+</IfModule>
+
 AddDefaultCharset UTF-8
-Options -Indexes
-Options +SymLinksIfOwnerMatch
 
-# Rewrite URL section
-RewriteEngine on
+<IfModule mod_mime.c>
+    AddCharset utf-8 .atom .css .js .json .rss .vtt .webapp .xml
+</IfModule>
 
-# Trailing slash
-RewriteCond %{THE_REQUEST} !(/$|\.)
-RewriteRule .* %{THE_REQUEST}/ [R=301,L]
+<IfModule mod_headers.c>
+    Header set X-UA-Compatible "IE=edge"
+    # `mod_headers` can't match based on the content-type, however, we only
+    # want to send this header for HTML pages and not for the other resources
+    <FilesMatch "\.(appcache|crx|css|cur|eot|gif|htc|ico|jpe?g|js|m4a|m4v|manifest|mp4|oex|oga|ogg|ogv|opus|otf|pdf|png|safariextz|svgz?|ttf|vcf|webapp|webm|webp|woff|xml|xpi)$">
+        Header unset X-UA-Compatible
+    </FilesMatch>
+</IfModule>
 
-# Avoid duplicate URL to index.php
-RewriteCond %{THE_REQUEST} index\.php$
-RewriteRule ^(.*)/index\.php$ $1/ [R=301,L]
+<IfModule mod_headers.c>
+      Header unset Pragma
+      Header unset ETag
+      Header unset Last-Modified
 
-# Rewrite all to index.php
-#RewriteCond %{REQUEST_URI} !=/index.php
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule .* index.php [L]
-
-# Compress filetypes by extension
-<ifModule mod_deflate.c>
-<ifModule mod_filter.c>
-  AddOutputFilterByType DEFLATE text/html text/xml text/css text/plain
-  AddOutputFilterByType DEFLATE image/svg+xml application/xhtml+xml application/xml
-  AddOutputFilterByType DEFLATE application/rdf+xml application/rss+xml application/atom+xml
-  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript application/json
-  AddOutputFilterByType DEFLATE application/x-font-ttf application/x-font-otf
-  AddOutputFilterByType DEFLATE font/truetype font/opentype
-</ifModule>
-</ifModule>
-
-# BEGIN Expire headers
-<ifModule mod_expires.c>
-  ExpiresActive On
-  ExpiresDefault "access plus 5 seconds"
-  ExpiresByType text/html "access plus 5 seconds"
-  ExpiresByType application/xhtml+xml "access plus 5 seconds"
-  ExpiresByType text/css "access plus 604800 seconds"
-  ExpiresByType text/javascript "access plus 604800 seconds"
-  ExpiresByType application/javascript "access plus 604800 seconds"
-  ExpiresByType application/x-javascript "access plus 604800 seconds"
-  ExpiresByType image/x-icon "access plus 2592000 seconds"
-  ExpiresByType image/jpeg "access plus 2592000 seconds"
-  ExpiresByType image/png "access plus 2592000 seconds"
-  ExpiresByType image/gif "access plus 2592000 seconds"
-  ExpiresByType application/x-shockwave-flash "access plus 2592000 seconds"
-  ExpiresByType image/svg+xml "access plus 2592000 seconds"
-  ExpiresByType application/vnd.ms-fontobject "access plus 2592000 seconds"
-  ExpiresByType application/font-woff "access plus 2592000 seconds"
-  ExpiresByType application/x-font-woff "access plus 2592000 seconds"
-  ExpiresByType application/octet-stream "access plus 2592000 seconds"
-</ifModule>
-# END Expire headers
-
-# BEGIN Cache-Control Headers
-<ifModule mod_headers.c>
-  Header unset Pragma
-  Header unset ETag
-  Header unset Last-Modified
-
-  <filesMatch "\.(ico|jpe?g|png|gif|swf|woff|ttf|svg|eot)$">
-    Header set Cache-Control "public"
-  </filesMatch>
-  <filesMatch "\.(css)$">
-    Header set Cache-Control "public"
-  </filesMatch>
-  <filesMatch "\.(js)$">
-    Header set Cache-Control "private"
-  </filesMatch>
-  <filesMatch "\.(x?html?|php)$">
-    Header set Cache-Control "private, must-revalidate"
-  </filesMatch>
-</ifModule>
-# END Cache-Control Headers
+      <filesMatch "\.(ico|jpe?g|png|gif|swf|woff|ttf|svg|eot)$">
+            Header set Cache-Control "public"
+      </filesMatch>
+      <filesMatch "\.(css)$">
+            Header set Cache-Control "public"
+      </filesMatch>
+      <filesMatch "\.(js)$">
+            Header set Cache-Control "private"
+      </filesMatch>
+      <filesMatch "\.(x?html?|php)$">
+            Header set Cache-Control "private, must-revalidate"
+      </filesMatch>
+</IfModule>
 
 FileETag None
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresDefault                                      "access plus 1 month"
+
+    # CSS
+    ExpiresByType text/css                              "access plus 1 year"
+
+    # Data interchange
+    ExpiresByType application/json                      "access plus 0 seconds"
+    ExpiresByType application/xml                       "access plus 0 seconds"
+    ExpiresByType text/xml                              "access plus 0 seconds"
+
+    # Favicon (cannot be renamed!) and cursor images
+    ExpiresByType image/x-icon                          "access plus 1 week"
+
+    # HTML components (HTCs)
+    ExpiresByType text/x-component                      "access plus 1 month"
+
+    # HTML
+    ExpiresByType text/html                             "access plus 0 seconds"
+
+    # JavaScript
+    ExpiresByType application/javascript                "access plus 1 year"
+
+    # Manifest files
+    ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+    ExpiresByType text/cache-manifest                   "access plus 0 seconds"
+
+    # Media
+    ExpiresByType audio/ogg                             "access plus 1 month"
+    ExpiresByType image/gif                             "access plus 1 month"
+    ExpiresByType image/jpeg                            "access plus 1 month"
+    ExpiresByType image/png                             "access plus 1 month"
+    ExpiresByType video/mp4                             "access plus 1 month"
+    ExpiresByType video/ogg                             "access plus 1 month"
+    ExpiresByType video/webm                            "access plus 1 month"
+
+    # Web feeds
+    ExpiresByType application/atom+xml                  "access plus 1 hour"
+    ExpiresByType application/rss+xml                   "access plus 1 hour"
+
+    # Web fonts
+    ExpiresByType application/font-woff                 "access plus 1 month"
+    ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
+    ExpiresByType application/x-font-ttf                "access plus 1 month"
+    ExpiresByType font/opentype                         "access plus 1 month"
+    ExpiresByType image/svg+xml                         "access plus 1 month"
+</IfModule>

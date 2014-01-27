@@ -122,7 +122,7 @@ body {
     -moz-box-shadow: 0 0 3px #3b641f;
     box-shadow: 0 0 3px #3b641f;
 
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }

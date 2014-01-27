@@ -53,7 +53,7 @@
         apiLoadStatusWorking($('#load_logs'));
         api('/' + base_url + 'api/core/logs/', {
             action: 'get',
-            lines: 5,
+            lines: 10,
             errors: true
         }, function(data) {
             if (!data['logs'].length) {

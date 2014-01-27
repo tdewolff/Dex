@@ -7,10 +7,8 @@ if (!User::isAdmin())
 
 Console::append('Publishing content...');
 
-Db::exec("BEGIN IMMEDIATE;");
-copy('develop.db', 'current.db');
-Db::exec("ROLLBACK;");
-Log::notice('develop.db is copied to current.db');
+// remove old content versions so that visitors get to see the latest
+Db::exec("DELETE FROM content WHERE content_id NOT IN (SELECT content_id FROM content GROUP BY link_id, name ORDER BY modify_time DESC LIMIT 1);");
 
 Console::appendLine('done');
 

@@ -3,6 +3,8 @@
 if (!User::loggedIn())
     user_error('Forbidden access', ERROR);
 
+use \Michelf\Markdown;
+require_once('vendor/smartypants.php');
 
 if (API::action('save_page'))
 {
@@ -10,9 +12,12 @@ if (API::action('save_page'))
         user_error('No link ID or content set', ERROR);
 
     Db::exec("
-    UPDATE content SET
-        content = '" . Db::escape(API::get('content')) . "'
-    WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'content';");
+    INSERT INTO content (link_id, name, content, modify_time) VALUES (
+        '" . Db::escape(API::get('link_id')) . "',
+        'content',
+        '" . Db::escape(SmartyPants(API::get('content'))) . "',
+        '" . Db::escape(time()) . "'
+    );");
 
     API::finish();
 }
