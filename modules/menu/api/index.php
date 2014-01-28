@@ -31,8 +31,8 @@ if (!User::loggedIn())
 if (API::action('modify_menu'))
 {
     Db::exec("DELETE FROM module_menu;");
-
-    foreach (API::get('menu') as $i => $item) {
+    foreach (API::get('menu') as $i => $item)
+    {
         Db::exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
             '" . Db::escape($item['link_id']) . "',
             '" . Db::escape($i) . "',
