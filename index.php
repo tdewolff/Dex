@@ -93,7 +93,7 @@ register_shutdown_function(function() {
 	$endtime = explode(' ', microtime());
 	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
-	Log::notice('script took ' . number_format($totaltime, 4) . 's and ' . Db::queries() . ' queries');
+	Log::notice('Script took ' . number_format($totaltime, 4) . 's and ' . Db::queries() . ' queries'); // can't use user_error since we're shutting down
 });
 
 
@@ -170,13 +170,19 @@ if ($link)
 if (User::getTimeLeft() !== false)
 {
 	Core::addStyle('vendor/font-awesome.css');
+	Core::addStyle('vendor/jquery-ui.css');
 	Core::addStyle('vendor/fancybox.css');
 	Core::addStyle('api.css');
 	Core::addStyle('admin-bar.css');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
 	Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+	Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
+	Core::addDeferredScript('vendor/jquery.fileupload.min.js');
+	Core::addDeferredScript('vendor/jquery.knob.min.js');
 	Core::addDeferredScript('api.js');
 	Core::addDeferredScript('admin-bar.js');
+	Core::addDeferredScript('upload.js');
 }
 
 

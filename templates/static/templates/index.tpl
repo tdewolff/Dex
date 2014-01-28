@@ -8,6 +8,7 @@ $(function() {
     $('#edit').on('click', 'a', function() {
         $('article').attr('contenteditable', 'true');
         grande.bind(document.querySelectorAll("article"));
+        initializeUpload('[contenteditable="true"]');
     });
 
     $('#save').on('click', 'a', function() {

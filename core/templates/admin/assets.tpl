@@ -246,7 +246,7 @@
         });
 
         $(function() {
-            initializeUpload('#upload', function(data) {
+            initializeUploadDone(function(data) {
                 if (!data['file'].is_image)
                 {
                     var item = asset_item(data['file']);
@@ -264,6 +264,8 @@
                         $(item).hide().appendTo(images).slideDown('fast');
                 }
             });
+
+            initializeUpload('#upload');
         });
     });
 </script>

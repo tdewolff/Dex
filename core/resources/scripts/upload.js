@@ -1,5 +1,12 @@
-function initializeUpload(upload, done) {
+var upload_done;
+
+function initializeUploadDone(done) {
+    upload_done = done;
+}
+
+function initializeUpload(upload) {
     upload = $(upload);
+    console.log(upload);
 
     var total_loaded = 0, total_size = 0;
     upload.find('#big-knob input, #small-knob input').knob();
@@ -44,7 +51,7 @@ function initializeUpload(upload, done) {
                 upload.find('#upload_' + data.i).addClass('fail').append(' (' + data.response().result['upload_error'] + ')').find('i').attr('class', 'fa fa-fw fa-times');
             else {
                 upload.find('#upload_' + data.i).addClass('done').find('i').attr('class', 'fa fa-fw fa-check');
-                done(data.response().result);
+                upload_done(data.response().result);
             }
         },
         fail: function(e, data) {

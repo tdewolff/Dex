@@ -44,6 +44,7 @@ $(function() {
 
     $('#log-out').click(function() {
         $('#menu').animate({
-            'top', '-=33px'
+            'top': '-=33px'
         });
+    });
 });

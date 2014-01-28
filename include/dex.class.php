@@ -24,15 +24,24 @@ class Dex
 	}
 
     public static function addExternalStyle($style) {
-        self::$externalStyles[] = $style;
+        if (!in_array($style, self::$externalStyles))
+            self::$externalStyles[] = $style;
+        else
+            user_error('External style "' . $style . '" already added', NOTICE);
     }
 
     public static function addExternalScript($script) {
-        self::$externalScripts['header'][] = $script;
+        if (!in_array($script, self::$externalScripts['header']))
+            self::$externalScripts['header'][] = $script;
+        else
+            user_error('External script "' . $script . '" already added', NOTICE);
     }
 
     public static function addDeferredExternalScript($script) {
-        self::$externalScripts['footer'][] = $script;
+        if (!in_array($script, self::$externalScripts['header']) && !in_array($script, self::$externalScripts['footer']))
+            self::$externalScripts['footer'][] = $script;
+        else
+            user_error('External deferred script "' . $script . '" already added', NOTICE);
     }
 
     public static function clear() {
@@ -75,15 +84,27 @@ class Core extends Dex
 	}
 
 	public static function addStyle($style) {
-		self::$styles[] = 'core/resources/styles/' . $style;
+        $style = 'core/resources/styles/' . $style;
+        if (!in_array($style, self::$styles))
+            self::$styles[] = $style;
+        else
+            user_error('Style "' . $style . '" already added', NOTICE);
 	}
 
 	public static function addScript($script) {
-		self::$scripts['header'][] = 'core/resources/scripts/' . $script;
+        $script = 'core/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']))
+            self::$scripts['header'][] = $script;
+        else
+            user_error('Script "' . $script . '" already added', NOTICE);
 	}
 
 	public static function addDeferredScript($script) {
-		self::$scripts['footer'][] = 'core/resources/scripts/' . $script;
+        $script = 'core/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']) && !in_array($script, self::$scripts['footer']))
+            self::$scripts['footer'][] = $script;
+        else
+            user_error('Deferred script "' . $script . '" already added', NOTICE);
 	}
 
 	////////////////
@@ -134,7 +155,7 @@ class Core extends Dex
         // must be done outside of SELECT query to prevent database locking
         foreach ($remove_modules as $module_name) // remove module table, link_module relations of the module, module entry
         {
-            Log::notice('module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database');
+            user_error('Module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database', NOTICE);
 
             Db::exec("
             DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
@@ -146,7 +167,8 @@ class Core extends Dex
 		{
 			include_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/admin/setup.php');
 
-            Log::notice('module with module_name "' . $module_name . '" is inserted into the database');
+            user_error('Module with module_name "' . $module_name . '" is inserted into the database', NOTICE);
+
             Db::exec("
             INSERT INTO module (module_name, enabled) VALUES (
             	'" . Db::escape($module_name) . "',
@@ -191,21 +213,33 @@ class Module extends Dex
     	if (self::$module_name == '')
     		user_error('Module name not set', ERROR);
 
-		self::$styles[] = 'modules/' . self::$module_name . '/resources/styles/' . $style;
+        $style = 'modules/' . self::$module_name . '/resources/styles/' . $style;
+        if (!in_array($style, self::$styles))
+            self::$styles[] = $style;
+        else
+            user_error('Style "' . $style . '" already added', NOTICE);
 	}
 
 	public static function addScript($script) {
     	if (self::$module_name == '')
     		user_error('Module name not set', ERROR);
 
-		self::$scripts['header'][] = 'modules/' . self::$module_name . '/resources/scripts/' . $script;
+        $script = 'modules/' . self::$module_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']))
+            self::$scripts['header'][] = $script;
+        else
+            user_error('Script "' . $script . '" already added', NOTICE);
 	}
 
 	public static function addDeferredScript($script) {
     	if (self::$module_name == '')
     		user_error('Module name not set', ERROR);
 
-		self::$scripts['footer'][] = 'modules/' . self::$module_name . '/resources/scripts/' . $script;
+        $script = 'modules/' . self::$module_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']) && !in_array($script, self::$scripts['footer']))
+            self::$scripts['footer'][] = $script;
+        else
+            user_error('Deferred script "' . $script . '" already added', NOTICE);
 	}
 }
 
@@ -223,21 +257,33 @@ class Theme extends Dex
         if (self::$theme_name == '')
             user_error('Theme name not set', ERROR);
 
-        self::$styles[] = 'themes/' . self::$theme_name . '/resources/styles/' . $style;
+        $style = 'themes/' . self::$theme_name . '/resources/styles/' . $style;
+        if (!in_array($style, self::$styles))
+            self::$styles[] = $style;
+        else
+            user_error('Style "' . $style . '" already added', NOTICE);
     }
 
     public static function addScript($script) {
         if (self::$theme_name == '')
             user_error('Theme name not set', ERROR);
 
-        self::$scripts['header'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+        $script = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']))
+            self::$scripts['header'][] = $script;
+        else
+            user_error('Script "' . $script . '" already added', NOTICE);
     }
 
     public static function addDeferredScript($script) {
         if (self::$theme_name == '')
             user_error('Theme name not set', ERROR);
 
-        self::$scripts['footer'][] = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+        $script = 'themes/' . self::$theme_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']) && !in_array($script, self::$scripts['footer']))
+            self::$scripts['footer'][] = $script;
+        else
+            user_error('Deferred script "' . $script . '" already added', NOTICE);
     }
 }
 
@@ -255,21 +301,33 @@ class Template extends Dex
         if (self::$template_name == '')
             user_error('Template name not set', ERROR);
 
-        self::$styles[] = 'templates/' . self::$template_name . '/resources/styles/' . $style;
+        $style = 'templates/' . self::$template_name . '/resources/styles/' . $style;
+        if (!in_array($style, self::$styles))
+            self::$styles[] = $style;
+        else
+            user_error('Style "' . $style . '" already added', NOTICE);
     }
 
     public static function addScript($script) {
         if (self::$template_name == '')
             user_error('Template name not set', ERROR);
 
-        self::$scripts['header'][] = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+        $script = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']))
+            self::$scripts['header'][] = $script;
+        else
+            user_error('Script "' . $script . '" already added', NOTICE);
     }
 
     public static function addDeferredScript($script) {
         if (self::$template_name == '')
             user_error('Template name not set', ERROR);
 
-        self::$scripts['footer'][] = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+        $script = 'templates/' . self::$template_name . '/resources/scripts/' . $script;
+        if (!in_array($script, self::$scripts['header']) && !in_array($script, self::$scripts['footer']))
+            self::$scripts['footer'][] = $script;
+        else
+            user_error('Deferred script "' . $script . '" already added', NOTICE);
     }
 }
 
