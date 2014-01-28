@@ -106,7 +106,8 @@ class Result
         return ($ret && isset($ret[$key]) ? $ret[$key] : false);
     }
 
-    public function fetchAll($key = '') {
+    public function fetchAll($key = '')
+    {
         $result = Array();
         while ($result[] = $this->fetch($key));
         array_pop($result);
