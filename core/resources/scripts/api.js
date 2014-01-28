@@ -1,3 +1,8 @@
+$(function() {
+    if ($('#admin-bar').length)
+        $('#api_status').css('top', '+=33px');
+});
+
 function api(url, data, success, error) {
     if (!url)
         apiFatal('no API URL set');

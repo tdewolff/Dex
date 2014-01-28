@@ -38,4 +38,12 @@ $(function() {
         toggleClass(menu, active);
         toggleClass(menuLink, active);
     };
+
+    if ($('#admin-bar').length)
+        $('#menu').css('top', '+=33px');
+
+    $('#log-out').click(function() {
+        $('#menu').animate({
+            'top', '-=33px'
+        });
 });
