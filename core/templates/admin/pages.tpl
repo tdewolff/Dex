@@ -16,20 +16,20 @@
 </ul>
 
 <script id="page_item" type="text/x-dot-template">
-	<li id="page_{{=it.link_id}}">
+    <li id="page_{{=it.link_id}}">
         <div style="width:80px;">
             <a href="/<?php echo $_['base_url']; ?>{{=it.url}}" class="list-button">
                 <i class="fa fa-pencil"></i>&ensp;Edit
             </a>
         </div>
-		<div style="width:200px;"><input type="text" value="{{=it.title}}"></div>
-		<div style="width:200px;"><input type="text" value="{{=it.url}}"></div>
-		<div style="width:380px;">{{=it.content}}</div>
+        <div style="width:200px;"><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
+        <div style="width:200px;"><input name="link" type="text" value="{{=it.url}}" data-link-id="{{=it.link_id}}"></div>
+        <div style="width:380px;">{{=it.content}}</div>
         <div style="width:40px;">
             <a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
             <a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-link-id="{{=it.link_id}}"><i class="fa fa-trash-o"></i></a>
         </div>
-	</li>
+    </li>
 </script>
 
 <script type="text/javascript">
@@ -55,7 +55,7 @@
 
         pages.on('click', 'a.sure', function() {
             apiStatusWorking('Deleting page...');
-        	var item = $(this);
+            var item = $(this);
             api('/' + base_url + 'api/core/pages/', {
                 action: 'delete_page',
                 link_id: $(this).attr('data-link-id')
@@ -67,5 +67,23 @@
                 apiStatusError('Deleting page failed');
             });
         });
+        var savePageTimeout = null;
+        pages.on('input', 'input', function (e) {
+            clearTimeout(savePageTimeout);
+            savePageTimeout = setTimeout(savePage, 1000, $(this));
+        });
+        var savePage = function savePage(element) {
+            savePageTimeout = null;
+            api('/' + base_url + 'api/core/pages/', {
+                action: 'edit_data',
+                link_id: element.attr('data-link-id'),
+                which: element.attr('name'),
+                value: element.val()
+            }, function () {
+                apiStatusSuccess('Edited page data');
+            }, function () {
+                apiStatusError('Editing page data failed');
+            });
+        }
     });
 </script>

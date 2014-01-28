@@ -8,8 +8,8 @@ assets/
 cache/
 logs/
 
-*.min.css
 *.min.js
+*.min.css
 
 dex.db
 GRONINGENBIJLES.md
