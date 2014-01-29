@@ -16,7 +16,7 @@ $(document).ready(function () {
             return false;
         });
     });
-    var article = $('article');
+    var article = $('article.main[role="main"] ');
     var articleAbsWidth = article.width() +
         parseInt(article.css('padding-left')) +
         parseInt(article.css('padding-right')) +

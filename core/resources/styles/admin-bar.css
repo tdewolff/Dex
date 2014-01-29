@@ -127,6 +127,10 @@ body {
     padding: 4px 12px;
     margin-top:1px;
 }
+
+.g-body .text-menu {
+    z-index: 7999;
+}
 /*
 [contenteditable="true"] {
     -webkit-box-shadow: 0 0 3px #3b641f;
