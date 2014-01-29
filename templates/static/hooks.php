@@ -6,7 +6,7 @@ Hooks::attach('site-header', -1, function () {
         Core::addStyle('vendor/grande-editor.css');
         Core::addStyle('vendor/grande-menu.css');
 
-        Core::addDeferredScript('vendor/grande.js');
+        Core::addScript('vendor/grande.js');
     }
 });
 
