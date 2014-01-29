@@ -60,11 +60,13 @@ $(document).ready(function () {
     });
 
     $('#log-out').click(function() {
-        $('article').attr('contenteditable', 'false');
+
         apiStatusWorking('Logging out...');
         api('/' + base_url + 'api/core/users/', {
             'action': 'logout'
         }, function(data) {
+            $('article').attr('contenteditable', 'false');
+            $('#edit,#save').remove();
             $('#api_fatal').fadeOut().remove();
             $('#api_status').fadeOut().remove();
             $('#admin-bar').slideUp(function() {
