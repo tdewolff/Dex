@@ -73,9 +73,8 @@ body {
 
 #edit,
 #save {
-    z-index:-1;
+    z-index:6999;
     position:absolute;
-    width:100%;
     text-align:right;
 }
 

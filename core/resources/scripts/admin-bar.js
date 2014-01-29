@@ -16,6 +16,18 @@ $(document).ready(function () {
             return false;
         });
     });
+    var article = $('article');
+    var articleAbsWidth = article.width() +
+        parseInt(article.css('padding-left')) +
+        parseInt(article.css('padding-right')) +
+        parseInt(article.css('border-left-width')) +
+        parseInt(article.css('border-right-width'));
+    $('#edit,#save').
+        css(article.offset()).
+        css({
+            'margin-left': articleAbsWidth - $('#save').width(),
+            'margin-top': -1 * $('#save').height()
+        });
 
     $('#edit').on('click', 'a', function() {
         $('article').attr('contenteditable', 'true');

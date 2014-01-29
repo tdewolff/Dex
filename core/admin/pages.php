@@ -3,7 +3,7 @@
 if (!isset($url[2]))
 {
     Core::addStyle('vendor/dropdown.css');
-
+    Core::addScript('form.js');
     Hooks::emit('admin-header');
     Core::render('admin/pages.tpl');
     Hooks::emit('admin-footer');
