@@ -4,23 +4,23 @@
 <?php $_['page']->render(); ?>
 
 <script type="text/javascript">
-    $(function() {
-        var use_feed = true;
-        $('#url-feed').on('keyup', function() {
-            if (use_feed) {
-                var link_url = $(this).val().toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
-                $('#url').val(link_url + '/');
-            }
-        });
+	$(function() {
+		var use_feed = true;
+		$('#url-feed').on('keyup', function() {
+			if (use_feed) {
+				var link_url = $(this).val().toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
+				$('#url').val(link_url + '/');
+			}
+		});
 
-        $('#url').on('keyup', function() {
-            use_feed = false;
-        });
+		$('#url').on('keyup', function() {
+			use_feed = false;
+		});
 
-        $('#url').on('blur', function() {
-            var link_url = $(this).val();
-            if (link_url.length && link_url[link_url.length - 1] != '/')
-                $(this).val(link_url + '/');
-        });
-    });
+		$('#url').on('blur', function() {
+			var link_url = $(this).val();
+			if (link_url.length && link_url[link_url.length - 1] != '/')
+				$(this).val(link_url + '/');
+		});
+	});
 </script>

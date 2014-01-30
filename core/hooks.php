@@ -1,33 +1,33 @@
 <?php
 
 Hooks::attach('site', 0, function() {
-    Hooks::emit('site-header');
-    echo '<section class="page-wrapper">';
+	Hooks::emit('site-header');
+	echo '<section class="page-wrapper">';
 
-    echo '<header>';
-    Hooks::emit('header');
-    echo '</header>';
+	echo '<header>';
+	Hooks::emit('header');
+	echo '</header>';
 
-    echo '<nav class="navigation" role="navigation">';
-    Hooks::emit('navigation');
-    echo '</nav>';
+	echo '<nav class="navigation" role="navigation">';
+	Hooks::emit('navigation');
+	echo '</nav>';
 
-    //echo '<article class="main" role="main">';
-    Hooks::emit('main');
-    //echo '</article>';
+	//echo '<article class="main" role="main">';
+	Hooks::emit('main');
+	//echo '</article>';
 
-    echo '<footer>';
-    Hooks::emit('footer');
-    echo '</footer>';
+	echo '<footer>';
+	Hooks::emit('footer');
+	echo '</footer>';
 
-    echo '</section>';
-    Hooks::emit('site-footer');
+	echo '</section>';
+	Hooks::emit('site-footer');
 });
 
 $error_loop = false;
 
 Hooks::attach('error', 0, function() {
-    ob_clean();
+	ob_clean();
 
 	global $error_loop;
 	if ($error_loop)
@@ -37,31 +37,31 @@ Hooks::attach('error', 0, function() {
 	Core::addTitle('Error');
 	Core::assign('error', Error::getLast());
 
-    Hooks::emit('site-header');
-    echo '<section class="page-wrapper">';
+	Hooks::emit('site-header');
+	echo '<section class="page-wrapper">';
 
-    echo '<header>';
-    Hooks::emit('header');
-    echo '</header>';
+	echo '<header>';
+	Hooks::emit('header');
+	echo '</header>';
 
-    echo '<nav class="navigation" role="navigation">';
-    Hooks::emit('navigation');
-    echo '</nav>';
+	echo '<nav class="navigation" role="navigation">';
+	Hooks::emit('navigation');
+	echo '</nav>';
 
-    echo '<article class="main" role="main">';
-    Core::render('error.tpl');
-    echo '</article>';
+	echo '<article class="main" role="main">';
+	Core::render('error.tpl');
+	echo '</article>';
 
-    echo '<footer>';
-    Hooks::emit('footer');
-    echo '</footer>';
+	echo '<footer>';
+	Hooks::emit('footer');
+	echo '</footer>';
 
-    echo '</section>';
-    Hooks::emit('site-footer');
+	echo '</section>';
+	Hooks::emit('site-footer');
 });
 
 Hooks::attach('admin-error', 0, function() {
-    ob_clean();
+	ob_clean();
 
 	global $error_loop;
 	if ($error_loop)
@@ -71,9 +71,9 @@ Hooks::attach('admin-error', 0, function() {
 	Core::addTitle('Error');
 	Core::assign('error', Error::getLast());
 
-    Hooks::emit('admin-header');
-    Core::render('admin/error.tpl');
-    Hooks::emit('admin-footer');
+	Hooks::emit('admin-header');
+	Core::render('admin/error.tpl');
+	Hooks::emit('admin-footer');
 });
 
 ////////////////////////////////////////////////////////////////
@@ -101,12 +101,12 @@ Hooks::attach('admin-footer', 0, function() {
 ////////////////////////////////////////////////////////////////
 
 /*Hooks::attach('main', 0, function() {
-    $link_id = Core::getLinkId();
-    $template_name = Core::getTemplateName();
+	$link_id = Core::getLinkId();
+	$template_name = Core::getTemplateName();
 
-    $table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "';");
-    while ($row = $table->fetch())
-    	Core::assign($row['name'], $row['content']);
+	$table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "';");
+	while ($row = $table->fetch())
+		Core::assign($row['name'], $row['content']);
 
 	Core::renderTemplate($template_name);
 });*/

@@ -3,8 +3,8 @@
 // doesn't have to be logged in, for admin-bar can show with expired login
 if (API::action('logout'))
 {
-    User::logOut();
-    API::finish();
+	User::logOut();
+	API::finish();
 }
 
 if (!User::isAdmin())
@@ -20,16 +20,16 @@ if (API::action('delete_user'))
 }
 else if (API::action('get_users'))
 {
-    $users = array();
-    $table = Db::query("SELECT * FROM user;");
-    while ($row = $table->fetch())
-    {
-    	$row['current'] = $row['user_id'] == User::getUserId();
-    	$row['role'] = ucfirst($row['role']);
-    	$users[] = $row;
-    }
-    API::set('users', $users);
-    API::finish();
+	$users = array();
+	$table = Db::query("SELECT * FROM user;");
+	while ($row = $table->fetch())
+	{
+		$row['current'] = $row['user_id'] == User::getUserId();
+		$row['role'] = ucfirst($row['role']);
+		$users[] = $row;
+	}
+	API::set('users', $users);
+	API::finish();
 }
 
 ?>
