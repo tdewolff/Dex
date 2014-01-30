@@ -40,6 +40,7 @@ body {
 #admin-bar #publish-site  {
     float:left;
     margin-left:20px;
+    color: #FFFFFF;
 }
 
 #admin-bar #publish-site.fade {
@@ -70,21 +71,31 @@ body {
     margin-left:5px;
 }
 
-#admin-bar #edit,
-#admin-bar #save {
-    z-index:-1;
+#edit,
+#save {
+    z-index:6999;
     position:absolute;
-    width:100%;
-    text-align: center;
+    text-align:right;
 }
 
-#admin-bar #save {
+#edit a,
+#save a {
+    opacity: 0.25;
+    transition: opacity 0.5s;
+}
+
+#edit a:hover,
+#save a:hover {
+    opacity: 1;
+}
+
+#save {
     display:none;
 }
 
-#admin-bar #publish-site,
-#admin-bar #edit > a,
-#admin-bar #save > a {
+#publish-site,
+#edit > a,
+#save > a {
     display:inline-block;
 
     border: 1px solid #294415;
@@ -117,12 +128,6 @@ body {
     margin-top:1px;
 }
 
-[contenteditable="true"] {
-    -webkit-box-shadow: 0 0 3px #3b641f;
-    -moz-box-shadow: 0 0 3px #3b641f;
-    box-shadow: 0 0 3px #3b641f;
-
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+.g-body .text-menu {
+    z-index: 7999;
 }

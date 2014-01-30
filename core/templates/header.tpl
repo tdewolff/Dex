@@ -42,8 +42,7 @@
             <a href="#" id="publish-site" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-fw fa-magic"></i>&ensp;Publish site</a>
             <div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
             <div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a id="log-out" href="#" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
-            <div id="edit"><a href="#"><i class="fa fa-fw fa-edit"></i>&ensp;Edit</a></div>
-            <div id="save"><a href="#"><i class="fa fa-fw fa-save"></i>&ensp;Save</a></div>
+
             <?php } else { ?>
             <div id="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/">log back in</a></div>
             <div id="current-user"><a id="log-out" href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
