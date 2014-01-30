@@ -6,8 +6,8 @@ class Dex
 	public static $titles = array();
     public static $externalStyles = array();
 	public static $styles = array();
-    public static $externalScripts = array();
-	public static $scripts = array();
+    public static $externalScripts = array('header' => array(), 'footer' => array());
+	public static $scripts = array('header' => array(), 'footer' => array());
 
 	public static $link_id = 0;
     public static $theme_name = '';
