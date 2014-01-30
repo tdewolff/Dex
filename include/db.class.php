@@ -98,9 +98,7 @@ class Result
 	public function fetch($key = '')
 	{
 		if (!strlen($key))
-		{
 			return $this->result->fetchArray(SQLITE3_ASSOC);
-		}
 
 		$ret = $this->result->fetchArray(SQLITE3_ASSOC);
 		return ($ret && isset($ret[$key]) ? $ret[$key] : false);
@@ -108,10 +106,9 @@ class Result
 
 	public function fetchAll($key = '')
 	{
-		$result = Array();
+		$result = array();
 		while ($result[] = $this->fetch($key));
-		array_pop($result);
-		return $result;
+		return array_pop($result);
 	}
 }
 
