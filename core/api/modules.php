@@ -9,8 +9,8 @@ if (API::action('enable_module') || API::action('disable_module'))
         user_error('No module name set', ERROR);
 
     Db::exec("
-        UPDATE module SET enabled = '" . Db::escape(API::action('enable_module') ? '1' : '0') . "'
-        WHERE module_name = '" . Db::escape(API::get('module_name')) . "';");
+    UPDATE module SET enabled = '" . Db::escape(API::action('enable_module') ? '1' : '0') . "'
+    WHERE module_name = '" . Db::escape(API::get('module_name')) . "';");
     API::finish();
 }
 else if (API::action('reinstall_module'))

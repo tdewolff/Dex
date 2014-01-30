@@ -10,31 +10,21 @@ if (API::action('delete_page'))
 
     $link_id = Db::escape(API::get('link_id'));
     Db::exec("
-        DELETE FROM content WHERE link_id = '" . $link_id . "';
-        DELETE FROM link WHERE link_id = '" . $link_id . "';
+    DELETE FROM content WHERE link_id = '" . $link_id . "';
+    DELETE FROM link WHERE link_id = '" . $link_id . "';
     ");
     API::finish();
 }
-else if (API::action('edit_data'))
+else if (API::action('edit_page'))
 {
-    if (!API::has('link_id'))
-        user_error('No link ID set', ERROR);
-
-    if (!API::has('which') || !(
-        API::get('which') === 'title' ||
-        API::get('which') === 'link'
-    ))
-        user_error('No known element changed', ERROR);
-
-    if (!API::has('value'))
-        user_error('No value detected', ERROR);
+    if (!API::has('link_id') || !API::has('title') || !API::has('url'))
+        user_error('No link ID, title or url set', ERROR);
 
     Db::exec("
-        UPDATE link
-        SET " . (
-            API::get('which') === 'title' ? 'title' : 'url'
-        ) . " = '" . Db::escape(API::get('value')) . "'
-        WHERE link_id = '" . Db::escape(API::get('link_id')) . "';
+    UPDATE link SET
+        title = '" . Db::escape(API::get('title')) . "',
+        url = '" . Db::escape(API::get('url')) . "'
+    WHERE link_id = '" . Db::escape(API::get('link_id')) . "';
     ");
     API::finish();
 }
