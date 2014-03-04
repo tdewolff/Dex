@@ -108,7 +108,8 @@ class Result
 	{
 		$result = array();
 		while ($result[] = $this->fetch($key));
-		return array_pop($result);
+		array_pop($result); // TODO: why?
+		return $result;
 	}
 }
 
