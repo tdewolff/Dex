@@ -1,117 +1,97 @@
-$(window.document).on('ready', function() {
-    $('#publish-site').click(function() {
-        $.fancybox.open({
-            content: '<textarea id="console" readonly></textarea>'
-        });
+$(function() {
+	$('#publish-site').click(function() {
+		$.fancybox.open({
+			content: '<textarea id="console" readonly></textarea>'
+		});
 
-        apiStatusWorking('Publishing site...');
-        apiUpdateConsole($('#console'));
-        api('/' + base_url + 'api/core/publish-site/', {
-        }, function(data) {
-            apiStopConsole();
-            apiStatusSuccess('Published site');
-        }, function() {
-            apiStopConsole();
-            apiStatusError('Publishing site failed');
-            return false;
-        });
-    });
+		apiStatusWorking('Publishing site...');
+		apiUpdateConsole($('#console'));
+		api('/' + base_url + 'api/core/publish-site/', {
+		}, function(data) {
+			apiStopConsole();
+			apiStatusSuccess('Published site');
+		}, function() {
+			apiStopConsole();
+			apiStatusError('Publishing site failed');
+			return false;
+		});
+	});
 
-    // TODO: is this really necessary?
-    /*
-    var article = $('article.main[role="main"] ');
-    var articleAbsWidth = article.width() +
-        parseInt(article.css('padding-left')) +
-        parseInt(article.css('padding-right')) +
-        parseInt(article.css('border-left-width')) +
-        parseInt(article.css('border-right-width'));
-    $('#edit,#save').
-        css(article.offset()).
-        css({
-            'margin-left': articleAbsWidth - $('#save').width(),
-            'margin-top': -1 * $('#save').height()
-        });
-    //*/
+	$('#edit').on('click', 'a', function(e) {
+		location.hash = "edit"
+		$('#edit').fadeOut('fast', function() {
+			$('article').attr('contenteditable', 'true');
+			grande.bind(document.querySelectorAll("article"));
+			initializeUpload('[contenteditable="true"]');
+			$('#save').fadeIn('fast');
+		});
+		return false;
+	});
 
-    $('#edit').on('click', 'a', function(e) {
-        location.hash = "edit"
-        $('#edit').fadeOut('fast', function() {
-            console.log("Edit is gone");
-            $('article').attr('contenteditable', 'true');
-            grande.bind(document.querySelectorAll("article"));
-            initializeUpload('[contenteditable="true"]');
-            $('#save').fadeIn('fast', function () {
-                console.log("Save is here");
-            });
-        });
-        return false;
-    });
+	initializeUploadDone(function(data) {
+		if (!data['file'].is_image)
+		{
+			var item = asset_item(data['file']);
+			if (directories_assets.find('li.asset').length)
+				addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
+			else
+				$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+		}
+		else
+		{
+			var item = image_item(data['file']);
+			if (images.find('li').length)
+				addAlphabetically(images.find('li'), item, data['file']['name']);
+			else
+				$(item).hide().appendTo(images).slideDown('fast');
+		}
+	});
 
-    initializeUploadDone(function(data) {
-        if (!data['file'].is_image)
-        {
-            var item = asset_item(data['file']);
-            if (directories_assets.find('li.asset').length)
-                addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
-            else
-                $(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
-        }
-        else
-        {
-            var item = image_item(data['file']);
-            if (images.find('li').length)
-                addAlphabetically(images.find('li'), item, data['file']['name']);
-            else
-                $(item).hide().appendTo(images).slideDown('fast');
-        }
-    });
+	$('#save').on('click', 'a', function() {
+		$('#save').fadeOut('fast', function () {
+			$('#edit').fadeIn('fast');
+		});
+		$('article').attr('contenteditable', 'false');
+		apiStatusWorking('Saving page...');
+		var item = $(this);
+		api('/' + base_url + 'api/template/static/index/', {
+			action: 'save_page',
+			link_id: link_id,
+			content: $('article').html()
+		}, function() {
+			apiStatusSuccess('Saved page <span data-time></span>');
+		}, function() {
+			apiStatusError('Saving page failed');
+		});
+	});
 
-    $('#save').on('click', 'a', function() {
-        $('#save').fadeOut('fast', function () {
-            $('#edit').fadeIn('fast');
-        });
-        $('article').attr('contenteditable', 'false');
-        apiStatusWorking('Saving page...');
-        var item = $(this);
-        api('/' + base_url + 'api/template/static/index/', {
-            action: 'save_page',
-            link_id: link_id,
-            content: $('article').html()
-        }, function() {
-            apiStatusSuccess('Saved page <span data-time></span>');
-        }, function() {
-            apiStatusError('Saving page failed');
-        });
-    });
+	$('article').on('keydown', function() {
+		apiStatusClear();
+	});
 
-    $('article').on('keydown', function() {
-        apiStatusClear();
-    });
+	$('#log-out').click(function() {
+		apiStatusWorking('Logging out...');
+		api('/' + base_url + 'api/core/users/', {
+			'action': 'logout'
+		}, function(data) {
+			$('#api_fatal').fadeOut().remove();
+			$('#api_status').fadeOut().remove();
+			$('#admin-bar').slideUp(function() {
+				this.remove();
+				$('#edit, #save').remove();
+			});
+			$('article').attr('contenteditable', 'false');
 
-    $('#log-out').click(function() {
+			$('body').animate({
+				'padding-top': '0'
+			});
+		}, function() {
+			apiStatusError('Logging out failed');
+			return false;
+		});
+	});
 
-        apiStatusWorking('Logging out...');
-        api('/' + base_url + 'api/core/users/', {
-            'action': 'logout'
-        }, function(data) {
-            $('#api_fatal').fadeOut().remove();
-            $('#api_status').fadeOut().remove();
-            $('#admin-bar').slideUp(function() {
-                this.remove();
-                $('#edit, #save').remove();
-            });
-            $('article').attr('contenteditable', 'false');
-
-            $('body').animate({
-                'padding-top': '0'
-            });
-        }, function() {
-            apiStatusError('Logging out failed');
-            return false;
-        });
-    });
-
-    if (window.location.hash === "#edit") {
-        $('#edit a').trigger('click');
-    }
+	if (window.location.hash === "#edit") {
+		$('#edit a').trigger('click');
+	}
 });
