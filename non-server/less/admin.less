@@ -1,5 +1,7 @@
 @import "_mixins.less";
 @import "_form.less";
+@import "_tables.less";
+@import "_content.less";
 
 
 /******************/
@@ -130,196 +132,6 @@ h1 {
 	background:@light;
 	border-left:3px solid darken(@light, 5%);
 	border-right:3px solid darken(@light, 5%);
-}
-
-
-/*****************/
-/* content types */
-/*****************/
-
-h2 {
-	font-family:SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-	font-size: 2em;
-	color:@base;
-	text-align:center;
-	padding-top:60px;
-	padding-bottom:30px;
-
-	.text-shadow(0 1px 1px rgba(255, 255, 255, 1));
-}
-
-h2:first-of-type {
-	padding-top:0;
-}
-
-h3 {
-	font-family:SourceSansRegular, Arial, Helvetica, sans-serif;
-	color:@base;
-	font-size:1.5em;
-	margin-top:30px;
-	margin-bottom:10px;
-}
-
-h3:first-of-type {
-	margin-top:0;
-}
-
-h4 {
-	font-family:SourceSansRegular, Arial, Helvetica, sans-serif;
-	color:@base;
-	text-align:center;
-	font-size:1.1em;
-	margin-top:10px;
-	margin-bottom:0;
-}
-
-p {
-	font-family: Arial, Helvetica, sans-serif;
-	color:@text-black;
-	padding-top:2px;
-	padding-bottom:20px;
-}
-
-a {
-	color:@alert;
-
-	&:hover {
-		color:lighten(@alert, 5%);
-	}
-
-	&:visited {
-		color:darken(@alert, 5%);
-	}
-}
-
-.button {
-	font-size:14px;
-}
-
-.recovery > h3, .recovery > p {
-	text-align: center;
-}
-
-
-/**********/
-/* tables */
-/**********/
-
-ul {
-	list-style-type:none;
-	padding:0;
-}
-
-ul.table, ul.small-table {
-	width:902px;
-	margin:0 auto;
-	border:1px solid darken(@light, 10%);
-	.border-radius(5px);
-
-	>li {
-		height:33px;
-		border-top:1px solid darken(@light, 10%);
-		font-size:90%;
-		background-color:@light;
-	}
-
-	>li:after {
-	    visibility: hidden;
-	    display: block;
-	    font-size: 0;
-	    content: " ";
-	    clear: both;
-	    height: 0;
-	}
-
-	>li:nth-child(odd) {
-		background-color:darken(@light, 2%);
-	}
-
-	>li:first-of-type {
-		border-top:0;
-		.border-top-left-radius(4px);
-		.border-top-right-radius(4px);
-		.css-gradient(darken(@light, 0%), darken(@light, 5%));
-		font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
-		text-shadow: rgba(255,255,255,0.8) 0 1px 0;
-
-		>div:first-of-type {
-			.border-top-left-radius(4px);
-		}
-
-		>div:last-of-type {
-			.border-top-right-radius(4px);
-		}
-	}
-
-	>li:last-of-type {
-		.border-bottom-left-radius(4px);
-		.border-bottom-right-radius(4px);
-
-		>div:first-of-type {
-			.border-bottom-left-radius(4px);
-		}
-
-		>div:last-of-type {
-			.border-bottom-right-radius(4px);
-		}
-	}
-
-	>li:hover:not(:first-of-type) > div {
-		background-color:@subtle;
-	}
-
-	>li.unused {
-		font-style:italic;
-		color:@text-grey;
-	}
-
-	>li > div {
-		line-height:22px;
-		height:32px;
-
-		float:left;
-		padding:5px 15px;
-
-		vertical-align: middle;
-
-		white-space:nowrap;
-		text-overflow:ellipsis;
-		overflow: hidden;
-	}
-
-	>li > div * {
-		line-height:initial;
-	}
-}
-
-ul.small-table {
-	width:502px;
-}
-
-ul.grid {
-	margin:0 auto;
-	overflow:hidden;
-	text-align:center;
-
-	li {
-		display:inline-block;
-		padding:25px 15px;
-	    border:darken(@light, 2%) 1px solid;
-
-	    &:hover {
-			background-color:darken(@light, 5%);
-	    }
-	}
-}
-
-ul.grid-3 {
-	width:900px;
-
-	>li {
-		width:300px;
-	}
 }
 
 
@@ -602,72 +414,9 @@ ul.grid-3 {
 	}
 }
 
-.popup-wrapper {
-	/*width:800px;
-	overflow:hidden;*/
-	white-space:nowrap;
-
-	.popup {
-		>div {
-            width:600px;
-			vertical-align: top;
-  			display:inline-block;
-			white-space:normal;
-		}
-
-        >div:not(:first-of-type) {
-            display:none;
-        }
-
-		#external-link {
-			margin:0 auto;
-			width:500px;
-			margin-bottom:30px;
-
-			input {
-				width:370px;
-				margin:0;
-				float:none;
-			}
-
-			a {
-				width:120px;
-				margin-left:10px;
-				margin-right:0;
-				text-align:center;
-			}
-		}
-
-		#links {
-			li:not(:first-of-type):hover {
-				cursor:pointer;
-			}
-		}
-
-		#assets {
-            width:800px;
-
-			#upload {
-				width:600px;
-			}
-
-			#breadcrumbs {
-				width:600px;
-			}
-
-			#directories_assets {
-				width:602px;
-
-				li.asset:hover {
-					cursor:pointer;
-				}
-			}
-
-			#images li:hover {
-				cursor:pointer;
-			}
-		}
-	}
+#diskspace_total {
+	font-size:90%;
+	margin-bottom:5px;
 }
 
 #diskspace {
@@ -802,23 +551,12 @@ strong {
 /* other */
 /*********/
 
-.markItUp {
-	margin-left: -200px;
-	padding-top:10px;
-	width:900px;
+.button {
+	font-size:14px;
 }
 
-.markItUpEditor {
-	height:500px;
-	overflow:hidden;
-}
-
-.markItUpPreviewFrame {
-	overflow:hidden;
-	width:900px;
-	border:1px solid #C0C0C0;
-	.border-radius(4px);
-	.css-gradient(#F8F8F8, #FFFFFF);
+.recovery > h3, .recovery > p {
+	text-align: center;
 }
 
 .disabled {

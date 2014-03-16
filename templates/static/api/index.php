@@ -6,7 +6,7 @@ if (!User::loggedIn())
 use \Michelf\Markdown;
 require_once('vendor/smartypants.php');
 
-if (API::action('save_page'))
+if (API::action('save'))
 {
     if (!API::has('link_id') || !API::has('content'))
         user_error('No link ID or content set', ERROR);

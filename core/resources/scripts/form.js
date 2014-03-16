@@ -86,7 +86,7 @@ var Form = function(form) {
 					{
 						if (data[0] != '********') // hidden already has the original password value, so don't overwrite
 						{
-							// TODO: uncomment lines below
+							// TODO: uncomment
 							//if (data[0].length < 8)
 							//    hidden.val('tooshort');
 							//else if (!/[a-z]/.test(data[0]) || !/[A-Z]/.test(data[0]) || !/[0-9]/.test(data[0]))

@@ -12,11 +12,11 @@
 
 #api_status > div > span {
     color:#F0F0F0;
-    font-size:90%;
     vertical-align: middle;
     background-color:#374147;
     padding: 0.5em 1em;
     font-family: Arial,Helvetica,sans-serif;
+    font-size:12px;
 
   -webkit-border-radius:4px;
      -moz-border-radius:4px;
@@ -26,6 +26,7 @@
 #api_status > div > i {
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
     vertical-align: middle;
+    font-size:24px;
 }
 
 #api_status > div.success > i {
@@ -58,5 +59,5 @@
     height:250px;
     margin-left:0;
     margin-right:0;
-    font-size:80%;
+    font-size:12px;
 }

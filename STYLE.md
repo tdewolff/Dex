@@ -13,5 +13,5 @@
 ### JS
 
 - Begin bracket appears immediately after the statement (one space)
-- End brackets has its own line
+- End brackets have their own line
 - Brackets are never omitted

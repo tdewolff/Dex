@@ -1,5 +1,8 @@
 <h2>Administration</h2>
 <h3>Diskspace</h3>
+<div id="diskspace_total">
+</div>
+
 <div id="diskspace">
 </div>
 
@@ -15,8 +18,13 @@
 </script>
 
 <h3>Maintenance</h3>
-<div><a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a></div>
-<div><a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;Clear logs</a></div>
+<div>
+	<a href="#" class="button" data-tooltip="Optimize images and scripts of the site" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;Optimize site</a>
+</div>
+<div>
+	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a>
+	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;Clear logs</a>
+</div>
 
 <script type="text/javascript">
 	$(function() {
@@ -32,6 +40,8 @@
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'diskspace_usage'
 			}, function(data) {
+				$('#diskspace_total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
+
 				$.each(data['diskspace'], function() {
 					this.width = this.percentage;
 					diskspace.append(diskspace_item(this));
@@ -49,7 +59,23 @@
 
 		$('a[data-action]').click(function() {
 			var action = $(this).attr('data-action');
-			if (action == 'clear_logs') {
+			if (action == 'optimize_size') {
+				$.fancybox.open({
+					content: '<textarea id="console" readonly></textarea>'
+				});
+
+				apiStatusWorking('Publishing site...');
+				apiUpdateConsole($('#console'));
+				api('/' + base_url + 'api/core/optimize-site/', {
+				}, function(data) {
+					apiStopConsole();
+					apiStatusSuccess('Published site');
+				}, function() {
+					apiStopConsole();
+					apiStatusError('Publishing site failed');
+					return false;
+				});
+			} else if (action == 'clear_logs') {
 				apiStatusWorking('Clearing logs...');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action

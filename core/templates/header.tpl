@@ -39,7 +39,6 @@
 		<?php if (User::getTimeLeft() !== false) { ?>
 		<div id="admin-bar">
 			<?php if (User::getTimeLeft() > 0) { ?>
-			<a href="#" id="publish-site" data-tooltip="Publish and optimize the content of the site" data-action="publish_site"><i class="fa fa-fw fa-magic"></i>&ensp;Publish site</a>
 			<div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
 			<div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a id="log-out" href="#" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
 

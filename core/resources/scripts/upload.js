@@ -6,7 +6,6 @@ function initializeUploadDone(done) {
 
 function initializeUpload(upload) {
 	upload = $(upload);
-	console.log(upload);
 
 	var total_loaded = 0, total_size = 0;
 	if (!upload.fileupload) {

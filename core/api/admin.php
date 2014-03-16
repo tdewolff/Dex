@@ -63,8 +63,8 @@ else if (API::action('diskspace_usage'))
 	$total = Common::getDirectorySize('./');
 	$rest = $total;
 
-	$diskspace = array();
-	$directories = array('assets/', 'cache/', 'modules/', 'templates/', 'themes/');
+	$diskspace = array(null);
+	$directories = array('modules/', 'templates/', 'themes/', 'assets/', 'cache/');
 	foreach ($directories as $directory)
 	{
 		$size = Common::getDirectorySize($directory);
@@ -75,12 +75,13 @@ else if (API::action('diskspace_usage'))
 		$rest -= $size;
 	}
 
-	$diskspace[] = array(
+	$diskspace[0] = array(
 		'name' => 'Dex',
 		'size' => Common::formatBytes($rest),
 		'percentage' => $rest / $total * 100.0);
 
 	API::set('diskspace', $diskspace);
+	API::set('diskspace_total', $total);
 	API::finish();
 }
 
