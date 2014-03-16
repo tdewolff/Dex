@@ -1,14 +1,14 @@
 <h2>Assets</h2>
 <div id="assets">
 	<div id="create_directory">
-		<input type="text"><a href="#" class="small-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
+		<input type="text"><a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
 	</div>
 
 	<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
 		<input type="hidden" name="dir" value="">
 		<div id="drop">
 			<span>Drop Here</span><br>
-			<a class="small-button">Browse</a>
+			<a class="inline-button">Browse</a>
 			<input type="file" name="upload" multiple>
 			<div id="knob">
 				<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>

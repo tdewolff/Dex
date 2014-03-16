@@ -4,7 +4,7 @@
             <h2>Insert link</h2>
             <h3>External link</h3>
             <div id="external-link">
-                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button"><i class="fa fa-arrow-right"></i>&ensp;Properties</a>
+                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button"><i class="fa fa-arrow-right"></i>&ensp;Properties</a>
             </div>
 
             <h3>Internal links</h3>

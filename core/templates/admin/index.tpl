@@ -21,7 +21,7 @@
 </ul>
 
 <div style="margin-top:10px;">
-	<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="small-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
+	<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="inline-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
 </div>
 
 <script id="log_item" type="text/x-dot-template">

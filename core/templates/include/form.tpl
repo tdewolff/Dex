@@ -108,22 +108,6 @@
 		<?php endforeach; ?>
 
 
-		<?php elseif ($item['type'] == 'markdown'): ?>
-		<div class="clear"></div>
-		<div class="markdown-buttons">
-			<a href="#" class="small-button insert-link" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-link"></i>&ensp;Insert link</a>
-			<a href="#" class="small-button insert-image" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-picture-o"></i>&ensp;Insert image</a>
-			<a href="#" class="small-button insert-asset" data-for-name="<?php echo $item['name']; ?>"><i class="fa fa-briefcase"></i>&ensp;Insert asset</a>
-		</div>
-		<textarea
-			name="<?php echo $item['name']; ?>"
-			maxlength="<?php echo $item['preg']['max']; ?>"
-			placeholder="<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>"
-			<?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>
-			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
-			class="markdown <?php echo (isset($item['class']) ? $item['class'] : ''); ?>"><?php echo $item['value']; ?></textarea>
-
-
 		<?php elseif ($item['type'] == 'array'): ?>
 		<input type="hidden"
 			name="<?php echo $item['name']; ?>"
@@ -190,7 +174,7 @@
 		<div class="box">
 			<div class="arrow"></div>
 			<div class="arrow-border"></div>
-			<p class="pre_wrap">
+			<p class="no-wrap">
 				<i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
 			</p>
 		</div>

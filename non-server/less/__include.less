@@ -1,0 +1,86 @@
+@dark:        		#374147;
+@light:				#FFFFFF;
+@text-black:		#303030;
+@text-grey:			#A0A0A0;
+
+@base:				#477725;
+@auxiliary:			#A9CC66;
+@subtle:			#FDE792;
+@contrast:			#5A1F00;
+@alert:				#D1570D;
+
+@sans-serif:         "Helvetica Neue", Helvetica, Arial, sans-serif;
+@serif:              "Georgia", Cambria, Times New Roman, Times, serif;
+
+
+.fontface(@fontName, @fontFile) {
+	font-family: @fontName;
+	src: url('@{fontFile}.eot');
+	src: url('@{fontFile}.eot?#iefix') format('embedded-opentype'),
+		 url('@{fontFile}.svg') format('svg'),
+		 url('@{fontFile}.woff') format('woff'),
+		 url('@{fontFile}.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.border-radius(@radius: 4px) {
+	-webkit-border-radius: @radius;
+	   -moz-border-radius: @radius;
+			border-radius: @radius;
+}
+
+.border-top-left-radius(@radius: 4px) {
+	-webkit-border-top-left-radius: @radius;
+	   -moz-border-top-left-radius: @radius;
+			border-top-left-radius: @radius;
+}
+
+.border-top-right-radius(@radius: 4px) {
+	-webkit-border-top-right-radius: @radius;
+	   -moz-border-top-right-radius: @radius;
+			border-top-right-radius: @radius;
+}
+
+.border-bottom-left-radius(@radius: 4px) {
+	-webkit-border-bottom-left-radius: @radius;
+	   -moz-border-bottom-left-radius: @radius;
+			border-bottom-left-radius: @radius;
+}
+
+.border-bottom-right-radius(@radius: 4px) {
+	-webkit-border-bottom-right-radius: @radius;
+	   -moz-border-bottom-right-radius: @radius;
+			border-bottom-right-radius: @radius;
+}
+
+.transition(@what: all, @time: 0.2s, @transition: ease-in-out) {
+	-webkit-transition: @what @time @transition;
+	   -moz-transition: @what @time @transition;
+		-ms-transition: @what @time @transition;
+		 -o-transition: @what @time @transition;
+			transition: @what @time @transition;
+}
+
+.transition(@what: all, @time: 0.2s, @transition: ease-in-out) {
+	-webkit-transition: @what @time @transition;
+	   -moz-transition: @what @time @transition;
+		-ms-transition: @what @time @transition;
+		 -o-transition: @what @time @transition;
+			transition: @what @time @transition;
+}
+
+.css-gradient(@from: #dfdfdf, @to: #f8f8f8) {
+	background-color: @to;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+	background-image: -webkit-linear-gradient(top, @from, @to);
+	background-image: -moz-linear-gradient(top, @from, @to);
+	background-image: -o-linear-gradient(top, @from, @to);
+	background-image: linear-gradient(to bottom, @from, @to);
+}
+
+.box-shadow(@x: 0, @y: 0, @radius: 4px, @spread: 0, @color: rgba(0,0,0,0.5)) {
+	-webkit-box-shadow: @x @y @radius @spread @color;
+	   -moz-box-shadow: @x @y @radius @spread @color;
+			box-shadow: @x @y @radius @spread @color;
+}

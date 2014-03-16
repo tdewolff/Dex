@@ -127,18 +127,6 @@ class Form
 		);
 	}
 
-	public function addMarkdown($name, $title, $subtitle)
-	{
-		$this->items[] = array(
-			'type' => 'markdown',
-			'name' => $this->name . '_' . $name,
-			'title' => $title,
-			'subtitle' => $subtitle,
-			'preg' => array('regex' => '(?s)(.*)', 'min' => 0, 'max' => 65535, 'error' => 'Unknown error'),
-			'value' => ''
-		);
-	}
-
 	public function addLinkUrl($name, $title, $subtitle)
 	{
 		$this->items[] = array(

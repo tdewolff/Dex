@@ -3,14 +3,14 @@
         <div id="assets">
             <h2>Images</h2>
             <div id="external-link">
-                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
+                <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
             </div>
 
             <form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
                 <input type="hidden" name="dir" value="">
                 <div id="drop">
                     <span>Drop Here</span><br>
-                    <a class="small-button">Browse</a>
+                    <a class="inline-button">Browse</a>
                     <input type="file" name="upload" multiple>
                     <div id="knob">
                         <div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>

@@ -1,19 +1,19 @@
 ul {
-	list-style-type:none;
-	padding:0;
+	list-style-type: none;
+	padding: 0;
 }
 
 ul.table, ul.small-table {
-	width:902px;
-	margin:0 auto;
-	border:1px solid darken(@light, 10%);
+	width: 902px;
+	margin: 0 auto;
+	border: 1px solid darken(@light, 10%);
 	.border-radius(5px);
 
 	>li {
-		height:33px;
-		border-top:1px solid darken(@light, 10%);
-		font-size:90%;
-		background-color:@light;
+		height: 33px;
+		border-top: 1px solid darken(@light, 10%);
+		font-size: 90%;
+		background-color: @light;
 	}
 
 	>li:after {
@@ -26,16 +26,17 @@ ul.table, ul.small-table {
 	}
 
 	>li:nth-child(odd) {
-		background-color:darken(@light, 2%);
+		background-color: darken(@light, 2%);
 	}
 
 	>li:first-of-type {
-		border-top:0;
+		border-top: 0;
 		.border-top-left-radius(4px);
 		.border-top-right-radius(4px);
 		.css-gradient(darken(@light, 0%), darken(@light, 5%));
-		font-family:Georgia,"Times New Roman","Bitstream Charter",Times,serif;
-		text-shadow: rgba(255,255,255,0.8) 0 1px 0;
+
+		font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+		text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
 
 		>div:first-of-type {
 			.border-top-left-radius(4px);
@@ -60,57 +61,56 @@ ul.table, ul.small-table {
 	}
 
 	>li:hover:not(:first-of-type) > div {
-		background-color:@subtle;
+		background-color: @subtle;
 	}
 
 	>li.unused {
-		font-style:italic;
-		color:@text-grey;
+		font-style: italic;
+		color: @text-grey;
 	}
 
 	>li > div {
-		line-height:22px;
-		height:32px;
+		float: left;
+		padding: 5px 15px;
 
-		float:left;
-		padding:5px 15px;
+		line-height: 22px;
+		height: 32px;
 
 		vertical-align: middle;
-
-		white-space:nowrap;
-		text-overflow:ellipsis;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		overflow: hidden;
 	}
 
 	>li > div * {
-		line-height:initial;
+		line-height: initial;
 	}
 }
 
 ul.small-table {
-	width:502px;
+	width: 502px;
 }
 
 ul.grid {
-	margin:0 auto;
-	overflow:hidden;
-	text-align:center;
+	margin: 0 auto;
+	overflow: hidden;
+	text-align: center;
 
 	li {
-		display:inline-block;
-		padding:25px 15px;
-	    border:darken(@light, 2%) 1px solid;
+		display: inline-block;
+		padding: 25px 15px;
+	    border: darken(@light, 2%) 1px solid;
 
 	    &:hover {
-			background-color:darken(@light, 5%);
+			background-color: darken(@light, 5%);
 	    }
 	}
 }
 
 ul.grid-3 {
-	width:900px;
+	width: 900px;
 
 	>li {
-		width:300px;
+		width: 300px;
 	}
 }
