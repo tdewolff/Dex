@@ -1,0 +1,97 @@
+/*
+001A25
+F4C63D
+046971
+EADBC4
+D70206
+*/
+
+@font-face {
+    font-family: 'sinanova';
+    src: url('../theme/seattle/fonts/hoftype_-_sinanova-regular-webfont.eot');
+    src: url('../theme/seattle/fonts/hoftype_-_sinanova-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../theme/seattle/fonts/hoftype_-_sinanova-regular-webfont.svg') format('svg'),
+         url('../theme/seattle/fonts/hoftype_-_sinanova-regular-webfont.ttf') format('truetype'),
+         url('../theme/seattle/fonts/hoftype_-_sinanova-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html, body {
+    background-color:#E0D2BC;
+    color:#001A25;
+    font-family: 'sinanova';
+    font-size:110%;
+}
+
+a {
+    color:#D70206;
+}
+
+header {
+    background-color:#001A25;
+    color:#FFFFFF;
+    padding:3em;
+    padding-bottom:2em;
+    text-align: center;
+}
+
+h1 {
+    margin:0;
+    font-size:300%;
+}
+
+h2 {
+    display:none;
+}
+
+nav {
+    background-color: #046971;
+    border-bottom:10px solid #E0D2BC;
+}
+
+nav > ul {
+    margin:0;
+    padding:0;
+    text-align: center;
+}
+
+nav li {
+    margin:0 2px;
+    padding:0 1em;
+    line-height:200%;
+    display:inline-block;
+    background-color:#F4C63D;
+    font-size:120%;
+}
+
+nav a {
+    text-decoration:none;
+}
+
+footer {
+    background-color:#E0D2BC;
+    color:#B0A593;
+    font-style: italic;
+    text-align: center;
+    font-size:70%;
+    padding:1em;
+}
+
+.page-wrapper {
+    background-color:#EADBC4;
+}
+
+.main {
+    padding:3em 6em;
+    width:800px;
+    margin:0 auto;
+}
+
+hr {
+    border:0;
+    border-top:1px solid #B0A593;
+    width:90%;
+    margin:0 auto;
+}

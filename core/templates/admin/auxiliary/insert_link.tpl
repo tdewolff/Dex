@@ -1,11 +1,13 @@
 <div class="popup-wrapper">
     <div class="popup">
         <div>
-            <h2>Links</h2>
+            <h2>Insert link</h2>
+            <h3>External link</h3>
             <div id="external-link">
                 <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties small-button"><i class="fa fa-arrow-right"></i>&ensp;Properties</a>
             </div>
 
+            <h3>Internal links</h3>
             <ul id="links" class="small-table">
               <li>
                 <div style="width:120px;">Title</div>
@@ -14,11 +16,11 @@
             </ul>
         </div>
         <div>
-            <h2>Properties</h2>
+            <h2>Link properties</h2>
             <form>
-                <p><label>Title</label><input id="insert_title" type="text"></p>
-                <p><label>URL</label><input id="insert_url" type="text"></p>
-                <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
+                <p><label>Clickable text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
+                <p><label>Location</label><input id="insert_url" type="text"></p>
+                <p><label>Description</label><input id="insert_title" type="text"></p>
                 <input id="insert_submit" type="hidden">
                 <a href="#" class="insert form_button button"><i class="fa fa-check"></i>&ensp;Insert</a>
             </form>
