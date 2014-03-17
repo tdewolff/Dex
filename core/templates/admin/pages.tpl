@@ -1,5 +1,5 @@
 <h2>Pages</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button" style="margin-left:20px;"><i class="fa fa-plus"></i>&ensp;New page</a>
+<a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;New page</a>
 <ul id="pages" class="table">
 	<li>
 		<div style="width:80px;"></div>
@@ -8,7 +8,7 @@
 		<div style="width:380px;">Content</div>
 		<div style="width:40px;"></div>
 	</li>
-	<li id="load_status" class="api_load_status">
+	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>

@@ -9,8 +9,10 @@
 @contrast:			#5A1F00;
 @alert:				#D1570D;
 
-@sans-serif:         "Helvetica Neue", Helvetica, Arial, sans-serif;
-@serif:              "Georgia", Cambria, Times New Roman, Times, serif;
+@sans-serif:        "Helvetica Neue", Helvetica, Arial, sans-serif;
+@serif:             Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+@dex-heading:		SourceSansRegular, Helvetica, Arial, sans-serif;
+@dex-heading2:		SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 
 
 .fontface(@fontName, @fontFile) {
@@ -22,6 +24,20 @@
 		 url('@{fontFile}.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
+}
+
+@font-face {
+    .fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
+}
+
+@font-face {
+    .fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
+}
+
+.border-box() {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
 }
 
 .border-radius(@radius: 4px) {

@@ -1,5 +1,6 @@
 <form
 	id="<?php echo $form['name']; ?>"
+	class="dex form"
 	onsubmit="return false;"
 	data-optionals='<?php echo $form['optionals']; ?>'>
 
@@ -7,16 +8,16 @@
 		name="nonce"
 		value="<?php echo $form['nonce']; ?>">
 
-	<div class="form_errors"></div>
+	<div class="errors"></div>
 
 	<?php foreach ($form['items'] as $item): ?>
 	<?php if ($item['type'] == 'separator'): ?>
-	<div class="form_separator"></div>
+	<div class="separator"></div>
 
 
 	<?php elseif ($item['type'] == 'section'): ?>
 	<h3><?php echo $item['title']; ?></h3>
-	<p class="form_section_text"><?php echo $item['text']; ?></p>
+	<p class="section-text"><?php echo $item['text']; ?></p>
 
 
 	<?php else: // input elements with a label ?>
@@ -129,7 +130,7 @@
 					value='{{=it.value}}'
 					maxlength="<?php echo $item['preg']['max']; ?>"
 					placeholder="{{=it.placeholder}}"
-					class="array_item"
+					class="array-item"
 					data-name="<?php echo $item['name']; ?>">
 				<span class="comma">,</span>
 			</li>
@@ -155,13 +156,13 @@
 				<input type="text"
 					value='{{=it.key}}'
 					maxlength="<?php echo $item['preg']['max']; ?>"
-					class="parameter_key"
+					class="parameter-key"
 					data-name="<?php echo $item['name']; ?>">
 				<span class="equal">=</span>
 				<input type="text"
 					value='{{=it.value}}'
 					maxlength="<?php echo $item['preg']['max']; ?>"
-					class="parameter_val"
+					class="parameter-val"
 					data-name="<?php echo $item['name']; ?>">
 			</li>
 		</script>
@@ -170,11 +171,11 @@
 		<?php endif; ?>
 	</p>
 
-	<div class="form_item_error" data-for-name="<?php echo $item['name']; ?>">
+	<div class="error" data-for-name="<?php echo $item['name']; ?>">
 		<div class="box">
 			<div class="arrow"></div>
 			<div class="arrow-border"></div>
-			<p class="no-wrap">
+			<p>
 				<i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
 			</p>
 		</div>
@@ -183,7 +184,7 @@
 	<?php endforeach; ?>
 
 	<?php if ($form['submit']): ?>
-	<button type="submit" class="form_button button"><?php echo $form['submit']; ?></button>
+	<button type="submit" class="button"><?php echo $form['submit']; ?></button>
 	<?php endif; ?>
 
 	<div class="clear"></div>

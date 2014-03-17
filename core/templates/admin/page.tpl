@@ -1,5 +1,5 @@
-<a href="/<?php echo $_['base_url']; ?>admin/pages/" style="float:left;" class="button"><i class="fa fa-chevron-left"></i>&ensp;Back</a>
-<?php if (isset($_['view'])): ?><a href="/<?php echo $_['base_url'] . $_['view']; ?>" style="float:right;" class="button"><i class="fa fa-eye"></i>&ensp;View page</a><?php endif; ?>
+<a href="/<?php echo $_['base_url']; ?>admin/pages/" class="button left"><i class="fa fa-chevron-left"></i>&ensp;Back</a>
+<?php if (isset($_['view'])): ?><a href="/<?php echo $_['base_url'] . $_['view']; ?>" class="button right"><i class="fa fa-eye"></i>&ensp;View page</a><?php endif; ?>
 <h2>Page</h2>
 <?php $_['page']->render(); ?>
 

@@ -5,6 +5,10 @@ if (API::action('logout'))
 {
 	User::logOut();
 	API::finish();
+} else if (API::action('forget'))
+{
+	User::forget();
+	API::finish();
 }
 
 if (!User::isAdmin())

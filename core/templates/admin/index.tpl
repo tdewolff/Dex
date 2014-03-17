@@ -1,11 +1,11 @@
 <h2>Admin panel</h2>
 
 <h3>Visitors</h3>
-<div id="load_stats" class="api_load_status">
+<div id="load_stats" class="api load-status">
 	<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 	<div class="error"><i class="fa fa-times"></i></div>
 </div>
-<iframe id="stats_frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<iframe class="stats-frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
 <h3>Latest errors</h3>
 <ul id="logs" class="table">
@@ -13,16 +13,14 @@
 		<div style="width:150px;">Date time</div>
 		<div style="width:750px;">Message</div>
 	</li>
-	<li id="load_logs" class="api_load_status">
+	<li id="load_logs" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
 	</li>
 </ul>
 
-<div style="margin-top:10px;">
-	<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="inline-button"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
-</div>
+<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="button indent view-logs"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
 
 <script id="log_item" type="text/x-dot-template">
 	<li>
@@ -34,14 +32,14 @@
 <script type="text/javascript">
 	$(function() {
 		apiLoadStatusWorking($('#load_stats'));
-		$('#stats_frame').load(function() {
-			$('#stats_frame').ready(function() {
+		$('.stats-frame').load(function() {
+			$('.stats-frame').ready(function() {
 				api('/' + base_url + 'api/core/stats/', {
 					action: 'page-visits'
 				}, function(data) {
 					apiLoadStatusSuccess($('#load_stats'));
-					$('#stats_frame').slideDown();
-					$('#stats_frame')[0].contentWindow.drawStats(data['page-visits']);
+					$('.stats-frame').slideDown();
+					$('.stats-frame')[0].contentWindow.drawStats(data['page-visits']);
 				}, function() {
 					apiLoadStatusError($('#load_stats'));
 				});

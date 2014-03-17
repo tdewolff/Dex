@@ -1,28 +1,28 @@
 ul {
-	list-style-type: none;
 	padding: 0;
+	list-style-type: none;
 }
 
 ul.table, ul.small-table {
-	width: 902px;
 	margin: 0 auto;
 	border: 1px solid darken(@light, 10%);
 	.border-radius(5px);
+	width: 902px;
 
 	>li {
-		height: 33px;
 		border-top: 1px solid darken(@light, 10%);
-		font-size: 90%;
+		height: 33px;
 		background-color: @light;
+		font-size: 90%;
 	}
 
 	>li:after {
-	    visibility: hidden;
 	    display: block;
-	    font-size: 0;
 	    content: " ";
+	    visibility: hidden;
 	    clear: both;
 	    height: 0;
+	    font-size: 0;
 	}
 
 	>li:nth-child(odd) {
@@ -36,7 +36,7 @@ ul.table, ul.small-table {
 		.css-gradient(darken(@light, 0%), darken(@light, 5%));
 
 		font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
-		text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 
 		>div:first-of-type {
 			.border-top-left-radius(4px);
@@ -104,13 +104,5 @@ ul.grid {
 	    &:hover {
 			background-color: darken(@light, 5%);
 	    }
-	}
-}
-
-ul.grid-3 {
-	width: 900px;
-
-	>li {
-		width: 300px;
 	}
 }

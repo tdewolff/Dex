@@ -1,4 +1,4 @@
-a {
+a, button {
 	&.button {
 		display: inline-block;
 		margin-bottom: 20px;
@@ -11,7 +11,7 @@ a {
 		color: white;
 		text-decoration: none;
 		text-shadow: 0 1px 1px rgba(0, 0, 0, .75);
-		font-size: 90%;
+		font-size: 14px;
 		cursor: pointer;
 
 		.transition();
@@ -29,6 +29,18 @@ a {
 
 		&:active {
 			.css-gradient(darken(@base, 5%), @base);
+		}
+
+		&.left {
+			float: left;
+		}
+
+		&.right {
+			float: right;
+		}
+
+		&.indent {
+			margin-left: 20px;
 		}
 	}
 

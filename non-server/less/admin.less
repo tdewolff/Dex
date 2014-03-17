@@ -1,15 +1,13 @@
 @import "__include.less";
 @import "_common.less";
-@import "_fonts.less";
+@import "_api.less";
 @import "_content.less";
 @import "_buttons.less";
 @import "_forms.less";
 @import "_tables.less";
 
 * {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing:    border-box;
-	box-sizing:         border-box;
+	.border-box();
 }
 
 table {
@@ -28,7 +26,7 @@ strong {
 body {
 	background: @dark;
 	color: @light;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: @sans-serif;
 	font-size: 100%;
 	text-align: justify;
 }
@@ -105,7 +103,7 @@ body {
 	border-bottom: 1px solid #e8e8e8;
 }
 
-#left-column li > a#selected {
+#left-column li > a.selected {
 	background-color: @auxiliary;
 	border-top: 1px solid lighten(@auxiliary, 5%);
 	border-bottom: 1px solid darken(@auxiliary, 5%);
@@ -125,6 +123,10 @@ body {
 	border-bottom: 1px solid darken(@light, 5%);
 }
 
+#left-column li.hidden {
+	display: none;
+}
+
 #right-column {
 	margin-left: 200px;
 	margin-bottom: 10px;
@@ -140,11 +142,19 @@ body {
 /* page specific */
 /*****************/
 
-#stats_frame {
+#error-content {
+	text-align:center;
+}
+
+.stats-frame {
 	display: none;
 	width: 100%;
 	height: 200px;
 	border: 0;
+}
+
+.view-logs {
+	margin-top: 10px;
 }
 
 #database td {
@@ -267,7 +277,7 @@ body {
 		}
 	}
 
-	#create_directory {
+	#create-directory {
 		margin: 0 auto;
 		width: 600px;
 		margin-bottom: 20px;
@@ -296,7 +306,7 @@ body {
 		}
 	}
 
-	#directories_assets {
+	#directories-assets {
 		width: 602px;
 		margin-bottom: 20px;
 
@@ -425,7 +435,7 @@ body {
 	}
 }
 
-#diskspace_total {
+#diskspace-total {
 	font-size: 90%;
 	margin-bottom: 5px;
 }
@@ -463,7 +473,7 @@ body {
 	}
 }
 
-#diskspace_legend {
+#diskspace-legend {
 	overflow: hidden;
 	margin-top: 10px;
 
@@ -512,6 +522,20 @@ body {
 	}
 }
 
+#modules {
+	li.disabled {
+		font-style: italic;
+		color: #C0C0C0;
+	}
+}
+
+a.recover {
+	margin-top:-35px;
+	margin-right:-50px;
+	float:right;
+	font-size:90%;
+}
+
 .recovery > h3, .recovery > p {
 	text-align: center;
 }
@@ -520,15 +544,6 @@ body {
 /*********/
 /* other */
 /*********/
-
-.button {
-	font-size: 14px;
-}
-
-.disabled {
-	font-style: italic;
-	color: #C0C0C0;
-}
 
 a.halt {
 	display: inline-block;
@@ -546,7 +561,7 @@ a.halt-stop {
 	text-decoration: line-through;
 }
 
-.inline-rounded {
+a.inline-rounded {
 	.border-radius(2px);
 	padding: 0 2px;
 }

@@ -1,6 +1,6 @@
 <h2>Themes</h2>
 <ul id="themes" class="grid">
-	<li id="load_status" class="api_load_status">
+	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>

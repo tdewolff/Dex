@@ -1,6 +1,6 @@
 $(function() {
-	if ($('#admin-bar').length)
-		$('#api_status').css('top', '+=33px');
+	if ($('.dex.admin-bar').length)
+		$('.dex.api .status').css('top', '+=33px');
 });
 
 function api(url, data, success, error) {
@@ -64,32 +64,32 @@ function apiFatal(message) {
 }
 
 function apiStatusClear() {
-	$('#api_status div').stop(true).hide();
+	$('.dex.api .status div').stop(true).hide();
 }
 
 function apiStatusWorking(message) {
 	apiStatusClear();
-	$('#api_status div.working').delay(800).fadeIn('fast');
+	$('.dex.api .status div.working').delay(800).fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('#api_status div.working span').delay(800).html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+		$('.dex.api .status div.working span').delay(800).html(message).find('span[data-time]').attr('data-time', new Date().getTime());
 		apiStatusTime();
 	}
 }
 
 function apiStatusSuccess(message) {
 	apiStatusClear();
-	$('#api_status div.success').fadeIn('fast');
+	$('.dex.api .status div.success').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('#api_status div.success span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+		$('.dex.api .status div.success span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
 		apiStatusTime();
 	}
 }
 
 function apiStatusError(message) {
 	apiStatusClear();
-	$('#api_status div.error').fadeIn('fast');
+	$('.dex.api .status div.error').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('#api_status div.error span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
+		$('.dex.api .status div.error span').html(message).find('span[data-time]').attr('data-time', new Date().getTime());
 		apiStatusTime();
 	}
 }

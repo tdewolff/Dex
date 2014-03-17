@@ -4,151 +4,155 @@ body {
     padding-top:33px;
 }
 
-#admin-bar {
-    padding: 2px 0;
-    /*border-bottom: 1px solid #414D54;*/
-    border-bottom: 1px solid #161c21;
+.dex {
+	@import "_api.less";
 
-    background-color: #282F33;
-    width: 100%;
-    height: 33px;
+	&.admin-bar {
+	    padding: 2px 0;
+	    border-bottom: 1px solid #414D54;
+	    //border-bottom: 1px solid #161c21;
 
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 7999;
+	    background-color: #282F33;
+	    width: 100%;
+	    height: 33px;
 
-    color: #E0E0E0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    z-index: 7999;
 
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	    color: #E0E0E0;
+	    font-family: @sans-serif;
+	    font-size: 14px;
 
-	a {
-	    color: #D1570D;
+		.border-box();
 
-	    &:hover {
-		    color: lighten(@alert, 5%);
+		a {
+		    color: #D1570D;
+		    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+
+		    &:hover {
+			    color: lighten(@alert, 5%);
+			}
+
+			&:visited {
+			    color: darken(@alert, 5%);
+			}
 		}
 
-		&:visited {
-		    color: darken(@alert, 5%);
-		}
-	}
-
-	>div {
-	    height: 28px;
-	}
-
-	#navigate {
-	    display: inline-block;
-	    float: left;
-	    margin-left: 20px;
-	    line-height: 28px;
-
-	    a {
-		    text-decoration: none;
-		}
-	}
-
-	#current-user {
-	    display: inline-block;
-	    float: right;
-	    margin-right: 20px;
-	    line-height: 28px;
-
-	    a {
-		    margin-left: 5px;
-		}
-	}
-}
-
-.popup-wrapper {
-	width: 600px;
-	overflow: hidden;
-	white-space: nowrap;
-
-	* {
-		-webkit-box-sizing: border-box;
-		   -moz-box-sizing: border-box;
-		        box-sizing: border-box;
-	}
-
-	@import "_fonts.less";
-	@import "_content.less";
-	@import "_buttons.less";
-	@import "_forms.less";
-	@import "_tables.less";
-
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 100%;
-	text-align: justify;
-
-	h3 {
-		margin-left: 50px;
-	}
-
-	.popup {
 		>div {
-            width: 600px;
-			vertical-align: top;
-  			display: inline-block;
-			white-space: normal;
+		    height: 28px;
+
+		    &:nth-child(2) {
+		    	display: none;
+		    }
 		}
 
-        >div:not(:first-of-type) {
-            display: none;
-        }
+		.navigate {
+		    display: inline-block;
+		    float: left;
+		    margin-left: 20px;
+		    line-height: 28px;
 
-		#external-link {
-			margin: 0 auto;
-			width: 500px;
-			margin-bottom: 30px;
-
-			input {
-				width: 370px;
-				margin: 0;
-				float: none;
-			}
-
-			a {
-				width: 120px;
-				margin-left: 10px;
-				margin-right: 0;
-				text-align: center;
-				white-space: nowrap;
+		    a {
+			    text-decoration: none;
 			}
 		}
 
-		#links {
-			li:not(:first-of-type):hover {
-				cursor: pointer;
+		.current-user {
+		    display: inline-block;
+		    float: right;
+		    margin-right: 20px;
+		    line-height: 28px;
+
+		    a {
+			    margin-left: 5px;
 			}
 		}
+	}
 
-		#assets {
-            width: 800px;
+	&.popup-wrapper {
+		width: 600px;
+		overflow: hidden;
+		white-space: nowrap;
 
-			#upload {
-				width: 600px;
+		* {
+			.border-box();
+		}
+
+		@import "_content.less";
+		@import "_buttons.less";
+		@import "_forms.less";
+		@import "_tables.less";
+
+		font-family: @sans-serif;
+		font-size: 100%;
+		text-align: justify;
+
+		h3 {
+			margin-left: 50px;
+		}
+
+		.popup {
+			>div {
+	            width: 600px;
+				vertical-align: top;
+	  			display: inline-block;
+				white-space: normal;
 			}
 
-			#breadcrumbs {
-				width: 600px;
+	        >div:not(:first-of-type) {
+	            display: none;
+	        }
+
+			#external-link {
+				margin: 0 auto;
+				width: 500px;
+				margin-bottom: 30px;
+
+				input {
+					width: 370px;
+					margin: 0;
+					float: none;
+				}
+
+				a {
+					width: 120px;
+					margin-left: 10px;
+					margin-right: 0;
+					text-align: center;
+					white-space: nowrap;
+				}
 			}
 
-			#directories_assets {
-				width: 602px;
-
-				li.asset:hover {
+			#links {
+				li:not(:first-of-type):hover {
 					cursor: pointer;
 				}
 			}
 
-			#images li:hover {
-				cursor: pointer;
+			#assets {
+	            width: 800px;
+
+				#upload {
+					width: 600px;
+				}
+
+				#breadcrumbs {
+					width: 600px;
+				}
+
+				#directories-assets {
+					width: 602px;
+
+					li.asset:hover {
+						cursor: pointer;
+					}
+				}
+
+				#images li:hover {
+					cursor: pointer;
+				}
 			}
 		}
 	}

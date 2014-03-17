@@ -1,19 +1,14 @@
 <h2>Administration</h2>
 <h3>Diskspace</h3>
-<div id="diskspace_total">
-</div>
+<div id="diskspace-total"></div>
+<div id="diskspace"></div>
+<div id="diskspace-legend"></div>
 
-<div id="diskspace">
-</div>
-
-<div id="diskspace_legend">
-</div>
-
-<script id="diskspace_item" type="text/x-dot-template">
+<script id="diskspace-item" type="text/x-dot-template">
 	<div style="width:{{=it.width}}%;" data-tooltip="{{=it.size}}"></div>
 </script>
 
-<script id="diskspace_legend_item" type="text/x-dot-template">
+<script id="diskspace-legend-item" type="text/x-dot-template">
 	<div style="width:{{=it.width}}%;"><div></div>&ensp;{{=it.name}}&ensp;<span>{{=it.percentage}}%</span></div>
 </script>
 
@@ -29,9 +24,9 @@
 <script type="text/javascript">
 	$(function() {
 		var diskspace = $('#diskspace');
-		var diskspace_legend = $('#diskspace_legend');
-		var diskspace_item = doT.template($('#diskspace_item').text());
-		var diskspace_legend_item = doT.template($('#diskspace_legend_item').text());
+		var diskspace_legend = $('#diskspace-legend');
+		var diskspace_item = doT.template($('#diskspace-item').text());
+		var diskspace_legend_item = doT.template($('#diskspace-legend-item').text());
 
 		function loadDiskusage() {
 			diskspace.find('> div').slideUp('fast', function() { $(this).remove(); });
@@ -40,7 +35,7 @@
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'diskspace_usage'
 			}, function(data) {
-				$('#diskspace_total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
+				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
 				$.each(data['diskspace'], function() {
 					this.width = this.percentage;
@@ -61,11 +56,16 @@
 			var action = $(this).attr('data-action');
 			if (action == 'optimize_size') {
 				$.fancybox.open({
-					content: '<textarea id="console" readonly></textarea>'
+					content: '<textarea class="api console" readonly></textarea>',
+					helpers:  {
+						overlay: {
+							locked: false
+						}
+					}
 				});
 
 				apiStatusWorking('Publishing site...');
-				apiUpdateConsole($('#console'));
+				apiUpdateConsole($('.api.console'));
 				api('/' + base_url + 'api/core/optimize-site/', {
 				}, function(data) {
 					apiStopConsole();

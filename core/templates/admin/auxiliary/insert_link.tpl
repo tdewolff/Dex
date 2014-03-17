@@ -1,4 +1,4 @@
-<div class="popup-wrapper">
+<div class="dex popup-wrapper">
     <div class="popup">
         <div>
             <h2>Insert link</h2>
@@ -17,12 +17,12 @@
         </div>
         <div>
             <h2>Link properties</h2>
-            <form>
+            <form class="dex form">
                 <p><label>Clickable text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
                 <p><label>Location</label><input id="insert_url" type="text"></p>
                 <p><label>Description</label><input id="insert_title" type="text"></p>
                 <input id="insert_submit" type="hidden">
-                <a href="#" class="insert form_button button"><i class="fa fa-check"></i>&ensp;Insert</a>
+                <a href="#" class="insert button"><i class="fa fa-check"></i>&ensp;Insert</a>
             </form>
         </div>
     </div>

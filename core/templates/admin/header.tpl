@@ -21,19 +21,9 @@
 <?php endif; ?>
 
 	<body>
-		<div id="api_fatal"></div>
-		<div id="api_status">
-			<div class="working"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
-			<div class="success"><span></span>&ensp;<i class="fa fa-check fa-2x"></i></div>
-			<div class="error"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
-		</div>
+		<?php include('core/templates/include/site-admin.tpl'); ?>
 
-		<?php if (User::loggedIn()) { ?>
-		<div id="admin-bar">
-			<div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
-			<div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="/<?php echo $_['base_url']; ?>admin/logout/" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
-		</div>
-		<?php } if (isset($_['admin_links'])): ?>
+		<?php if (isset($_['admin_links'])): ?>
 		<section class="page-wrapper">
 			<h1>Dex</h1>
 			<div id="left-column">
@@ -43,7 +33,7 @@
 					<li class="separator"></li>
 					<?php elseif ($link['admin_only'] == 0 || $_['role'] == 'admin'): ?>
 					<li id="admin_link_<?php echo $link['name']; ?>" <?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'class="hidden"'; } ?>>
-						<a href="/<?php echo $_['base_url'] . $link['url']; ?>" <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'id="selected"'; } ?>>
+						<a href="/<?php echo $_['base_url'] . $link['url']; ?>" <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'class="selected"'; } ?>>
 							<i class="fa fa-fw <?php echo (strlen($link['icon']) ? $link['icon'] : 'fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
 						</a>
 					</li>

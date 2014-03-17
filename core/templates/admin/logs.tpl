@@ -1,12 +1,12 @@
 <h2>Logs</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/" class="button" style="margin-left:20px;"><i class="fa fa-chevron-left"></i> Back</a>
+<a href="/<?php echo $_['base_url']; ?>admin/" class="button indent"><i class="fa fa-chevron-left"></i> Back</a>
 <ul id="logs" class="table">
 	<li>
 		<div style="width:150px;">Date time</div>
 		<div style="width:120px;">IP Address</div>
 		<div style="width:630px;">Message</div>
 	</li>
-	<li id="load_status" class="api_load_status">
+	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>

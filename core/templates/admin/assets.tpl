@@ -1,6 +1,6 @@
 <h2>Assets</h2>
 <div id="assets">
-	<div id="create_directory">
+	<div id="create-directory">
 		<input type="text"><a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
 	</div>
 
@@ -21,13 +21,13 @@
 	<div id="breadcrumbs">
 	</div>
 
-	<ul id="directories_assets" class="table">
+	<ul id="directories-assets" class="table">
 		<li>
 			<div style="width:460px;">Filename</div>
 			<div style="width:100px;">Size</div>
 			<div style="width:40px;"></div>
 		</li>
-		<li id="load_status_directories" class="api_load_status">
+		<li id="load_status_directories" class="api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
 			<div class="empty">empty</div>
@@ -35,7 +35,7 @@
 	</ul>
 
 	<ul id="images" class="grid">
-		<li id="load_status_images" class="api_load_status">
+		<li id="load_status_images" class="api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
 			<div class="empty">empty</div>
@@ -95,7 +95,7 @@
 	$(function() {
 		// preliminaries
 		var breadcrumbs = $('#breadcrumbs');
-		var directories_assets = $('#directories_assets');
+		var directories_assets = $('#directories-assets');
 		var images = $('#images');
 
 		var directory_item = doT.template($('#directory_item').text());
@@ -181,7 +181,7 @@
 		});
 
 		// deleting directories, assets or images
-		$('#directories_assets').on('click', 'li.directory a.sure', function() {
+		$('#directories-assets').on('click', 'li.directory a.sure', function() {
 			apiStatusWorking('Deleting directory...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
@@ -196,7 +196,7 @@
 			});
 		});
 
-		$('#directories_assets').on('click', 'li.asset a.sure', function() {
+		$('#directories-assets').on('click', 'li.asset a.sure', function() {
 			apiStatusWorking('Deleting asset...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
@@ -226,7 +226,7 @@
 			});
 		});
 
-		$('#create_directory').on('click', 'a', function() {
+		$('#create-directory').on('click', 'a', function() {
 			apiStatusWorking('Creating directory...');
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'create_directory',
@@ -234,7 +234,7 @@
 				dir: dir
 			}, function(data) {
 				apiStatusSuccess('Created directory');
-				$('#create_directory input').val('');
+				$('#create-directory input').val('');
 				var item = directory_item(data['directory']);
 				if (directories_assets.find('li.directory').length)
 					addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);

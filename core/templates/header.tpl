@@ -27,24 +27,4 @@
 <?php endif; ?>
 
 	<body>
-		<?php if (User::loggedIn()) { ?>
-		<div id="api_fatal"></div>
-		<div id="api_status">
-			<div class="working"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
-			<div class="success"><span></span>&ensp;<i class="fa fa-check fa-2x"></i></div>
-			<div class="error"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
-		</div>
-		<?php } ?>
-
-		<?php if (User::getTimeLeft() !== false) { ?>
-		<div id="admin-bar">
-			<?php if (User::getTimeLeft() > 0) { ?>
-			<div id="navigate"><?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
-			<div id="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a id="log-out" href="#" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
-
-			<?php } else { ?>
-			<div id="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/">log back in</a></div>
-			<div id="current-user"><a id="log-out" href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
-			<?php } ?>
-		</div>
-		<?php } ?>
+		<?php include('core/templates/include/site-admin.tpl'); ?>

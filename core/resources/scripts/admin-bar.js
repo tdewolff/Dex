@@ -22,42 +22,37 @@ $(function() {
 		}
 	});*/
 
-	var hasChange = false;
 	var saveTimeout = null;
-
 	$('[data-dexeditable]').on('input', function(e) {
-		hasChange = true;
 		clearTimeout(saveTimeout);
 		saveTimeout = setTimeout(save, 1000);
 	});
 
-	$('[data-dexeditable]').on('change', function(e) {
-		console.log('change');
-		if (hasChange)
-		{
-			clearTimeout(saveTimeout);
-			save();
-			hasChange = false;
-		}
-	});
-
 	function save() {
-		hasChange = false;
 		$.event.trigger({
 			type: 'save'
 		});
 	}
 
-	$('#log-out').click(function() {
+	$('.dex.admin-bar .logged-in .current-user a').click(function() {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'logout'
 		}, function(data) {
-			$('#api_fatal').fadeOut().remove();
-			$('#api_status').fadeOut().remove();
-			$('#admin-bar').slideUp(function() {
-				this.remove();
+			$('.dex.api').fadeOut().remove();
+			$('.dex.admin-bar .logged-in').fadeOut(function() {
+				$('.dex.admin-bar .logged-out').fadeIn();
 			});
-			$('[data-editable]').attr('contenteditable', 'false');
+			$('[data-dexeditable]').attr('contenteditable', 'false');
+		});
+	});
+
+	$('.dex.admin-bar .logged-out .current-user a').click(function() {
+		api('/' + base_url + 'api/core/users/', {
+			'action': 'forget'
+		}, function(data) {
+			$('.dex.admin-bar').slideUp(function() {
+				$(this).remove();
+			});
 
 			$('body').animate({
 				'padding-top': '0'

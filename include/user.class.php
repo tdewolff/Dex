@@ -21,6 +21,12 @@ class User
 
 	public static function logOut()
 	{
+		if (isset($_SESSION['user']))
+			$_SESSION['user']['time'] = time() - SESSION_TIME;
+	}
+
+	public static function forget()
+	{
 		unset($_SESSION['user']);
 	}
 

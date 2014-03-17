@@ -109,20 +109,20 @@ var Form = function(form) {
 	this.success = function(data) {
 		if (data['errors'].length) {
 			var errors = data['errors'].join('<br>');
-			var form_errors = self.form.find('.form_errors');
+			var form_errors = self.form.find('.errors');
 			if (form_errors.html() != errors)
 				form_errors.html(errors).hide();
 			form_errors.fadeIn();
 		}
 		else
-			self.form.find('.form_errors').hide();
+			self.form.find('.errors').hide();
 
 		if (data['item_errors'].length)
 			$.each(data['item_errors'], function(i, item_error) {
 				var input = self.form.find('[name="' + item_error['name'] + '"], [data-name="' + item_error['name'] + '"]');
 				input.addClass('invalid');
 
-				var error_box = self.form.find('.form_item_error[data-for-name="' + item_error['name'] + '"]');
+				var error_box = self.form.find('.error[data-for-name="' + item_error['name'] + '"]');
 				if (error_box.find('span').text() != item_error['error'])
 				{
 					error_box.hide();
@@ -131,7 +131,7 @@ var Form = function(form) {
 				error_box.fadeIn();
 			});
 		else
-			self.form.find('.form_item_error').hide();
+			self.form.find('.error').hide();
 
 		if (data['errors'].length || data['item_errors'].length)
 			apiStatusError(data['response']['error']);
@@ -157,7 +157,8 @@ var Form = function(form) {
 		self.save();
 	});
 
-	// other stuff
+	// TODO: remove
+	/*
 	this.form.on('click', 'a.insert-link', function() {
 		var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
 		$.fancybox.open({
@@ -254,7 +255,7 @@ var Form = function(form) {
 				}
 			}
 		});
-	});
+	});*/
 };
 
 $('form').each(function(i, form) {

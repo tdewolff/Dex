@@ -172,7 +172,6 @@ if (User::getTimeLeft() !== false)
 	Core::addStyle('vendor/font-awesome.css');
 	Core::addStyle('vendor/jquery-ui.css');
 	Core::addStyle('vendor/fancybox.css');
-	Core::addStyle('api.css');
 	Core::addStyle('site-admin.css');
     Core::addStyle('dexedit.css');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');

@@ -1,5 +1,5 @@
 <h2>Users</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button" style="margin-left:20px;"><i class="fa fa-plus"></i>&ensp;New user</a>
+<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;New user</a>
 <ul id="users" class="table">
 	<li>
 		<div style="width:120px;"></div>
@@ -7,7 +7,7 @@
 		<div style="width:300px;">Email address</div>
 		<div style="width:280px;">Role</div>
 	</li>
-	<li id="load_status" class="api_load_status">
+	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
