@@ -838,7 +838,7 @@ input.parameter_val + .dex.popup-wrapper .dex.form input.parameter-key {
 }
 .dex.popup-wrapper .popup > div {
   width: 600px;
-  vertical-align: top;
+  vertical-align: middle;
   display: inline-block;
   white-space: normal;
 }

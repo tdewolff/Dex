@@ -10,7 +10,7 @@
                 <input type="hidden" name="dir" value="">
                 <div id="drop">
                     <span>Drop Here</span><br>
-                    <a class="inline-button">Browse</a>
+                    <a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
                     <input type="file" name="upload" multiple>
                     <div id="knob">
                         <div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
@@ -149,22 +149,21 @@
     });
 
     $(function() {
-        initializeUpload('#upload', function(data) {
-            if (!data['file'].is_image)
-            {
+        initAdminUpload('#upload', function(data) {
+            if (!data['file'].is_image) {
                 var item = asset_item(data['file']);
-                if (directories_assets.find('li.asset').length)
+                if (directories_assets.find('li.asset').length) {
                     addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
-                else
+                } else {
                     $(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
-            }
-            else
-            {
+                }
+            } else {
                 var item = image_item(data['file']);
-                if (images.find('li').length)
+                if (images.find('li').length) {
                     addAlphabetically(images.find('li'), item, data['file']['name']);
-                else
+                } else {
                     $(item).hide().appendTo(images).slideDown('fast');
+                }
             }
         });
     });

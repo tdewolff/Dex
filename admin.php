@@ -19,9 +19,9 @@ Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
 Core::addDeferredScript('api.js');
-Core::addDeferredScript('admin.js');
-Core::addDeferredScript('admin-bar.js');
 Core::addDeferredScript('upload.js');
+Core::addDeferredScript('admin.js');
+Core::addDeferredScript('site-admin.js');
 
 // setup
 if (!Db::isValid())

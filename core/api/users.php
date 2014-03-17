@@ -1,11 +1,17 @@
 <?php
 
-// doesn't have to be logged in, for admin-bar can show with expired login
-if (API::action('logout'))
+// doesn't have to be logged in for these functions
+if (API::action('forget'))
+{
+	User::forget();
+	API::finish();
+}
+else if (API::action('logout'))
 {
 	User::logOut();
 	API::finish();
-} else if (API::action('forget'))
+}
+else if (API::action('forget'))
 {
 	User::forget();
 	API::finish();

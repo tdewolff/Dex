@@ -133,6 +133,7 @@ else
 	Stats::registerPageVisit();
 
 Core::assign('base_url', Common::$base_url);
+Core::assign('session_time', SESSION_TIME);
 
 
 // handle admin area
@@ -182,9 +183,8 @@ if (User::getTimeLeft() !== false)
 	Core::addDeferredScript('vendor/jquery.knob.min.js');
 	Core::addDeferredScript('vendor/doT.min.js');
 	Core::addDeferredScript('api.js');
-	Core::addDeferredScript('admin-bar.js');
-	Core::addDeferredScript('admin-auxiliaries.js');
 	Core::addDeferredScript('upload.js');
+	Core::addDeferredScript('site-admin.js');
     Core::addDeferredScript('dexedit.js');
 }
 

@@ -14,6 +14,7 @@
 		<?php if (isset($_['header_script'])): ?><script src="/<?php echo $_['base_url'] . $_['header_script']; ?>"></script><?php endif; ?>
 		<script>
 			var base_url = '<?php echo $_['base_url']; ?>';
+			var session_time = '<?php echo $_['session_time']; ?>';
 		</script>
 	</head>
 

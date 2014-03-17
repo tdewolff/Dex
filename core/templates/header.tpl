@@ -19,6 +19,7 @@
 		<script>
 			var base_url = '<?php echo $_['base_url']; ?>';
 			var link_id = '<?php echo $_['link_id']; ?>';
+			var session_time = '<?php echo $_['session_time']; ?>';
 		</script>
 		<?php } ?>
 	</head>

@@ -19,7 +19,9 @@
 	<?php } ?>
 	<div class="logged-out">
 		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/">log back in</a></div>
+		<?php if (!Common::requestAdmin()) { ?>
 		<div class="current-user"><a href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
+		<?php } ?>
 	</div>
 </div>
 <?php } ?>
