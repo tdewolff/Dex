@@ -1,7 +1,4 @@
 <?php
-use \Michelf\Markdown;
-require_once('vendor/smartypants.php');
-
 $form = new Form('setup');
 
 $form->addSection('Settings', 'General site settings');
@@ -96,14 +93,15 @@ if ($form->submitted())
 		INSERT INTO content (link_id, name, content, modify_time) VALUES (
 			'1',
 			'content',
-			'" . Db::escape(SmartyPants('<h3>Sample content</h3>
-			 <p>When logged in you can click on this text and start editing right away. Try it!</p>
-			 <ul><li>Create a bulleted list by typing \'-\' and hitting enter</li><li>But \'*\' works too</li></ul>
-			 <ol><li>Or list things by starting the line with \'1. \'</li><li>etc.</li></ol>
+			'" . Db::escape('<h3>Sample content</h3>
+			 <p>When logged in you can start editing by clicking this text. Try it!</p>
+			 <p>Select text to make it <b>bold</b> or <i>italic</i>, or to insert links, images or quotes like below:</p>
+			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\u2019t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
 			 <hr>
-			 <p>Two enters creates a divider and you can quote someone too:</p>
-			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\'t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
-			')) . "',
+			 <p>Two enters create a divider and you can create lists too:</p>
+			 <ul><li>Typing \u2018- \u2019 creates a list</li><li>And so does \u2018* \u2019 too</li></ul>
+			 <ol><li>An ordered list is created by typing \u20181. \u2019</li><li>And so forth\u2026</li><li>It must be at the beginning of a paragraph though!</li></ol>
+			') . "',
 			'" . Db::escape(time()) . "'
 		);
 

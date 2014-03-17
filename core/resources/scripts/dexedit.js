@@ -479,21 +479,26 @@ var DexEdit = function (root) {
 				}
 			}
 
-			var preCaretText = self.getText(self.selection.anchorNode).substring(0, self.selection.anchorOffset);
+			var preCaretText = self.getText(self.selection.anchorNode);//.substring(0, self.selection.anchorOffset);
 			var oldPreCaretText = preCaretText;
 			preCaretText = preCaretText.replace(/(^|[-\u2013\u2014\s(\["])'|()`/g, "$1\u2018");						// opening singles
 			preCaretText = preCaretText.replace(/'/g, "\u2019");													// closing singles & apostrophes
-			preCaretText = preCaretText.replace(/(^|[-\u2013\u2014\/\[(\u2018\s])"|()\u2018\u2018/g, "$1\u201c");	// opening doubles
-			preCaretText = preCaretText.replace(/"|\u2019\u2019/g, "\u201d");										// closing doubles
+			preCaretText = preCaretText.replace(/(^|[-\u2013\u2014\/\[(\u2018\s])"|()\u2018\u2018/g, "$1\u201C");	// opening doubles
+			preCaretText = preCaretText.replace(/"|\u2019\u2019/g, "\u201D");										// closing doubles
 			preCaretText = preCaretText.replace(/--/g, "\u2013");													// en-dashes
-			preCaretText = preCaretText.replace(/\u2013-/g, "\u2014");												// em-dashes
+			preCaretText = preCaretText.replace(/[\u2013-]{2}/g, "\u2014");											// em-dashes
 			preCaretText = preCaretText.replace(/\.\.\./g, "\u2026");												// ellipsis
+			preCaretText = preCaretText.replace(/,,/g, "\u201E");													// comma quotes
+			preCaretText = preCaretText.replace(/[\u2039<]{2}/g, "\u00AB");											// opening double guillemets
+			preCaretText = preCaretText.replace(/[\u203A>]{2}/g, "\u00BB");											// opening double guillemets
+			preCaretText = preCaretText.replace(/</g, "\u2039");													// opening single guillemets
+			preCaretText = preCaretText.replace(/>/g, "\u203A");													// opening single guillemets
 
 			if (preCaretText !== oldPreCaretText) {
 				var parent = self.selection.anchorNode.parentNode;
 				var offset = self.selection.anchorOffset + (preCaretText.length - oldPreCaretText.length);
 
-				self.setText(self.selection.anchorNode, preCaretText + self.getText(self.selection.anchorNode).substring(self.selection.anchorOffset));
+				self.setText(self.selection.anchorNode, preCaretText);// + self.getText(self.selection.anchorNode).substring(self.selection.anchorOffset));
 
 				var range = document.createRange();
 				range.setStart(parent.childNodes[0], offset);
