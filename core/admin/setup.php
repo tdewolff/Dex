@@ -1,4 +1,6 @@
 <?php
+use \Michelf\Markdown;
+require_once('vendor/smartypants.php');
 
 $form = new Form('setup');
 
@@ -23,9 +25,6 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		use \Michelf\Markdown;
-		require_once('vendor/smartypants.php');
-
 		$valid = Db::exec("
 		CREATE TABLE setting (
 			setting_id INTEGER PRIMARY KEY,
@@ -131,7 +130,7 @@ if ($form->submitted())
 
 		INSERT INTO setting (key, value) VALUES (
 			'theme',
-			'plain'
+			'default'
 		);
 
 		INSERT INTO user (username, email, password, role) VALUES (
