@@ -1,14 +1,16 @@
 $(function() {
 	var saveTimeout = null;
 	$('[data-dexeditable]').on('input', function(e) {
+		apiStatusClear();
 		clearTimeout(saveTimeout);
-		saveTimeout = setTimeout(save, 1000);
+		saveTimeout = setTimeout(save, 2000);
 	});
 
 	function save() {
 		$.event.trigger({
 			type: 'save'
 		});
+		apiStatusSuccess('Saved');
 	}
 
 

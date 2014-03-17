@@ -39,7 +39,7 @@ else
     }
 
 	$form->setSubmit('<i class="fa fa-save"></i>&ensp;Save');
-	$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
+	$form->setResponse('Saved', 'Not saved');
 
 	if ($form->submitted())
 	{

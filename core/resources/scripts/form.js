@@ -60,7 +60,7 @@ var Form = function(form) {
 	this.needsSave = function() {
 		self.hasChange = true;
 		clearTimeout(self.saveTimeout);
-		self.saveTimeout = setTimeout(self.save, 3000);
+		self.saveTimeout = setTimeout(self.save, 2000);
 	};
 
 	this.save = function() {

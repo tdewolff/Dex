@@ -97,12 +97,11 @@ if ($form->submitted())
 			'1',
 			'content',
 			'" . Db::escape(SmartyPants('<h3>Sample content</h3>
-			 <p>This is a sample page to get you going!</p>
-			 <p>When logged in you can click on \'Edit\' above and start typing right away. Select this piece of text for example and start styling with <b>bold</b> and <i>italic</i>.</p>
+			 <p>When logged in you can click on this text and start editing right away. Try it!</p>
 			 <ul><li>Create a bulleted list by typing \'-\' and hitting enter</li><li>But \'*\' works too</li></ul>
-			 <ol><li>Or list things by starting the line with \'1.\'</li><li>etc.</li></ol>
+			 <ol><li>Or list things by starting the line with \'1. \'</li><li>etc.</li></ol>
 			 <hr>
-			 <p>Two enters creates a divider and you can quote something too:</p>
+			 <p>Two enters creates a divider and you can quote someone too:</p>
 			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\'t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
 			')) . "',
 			'" . Db::escape(time()) . "'

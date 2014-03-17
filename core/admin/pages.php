@@ -37,7 +37,7 @@ else
 	$form->addSeparator();
 
 	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
-	$form->setResponse('Created<span data-time=""></span>', 'Not created');
+	$form->setResponse('Created page', 'Not created');
 
 	if ($form->submitted())
 	{

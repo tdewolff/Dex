@@ -17,7 +17,7 @@ $form->addText('adr_country-name', 'Country', '', 'U.S.A', array('.*', 0, 20));
 
 $form->addSeparator();
 
-$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
+$form->setResponse('Saved', 'Not saved');
 
 $form->optional(array('org', 'url', 'email', 'tel'));
 $form->optionalTogether(array('adr_street-address', 'adr_locality', 'adr_region', 'adr_postal-code', 'adr_country-name'));

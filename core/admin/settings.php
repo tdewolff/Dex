@@ -10,7 +10,7 @@ $form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Ente
 
 $form->addSeparator();
 
-$form->setResponse('Saved<span data-time=""></span>', 'Not saved');
+$form->setResponse('Saved', 'Not saved');
 
 if ($form->submitted())
 {
