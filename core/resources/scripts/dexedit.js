@@ -320,7 +320,7 @@ var DexEdit = function (root) {
 	});
 
 	$(document).on('click', '.fancybox-wrap', function(e) {
-		self.setRange(self.range);
+		//self.setRange(self.range);
 	});
 
 	this.root.on('mousedown', function(e) {
@@ -368,10 +368,42 @@ var DexEdit = function (root) {
 				if (self.hasParentTag(self.range.commonAncestorContainer, 'A')) {
 					self.toggleLink();
 				} else {
-					var textarea = $('[name="' + $(this).attr('data-for-name') + '"]');
 					$.fancybox.open({
 						'type': 'ajax',
-						'href': '/' + base_url + 'admin/auxiliary/insert_link/',
+						'href': '/' + base_url + 'admin/auxiliary/insert-link/',
+						beforeShow: function() {
+							$('.fancybox-skin').css('background', 'white');
+							$('#insert_text').val(self.selection.toString());
+							applyTooltips();
+						},
+						beforeClose: function() {
+							if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
+								var title = $('#insert_title').val();
+								var url = $('#insert_url').val();
+								var text = $('#insert_text').val();
+
+								self.setRange(self.range);
+								self.toggleLink(url);
+								self.replaceText(text);
+								self.range.commonAncestorContainer.parentNode.title = title;
+							}
+						},
+						helpers:  {
+							overlay: {
+								locked: false
+							}
+						}
+					});
+				}
+				break;
+			case 'dexedit_menu_image':
+				self.setRange(self.range);
+				//if (self.hasParentTag(self.range.commonAncestorContainer, 'A')) {
+				//	self.toggleLink();
+				//} else {
+					$.fancybox.open({
+						'type': 'ajax',
+						'href': '/' + base_url + 'admin/auxiliary/insert-image/',
 						beforeShow: function() {
 							$('.fancybox-skin').css('background', 'white');
 							$('#insert_text').val(self.selection.toString());
@@ -394,7 +426,7 @@ var DexEdit = function (root) {
 							}
 						}
 					});
-				}
+				//}
 				break;
 			}
 		}

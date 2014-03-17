@@ -4,7 +4,7 @@
             <h2>Assets</h2>
             <div id="breadcrumbs">
             </div>
-            <ul id="directories_assets" class="small-table">
+            <ul id="directories-assets" class="small-table">
                 <li>
                     <div style="width:400px;">Filename</div>
                     <div style="width:100px;">Size</div>
@@ -13,7 +13,7 @@
         </div>
         <div>
             <h2>Properties</h2>
-            <form class="dex form">
+            <form>
                 <p><label>Title</label><input id="insert_title" type="text"></p>
                 <p><label>URL</label><input id="insert_url" type="text"></p>
                 <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
@@ -41,7 +41,7 @@
 <script type="text/javascript">
     // preliminaries
     var breadcrumbs = $('#breadcrumbs');
-    var directories_assets = $('#directories_assets');
+    var directories_assets = $('#directories-assets');
 
     var directory_item = doT.template($('#directory_item').text());
     var asset_item = doT.template($('#asset_item').text());

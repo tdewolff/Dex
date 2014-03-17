@@ -1,0 +1,163 @@
+#assets {
+	#upload {
+	    margin: 0 auto;
+	    margin-bottom: 20px;
+	    border: 1px dashed #477725;
+	    .border-radius(3px);
+
+	    background-color: #A9CC66;
+	    width: 600px;
+
+		#drop {
+		    position: relative;
+		    margin: 30px 50px;
+		    height: 70px;
+		    text-align: center;
+
+		    span {
+			    line-height: 200%;
+			    font-family: @serif;
+			    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+			    font-size: 18px;
+			    color: #303030;
+			}
+		}
+
+		ul {
+		    margin: 0 20px;
+		    margin-bottom: 20px;
+			font-family: @serif;
+		    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+		    font-size: 12px;
+		    color: #303030;
+
+		    li {
+			    height: 16px;
+			    line-height: 16px;
+
+			    i {
+				    vertical-align: middle;
+				}
+			}
+
+			li.done {
+			    color: #477725;
+			}
+
+			li.fail {
+			    color: #B94A48;
+			}
+		}
+
+		input {
+		    display: none;
+		}
+
+		#knob {
+		    position: absolute;
+		    top: 50%;
+		    right: 0;
+		    margin-top: -32px;
+		    width: 64px;
+		    height: 64px;
+		}
+
+		#big-knob {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		}
+
+		#small-knob {
+		    position: absolute;
+		    top: 8px;
+		    left: 8px;
+		}
+	}
+
+	#create-directory {
+		margin: 0 auto;
+		margin-bottom: 20px;
+		width: 600px;
+
+		input {
+			float: none;
+			margin: 0;
+			width: 440px;
+		}
+
+		a {
+			margin-left: 10px;
+			margin-right: 0;
+			width: 150px;
+		}
+	}
+
+	#breadcrumbs {
+		margin: 0 auto;
+		margin-bottom: 5px;
+		width: 600px;
+		font-size: 90%;
+
+		a {
+			padding: 0 5px;
+		}
+	}
+
+	#directories-assets {
+		margin-bottom: 20px;
+		width: 602px;
+
+		li {
+			img {
+				margin-right: 10px;
+				vertical-align: middle;
+			}
+
+			div:last-of-type {
+				display: none;
+			}
+
+			&:hover div:last-of-type {
+				display: block;
+			}
+		}
+	}
+
+	#images {
+		li {
+			position: relative;
+			vertical-align: top;
+
+			.delete {
+				display: none;
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				font-size: 11px;
+			}
+
+			&:hover .delete {
+				display: block;
+			}
+
+			.caption {
+				overflow: hidden;
+				font-size: 11px;
+				text-align: center;
+				white-space: nowrap;
+			}
+
+			img {
+				margin: 10px 0;
+			    .border-radius(3px);
+			    .box-shadow(0, 1px, 1px);
+			}
+
+			img.small {
+				margin: 10px 0;
+			    .border-radius(0);
+			}
+		}
+	}
+}

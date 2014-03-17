@@ -17,9 +17,9 @@
         </div>
         <div>
             <h2>Link properties</h2>
-            <form class="dex form">
-                <p><label>Clickable text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
-                <p><label>Location</label><input id="insert_url" type="text"></p>
+            <form>
+                <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
+                <p><label>Location</label><input id="insert_url" type="text" data-tooltip="External links must start with http://"></p>
                 <p><label>Description</label><input id="insert_title" type="text"></p>
                 <input id="insert_submit" type="hidden">
                 <a href="#" class="insert button"><i class="fa fa-check"></i>&ensp;Insert</a>

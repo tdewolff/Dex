@@ -22,7 +22,7 @@
 
             <div id="breadcrumbs">
             </div>
-            <ul id="directories_assets" class="small-table">
+            <ul id="directories-assets" class="small-table">
                 <li>
                     <div style="width:360px;">Filename</div>
                     <div style="width:100px;">Size</div>
@@ -35,11 +35,10 @@
         </div>
         <div>
             <h2>Properties</h2>
-            <form class="dex form">
-                <p><label>Title</label><input id="insert_title" type="text"></p>
-                <p><label>URL</label><input id="insert_url" type="text"></p>
-                <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Alternative text"></p>
-                <p><label>Width</label><input id="insert_width" type="text" data-tooltip="In pixels"></p>
+            <form>
+                <p><label>Location</label><input id="insert_url" type="text" data-tooltip="External images must start with http://"></p>
+                <p><label>Description</label><input id="insert_title" type="text"></p>
+                <p><label>Alternative text</label><input id="insert_text" type="text" data-tooltip="Shown when image is unavailable"></p>
                 <p><label>Position</label><select id="insert_position"><option value="">Normal</option><option value="left">Left</option><option value="right">Right</option></select></p>
                 <input id="insert_submit" type="hidden">
                 <a href="#" class="insert button"><i class="fa fa-check"></i>&ensp;Insert</a>
@@ -77,7 +76,7 @@
 <script type="text/javascript">
     // preliminaries
     var breadcrumbs = $('#breadcrumbs');
-    var directories_assets = $('#directories_assets');
+    var directories_assets = $('#directories-assets');
     var images = $('#images');
 
     var directory_item = doT.template($('#directory_item').text());

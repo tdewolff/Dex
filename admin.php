@@ -20,6 +20,7 @@ Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
 Core::addDeferredScript('api.js');
 Core::addDeferredScript('upload.js');
+Core::addDeferredScript('tooltips.js');
 Core::addDeferredScript('admin.js');
 Core::addDeferredScript('site-admin.js');
 

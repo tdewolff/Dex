@@ -1,6 +1,5 @@
 <form
 	id="<?php echo $form['name']; ?>"
-	class="dex form"
 	onsubmit="return false;"
 	data-optionals='<?php echo $form['optionals']; ?>'>
 

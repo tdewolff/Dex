@@ -421,102 +421,7 @@ button.list-button:visited:active {
   background-image: -o-linear-gradient(top, #f2f2f2, #ffffff);
   background-image: linear-gradient(to bottom, #f2f2f2, #ffffff);
 }
-.dex.form {
-  margin: 0 auto;
-  width: 500px;
-}
-.dex.form > h3 {
-  padding-top: 10px;
-}
-.dex.form > p {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-.dex.form .separator {
-  clear: both;
-  margin: 20px 0;
-  border-bottom: solid 1px #E8E8E8;
-}
-.dex.form .section-text {
-  margin-bottom: 20px;
-  padding-left: 10px;
-  padding-bottom: 5px;
-  border-bottom: solid 1px #E8E8E8;
-}
-.dex.form .errors {
-  display: none;
-  margin-bottom: 15px;
-  margin-left: 10px;
-  padding: 10px 20px;
-  border: solid 1px #EED3D7;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  background: #F2DEDE;
-  font-size: 95%;
-  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
-  font-weight: bold;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: #B94A48;
-}
-.dex.form .error {
-  display: none;
-  margin-top: -2px;
-  margin-bottom: 8px;
-  margin-left: 210px;
-}
-.dex.form .error .box {
-  display: inline-block;
-  padding: 5px 10px;
-  border: solid 1px #EED3D7;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  background: #F2DEDE;
-  position: relative;
-  z-index: 999;
-}
-.dex.form .error .box p {
-  margin: 0;
-  padding: 0;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: #B94A48;
-  font-size: 70%;
-  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
-  font-weight: bold;
-  white-space: nowrap;
-}
-.dex.form .error .box p i {
-  font-size: 150%;
-  vertical-align: middle;
-}
-.dex.form .error .box p span {
-  vertical-align: middle;
-}
-.dex.form .error .box .arrow {
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #F2DEDE;
-  width: 0;
-  height: 0;
-  position: absolute;
-  top: -5px;
-  left: 5px;
-  z-index: 1001;
-}
-.dex.form .error .box .arrow-border {
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid #EED3D7;
-  width: 0;
-  height: 0;
-  position: absolute;
-  top: -7px;
-  left: 5px;
-  z-index: 1000;
-}
-.dex.form label {
+label {
   display: block;
   float: left;
   margin-top: 8px;
@@ -528,7 +433,7 @@ button.list-button:visited:active {
   white-space: nowrap;
   overflow: hidden;
 }
-.dex.form label.radio {
+label.radio {
   float: none;
   margin-top: 8px;
   padding: 0;
@@ -538,13 +443,13 @@ button.list-button:visited:active {
   font-weight: inherit;
   text-align: left;
 }
-.dex.form label.radio + .dex.form label.radio {
+label.radio + label.radio {
   margin: 0;
   margin-left: 200px;
 }
-.dex.form input,
-.dex.form select,
-.dex.form textarea {
+input,
+select,
+textarea {
   float: left;
   margin: 8px 0 8px 10px;
   padding: 4px 6px;
@@ -562,9 +467,9 @@ button.list-button:visited:active {
   font-size: 16px;
   letter-spacing: 0.1em;
 }
-.dex.form input.unused,
-.dex.form select.unused,
-.dex.form textarea.unused {
+input.unused,
+select.unused,
+textarea.unused {
   border: 1px solid #F0F0F0;
   background-color: #f8f8f8;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f8f8f8));
@@ -576,73 +481,168 @@ button.list-button:visited:active {
   -moz-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
 }
-.dex.form input.hidden,
-.dex.form select.hidden,
-.dex.form textarea.hidden {
+input.hidden,
+select.hidden,
+textarea.hidden {
   display: none;
 }
-.dex.form input[type="radio"],
-.dex.form select[type="radio"],
-.dex.form textarea[type="radio"] {
+input[type="radio"],
+select[type="radio"],
+textarea[type="radio"] {
   margin-right: 8px;
   width: auto;
 }
-.dex.form textarea {
+textarea {
   min-height: 5em;
 }
-.dex.form span.equal {
+form {
+  margin: 0 auto;
+  width: 500px;
+}
+form > h3 {
+  padding-top: 10px;
+}
+form > p {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+form .separator {
+  clear: both;
+  margin: 20px 0;
+  border-bottom: solid 1px #E8E8E8;
+}
+form .section-text {
+  margin-bottom: 20px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #E8E8E8;
+}
+form .errors {
+  display: none;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: solid 1px #EED3D7;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #F2DEDE;
+  font-size: 95%;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #B94A48;
+}
+form .error {
+  display: none;
+  margin-top: -2px;
+  margin-bottom: 8px;
+  margin-left: 210px;
+}
+form .error .box {
+  display: inline-block;
+  padding: 5px 10px;
+  border: solid 1px #EED3D7;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #F2DEDE;
+  position: relative;
+  z-index: 999;
+}
+form .error .box p {
+  margin: 0;
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #B94A48;
+  font-size: 70%;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+  font-weight: bold;
+  white-space: nowrap;
+}
+form .error .box p i {
+  font-size: 150%;
+  vertical-align: middle;
+}
+form .error .box p span {
+  vertical-align: middle;
+}
+form .error .box .arrow {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #F2DEDE;
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: -5px;
+  left: 5px;
+  z-index: 1001;
+}
+form .error .box .arrow-border {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #EED3D7;
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: -7px;
+  left: 5px;
+  z-index: 1000;
+}
+form span.equal {
   float: left;
   padding-top: 13px;
   width: 3em;
   color: #666666;
   text-align: center;
 }
-.dex.form span.comma {
+form span.comma {
   float: left;
   padding-top: 13px;
   width: 10px;
   color: #666666;
   text-align: center;
 }
-.dex.form ul {
+form ul {
   margin: -32px 30px 0 200px;
   padding: 0;
 }
-.dex.form ul > li input {
+form ul > li input {
   margin: 8px 0 0 10px;
 }
-.dex.form ul > li:last-of-type input {
+form ul > li:last-of-type input {
   float: none;
 }
-.dex.form ul > li:last-of-type span.comma {
+form ul > li:last-of-type span.comma {
   display: none;
 }
-.dex.form input.array-item {
+form input.array-item {
   /* all but first item */
 }
-.dex.form input.array-item + span + .dex.form input.array-item {
+form input.array-item + span + form input.array-item {
   margin-left: 210px;
 }
-.dex.form input.parameter-key {
+form input.parameter-key {
   width: 75px;
   /* all but first key */
 }
-input.parameter_val + .dex.form input.parameter-key {
+input.parameter_val + form input.parameter-key {
   margin-top: -10px;
   margin-left: 210px;
 }
-.dex.form input.parameter-val + input.parameter-key + span {
+form input.parameter-val + input.parameter-key + span {
   margin-top: -5px;
 }
-.dex.form input.parameter-val {
+form input.parameter-val {
   margin-left: 0;
   width: 150px;
   /* all but first value */
 }
-.dex.form input.parameter-val + input.parameter-key + span + .dex.form input.parameter-val {
+form input.parameter-val + input.parameter-key + span + form input.parameter-val {
   margin-top: -10px;
 }
-.dex.form .button {
+form .button {
   float: left;
   margin-left: 210px;
   margin-right: 10px;
@@ -953,35 +953,35 @@ body {
   color: white;
 }
 #assets #upload {
-  width: 600px;
   margin: 0 auto;
   margin-bottom: 20px;
-  background-color: #A9CC66;
   border: 1px dashed #477725;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  background-color: #A9CC66;
+  width: 600px;
 }
 #assets #upload #drop {
   position: relative;
-  text-align: center;
   margin: 30px 50px;
   height: 70px;
+  text-align: center;
 }
 #assets #upload #drop span {
-  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
-  text-shadow: rgba(255, 255, 255, 0.75) 0 1px 0;
+  line-height: 200%;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
   font-size: 18px;
   color: #303030;
-  line-height: 200%;
 }
 #assets #upload ul {
-  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
-  text-shadow: rgba(255, 255, 255, 0.5) 0 1px 0;
-  color: #303030;
-  font-size: 12px;
   margin: 0 20px;
   margin-bottom: 20px;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  color: #303030;
 }
 #assets #upload ul li {
   height: 16px;
@@ -1019,35 +1019,35 @@ body {
 }
 #assets #create-directory {
   margin: 0 auto;
-  width: 600px;
   margin-bottom: 20px;
+  width: 600px;
 }
 #assets #create-directory input {
-  width: 440px;
-  margin: 0;
   float: none;
+  margin: 0;
+  width: 440px;
 }
 #assets #create-directory a {
-  width: 150px;
   margin-left: 10px;
   margin-right: 0;
+  width: 150px;
 }
 #assets #breadcrumbs {
-  width: 600px;
   margin: 0 auto;
   margin-bottom: 5px;
+  width: 600px;
   font-size: 90%;
 }
 #assets #breadcrumbs a {
   padding: 0 5px;
 }
 #assets #directories-assets {
-  width: 602px;
   margin-bottom: 20px;
+  width: 602px;
 }
 #assets #directories-assets li img {
-  vertical-align: middle;
   margin-right: 10px;
+  vertical-align: middle;
 }
 #assets #directories-assets li div:last-of-type {
   display: none;

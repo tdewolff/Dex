@@ -184,6 +184,7 @@ if (User::getTimeLeft() !== false)
 	Core::addDeferredScript('vendor/doT.min.js');
 	Core::addDeferredScript('api.js');
 	Core::addDeferredScript('upload.js');
+	Core::addDeferredScript('tooltips.js');
 	Core::addDeferredScript('site-admin.js');
     Core::addDeferredScript('dexedit.js');
 }
