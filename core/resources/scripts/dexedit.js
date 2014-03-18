@@ -7,10 +7,8 @@ function getCharacterOffsetWithin(range, node) {
     for (var i = 0, len = textNodes.length; i < len; ++i) {
         if (textNodes[i] == range.startContainer) {
             charCount += range.startOffset;
-            console.log('a: ' + range.startOffset);
         } else {
             charCount += textNodes[i].length;
-            console.log('b: ' + textNodes[i].length);
         }
     }
     return charCount;

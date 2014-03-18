@@ -126,8 +126,6 @@
 				});
 			});
 
-			console.log(dir);
-
 			apiLoadStatusWorking($('#load_status_directories'));
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'get_directories',
