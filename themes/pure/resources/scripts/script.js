@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 	$('.page-wrapper').attr('id', 'layout');
 	$('.navigation').attr('id', 'menu');
 	$('header').addClass('header');
@@ -42,7 +42,7 @@ $(function() {
 	if ($('#admin-bar').length)
 		$('#menu').css('top', '+=33px');
 
-	$('#log-out').click(function() {
+	$('#log-out').click(function () {
 		$('#menu').animate({
 			'top': '-=33px'
 		});

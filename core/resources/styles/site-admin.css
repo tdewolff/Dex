@@ -33,7 +33,7 @@ body {
   background-color: #374147;
   vertical-align: middle;
   color: #F0F0F0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
   font-size: 12px;
 }
 .dex.api .status > div > i {
@@ -49,6 +49,7 @@ body {
 }
 .dex.api.load-status > div {
   display: none;
+  min-width: 100%;
   width: 100%;
   text-align: center;
   white-space: nowrap;
@@ -79,7 +80,7 @@ body {
   left: 0;
   z-index: 7999;
   color: #E0E0E0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
   font-size: 14px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -123,7 +124,7 @@ body {
   width: 600px;
   overflow: hidden;
   white-space: nowrap;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
   font-size: 100%;
   text-align: justify;
 }
@@ -170,7 +171,7 @@ body {
   margin-bottom: 0;
 }
 .dex.popup-wrapper p {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
   color: #303030;
   padding-top: 2px;
   padding-bottom: 20px;
@@ -211,9 +212,9 @@ body {
   background-image: -moz-linear-gradient(top, #477725, #3b641f);
   background-image: -o-linear-gradient(top, #477725, #3b641f);
   background-image: linear-gradient(to bottom, #477725, #3b641f);
-  -webkit-box-shadow: 0 0 3px inset #6cb538;
-  -moz-box-shadow: 0 0 3px inset #6cb538;
-  box-shadow: 0 0 3px inset #6cb538;
+  -webkit-box-shadow: inset 0 0 3px 0 #6cb538;
+  -moz-box-shadow: inset 0 0 3px 0 #6cb538;
+  box-shadow: inset 0 0 3px 0 #6cb538;
 }
 .dex.popup-wrapper a.button:hover,
 .dex.popup-wrapper button.button:hover,
@@ -278,9 +279,9 @@ body {
   background-image: -moz-linear-gradient(top, #477725, #3b641f);
   background-image: -o-linear-gradient(top, #477725, #3b641f);
   background-image: linear-gradient(to bottom, #477725, #3b641f);
-  -webkit-box-shadow: 0 0 3px inset #6cb538;
-  -moz-box-shadow: 0 0 3px inset #6cb538;
-  box-shadow: 0 0 3px inset #6cb538;
+  -webkit-box-shadow: inset 0 0 3px 0 #6cb538;
+  -moz-box-shadow: inset 0 0 3px 0 #6cb538;
+  box-shadow: inset 0 0 3px 0 #6cb538;
   border-color: #933d09;
   border-top-color: #af490b;
   border-left-color: #af490b;
@@ -290,9 +291,9 @@ body {
   background-image: -moz-linear-gradient(top, #d1570d, #b94d0c);
   background-image: -o-linear-gradient(top, #d1570d, #b94d0c);
   background-image: linear-gradient(to bottom, #d1570d, #b94d0c);
-  -webkit-box-shadow: 0 0 3px inset #f3813d;
-  -moz-box-shadow: 0 0 3px inset #f3813d;
-  box-shadow: 0 0 3px inset #f3813d;
+  -webkit-box-shadow: inset 0 0 3px 0 #f3813d;
+  -moz-box-shadow: inset 0 0 3px 0 #f3813d;
+  box-shadow: inset 0 0 3px 0 #f3813d;
 }
 .dex.popup-wrapper a.alert-button:hover,
 .dex.popup-wrapper button.alert-button:hover,
@@ -378,9 +379,9 @@ body {
   background-image: -moz-linear-gradient(top, #477725, #3b641f);
   background-image: -o-linear-gradient(top, #477725, #3b641f);
   background-image: linear-gradient(to bottom, #477725, #3b641f);
-  -webkit-box-shadow: 0 0 3px inset #6cb538;
-  -moz-box-shadow: 0 0 3px inset #6cb538;
-  box-shadow: 0 0 3px inset #6cb538;
+  -webkit-box-shadow: inset 0 0 3px 0 #6cb538;
+  -moz-box-shadow: inset 0 0 3px 0 #6cb538;
+  box-shadow: inset 0 0 3px 0 #6cb538;
   margin: 0 4px;
   padding: 4px 12px;
 }
@@ -447,9 +448,9 @@ body {
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-  -webkit-box-shadow: 0 0 #ffffff inset 3px;
-  -moz-box-shadow: 0 0 #ffffff inset 3px;
-  box-shadow: 0 0 #ffffff inset 3px;
+  -webkit-box-shadow: inset 0 0 #ffffff 0 3px;
+  -moz-box-shadow: inset 0 0 #ffffff 0 3px;
+  box-shadow: inset 0 0 #ffffff 0 3px;
 }
 .dex.popup-wrapper a.list-button:hover,
 .dex.popup-wrapper button.list-button:hover,
@@ -757,7 +758,7 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
   background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
-  font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 .dex.popup-wrapper ul.table > li:first-of-type > div:first-of-type,
@@ -840,8 +841,17 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background-color: #A9CC66;
+  background-color: #a9cc66;
   width: 600px;
+}
+.dex.popup-wrapper #assets #upload.drag {
+  background-color: #bfd98c;
+}
+.dex.popup-wrapper #assets #upload > #drop-mask {
+  display: none;
+  margin: -1px;
+  position: absolute;
+  z-index: 99;
 }
 .dex.popup-wrapper #assets #upload #drop {
   position: relative;
@@ -881,6 +891,7 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   display: none;
 }
 .dex.popup-wrapper #assets #upload #knob {
+  display: none;
   position: absolute;
   top: 50%;
   right: 0;
@@ -926,6 +937,9 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   margin-bottom: 20px;
   width: 602px;
 }
+.dex.popup-wrapper #assets #directories-assets li.directory > div:first-of-type {
+  cursor: pointer;
+}
 .dex.popup-wrapper #assets #directories-assets li img {
   margin-right: 10px;
   vertical-align: middle;
@@ -936,6 +950,15 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
 .dex.popup-wrapper #assets #directories-assets li:hover div:last-of-type {
   display: block;
 }
+.dex.popup-wrapper #assets #directories-assets li div:nth-child(1) {
+  width: 76%;
+}
+.dex.popup-wrapper #assets #directories-assets li div:nth-child(2) {
+  width: 17%;
+}
+.dex.popup-wrapper #assets #directories-assets li div:nth-child(3) {
+  width: 7%;
+}
 .dex.popup-wrapper #assets #images li {
   position: relative;
   vertical-align: top;
@@ -945,7 +968,7 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   position: absolute;
   top: 4px;
   right: 4px;
-  font-size: 11px;
+  font-size: 90%;
 }
 .dex.popup-wrapper #assets #images li:hover .delete {
   display: block;

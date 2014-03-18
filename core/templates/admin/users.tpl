@@ -2,10 +2,10 @@
 <a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;New user</a>
 <ul id="users" class="table">
 	<li>
-		<div style="width:120px;"></div>
-		<div style="width:200px;">Username</div>
-		<div style="width:300px;">Email address</div>
-		<div style="width:280px;">Role</div>
+		<div></div>
+		<div>Username</div>
+		<div>Email address</div>
+		<div>Role</div>
 	</li>
 	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -16,7 +16,7 @@
 
 <script id="user_item" type="text/x-dot-template">
 	<li id="user_{{=it.user_id}}">
-		<div style="width:120px; overflow:visible;">
+		<div>
 			<div class="dropdown">
 			<a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="dropdown-select list-button"><i class="fa fa-pencil"></i>&ensp;Edit</a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i></a>
 				<ul class="dropdown-menu" role="menu">
@@ -27,44 +27,44 @@
 				</ul>
 			</div>
 		</div>
-		<div style="width:200px;">{{=it.username}}</div>
-		<div style="width:300px;">{{=it.email}}</div>
-		<div style="width:280px;">{{=it.role}}</div>
+		<div>{{=it.username}}</div>
+		<div>{{=it.email}}</div>
+		<div>{{=it.role}}</div>
 	</li>
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		var users = $('#users');
 		var user_item = doT.template($('#user_item').text());
 		apiLoadStatusWorking($('#load_status'));
 		api('/' + base_url + 'api/core/users/', {
 			action: 'get_users'
-		}, function(data) {
+		}, function (data) {
 			if (!data['users'].length) {
 				apiLoadStatusEmpty($('#load_status'));
 				return;
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
-			$.each(data['users'], function() {
+			$.each(data['users'], function () {
 				users.append(user_item(this));
 			});
-		}, function() {
+		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
 
-		users.on('click', 'a.sure', function() {
+		users.on('click', 'a.sure', function () {
 			apiStatusWorking('Deleting user...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/users/', {
 				action: 'delete_user',
 				user_id: item.attr('data-user-id')
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Deleted user');
 				$('.dropdown-menu').fadeOut('fast');
 				$('#user_' + item.attr('data-user-id')).remove();
-			}, function() {
+			}, function () {
 				apiStatusError('Deleting user failed');
 			});
 		});

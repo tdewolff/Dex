@@ -1,21 +1,21 @@
 ul.draggable {
-    overflow:hidden;
+    overflow: hidden;
 }
 
 ul.draggable > li:not(:first-of-type) > div:first-of-type + div + div {
-    padding:4px 15px;
+    padding: 4px 15px;
 }
 
 ul.draggable > li.placeholder {
-    background-color:#A9CC66;
+    background-color: #A9CC66;
 }
 
 ul.draggable > li.draggee {
     position: absolute;
+    z-index: 1;
     border-top-width: 0;
     height: 32px;
     cursor: move;
-    z-index:1;
 }
 
 ul.table.draggable > li.draggee, ul.table.draggable > li.draggee > div {
@@ -30,29 +30,49 @@ ul.table.draggable > li.draggee, ul.table.draggable > li.draggee > div {
 ul.draggable i {
     display: inline-block;
     width: 40px;
-    font-size:17px;
-    line-height:21px;
-    height:21px;
+    height: 21px;
+    line-height: 21px;
+    font-size: 17px;
 }
 
 ul.draggable i.fa-eye {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 ul.draggable i.fa-bars {
-    cursor:move;
+    cursor: move;
 }
 
 ul.draggable > li input {
-    float:none;
-    margin:0;
-    font-size:14px;
-    line-height:24px;
-    height:24px;
-    width:100%;
+    float: none;
+    margin: 0;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
 }
 
 ul.draggable > li.unused input {
-    font-style:italic;
-    color:#A0A0A0;
+    color: #A0A0A0;
+    font-style: italic;
+}
+
+#menu li > div:nth-child(1) {
+    width: 5%;
+}
+
+#menu li > div:nth-child(2) {
+    width: 14%;
+}
+
+#menu li > div:nth-child(3) {
+    width: 28%;
+}
+
+#menu li > div:nth-child(4) {
+    width: 22%;
+}
+
+#menu li > div:nth-child(5) {
+    width: 31%;
 }

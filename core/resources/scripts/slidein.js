@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 	$('.page-wrapper, .page-wrapper-slim')
 		.css({
 			display: 'block',

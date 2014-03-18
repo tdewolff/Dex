@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 	applyTooltips();
 });
 
@@ -8,13 +8,13 @@ function applyTooltips() {
 			my: 'center top',
 			at: 'center bottom+5',
 			collision: 'fit',
-			using: function(position, feedback) {
+			using: function (position, feedback) {
 				$(this).css(position);
 				$('<div>').addClass('ui-tooltip-arrow').appendTo(this);
 			}
 		},
 		items: "[data-tooltip]",
-		content: function() {
+		content: function () {
 			return $(this).attr('data-tooltip');
 		},
 		show: {

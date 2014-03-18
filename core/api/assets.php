@@ -10,8 +10,11 @@ if (API::has('dir'))
 else if (isset($_POST['dir'])) // exception for file upload
 	$dir = $_POST['dir'];
 
+
 if (!is_dir('assets/' . $dir))
 	user_error('Directory "assets/' . $dir . '" doesn\'t exist', ERROR);
+else if ($dir != '' && $dir[strlen($dir) - 1] != '/')
+	$dir .= '/';
 
 // upload file
 if (isset($_FILES['upload']))
@@ -124,7 +127,7 @@ else if (API::action('get_directories'))
 	$handle = opendir('assets/' . $dir);
 	while (($name = readdir($handle)) !== false)
 	{
-		if (is_dir('assets/' . $dir . $name . '/') && $name != '.')
+		if (is_dir('assets/' . $dir . $name) && $name != '.')
 		{
 			$url = $dir . $name . '/';
 			if ($name == '..')
@@ -132,9 +135,10 @@ else if (API::action('get_directories'))
 				if (empty($dir))
 					continue;
 
+				$url = $dir;
 				$url = substr($dir, 0, strlen($dir) - 1);
 				$last_slash = strrpos($url, '/');
-				$url = $last_slash ? substr($url, 0, $last_slash) : '';
+				$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
 				$name = '..';
 			}
 

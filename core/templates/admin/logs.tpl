@@ -2,9 +2,9 @@
 <a href="/<?php echo $_['base_url']; ?>admin/" class="button indent"><i class="fa fa-chevron-left"></i> Back</a>
 <ul id="logs" class="table">
 	<li>
-		<div style="width:150px;">Date time</div>
-		<div style="width:120px;">IP Address</div>
-		<div style="width:630px;">Message</div>
+		<div>Date time</div>
+		<div>IP Address</div>
+		<div>Message</div>
 	</li>
 	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -15,28 +15,28 @@
 
 <script id="log_item" type="text/x-dot-template">
 	<li>
-		<div style="width:150px;">{{=it.datetime}}</div>
-		<div style="width:120px;">{{=it.ipaddress}}</div>
-		<div style="width:630px;" title="{{=it.message}}">{{=it.message}}</div>
+		<div>{{=it.datetime}}</div>
+		<div>{{=it.ipaddress}}</div>
+		<div title="{{=it.message}}">{{=it.message}}</div>
 	</li>
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		var logs = $('#logs');
 		var log_item = doT.template($('#log_item').text());
 		apiLoadStatusWorking($('#load_status'));
 		api('/' + base_url + 'api/core/logs/', {
 			action: 'get',
 			lines: 100
-		}, function(data) {
+		}, function (data) {
 			if (!data['logs'].length) {
 				apiLoadStatusEmpty($('#load_status'));
 				return;
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
-			$.each(data['logs'], function() {
+			$.each(data['logs'], function () {
 				var item = $(log_item(this));
 				if (this['type'] == 'ERROR')
 					item = item.addClass('error');
@@ -52,7 +52,7 @@
 					item = item.addClass('empty');
 				logs.append(item);
 			});
-		}, function() {
+		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
 	});

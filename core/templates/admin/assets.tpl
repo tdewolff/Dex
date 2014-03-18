@@ -5,6 +5,7 @@
 	</div>
 
 	<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
+		<div id="drop-mask"></div>
 		<input type="hidden" name="dir" value="">
 		<div id="drop">
 			<span>Drop Here</span><br>
@@ -23,9 +24,9 @@
 
 	<ul id="directories-assets" class="table">
 		<li>
-			<div style="width:460px;">Filename</div>
-			<div style="width:100px;">Size</div>
-			<div style="width:40px;"></div>
+			<div>Filename</div>
+			<div>Size</div>
+			<div></div>
 		</li>
 		<li id="load_status_directories" class="api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -45,9 +46,9 @@
 
 <script id="directory_item" type="text/x-dot-template">
 	<li data-name="{{=it.name}}" class="directory">
-		<div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#!dir={{=it.dir}}" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
-		<div style="width:100px;">-</div>
-		<div style="width:40px;">
+		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a data-dir="{{=it.dir}}">{{=it.name}}</a></div>
+		<div>-</div>
+		<div>
 			{{?it.dir.length}}
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
 			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
@@ -58,9 +59,9 @@
 
 <script id="asset_item" type="text/x-dot-template">
 	<li data-name="{{=it.name}}" class="asset">
-		<div style="width:460px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
-		<div style="width:100px;">{{=it.size}}</div>
-		<div style="width:40px;">
+		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
+		<div>{{=it.size}}</div>
+		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
 			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 		</div>
@@ -92,7 +93,7 @@
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		// preliminaries
 		var breadcrumbs = $('#breadcrumbs');
 		var directories_assets = $('#directories-assets');
@@ -107,38 +108,41 @@
 		function loadDir(newDir) {
 			dir = newDir;
 
-			directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
-			images.find('li').slideUp('fast', function() { $(this).remove(); });
+			directories_assets.find('li:not(:first)').slideUp(100, function () { $(this).remove(); });
+			images.find('li').slideUp(100, function () { $(this).remove(); });
 
 			$('#upload input[name="dir"]').val(dir);
 
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'get_breadcrumbs',
 				dir: dir
-			}, function(data) {
+			}, function (data) {
 				breadcrumbs.empty();
-				$.each(data['breadcrumbs'], function(i) {
-					if (i)
+				$.each(data['breadcrumbs'], function (i) {
+					if (i) {
 						breadcrumbs.append('&gt;');
+					}
 					breadcrumbs.append('<a href="#!dir=' + this.dir + '" data-dir="' + this.dir + '">' + this.name + '</a>');
 				});
 			});
+
+			console.log(dir);
 
 			apiLoadStatusWorking($('#load_status_directories'));
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'get_directories',
 				dir: dir
-			}, function(data) {
+			}, function (data) {
 				if (!data['directories'].length) {
 					apiLoadStatusEmpty($('#load_status_directories'));
 					return;
 				}
 
 				apiLoadStatusSuccess($('#load_status_directories'));
-				$.each(data['directories'], function() {
-					$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				$.each(data['directories'], function () {
+					$(directory_item(this)).hide().appendTo(directories_assets).slideDown(100);
 				});
-			}, function() {
+			}, function () {
 				apiLoadStatusError($('#load_status_directories'));
 			});
 
@@ -147,105 +151,116 @@
 				action: 'get_assets',
 				dir: dir,
 				max_width: 200
-			}, function(data) {
+			}, function (data) {
 				if (!data['assets'].length) {
 					apiLoadStatusEmpty($('#load_status_images'));
 					return;
 				}
 
 				apiLoadStatusSuccess($('#load_status_images'));
-				$.each(data['assets'], function() {
-					if (this.is_image)
-						$(image_item(this)).hide().appendTo(images).slideDown('fast');
-					else
-						$(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				$.each(data['assets'], function () {
+					if (this.is_image) {
+						$(image_item(this)).hide().appendTo(images).slideDown(100);
+					} else {
+						$(asset_item(this)).hide().appendTo(directories_assets).slideDown(100);
+					}
 				});
-			}, function() {
+			}, function () {
 				apiLoadStatusError($('#load_status_images'));
 			});
 		}
 
 		// use copy-pastable AJAX links for directory navigation
-		if (window.location.hash.substr(0, 6) == '#!dir=')
+		if (window.location.hash.substr(0, 6) == '#!dir=') {
 			dir = window.location.hash.substr(6);
+		}
 		loadDir(dir);
 
 		// click events on directories, assets and images
-		breadcrumbs.on('click', 'a', function() {
+		breadcrumbs.on('click', 'a', function () {
 			loadDir($(this).attr('data-dir'));
 		});
 
-		directories_assets.on('click', '.directory a', function() {
-			if (typeof $(this).attr('data-dir') !== 'undefined')
+		directories_assets.on('click', '.directory > div:nth-child(1)', function (e) {
+			e.stopPropagation();
+			$(this).find('a').click();
+		});
+
+		directories_assets.on('click', '.directory > div:nth-child(1) > a', function (e) {
+			e.stopPropagation();
+			if (typeof $(this).attr('data-dir') !== 'undefined') {
+				window.location.hash = '!dir=' + $(this).attr('data-dir');
 				loadDir($(this).attr('data-dir'));
+			}
 		});
 
 		// deleting directories, assets or images
-		$('#directories-assets').on('click', 'li.directory a.sure', function() {
+		$('#directories-assets').on('click', 'li.directory a.sure', function () {
 			apiStatusWorking('Deleting directory...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_directory',
 				name: item.attr('data-name'),
 				dir: dir
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Deleted directory');
-				item.closest('li').slideUp('fast', function() { $(this).remove(); });
-			}, function() {
+				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+			}, function () {
 				apiStatusError('Deleting directory failed');
 			});
 		});
 
-		$('#directories-assets').on('click', 'li.asset a.sure', function() {
+		$('#directories-assets').on('click', 'li.asset a.sure', function () {
 			apiStatusWorking('Deleting asset...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_file',
 				name: item.attr('data-name'),
 				dir: dir
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Deleted asset');
-				item.closest('li').slideUp('fast', function() { $(this).remove(); });
-			}, function() {
+				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+			}, function () {
 				apiStatusError('Deleting asset failed');
 			});
 		});
 
-		$('#images').on('click', 'a.sure', function() {
+		$('#images').on('click', 'a.sure', function () {
 			apiStatusWorking('Deleting image...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_file',
 				name: item.attr('data-name'),
 				dir: dir
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Deleted image');
-				item.closest('li').slideUp('fast', function() { $(this).remove(); });
-			}, function() {
+				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+			}, function () {
 				apiStatusError('Deleting image failed');
 			});
 		});
 
-		$('#create-directory').on('click', 'a', function() {
+		$('#create-directory').on('click', 'a', function () {
 			apiStatusWorking('Creating directory...');
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'create_directory',
 				name: $(this).prev('input').val(),
 				dir: dir
-			}, function(data) {
+			}, function (data) {
 				apiStatusSuccess('Created directory');
 				$('#create-directory input').val('');
 				var item = directory_item(data['directory']);
-				if (directories_assets.find('li.directory').length)
+				if (directories_assets.find('li.directory').length) {
 					addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
-				else
+				} else {
 					$(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
-			}, function() {
+				}
+			}, function () {
 				apiStatusError('Creating directory failed');
 			});
 		});
 
-		$(function() {
+		$(function () {
 			initAdminUpload('#upload', function (data) {
 				if (!data['file'].is_image) {
 					var item = asset_item(data['file']);

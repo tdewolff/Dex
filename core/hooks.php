@@ -1,6 +1,6 @@
 <?php
 
-Hooks::attach('site', 0, function() {
+Hooks::attach('site', 0, function () {
 	Hooks::emit('site-header');
 	echo '<section class="page-wrapper">';
 
@@ -26,7 +26,7 @@ Hooks::attach('site', 0, function() {
 
 $error_loop = false;
 
-Hooks::attach('error', 0, function() {
+Hooks::attach('error', 0, function () {
 	ob_clean();
 
 	global $error_loop;
@@ -60,7 +60,7 @@ Hooks::attach('error', 0, function() {
 	Hooks::emit('site-footer');
 });
 
-Hooks::attach('admin-error', 0, function() {
+Hooks::attach('admin-error', 0, function () {
 	ob_clean();
 
 	global $error_loop;
@@ -78,22 +78,22 @@ Hooks::attach('admin-error', 0, function() {
 
 ////////////////////////////////////////////////////////////////
 
-Hooks::attach('site-header', 0, function() {
+Hooks::attach('site-header', 0, function () {
 	site_header();
 	Core::render('header.tpl');
 });
 
-Hooks::attach('site-footer', 0, function() {
+Hooks::attach('site-footer', 0, function () {
 	site_footer();
 	Core::render('footer.tpl');
 });
 
-Hooks::attach('admin-header', 0, function() {
+Hooks::attach('admin-header', 0, function () {
 	site_header();
 	Core::render('admin/header.tpl');
 });
 
-Hooks::attach('admin-footer', 0, function() {
+Hooks::attach('admin-footer', 0, function () {
 	site_footer();
 	Core::render('admin/footer.tpl');
 });

@@ -40,25 +40,25 @@
     var link_item = doT.template($('#link_item').text());
     api('/' + base_url + 'api/core/pages/', {
         action: 'get_pages'
-    }, function(data) {
-        $.each(data['pages'], function() {
+    }, function (data) {
+        $.each(data['pages'], function () {
             links.append(link_item(this));
         });
     });
 
     var popup = $('.popup');
-    links.on('click', 'li', function() {
+    links.on('click', 'li', function () {
         $('#insert_title').val($(this).attr('data-title'));
         $('#insert_url').val($(this).attr('data-url'));
         switchPopupFrame(popup);
     });
 
-    popup.on('click', '#external-link a', function() {
+    popup.on('click', '#external-link a', function () {
         $('#insert_url').val($('#external-link input').val());
         switchPopupFrame(popup);
     });
 
-    popup.on('click', 'a.insert', function() {
+    popup.on('click', 'a.insert', function () {
         $('#insert_submit').val('1');
         parent.$.fancybox.close();
     });

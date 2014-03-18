@@ -36,21 +36,20 @@
         }
     }
 
-    &.load-status {
-        >div {
-            display: none;
-            width: 100%;
-            text-align: center;
-            white-space: nowrap;
+    &.load-status > div {
+        display: none;
+        min-width: 100%;
+        width: 100%;
+        text-align: center;
+        white-space: nowrap;
 
-            &.empty {
-                color: #D0D0D0;
-                font-style: italic;
-            }
+        &.empty {
+            color: #D0D0D0;
+            font-style: italic;
+        }
 
-            &.error {
-                color: #D11F49;
-            }
+        &.error {
+            color: #D11F49;
         }
     }
 

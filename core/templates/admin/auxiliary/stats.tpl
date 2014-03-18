@@ -45,8 +45,8 @@ html, body {
             .orient("left");
 
         var line = d3.svg.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.visits); });
+            .x(function (d) { return x(d.date); })
+            .y(function (d) { return y(d.visits); });
 
         var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -54,13 +54,13 @@ html, body {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        data.forEach(function(d) {
+        data.forEach(function (d) {
             d.date = d.date * 1000;
             d.visits = +d.visits;
         });
 
-        x.domain([d3.min(data, function(d) { return d.date; }), d3.max(data, function(d) { return d.date; })]);
-        y.domain([0,                                            d3.max(data, function(d) { return d.visits; })]);
+        x.domain([d3.min(data, function (d) { return d.date; }), d3.max(data, function (d) { return d.date; })]);
+        y.domain([0,                                            d3.max(data, function (d) { return d.visits; })]);
 
         svg.append("g")
             .attr("class", "x axis")

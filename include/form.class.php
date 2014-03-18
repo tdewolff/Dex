@@ -15,12 +15,12 @@ class Form
 
 	public function __construct($name)
 	{
-		Hooks::attach('header', -1, function() {
+		Hooks::attach('header', -1, function () {
 			Core::addDeferredScript('vendor/sha1.min.js');
 			Core::addDeferredScript('form.js');
 		});
 
-		Hooks::attach('admin-header', -1, function() {
+		Hooks::attach('admin-header', -1, function () {
 			Core::addDeferredScript('vendor/sha1.min.js');
 			Core::addDeferredScript('form.js');
 		});

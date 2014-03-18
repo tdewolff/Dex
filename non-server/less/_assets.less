@@ -2,11 +2,22 @@
 	#upload {
 	    margin: 0 auto;
 	    margin-bottom: 20px;
-	    border: 1px dashed #477725;
+	    border: 1px dashed @base;
 	    .border-radius(3px);
 
-	    background-color: #A9CC66;
+	    background-color: @auxiliary;
 	    width: 600px;
+
+		&.drag {
+	    	background-color: lighten(@auxiliary, 10%);
+		}
+
+		>#drop-mask {
+		    display: none;
+		    margin: -1px;
+			position: absolute;
+		    z-index: 99;
+		}
 
 		#drop {
 		    position: relative;
@@ -41,7 +52,7 @@
 			}
 
 			li.done {
-			    color: #477725;
+			    color: @base;
 			}
 
 			li.fail {
@@ -54,6 +65,7 @@
 		}
 
 		#knob {
+			display: none;
 		    position: absolute;
 		    top: 50%;
 		    right: 0;
@@ -109,6 +121,10 @@
 		width: 602px;
 
 		li {
+			&.directory > div:first-of-type {
+				cursor: pointer;
+			}
+
 			img {
 				margin-right: 10px;
 				vertical-align: middle;
@@ -120,6 +136,18 @@
 
 			&:hover div:last-of-type {
 				display: block;
+			}
+
+			div:nth-child(1) {
+				width: 76%;
+			}
+
+			div:nth-child(2) {
+				width: 17%;
+			}
+
+			div:nth-child(3) {
+				width: 7%;
 			}
 		}
 	}
@@ -134,7 +162,7 @@
 				position: absolute;
 				top: 4px;
 				right: 4px;
-				font-size: 11px;
+				font-size: 90%;
 			}
 
 			&:hover .delete {

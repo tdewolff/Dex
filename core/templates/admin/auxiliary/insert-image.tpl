@@ -84,15 +84,15 @@
 
     // loading initial data
     function loadDir(dir) {
-        directories_assets.find('li:not(:first)').slideUp('fast', function() { $(this).remove(); });
-        images.find('li').slideUp('fast', function() { $(this).remove(); });
+        directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
+        images.find('li').slideUp('fast', function () { $(this).remove(); });
 
         api('/' + base_url + 'api/core/assets/', {
             action: 'get_breadcrumbs',
             dir: dir
-        }, function(data) {
+        }, function (data) {
             breadcrumbs.empty();
-            $.each(data['breadcrumbs'], function(i) {
+            $.each(data['breadcrumbs'], function (i) {
                 if (i)
                     breadcrumbs.append('&gt;');
                 breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
@@ -102,8 +102,8 @@
         api('/' + base_url + 'api/core/assets/', {
             action: 'get_directories',
             dir: dir
-        }, function(data) {
-            $.each(data['directories'], function() {
+        }, function (data) {
+            $.each(data['directories'], function () {
                 $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
             });
         });
@@ -112,8 +112,8 @@
             action: 'get_assets',
             dir: dir,
             max_width: 100
-        }, function(data) {
-            $.each(data['assets'], function() {
+        }, function (data) {
+            $.each(data['assets'], function () {
                 if (this.is_image)
                     $(image_item(this)).hide().appendTo(images).slideDown('fast');
             });
@@ -122,33 +122,33 @@
     loadDir('');
 
     // click events on directories, assets and images
-    breadcrumbs.on('click', 'a', function() {
+    breadcrumbs.on('click', 'a', function () {
         loadDir($(this).attr('data-dir'));
     });
 
-    directories_assets.on('click', '.directory a', function() {
+    directories_assets.on('click', '.directory a', function () {
         loadDir($(this).attr('data-dir'));
     });
 
     var popup = $('.popup');
-    images.on('click', 'li', function() {
+    images.on('click', 'li', function () {
         $('#insert_title').val($(this).attr('data-title'));
         $('#insert_url').val($(this).attr('data-url'));
         switchPopupFrame(popup);
     });
 
-    popup.on('click', '#external-link a', function() {
+    popup.on('click', '#external-link a', function () {
         $('#insert_url').val($('#external-link input').val());
         switchPopupFrame(popup);
     });
 
-    popup.on('click', 'a.insert', function() {
+    popup.on('click', 'a.insert', function () {
         $('#insert_submit').val('1');
         parent.$.fancybox.close();
     });
 
-    $(function() {
-        initAdminUpload('#upload', function(data) {
+    $(function () {
+        initAdminUpload('#upload', function (data) {
             if (!data['file'].is_image) {
                 var item = asset_item(data['file']);
                 if (directories_assets.find('li.asset').length) {

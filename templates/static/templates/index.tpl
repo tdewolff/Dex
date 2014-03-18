@@ -4,8 +4,7 @@
 
 <?php if (User::loggedIn()) { ?>
 <script>
-	$(document).on('save', function() {
-		console.log('save');
+	$(document).on('save', function () {
 		api('/' + base_url + 'api/template/static/index/', {
 			action: 'save',
 			link_id: link_id,

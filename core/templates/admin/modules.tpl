@@ -1,10 +1,10 @@
 <h2>Modules</h2>
 <ul id="modules" class="table">
 	<li>
-		<div style="width:120px;"></div>
-		<div style="width:120px;">Name</div>
-		<div style="width:120px;">Author</div>
-		<div style="width:540px;">Description</div>
+		<div></div>
+		<div>Name</div>
+		<div>Author</div>
+		<div>Description</div>
 	</li>
 	<li id="load_status" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -15,7 +15,7 @@
 
 <script id="module_item" type="text/x-dot-template">
 	<li id="module_{{=it.module_name}}" {{? !it.enabled}}class="disabled"{{?}}>
-		<div style="width:120px; overflow:visible;">
+		<div>
 			<div class="dropdown">
 				<a href="/<?php echo $_['base_url']; ?>admin/module/{{=it.module_name}}/" class="dropdown-select list-button">
 					<i class="fa fa-arrow-right"></i>&ensp;Go to
@@ -34,27 +34,27 @@
 				</ul>
 			</div>
 		</div>
-		<div style="width:120px;">{{=it.title}}</div>
-		<div style="width:120px;">{{=it.author}}</div>
-		<div style="width:540px;">{{=it.description}}</div>
+		<div>{{=it.title}}</div>
+		<div>{{=it.author}}</div>
+		<div>{{=it.description}}</div>
 	</li>
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		var modules = $('#modules');
 		var module_item = doT.template($('#module_item').text());
 		apiLoadStatusWorking($('#load_status'));
 		api('/' + base_url + 'api/core/modules/', {
 			action: 'get_modules'
-		}, function(data) {
+		}, function (data) {
 			if (!data['modules'].length) {
 				apiLoadStatusEmpty($('#load_status'));
 				return;
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
-			$.each(data['modules'], function() {
+			$.each(data['modules'], function () {
 				var item = $(module_item(this));
 				if (item.hasClass('disabled'))
 					item.find('a.disable').hide();
@@ -62,56 +62,56 @@
 					item.find('a.enable').hide();
 				modules.append(item);
 			});
-		}, function() {
+		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
 
-		modules.on('click', 'a.enable', function() {
+		modules.on('click', 'a.enable', function () {
 			apiStatusWorking('Enabling module...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/modules/', {
 				action: 'enable_module',
 				module_name: item.attr('data-module-name')
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Enabled module');
 				$('.dropdown-menu').hide();
 				$('#module_' + item.attr('data-module-name')).removeClass('disabled');
 				$('#admin_link_module_' + item.attr('data-module-name')).slideDown();
 				item.hide();
 				item.parent().find('.disable').show();
-			}, function() {
+			}, function () {
 				apiStatusError('Enabling module failed');
 			});
 		});
 
-		modules.on('click', 'a.disable', function() {
+		modules.on('click', 'a.disable', function () {
 			apiStatusWorking('Disabling module...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/modules/', {
 				action: 'disable_module',
 				module_name: item.attr('data-module-name')
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Disabled module');
 				$('.dropdown-menu').hide();
 				$('#module_' + item.attr('data-module-name')).addClass('disabled');
 				$('#admin_link_module_' + item.attr('data-module-name')).slideUp();
 				item.hide();
 				item.parent().find('.enable').show();
-			}, function() {
+			}, function () {
 				apiStatusError('Disabling module failed');
 			});
 		});
 
-		modules.on('click', 'a.sure', function() {
+		modules.on('click', 'a.sure', function () {
 			apiStatusWorking('Reinstalling module...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/modules/', {
 				action: 'reinstall_module',
 				module_name: item.attr('data-module-name')
-			}, function() {
+			}, function () {
 				apiStatusSuccess('Reinstalled module');
 				$('.dropdown-menu').hide();
-			}, function() {
+			}, function () {
 				apiStatusError('Reinstalling module failed');
 			});
 		});

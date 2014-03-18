@@ -1,4 +1,4 @@
-var Draggable = function(ul) {
+var Draggable = function (ul) {
     var self = this;
 
     this.ul = $(ul);
@@ -10,9 +10,9 @@ var Draggable = function(ul) {
     this.draggee_y_offset = 0;
     this.placeholder = false;
 
-    this.drag = function(e) {
+    this.drag = function (e) {
         if (self.draggee !== false) {
-            var elements = self.ul.find('li:not(:first)').filter(function() {
+            var elements = self.ul.find('li:not(:first)').filter(function () {
                 return $(this).css('position') == 'static';
             });
 
@@ -26,13 +26,13 @@ var Draggable = function(ul) {
                 top = max_top;
 
             // placement
-            var places = elements.filter(function() {
+            var places = elements.filter(function () {
                  return !$(this).hasClass('placeholder');
             });
 
             if (places.length) {
                 var y = top + 0.5 * places.first().outerHeight();
-                places.each(function() {
+                places.each(function () {
                     var place = $(this);
                     if (y >= place.offset().top && y < place.offset().top + place.outerHeight()) {
                         if (top < self.placeholder.offset().top)
@@ -47,7 +47,7 @@ var Draggable = function(ul) {
             // X movement determines level of the item
             var level = 0;
             var previous = false;
-            elements.each(function() {
+            elements.each(function () {
                 var element = $(this);
                 if (element.hasClass('placeholder'))
                     return false;
@@ -74,7 +74,7 @@ var Draggable = function(ul) {
             $(document).unbind('mousemove', self.drag);
     };
 
-    this.ul.on('mousedown', '.fa-eye', function(e) {
+    this.ul.on('mousedown', '.fa-eye', function (e) {
         e.preventDefault();
         apiStatusClear();
 
@@ -83,9 +83,9 @@ var Draggable = function(ul) {
         li.find('input').toggleClass('unused');
 
         var level = li.attr('data-level');
-        var elements = li.nextAll('li').filter(function() {
+        var elements = li.nextAll('li').filter(function () {
             return !$(this).hasClass('placeholder');
-        }).each(function() {
+        }).each(function () {
             var element = $(this);
             if (element.attr('data-level') <= level)
                 return false;
@@ -99,7 +99,7 @@ var Draggable = function(ul) {
         self.needsSave();
     });
 
-    this.ul.on('mousedown', '.fa-bars', function(e) {
+    this.ul.on('mousedown', '.fa-bars', function (e) {
         e.preventDefault();
         apiStatusClear();
 
@@ -119,14 +119,14 @@ var Draggable = function(ul) {
         }
     });
 
-    $('html').mouseup(function(e) {
+    $('html').mouseup(function (e) {
         if (self.draggee !== false) {
             e.preventDefault();
             $(document).unbind('mousemove', self.drag);
 
             self.draggee.insertAfter(self.placeholder).animate({
                 'top': (self.placeholder.offset().top + 1) + 'px'
-            }, 'fast', function() {
+            }, 'fast', function () {
                 self.placeholder.remove();
                 $(this).removeClass('draggee').css({
                     'top': '',
@@ -145,12 +145,12 @@ var Draggable = function(ul) {
         }
     });
 
-    this.ul.on('keyup', 'input', function() {
+    this.ul.on('keyup', 'input', function () {
         apiStatusClear();
         self.needsSave();
     });
 
-    this.ul.on('change', 'input', function(e) {
+    this.ul.on('change', 'input', function (e) {
         if (self.hasChange)
         {
             clearTimeout(self.saveTimeout);
@@ -159,21 +159,21 @@ var Draggable = function(ul) {
         }
     });
 
-    this.needsSave = function() {
+    this.needsSave = function () {
         self.hasChange = true;
         clearTimeout(self.saveTimeout);
         self.saveTimeout = setTimeout(self.save, 1000);
     };
 
-    this.save = function() {
+    this.save = function () {
         apiStatusWorking('Saving...');
         self.hasChange = false;
 
         var i = 0;
         var data = {};
-        var elements = $('li:not(:first)', self.ul).filter(function() {
+        var elements = $('li:not(:first)', self.ul).filter(function () {
             return !$(this).hasClass('placeholder');
-        }).each(function() {
+        }).each(function () {
             var element = $(this);
             data[i] = {
                 link_id: element.attr('data-link-id'),
@@ -187,14 +187,14 @@ var Draggable = function(ul) {
         api('/' + base_url + 'api/module/menu/index/', {
             action: 'modify_menu',
             menu: data
-        }, function() {
+        }, function () {
             apiStatusSuccess('Saved');
-        }, function() {
+        }, function () {
             apiStatusError('Saving failed');
         });
     };
 }
 
-$('ul.draggable').each(function(i, ul) {
+$('ul.draggable').each(function (i, ul) {
     new Draggable(ul);
 });

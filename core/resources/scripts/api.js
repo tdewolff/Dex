@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 	if ($('.dex.admin-bar').length)
 		$('.dex.api .status').css('top', '+=33px');
 });
@@ -12,7 +12,7 @@ function api(url, data, success, error) {
 			url: url,
 			data: data,
 			dataType: 'json',
-			success: function(data) {
+			success: function (data) {
 				if (typeof data['error'] !== 'undefined')
 				{
 					if (typeof error !== 'undefined' && error)
@@ -28,7 +28,7 @@ function api(url, data, success, error) {
 						applyTooltips();
 				}
 			},
-			error: function(data) {
+			error: function (data) {
 				if (typeof error !== 'undefined' && error)
 					if (error(data) === false)
 						return;
@@ -49,7 +49,7 @@ function apiFatal(message) {
 	$.fancybox.open({
 		content: message,
 		closeBtn: false,
-		beforeShow: function() {
+		beforeShow: function () {
 			this.skin.css({
 				'background': '#F2DEDE',
 				'color': '#B94A48',
@@ -121,10 +121,10 @@ function apiLoadStatusError(load) {
 
 var apiUpdateConsoleTimeout;
 function apiUpdateConsole(dest) {
-	apiUpdateConsoleTimeout = setTimeout(function() {
+	apiUpdateConsoleTimeout = setTimeout(function () {
 		api('/' + base_url + 'api/core/console/', {
 			action: 'console'
-		}, function(data) {
+		}, function (data) {
 			if (typeof data['status'] !== 'undefined')
 			{
 				dest.html(data['status']);
@@ -136,7 +136,7 @@ function apiUpdateConsole(dest) {
 }
 
 function apiStopConsole() {
-	setTimeout(function() {
+	setTimeout(function () {
 		clearTimeout(apiUpdateConsoleTimeout);
 	}, 1000);
 }

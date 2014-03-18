@@ -22,28 +22,28 @@
 </div>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		var diskspace = $('#diskspace');
 		var diskspace_legend = $('#diskspace-legend');
 		var diskspace_item = doT.template($('#diskspace-item').text());
 		var diskspace_legend_item = doT.template($('#diskspace-legend-item').text());
 
 		function loadDiskusage() {
-			diskspace.find('> div').slideUp('fast', function() { $(this).remove(); });
-			diskspace_legend.find('> div').slideUp('fast', function() { $(this).remove(); });
+			diskspace.find('> div').slideUp('fast', function () { $(this).remove(); });
+			diskspace_legend.find('> div').slideUp('fast', function () { $(this).remove(); });
 
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'diskspace_usage'
-			}, function(data) {
+			}, function (data) {
 				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
-				$.each(data['diskspace'], function() {
+				$.each(data['diskspace'], function () {
 					this.width = this.percentage;
 					diskspace.append(diskspace_item(this));
 				});
 
 				var percentage = 100.0 / data['diskspace'].length;
-				$.each(data['diskspace'], function() {
+				$.each(data['diskspace'], function () {
 					this.width = percentage;
 					this.percentage = parseFloat(this.percentage.toFixed(0));
 					diskspace_legend.append(diskspace_legend_item(this));
@@ -52,7 +52,7 @@
 		}
 		loadDiskusage();
 
-		$('a[data-action]').click(function() {
+		$('a[data-action]').click(function () {
 			var action = $(this).attr('data-action');
 			if (action == 'optimize_size') {
 				$.fancybox.open({
@@ -67,10 +67,10 @@
 				apiStatusWorking('Publishing site...');
 				apiUpdateConsole($('.api.console'));
 				api('/' + base_url + 'api/core/optimize-site/', {
-				}, function(data) {
+				}, function (data) {
 					apiStopConsole();
 					apiStatusSuccess('Published site');
-				}, function() {
+				}, function () {
 					apiStopConsole();
 					apiStatusError('Publishing site failed');
 					return false;
@@ -79,19 +79,19 @@
 				apiStatusWorking('Clearing logs...');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action
-				}, function(data) {
+				}, function (data) {
 					apiStatusSuccess('Cleared logs');
-				}, function() {
+				}, function () {
 					apiStatusError('Clearing log failed');
 				});
 			} else if (action == 'clear_cache') {
 				apiStatusWorking('Clearing cache...');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action
-				}, function(data) {
+				}, function (data) {
 					apiStatusSuccess('Cleared cache');
 					loadDiskusage();
-				}, function() {
+				}, function () {
 					apiStatusError('Clearing cache failed');
 				});
 			}

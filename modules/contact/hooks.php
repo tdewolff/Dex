@@ -18,11 +18,11 @@ function contact_render() {
     Module::render('index.tpl');
 }
 
-Hooks::attach('header', 1, function() {
+Hooks::attach('header', 1, function () {
     contact_render();
 });
 
-Hooks::attach('footer', -1, function() {
+Hooks::attach('footer', -1, function () {
     contact_render();
 });
 

@@ -292,7 +292,7 @@ var DexEdit = function (root) {
 
 	this.root.on('selectstart', function () {
 		self.hideMenu();
-		$(document).one('mouseup', function() {
+		$(document).one('mouseup', function () {
 			if (!self.selection.isCollapsed) {
 				var text = self.selection.toString();
 				var beginTrim = text.match(/^(\s*)/)[1].length;
@@ -319,28 +319,24 @@ var DexEdit = function (root) {
 		}
 	});
 
-	$(document).on('click', '.fancybox-wrap', function(e) {
-		//self.setRange(self.range);
-	});
-
-	this.root.on('mousedown', function(e) {
+	this.root.on('mousedown', function (e) {
 		e.stopPropagation();
 		if (self.range) {
 			self.menu.fadeOut('fast');
 		}
 	});
 
-	this.menu.on('mousedown', function(e) {
+	this.menu.on('mousedown', function (e) {
 		e.stopPropagation();
 		self.setRange(self.range);
 	});
 
-	this.menu.on('click', '.arrow', function(e) {
+	this.menu.on('click', '.arrow', function (e) {
 		e.stopPropagation();
 		self.setRange(self.range);
 	});
 
-	this.menu.on('click', 'span', function(e) {
+	this.menu.on('click', 'span', function (e) {
 		e.stopPropagation();
 
 		if (e.which == 1 && self.range) {
@@ -371,12 +367,12 @@ var DexEdit = function (root) {
 					$.fancybox.open({
 						'type': 'ajax',
 						'href': '/' + base_url + 'admin/auxiliary/insert-link/',
-						beforeShow: function() {
+						beforeShow: function () {
 							$('.fancybox-skin').css('background', 'white');
 							$('#insert_text').val(self.selection.toString());
 							applyTooltips();
 						},
-						beforeClose: function() {
+						beforeClose: function () {
 							if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
 								var title = $('#insert_title').val();
 								var url = $('#insert_url').val();
@@ -404,11 +400,11 @@ var DexEdit = function (root) {
 					$.fancybox.open({
 						'type': 'ajax',
 						'href': '/' + base_url + 'admin/auxiliary/insert-image/',
-						beforeShow: function() {
+						beforeShow: function () {
 							$('.fancybox-skin').css('background', 'white');
 							$('#insert_text').val(self.selection.toString());
 						},
-						beforeClose: function() {
+						beforeClose: function () {
 							if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
 								var title = $('#insert_title').val();
 								var url = $('#insert_url').val();

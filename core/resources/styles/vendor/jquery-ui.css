@@ -87,24 +87,24 @@
 }
 
 .ui-tooltip {
-	padding:0;
-    z-index:9000;
-    position:absolute;
-	display:inline-block;
-	background-color:#374147;
-    border:none;
-    font-size:16px;
+	padding: 0;
+    z-index: 9000;
+    position: absolute;
+	display: inline-block;
+	background-color: #374147;
+    border: none;
 
-  -webkit-border-radius:4px;
-     -moz-border-radius:4px;
-          border-radius:4px;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
 }
 
 .ui-tooltip-content {
-    padding: 0.5em 1em;
-    font-size:70%;
-    color:#F0F0F0;
-    text-align:center;
+    padding: 0.3em 0.8em;
+    color: #F0F0F0;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 11px;
 }
 
 .ui-tooltip-arrow {

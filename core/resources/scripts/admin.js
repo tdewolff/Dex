@@ -1,11 +1,4 @@
-$(function() {
-	// select first form element
-	$('form:first *:input[type!=hidden]:first').focus();
-
-	$('textarea.bottom').each(function () {
-		$(this).scrollTop(this.scrollHeight - $(this).height());
-	});
-
+$(function () {
 	// for images like in assets
     if ($.fn.fancybox) {
         $('.fancybox').fancybox({
@@ -32,15 +25,15 @@ $('html').on('click', 'a[href="#"]', function (e) {
 });
 
 // dropdown
-$('html').click(function() {
+$('html').click(function () {
 	$('.dropdown-menu').fadeOut('fast');
 });
 
-$('html').on('click', '.dropdown-menu', function(e) {
+$('html').on('click', '.dropdown-menu', function (e) {
 	e.stopPropagation();
 });
 
-$('html').on('click', '.dropdown-toggle', function(e) {
+$('html').on('click', '.dropdown-toggle', function (e) {
 	e.stopPropagation();
 
 	var dropdown = $(this).parent();
@@ -54,14 +47,14 @@ $('html').on('click', '.dropdown-toggle', function(e) {
 });
 
 // halt
-$('html').on('click', 'a.halt', function(e) {
+$('html').on('click', 'a.halt', function (e) {
 	e.preventDefault();
 	var display = $(this).css('display');
 	$(this).hide();
 	$(this).parent().find('a.sure').show().css('display', display);
 });
 
-$('html').on('mouseleave', 'a.sure', function(e) {
+$('html').on('mouseleave', 'a.sure', function (e) {
 	e.preventDefault();
 	$(this).fadeOut('fast', function() {
 		$(this).parent().find('a.halt').fadeIn('fast');

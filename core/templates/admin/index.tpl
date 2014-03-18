@@ -8,10 +8,10 @@
 <iframe class="stats-frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
 <h3>Latest errors</h3>
-<ul id="logs" class="table">
+<ul id="latest-logs" class="table">
 	<li>
-		<div style="width:150px;">Date time</div>
-		<div style="width:750px;">Message</div>
+		<div>Date time</div>
+		<div>Message</div>
 	</li>
 	<li id="load_logs" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
@@ -24,43 +24,43 @@
 
 <script id="log_item" type="text/x-dot-template">
 	<li>
-		<div style="width:150px;">{{=it.datetime}}</div>
-		<div style="width:750px;" title="{{=it.message}}">{{=it.message}}</div>
+		<div>{{=it.datetime}}</div>
+		<div title="{{=it.message}}">{{=it.message}}</div>
 	</li>
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		apiLoadStatusWorking($('#load_stats'));
-		$('.stats-frame').load(function() {
-			$('.stats-frame').ready(function() {
+		$('.stats-frame').load(function () {
+			$('.stats-frame').ready(function () {
 				api('/' + base_url + 'api/core/stats/', {
 					action: 'page-visits'
-				}, function(data) {
+				}, function (data) {
 					apiLoadStatusSuccess($('#load_stats'));
 					$('.stats-frame').slideDown();
 					$('.stats-frame')[0].contentWindow.drawStats(data['page-visits']);
-				}, function() {
+				}, function () {
 					apiLoadStatusError($('#load_stats'));
 				});
 			});
 		});
 
-		var logs = $('#logs');
+		var logs = $('#latest-logs');
 		var log_item = doT.template($('#log_item').text());
 		apiLoadStatusWorking($('#load_logs'));
 		api('/' + base_url + 'api/core/logs/', {
 			action: 'get',
 			lines: 10,
 			errors: true
-		}, function(data) {
+		}, function (data) {
 			if (!data['logs'].length) {
 				apiLoadStatusEmpty($('#load_logs'));
 				return;
 			}
 
 			apiLoadStatusSuccess($('#load_logs'));
-			$.each(data['logs'], function() {
+			$.each(data['logs'], function () {
 				var item = $(log_item(this));
 				if (this['type'] == 'ERROR')
 					item = item.addClass('error');
@@ -68,7 +68,7 @@
 					item = item.addClass('warning');
 				logs.append(item);
 			});
-		}, function() {
+		}, function () {
 			apiLoadStatusError($('#load_logs'));
 		});
 	});

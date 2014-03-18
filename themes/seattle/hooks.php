@@ -5,7 +5,7 @@ Hooks::attach('site-header', -1, function () {
     Theme::addStyle('style.css');
 });
 
-Hooks::attach('header', 0, function() {
+Hooks::attach('header', 0, function () {
     global $settings;
 
     if (isset($settings['title']))
@@ -14,7 +14,7 @@ Hooks::attach('header', 0, function() {
         echo '<h2>' . nl2br($settings['subtitle']) . '</h2>';
 });
 
-Hooks::attach('footer', 0, function() {
+Hooks::attach('footer', 0, function () {
     global $settings;
 
     echo 'Seattle Worlds Fair';

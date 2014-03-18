@@ -1,6 +1,6 @@
 <?php
 
-Hooks::attach('navigation', 0, function() {
+Hooks::attach('navigation', 0, function () {
     Module::set('menu');
 
     $menu = array();

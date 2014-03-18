@@ -1,6 +1,6 @@
-$(function() {
+$(function () {
 	var saveTimeout = null;
-	$('[data-dexeditable]').on('input', function(e) {
+	$('[data-dexeditable]').on('input', function (e) {
 		apiStatusClear();
 		clearTimeout(saveTimeout);
 		saveTimeout = setTimeout(save, 2000);
@@ -16,14 +16,14 @@ $(function() {
 
 	function adminBarLogOut() {
 		$('.dex.api').fadeOut().remove();
-		$('.dex.admin-bar .logged-in').fadeOut(function() {
+		$('.dex.admin-bar .logged-in').fadeOut(function () {
 			$('.dex.admin-bar .logged-out').fadeIn();
 		});
 		$('[data-dexeditable]').attr('contenteditable', 'false');
 	}
 
 	function adminBarForget() {
-		$('.dex.admin-bar').slideUp(function() {
+		$('.dex.admin-bar').slideUp(function () {
 			$(this).remove();
 		});
 
@@ -36,7 +36,7 @@ $(function() {
 		adminBarLogOut();
 	}, session_time * 1000);
 
-	$('.dex.admin-bar .logged-in .current-user a').click(function() {
+	$('.dex.admin-bar .logged-in .current-user a').click(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'logout'
 		}, function(data) {
@@ -44,10 +44,10 @@ $(function() {
 		});
 	});
 
-	$('.dex.admin-bar .logged-out .current-user a').click(function() {
+	$('.dex.admin-bar .logged-out .current-user a').click(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'forget'
-		}, function(data) {
+		}, function (data) {
 			adminBarForget();
 		});
 	});
@@ -62,7 +62,7 @@ function switchPopupFrame(popup) {
 
 	var frames = popup.find('> div');
 	frames.eq(1).css('display', 'inline-block');
-	popup.animate({'margin-left': '-' + frames.eq(0).width() + 'px'}, function() {
+	popup.animate({'margin-left': '-' + frames.eq(0).width() + 'px'}, function () {
 		popup.css({
 			'margin-left': '0'
 		});

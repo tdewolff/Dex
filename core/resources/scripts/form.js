@@ -1,4 +1,4 @@
-var Form = function(form) {
+var Form = function (form) {
 	var self = this;
 
 	this.form = $(form);
@@ -6,7 +6,7 @@ var Form = function(form) {
 	this.hasChange = false;
 	this.saveTimeout = null;
 
-	this.updateUnused = function(name) {
+	this.updateUnused = function (name) {
 		$.each(self.optionals, function(i, optional) {
 			if (typeof name === 'undefined' || $.inArray(name, optional) !== -1) {
 				inputs = $();
@@ -33,7 +33,7 @@ var Form = function(form) {
 	};
 	this.updateUnused();
 
-	this.form.on('input', 'input,textarea', function(e) {
+	this.form.on('input', 'input,textarea', function (e) {
 		apiStatusClear();
 
 		var input = $(e.currentTarget),
@@ -48,7 +48,7 @@ var Form = function(form) {
 			self.needsSave();
 	});
 
-	this.form.on('change', 'input,textarea,select', function(e) {
+	this.form.on('change', 'input,textarea,select', function (e) {
 		if (self.hasChange)
 		{
 			clearTimeout(self.saveTimeout);
@@ -57,24 +57,24 @@ var Form = function(form) {
 		}
 	});
 
-	this.needsSave = function() {
+	this.needsSave = function () {
 		self.hasChange = true;
 		clearTimeout(self.saveTimeout);
 		self.saveTimeout = setTimeout(self.save, 2000);
 	};
 
-	this.save = function() {
+	this.save = function () {
 		apiStatusWorking();
 		self.hasChange = false;
 
 		// put data of multi-input fields into single hidden input
-		self.form.find('input[type="hidden"]').each(function(i, hidden) {
+		self.form.find('input[type="hidden"]').each(function (i, hidden) {
 			hidden = $(hidden);
 			var name = hidden.attr('name');
 			if (typeof name !== 'undefined' && name != 'nonce')
 			{
 				var data = [];
-				self.form.find('[data-name="' + name + '"]').each(function(i, input) {
+				self.form.find('[data-name="' + name + '"]').each(function (i, input) {
 					var value = $(input).val();
 					if (value.length)
 						data.push(value);
@@ -106,7 +106,7 @@ var Form = function(form) {
 		api(window.location.href, self.form.serialize(), self.success, self.error); // AJAX
 	};
 
-	this.success = function(data) {
+	this.success = function (data) {
 		if (data['errors'].length) {
 			var errors = data['errors'].join('<br>');
 			var form_errors = self.form.find('.errors');
@@ -118,7 +118,7 @@ var Form = function(form) {
 			self.form.find('.errors').hide();
 
 		if (data['item_errors'].length)
-			$.each(data['item_errors'], function(i, item_error) {
+			$.each(data['item_errors'], function (i, item_error) {
 				var input = self.form.find('[name="' + item_error['name'] + '"], [data-name="' + item_error['name'] + '"]');
 				input.addClass('invalid');
 
@@ -141,16 +141,16 @@ var Form = function(form) {
 			apiStatusSuccess(data['response']['success']);
 	};
 
-	this.error = function(data) {
+	this.error = function (data) {
 		apiStatusError();
 	};
 
-	this.form.on('submit', function(e) {
+	this.form.on('submit', function (e) {
 		e.preventDefault();
 		if (self.form.find('button[type="submit"]').length) // make sure you can't double click the submit button
 		{
 			self.form.find('button[type="submit"]').blur().attr('disabled', 'disabled');
-			setTimeout(function() {
+			setTimeout(function () {
 				self.form.find('button[type="submit"]').removeAttr('disabled');
 			}, 1000);
 		}
@@ -258,19 +258,19 @@ var Form = function(form) {
 	});*/
 };
 
-$('form').each(function(i, form) {
+$('form').each(function (i, form) {
 	new Form(form);
 });
 
 // form password
-$('form input[data-type="password"]').each(function(i, password) {
+$('form input[data-type="password"]').each(function (i, password) {
 	password = $(password);
 	if (password.val().length)
 		$('form input[data-name="' + password.attr('name') + '"]').val('********');
 });
 
 // form array
-$('form input[data-type="array"]').each(function(i, array) {
+$('form input[data-type="array"]').each(function (i, array) {
 	array = $(array);
 	var template = doT.template($('#' + array.attr('data-template')).text()),
 		ul = $('#' + array.attr('data-ul')),
@@ -283,18 +283,18 @@ $('form input[data-type="array"]').each(function(i, array) {
 	} catch (e) {}
 
 	if (!values.length && placeholders.length)
-		$.each(placeholders, function(i, placeholder) {
+		$.each(placeholders, function (i, placeholder) {
 			ul.append(template({placeholder: placeholder, value: ''}));
 		});
 	else
 	{
 		values.push('');
-		$.each(values, function(i, value) {
+		$.each(values, function (i, value) {
 			ul.append(template({placeholder: '', value: value}));
 		});
 	}
 
-	ul.on('input', 'input,textarea', function(e) {
+	ul.on('input', 'input,textarea', function (e) {
 		var input = $(this),
 			li = input.closest('li');
 
@@ -304,7 +304,7 @@ $('form input[data-type="array"]').each(function(i, array) {
 });
 
 // form parameters
-$('form input[data-type="parameters"]').each(function(i, array) {
+$('form input[data-type="parameters"]').each(function (i, array) {
 	array = $(array);
 	var template = doT.template($('#' + array.attr('data-template')).text()),
 		ul = $('#' + array.attr('data-ul')),
@@ -315,11 +315,11 @@ $('form input[data-type="parameters"]').each(function(i, array) {
 	} catch (e) {}
 	values.push('');
 
-	$.each(values, function(key, value) {
+	$.each(values, function (key, value) {
 		ul.append(template({key: key, value: value}));
 	});
 
-	ul.on('input', 'input,textarea', function(e) {
+	ul.on('input', 'input,textarea', function (e) {
 		var input = $(this),
 			li = input.closest('li');
 

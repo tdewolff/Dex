@@ -16,38 +16,38 @@
 </script>
 
 <script type="text/javascript">
-	$(function() {
+	$(function () {
 		var themes = $('#themes');
 		var theme_item = doT.template($('#theme_item').text());
 		apiLoadStatusWorking($('#load_status'));
 		api('/' + base_url + 'api/core/themes/', {
 			action: 'get_themes'
-		}, function(data) {
+		}, function (data) {
 			if (!data['themes'].length) {
 				apiLoadStatusEmpty($('#load_status'));
 				return;
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
-			$.each(data['themes'], function() {
+			$.each(data['themes'], function () {
 				themes.append(theme_item(this));
 			});
-		}, function() {
+		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
 
-		themes.on('click', 'li', function() {
+		themes.on('click', 'li', function () {
 			apiStatusWorking('Switching theme...');
 			var item = $(this);
 			if (!item.hasClass('current'))
 				api('/' + base_url + 'api/core/themes/', {
 					action: 'change_theme',
 					theme_name: item.attr('data-theme-name')
-				}, function() {
+				}, function () {
 					apiStatusSuccess('Switched theme');
 					themes.find('li.current').removeClass('current');
 					item.addClass('current');
-				}, function() {
+				}, function () {
 					apiStatusError('Switching theme failed');
 				});
 		});

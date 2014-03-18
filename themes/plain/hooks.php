@@ -13,7 +13,7 @@ Hooks::attach('navigation', -1, function () {
     echo '<a href="/' . Common::$base_url . '" class="logo">' . $settings['title'] . '</a>';
 });
 
-Hooks::attach('header', 0, function() {
+Hooks::attach('header', 0, function () {
     global $settings;
 
     if (isset($settings['title']))

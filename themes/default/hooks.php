@@ -1,6 +1,6 @@
 <?php
 
-Hooks::attach('header', 0, function() {
+Hooks::attach('header', 0, function () {
     global $settings;
 
     if (isset($settings['title']))
