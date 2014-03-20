@@ -8,7 +8,7 @@
 		api('/' + base_url + 'api/template/static/index/', {
 			action: 'save',
 			link_id: link_id,
-			content: $('article.main').html()
+			content: getDexEditContent('article.main')
 		});
 	});
 </script>

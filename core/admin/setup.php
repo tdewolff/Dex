@@ -95,12 +95,13 @@ if ($form->submitted())
 			'content',
 			'" . Db::escape('<h3>Sample content</h3>
 			 <p>When logged in you can start editing by clicking this text. Try it!</p>
+			 <figure contenteditable="false"><img src="[base_url]res/assets/natalie-portman.jpg"></figure>
 			 <p>Select text to make it <b>bold</b> or <i>italic</i>, or to insert links, images or quotes like below:</p>
-			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn\u2019t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
-			 <hr>
+			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
+			 <hr contenteditable="false">
 			 <p>Two enters create a divider and you can create lists too:</p>
-			 <ul><li>Typing \u2018- \u2019 creates a list</li><li>And so does \u2018* \u2019 too</li></ul>
-			 <ol><li>An ordered list is created by typing \u20181. \u2019</li><li>And so forth\u2026</li><li>It must be at the beginning of a paragraph though!</li></ol>
+			 <ul><li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li></ul>
+			 <ol><li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li><li>It must be at the beginning of a paragraph though!</li></ol>
 			') . "',
 			'" . Db::escape(time()) . "'
 		);

@@ -19,7 +19,7 @@ $(function () {
 		$('.dex.admin-bar .logged-in').fadeOut(function () {
 			$('.dex.admin-bar .logged-out').fadeIn();
 		});
-		$('[data-dexeditable]').attr('contenteditable', 'false');
+		removeAllDexEdit();
 	}
 
 	function adminBarForget() {

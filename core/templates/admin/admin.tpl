@@ -1,7 +1,13 @@
 <h2>Administration</h2>
 <h3>Diskspace</h3>
 <div id="diskspace-total"></div>
-<div id="diskspace"></div>
+<div id="diskspace">
+	<span id="load_diskspace" class="api load-status">
+		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
+		<div class="error"><i class="fa fa-times"></i></div>
+		<div class="empty">empty</div>
+	</span>
+</div>
 <div id="diskspace-legend"></div>
 
 <script id="diskspace-item" type="text/x-dot-template">
@@ -32,22 +38,27 @@
 			diskspace.find('> div').slideUp('fast', function () { $(this).remove(); });
 			diskspace_legend.find('> div').slideUp('fast', function () { $(this).remove(); });
 
+			apiLoadStatusWorking($('#load_diskspace'));
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'diskspace_usage'
 			}, function (data) {
+				apiLoadStatusSuccess($('#load_diskspace'));
+
 				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
 				$.each(data['diskspace'], function () {
 					this.width = this.percentage;
-					diskspace.append(diskspace_item(this));
+					$(diskspace_item(this)).hide().appendTo(diskspace).slideDown(100);
 				});
 
 				var percentage = 100.0 / data['diskspace'].length;
 				$.each(data['diskspace'], function () {
 					this.width = percentage;
 					this.percentage = parseFloat(this.percentage.toFixed(0));
-					diskspace_legend.append(diskspace_legend_item(this));
+					$(diskspace_legend_item(this)).hide().appendTo(diskspace_legend).slideDown(100);
 				});
+			}, function () {
+				apiLoadStatusError($('#load_diskspace'));
 			});
 		}
 		loadDiskusage();
