@@ -15,14 +15,22 @@
 [data-dexeditable] {
   outline: 0;
 }
-body.dexedit_resize_nwse {
+.dexedit_img_resize_nwse {
   cursor: nwse-resize;
 }
-body.dexedit_resize_nesw {
+.dexedit_img_resize_nesw {
   cursor: nesw-resize;
 }
+.dexedit_img_placeholder {
+  display: none;
+  z-index: -1;
+  border: dashed 1px black;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 .dexedit_img {
-  display: inline-block;
+  display: block;
   position: relative;
   white-space: nowrap;
   margin: -10px;
@@ -152,6 +160,15 @@ body.dexedit_resize_nesw {
   -webkit-border-bottom-right-radius: 3px;
   -moz-border-bottom-right-radius: 3px;
   border-bottom-right-radius: 3px;
+}
+.dexedit_img > img {
+  cursor: move;
+}
+.dexedit_img > img.dexedit_img_resize_nwse {
+  cursor: nwse-resize;
+}
+.dexedit_img > img.dexedit_img_resize_nesw {
+  cursor: nesw-resize;
 }
 .dexedit_menu {
   display: none;

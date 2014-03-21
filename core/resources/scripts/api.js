@@ -75,7 +75,9 @@ function apiStatusWorking(message) {
 	apiStatusClear();
 	$('.dex.api .status div.working').delay(800).fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.working span').delay(800).html(message);
+		$('.dex.api .status div.working span').delay(800).show().html(message);
+	} else {
+		$('.dex.api .status div.working span').hide();
 	}
 }
 
@@ -83,8 +85,10 @@ function apiStatusSuccess(message) {
 	apiStatusClear();
 	$('.dex.api .status div.success').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.success span').html(message);
+		$('.dex.api .status div.success span').show().html(message);
 		setTimeout(apiStatusFade, 5000);
+	} else {
+		$('.dex.api .status div.success span').hide();
 	}
 }
 
@@ -92,7 +96,9 @@ function apiStatusError(message) {
 	apiStatusClear();
 	$('.dex.api .status div.error').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.error span').html(message);
+		$('.dex.api .status div.error span').show().html(message);
+	} else {
+		$('.dex.api .status div.error span').hide();
 	}
 }
 

@@ -10,7 +10,7 @@ $(function () {
 		$.event.trigger({
 			type: 'save'
 		});
-		apiStatusSuccess('Saved');
+		apiStatusSuccess();
 	}
 
 
