@@ -71,7 +71,7 @@ else
 						);");
 					$link_id = Db::lastId();
 				}
-				$form->setRedirect('/' . Common::$base_url . $form->get('url'));
+				$form->setRedirect('/' . Common::$base_url . 'admin/pages/');
 			}
 		$form->finish();
 	}

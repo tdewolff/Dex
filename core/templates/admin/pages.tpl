@@ -23,7 +23,7 @@
 			</a>
 		</div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
-		<div><input name="link" type="text" value="{{=it.url}}" data-link-id="{{=it.link_id}}"></div>
+		<div><input name="url" type="text" value="{{=it.url}}" data-link-id="{{=it.link_id}}" data-use-feed="true"></div>
 		<div>{{=it.content}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
@@ -90,5 +90,32 @@
 				apiStatusError('Saving page failed');
 			});
 		}
+
+		pages.on('keyup', 'input[name="title"]', function () {
+			console.log('a');
+			var link_id = $(this).attr('data-link-id');
+			if ($('#page_' + link_id + ' input[name="url"]').attr('data-use-feed') == 'true') {
+				console.log('b');
+				var link_url = $(this).val().toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
+				$('#page_' + link_id + ' input[name="url"]').val(link_url + '/');
+				$('#page_' + $(this).attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url + '/');
+			}
+		});
+
+		pages.on('keyup', 'input[name="url"]', function () {
+			$(this).attr('data-use-feed', 'false');
+			var link_url = $(this).val();
+			if (link_url[link_url.length - 1] != '/') {
+				link_url += '/';
+			}
+			$('#page_' + $(this).attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url);
+		});
+
+		pages.on('blur', 'input[name="url"]', function () {
+			var link_url = $(this).val();
+			if (link_url.length && link_url[link_url.length - 1] != '/') {
+				$(this).val(link_url + '/');
+			}
+		});
 	});
 </script>

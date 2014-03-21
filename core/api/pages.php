@@ -20,10 +20,14 @@ else if (API::action('edit_page'))
 	if (!API::has('link_id') || !API::has('title') || !API::has('url'))
 		user_error('No link ID, title or url set', ERROR);
 
+	$url = API::get('url');
+	if ($url[strlen($url) - 1] != '/')
+		$url .= '/';
+
 	Db::exec("
 	UPDATE link SET
 		title = '" . Db::escape(API::get('title')) . "',
-		url = '" . Db::escape(API::get('url')) . "'
+		url = '" . Db::escape($url) . "'
 	WHERE link_id = '" . Db::escape(API::get('link_id')) . "';
 	");
 	API::finish();
@@ -43,7 +47,7 @@ else if (API::action('get_pages'))
 		while ($row2 = $table2->fetch())
 			$row['content'][] = $row2['content'];
 		$row['content'] = strip_tags(implode(' ', $row['content']));
-		$row['content'] = strlen($row['content']) > 50 ? substr($row['content'], 0, 50) . '...' : $row['content'];
+		$row['content'] = strlen($row['content']) > 100 ? substr($row['content'], 0, 100) . '...' : $row['content'];
 		$row['length'] = Common::formatBytes(strlen($row['content']));
 		$pages[] = $row;
 	}
