@@ -101,7 +101,7 @@ if ($form->submitted())
 			 <hr contenteditable="false">
 			 <p>Two enters create a divider and you can create lists too:</p>
 			 <ul><li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li></ul>
-			 <ol><li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li><li>It must be at the beginning of a paragraph though!</li></ol>
+			 <ol><li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li></ol>
 			') . "',
 			'" . Db::escape(time()) . "'
 		);

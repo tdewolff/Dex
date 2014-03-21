@@ -168,7 +168,7 @@ if ($link)
 
 
 // load in admin bar
-if (User::getTimeLeft() !== false)
+if (User::getTimeLeft() !== false && Common::$request_url != 'admin/login/')
 {
 	Core::addStyle('vendor/font-awesome.css');
 	Core::addStyle('vendor/jquery-ui.css');
