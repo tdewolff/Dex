@@ -20,28 +20,30 @@
                 <ul></ul>
             </form>
 
-            <div id="breadcrumbs">
-            </div>
+            <div id="breadcrumbs"></div>
             <ul id="directories-assets" class="small-table">
                 <li>
-                    <div style="width:360px;">Filename</div>
-                    <div style="width:100px;">Size</div>
-                    <div style="width:40px;"></div>
+                    <div>Filename</div>
+                    <div>Size</div>
+                    <div></div>
+                </li>
+                <li id="load_directories_assets" class="dex api load-status">
+                    <div class="working"><i class="fa fa-cog fa-spin"></i></div>
+                    <div class="error"><i class="fa fa-times"></i></div>
+                    <div class="empty">empty</div>
                 </li>
             </ul>
-
-            <ul id="images" class="grid">
-            </ul>
+            <ul id="images" class="grid"></ul>
         </div>
         <div>
             <h2>Properties</h2>
             <form>
-                <p><label>Location</label><input id="insert_url" type="text" data-tooltip="External images must start with http://"></p>
-                <p><label>Description</label><input id="insert_title" type="text"></p>
-                <p><label>Alternative text</label><input id="insert_text" type="text" data-tooltip="Shown when image is unavailable"></p>
-                <p><label>Position</label><select id="insert_position"><option value="">Normal</option><option value="left">Left</option><option value="right">Right</option></select></p>
+                <input id="insert_url" type="hidden">
+                <p><label>Description</label><input id="insert_title" type="text" data-tooltip="Shown when hovering"></p>
+                <p><label>Alternative text</label><input id="insert_alt" type="text" data-tooltip="Shown when image is unavailable"></p>
+                <p><label>Caption</label><textarea id="insert_caption"></textarea></p>
                 <input id="insert_submit" type="hidden">
-                <a href="#" class="insert button"><i class="fa fa-check"></i>&ensp;Insert</a>
+                <a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;Done</a>
             </form>
         </div>
     </div>
@@ -49,9 +51,9 @@
 
 <script id="directory_item" type="text/x-dot-template">
     <li data-name="{{=it.name}}" class="directory">
-        <div style="width:360px;"><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
-        <div style="width:100px;">-</div>
-        <div style="width:40px;"></div>
+        <div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="#" data-dir="{{=it.dir}}">{{=it.name}}</a></div>
+        <div>-</div>
+        <div></div>
     </li>
 </script>
 
@@ -83,9 +85,13 @@
     var image_item = doT.template($('#image_item').text());
 
     // loading initial data
+    var first_load = true;
     function loadDir(dir) {
-        directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
-        images.find('li').slideUp('fast', function () { $(this).remove(); });
+        if (!first_load) {
+            directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
+            images.find('li').slideUp('fast', function () { $(this).remove(); });
+        }
+        first_load = false;
 
         api('/' + base_url + 'api/core/assets/', {
             action: 'get_breadcrumbs',
@@ -99,23 +105,31 @@
             });
         });
 
+        apiLoadStatusWorking($('#load_directories_assets'));
         api('/' + base_url + 'api/core/assets/', {
             action: 'get_directories',
             dir: dir
         }, function (data) {
+            if (!data['directories'].length) {
+                apiLoadStatusEmpty($('#load_directories_assets'));
+                return;
+            }
+
+            apiLoadStatusSuccess($('#load_directories_assets'));
             $.each(data['directories'], function () {
                 $(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
             });
+        }, function () {
+            apiLoadStatusError($('#load_directories_assets'));
         });
 
         api('/' + base_url + 'api/core/assets/', {
-            action: 'get_assets',
+            action: 'get_images',
             dir: dir,
             max_width: 100
         }, function (data) {
-            $.each(data['assets'], function () {
-                if (this.is_image)
-                    $(image_item(this)).hide().appendTo(images).slideDown('fast');
+            $.each(data['images'], function () {
+                $(image_item(this)).hide().appendTo(images).slideDown('fast');
             });
         });
     }

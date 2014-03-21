@@ -15,6 +15,9 @@
 [data-dexeditable] {
   outline: 0;
 }
+img {
+  display: block;
+}
 .dexedit_img_resize_nwse {
   cursor: nwse-resize;
 }
@@ -30,7 +33,7 @@
   box-sizing: border-box;
 }
 .dexedit_img {
-  display: block;
+  display: inline-block;
   position: relative;
   white-space: nowrap;
   margin: -10px;
@@ -71,6 +74,7 @@
   z-index: 1000;
   color: #F0F0F0;
   font-size: 15px;
+  height: 32px;
   background-color: #374147;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#414d54), to(#374147));
   background-image: -webkit-linear-gradient(top, #414d54, #374147);
@@ -86,6 +90,7 @@
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  height: 24px;
   font-size: 80%;
 }
 .dexedit_img > div.dexedit_img_menu > span {
@@ -176,6 +181,7 @@
   z-index: 1000;
   color: #F0F0F0;
   font-size: 15px;
+  height: 32px;
   background-color: #374147;
   background-image: -webkit-gradient(linear, left top, left bottom, from(#414d54), to(#374147));
   background-image: -webkit-linear-gradient(top, #414d54, #374147);
@@ -242,6 +248,7 @@
 }
 .dexedit_menu > span.dexedit_menu_h4 {
   font-size: 80%;
+  vertical-align: top;
 }
 .dexedit_menu > .dexedit_menu_arrow,
 .dexedit_menu > .dexedit_menu_arrow_upsidedown {

@@ -18,11 +18,11 @@
         <div>
             <h2>Link properties</h2>
             <form>
+                <input id="insert_url" type="hidden"></p>
                 <p><label>Text</label><input id="insert_text" type="text" data-tooltip="Clickable text"></p>
-                <p><label>Location</label><input id="insert_url" type="text" data-tooltip="External links must start with http://"></p>
-                <p><label>Description</label><input id="insert_title" type="text"></p>
+                <p><label>Description</label><input id="insert_title" type="text" data-tooltip="Shown when hovering"></p>
                 <input id="insert_submit" type="hidden">
-                <a href="#" class="insert button"><i class="fa fa-check"></i>&ensp;Insert</a>
+                <a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;Done</a>
             </form>
         </div>
     </div>

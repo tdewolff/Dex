@@ -144,24 +144,29 @@
 				apiLoadStatusError($('#load_status_directories'));
 			});
 
-			apiLoadStatusWorking($('#load_status_images'));
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'get_assets',
+				dir: dir
+			}, function (data) {
+				$.each(data['assets'], function () {
+					$(asset_item(this)).hide().appendTo(directories_assets).slideDown(100);
+				});
+			});
+
+			apiLoadStatusWorking($('#load_status_images'));
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_images',
 				dir: dir,
 				max_width: 200
 			}, function (data) {
-				if (!data['assets'].length) {
+				if (!data['images'].length) {
 					apiLoadStatusEmpty($('#load_status_images'));
 					return;
 				}
 
 				apiLoadStatusSuccess($('#load_status_images'));
-				$.each(data['assets'], function () {
-					if (this.is_image) {
-						$(image_item(this)).hide().appendTo(images).slideDown(100);
-					} else {
-						$(asset_item(this)).hide().appendTo(directories_assets).slideDown(100);
-					}
+				$.each(data['images'], function () {
+					$(image_item(this)).hide().appendTo(images).slideDown(100);
 				});
 			}, function () {
 				apiLoadStatusError($('#load_status_images'));

@@ -6,7 +6,13 @@ var DexEdit = function (root) {
 	this.root = $(root).attr('contenteditable', 'true');
 	this.menu = $('<div class="dexedit_menu">\
 		<div class="dexedit_menu_arrow"></div>\
-		<span class="dexedit_menu_b"><i class="fa fa-fw fa-bold"></i></span><span class="dexedit_menu_i"><i class="fa fa-fw fa-italic"></i></span><span class="dexedit_menu_h3">H3</span><span class="dexedit_menu_h4">H4</span><span class="dexedit_menu_blockquote"><i class="fa fa-fw fa-quote-right"></i></span><span class="dexedit_menu_link"><i class="fa fa-fw fa-link"></i></span><span class="dexedit_menu_image"><i class="fa fa-fw fa-picture-o"></i></span>\
+<span class="dexedit_menu_b"><i class="fa fa-fw fa-bold"></i></span>\
+<span class="dexedit_menu_i"><i class="fa fa-fw fa-italic"></i></span>\
+<span class="dexedit_menu_h3">H3</span><span class="dexedit_menu_h4">H4</span>\
+<span class="dexedit_menu_blockquote"><i class="fa fa-fw fa-quote-right"></i></span>\
+<span class="dexedit_menu_link"><i class="fa fa-fw fa-link"></i></span>\
+<span class="dexedit_menu_image"><i class="fa fa-fw fa-picture-o"></i></span>\
+<span class="dexedit_menu_asset"><i class="fa fa-fw fa fa-download"></i></span>\
 	</div>').prependTo(this.root);
 
 	this.root.find('figure, hr').attr('contenteditable', 'false');
@@ -67,7 +73,7 @@ var DexEdit = function (root) {
 		var rect = range.getClientRects()[0];
 
 		var top = window.scrollY + rect.top - self.menu.height() - 6;
-		if (top < 38) { // include admin-bar
+		if (top - window.scrollY < 38) { // include admin-bar
 			top = window.scrollY + rect.bottom + 6;
 			self.menu.find('.dexedit_menu_arrow').addClass('dexedit_menu_arrow_upsidedown');
 		} else {
@@ -338,15 +344,19 @@ var DexEdit = function (root) {
 					'href': '/' + base_url + 'admin/auxiliary/insert-image/',
 					beforeShow: function () {
 						$('.fancybox-skin').css('background', 'white');
-						$('#insert_text').val(self.selection.toString());
+						$('#insert_alt').val(self.selection.toString());
 					},
 					beforeClose: function () {
 						if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
 							var title = $('#insert_title').val();
 							var url = $('#insert_url').val();
-							var text = $('#insert_text').val();
+							var alt = $('#insert_alt').val();
+							var caption = $('#insert_caption').val();
+							if (caption.length) {
+								caption = '<figcaption>' + caption + '</figcaption>';
+							}
 
-							var figure = $('<figure style="float: left;"><img src="' + url + '" title="' + title + '" alt="' + text + '"></figure>');
+							var figure = $('<figure><img src="' + url + '" title="' + title + '" alt="' + alt + '">' + caption + '</figure>');
 							figure.insertBefore(self.getBlock());
 							new DexEditImg(self.root, figure.find('img'));
 
@@ -361,15 +371,52 @@ var DexEdit = function (root) {
 						}
 					}
 				});
+			} else if (target.hasClass('dexedit_menu_asset')) {
+				self.setRange(self.range);
+				if (self.hasParentTag(self.range.commonAncestorContainer, 'a')) {
+					self.removeLink();
+				} else {
+					$.fancybox.open({
+						'type': 'ajax',
+						'href': '/' + base_url + 'admin/auxiliary/insert-asset/',
+						beforeShow: function () {
+							$('.fancybox-skin').css('background', 'white');
+							$('#insert_text').val(self.selection.toString());
+							applyTooltips();
+						},
+						beforeClose: function () {
+							if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
+								var title = $('#insert_title').val();
+								var url = $('#insert_url').val();
+								var text = $('#insert_text').val();
+
+								self.setRange(self.range);
+								self.insertLink(url, title, text);
+							} else {
+								self.setRange(self.range);
+							}
+						},
+						helpers:  {
+							overlay: {
+								locked: false
+							}
+						}
+					});
+				}
 			}
 		}
 	});
 
 	// keyboard
-	this.root.on('keyup', function (e) {
+	this.root.on('keydown', function (e) {
 		if (e.keyCode == 8 || e.keyCode == 46) { // backspace or delete
 			self.hideMenu();
-		} else if (e.keyCode === 13) { // enter
+		}
+	});
+
+	this.root.on('keyup', function (e) {
+		// TODO: move to keydown for faster response
+		if (e.keyCode === 13) { // enter
 			// insert horizontal rule
 			var paragraph = self.getParentTag(self.selection.anchorNode, 'p');
 			if (paragraph && paragraph.previousSibling) {
@@ -400,12 +447,7 @@ var DexEdit = function (root) {
 		}
 
 		if (self.selection.isCollapsed) {
-			// FF will return sel.anchorNode to be the parentNode when the triggered keyCode is 13
-			//if (!self.selection.anchorNode || self.selection.anchorNode.nodeName === 'ARTICLE') {
-			//	return;
-			//}
-
-			if (self.selection.anchorNode.parentNode.nodeName === 'p') {
+			if (self.selection.anchorNode.parentNode.nodeName.toLowerCase() === 'p') {
 				var text = self.getText(self.selection.anchorNode);
 				if (text.match(/^[-*]\s/)) {
 					self.insertList('ul');
@@ -414,7 +456,7 @@ var DexEdit = function (root) {
 				}
 			}
 
-			var preCaretText = self.getText(self.selection.anchorNode);//.substring(0, self.selection.anchorOffset);
+			var preCaretText = self.getText(self.selection.anchorNode);
 			var oldPreCaretText = preCaretText;
 			preCaretText = preCaretText.replace(/(^|[-\u2013\u2014\s(\["])'|()`/g, "$1\u2018");						// opening singles
 			preCaretText = preCaretText.replace(/'/g, "\u2019");													// closing singles & apostrophes
@@ -433,7 +475,7 @@ var DexEdit = function (root) {
 				var parent = self.selection.anchorNode.parentNode;
 				var offset = self.selection.anchorOffset + (preCaretText.length - oldPreCaretText.length);
 
-				self.setText(self.selection.anchorNode, preCaretText);// + self.getText(self.selection.anchorNode).substring(self.selection.anchorOffset));
+				self.setText(self.selection.anchorNode, preCaretText);
 
 				var range = document.createRange();
 				range.setStart(parent.childNodes[0], offset);
@@ -462,6 +504,8 @@ var DexEditImg = function (root, img) {
 	this.img_menu = $('<div class="dexedit_img_menu">\
 		<span class="dexedit_img_menu_left"><i class="fa fa-fw fa-chevron-left"></i></span><span class="dexedit_img_menu_edit"><i class="fa fa-fw fa-edit"></i></span><span class="dexedit_img_menu_center"><i class="fa fa-fw fa-square"></i></span><span class="dexedit_img_menu_trash"><i class="fa fa-fw fa-trash-o"></i></span><span class="dexedit_img_menu_right"><i class="fa fa-fw fa-chevron-right"></i></span>\
 	</div>').prependTo(this.wrapper);
+
+	self.img_ratio = 0;
 
 	this.resizing = false;
 	this.dragging = false;
@@ -503,15 +547,6 @@ var DexEditImg = function (root, img) {
 		});
 	}
 
-	setTimeout(function () { // race condition
-		if (self.img[0].width == 0 || self.img[0].height == 0) {
-			self.img_ratio = 1;
-		} else {
-			self.img_ratio = self.img[0].height / self.img[0].width;
-		}
-		self.setDimensions(self.img[0].width, self.img[0].height);
-	}, 0);
-
 	this.getPreviousBlock = function (node) {
 		node = node.previousSibling;
 		while (node) {
@@ -538,6 +573,10 @@ var DexEditImg = function (root, img) {
 		if (self.resizing === false) {
 			$(document).unbind('mousemove', self.resize);
 			return;
+		}
+
+		if (self.img_ratio == 0) {
+			self.img_ratio = self.img[0].height / self.img[0].width;
 		}
 
 		var diff_x = (e.pageX - self.drag_start_x) * self.drag_sign_x;
@@ -680,7 +719,39 @@ var DexEditImg = function (root, img) {
 				if (buttonTarget.hasClass('dexedit_img_menu_left')) {
 					self.figure.css('float', 'left');
 				} else if (buttonTarget.hasClass('dexedit_img_menu_edit')) {
-					//self.figure.css('float', 'right');
+					$.fancybox.open({
+						'type': 'ajax',
+						'href': '/' + base_url + 'admin/auxiliary/insert-image/',
+						beforeShow: function () {
+							$('.fancybox-skin').css('background', 'white');
+							$('#insert_title').val(self.img.attr('title'));
+							$('#insert_alt').val(self.img.attr('alt'));
+							$('#insert_caption').val(self.img.attr('alt'));
+							preSwitchPopupFrame($('.popup'));
+						},
+						beforeClose: function () {
+							if ($('#insert_submit').val() == 1) {
+								self.img.attr('title', $('#insert_title').val());
+								self.img.attr('alt', $('#insert_alt').val());
+
+								var caption = $('#insert_caption').val();
+								if (caption.length) {
+									if (!self.figure.find('figcaption').length) {
+										self.figure.append('<figcaption></figcaption>');
+									}
+									self.figure.find('figcaption').html(caption);
+								} else {
+									self.figure.find('figcaption').remove();
+								}
+								self.root.trigger('input');
+							}
+						},
+						helpers:  {
+							overlay: {
+								locked: false
+							}
+						}
+					});
 				} else if (buttonTarget.hasClass('dexedit_img_menu_center')) {
 					self.figure.css('float', '');
 				} else if (buttonTarget.hasClass('dexedit_img_menu_trash')) {
@@ -697,6 +768,11 @@ var DexEditImg = function (root, img) {
 				if (self.hovering === true) {
 					self.img_menu.stop().fadeOut('fast');
 					self.img_resize.stop().fadeOut('fast');
+				}
+
+				if (self.img_ratio == 0) {
+					self.img_ratio = self.img[0].height / self.img[0].width;
+					self.setDimensions(self.img[0].width, self.img[0].height);
 				}
 
 				self.dragging = true;

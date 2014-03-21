@@ -4,6 +4,10 @@
 	outline: 0;
 }
 
+img {
+	display: block;
+}
+
 .dexedit_img_resize_nwse {
 	cursor: nwse-resize;
 }
@@ -18,6 +22,7 @@
 	z-index: 1000;
 	color:#F0F0F0;
 	font-size: 15px;
+	height: 32px;
 
 	.css-gradient(#414D54, @dark);
 	.border-radius(4px);
@@ -76,7 +81,7 @@
 }
 
 .dexedit_img {
-	display: block;
+	display: inline-block;
 	position: relative;
 	white-space: nowrap;
 
@@ -123,6 +128,7 @@
 		.dexmenu();
 		.border-radius(3px);
 
+		height: 24px;
 		font-size: 80%;
 
 		>span {
@@ -159,6 +165,7 @@
 
 	>span.dexedit_menu_h4 {
 		font-size:80%;
+		vertical-align: top;
 	}
 
 	>.dexedit_menu_arrow, >.dexedit_menu_arrow_upsidedown {

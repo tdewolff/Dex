@@ -57,6 +57,8 @@ span.amp {
   width: 100%;
   text-align: center;
   white-space: nowrap;
+  font-size: 12px;
+  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
 }
 .api.load-status > div.empty {
   color: #D0D0D0;

@@ -13,6 +13,14 @@ $(function () {
 		apiStatusSuccess();
 	}
 
+	$(document).on('keydown', function (e) {
+	    if (e.ctrlKey && e.which === 83) {
+	        e.preventDefault();
+	        save();
+	        return false;
+	    }
+	});
+
 
 	function adminBarLogOut() {
 		$('.dex.api').fadeOut().remove();
@@ -69,4 +77,11 @@ function switchPopupFrame(popup) {
 		frames.eq(0).css('display', 'none');
 		parent.$.fancybox.update();
 	});
+}
+
+function preSwitchPopupFrame(popup) {
+	var frames = popup.find('> div');
+	frames.eq(1).css('display', 'inline-block');
+	frames.eq(0).css('display', 'none');
+	parent.$.fancybox.update();
 }

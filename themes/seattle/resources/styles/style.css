@@ -37,12 +37,12 @@ header {
     text-align: center;
 }
 
-h1 {
+header h1 {
     margin:0;
     font-size:300%;
 }
 
-h2 {
+header h2 {
     display:none;
 }
 

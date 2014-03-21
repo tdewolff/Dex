@@ -154,10 +154,42 @@ else if (API::action('get_directories'))
 	API::set('directories', $directories);
 	API::finish();
 }
-else if (API::action('get_assets'))
+else if (API::action('get_images'))
 {
 	$max_width = API::has('max_width') ? API::get('max_width') : 0;
 
+	$images = array();
+	$handle = opendir('assets/' . $dir);
+	while (($name = readdir($handle)) !== false)
+	{
+		if (is_file('assets/' . $dir . $name) && !Common::hasMinExtension($name))
+		{
+			$last_slash = strrpos($name, '/');
+			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
+			$extension = substr($name, strrpos($name, '.') + 1);
+
+			if (Resource::isImage($extension))
+			{
+				list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
+				$images[] = array(
+					'url' => $dir . $name,
+					'name' => $name,
+					'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+					'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
+					'width' => $width,
+					'attr' => Resource::imageSizeAttributes(explode('/', 'res/assets/' . $dir . $name), $max_width)
+				);
+			}
+		}
+	}
+	Common::sortOn($images, 'name');
+
+	API::set('images', $images);
+	API::finish();
+}
+else if (API::action('get_assets'))
+{
 	$assets = array();
 	$handle = opendir('assets/' . $dir);
 	while (($name = readdir($handle)) !== false)
@@ -168,19 +200,18 @@ else if (API::action('get_assets'))
 			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 			$extension = substr($name, strrpos($name, '.') + 1);
 
-			list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
-			$assets[] = array(
-				'url' => $dir . $name,
-				'name' => $name,
-				'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
-				'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-				'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
-				'width' => $width,
-				'is_image' => Resource::isImage($extension)
-			);
-
-			if (Resource::isImage($extension))
-				$assets[count($assets) - 1]['attr'] = Resource::imageSizeAttributes(explode('/', 'res/assets/' . $dir . $name), $max_width);
+			if (!Resource::isImage($extension))
+			{
+				list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
+				$assets[] = array(
+					'url' => $dir . $name,
+					'name' => $name,
+					'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+					'size' => Common::formatBytes(filesize('assets/' . $dir . $name), 2),
+					'width' => $width
+				);
+			}
 		}
 	}
 	Common::sortOn($assets, 'name');

@@ -9,7 +9,7 @@
 </div>
 <?php } ?>
 
-<?php if (User::getTimeLeft() !== false) { ?>
+<?php if (User::getTimeLeft() !== false || Common::requestAdmin()) { ?>
 <div class="dex admin-bar">
 	<?php if (Db::isValid()) { if (User::getTimeLeft() > 0) { ?>
 	<div class="logged-in">

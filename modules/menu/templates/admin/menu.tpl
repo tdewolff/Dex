@@ -4,7 +4,7 @@
         <div></div>
         <div></div>
         <div>Name</div>
-        <div>Title</div>
+        <div>Page title</div>
         <div>Link</div>
     </li>
 </ul>
@@ -28,12 +28,12 @@
         }, function (data) {
             $.each(data['menu'], function () {
                 var item = $(menu_item(this));
-
                 item.find('.fa-long-arrow-right').hide();
-                var level = item.attr('data-level');
-                for (var i = 0; i < level; i++)
-                    item.find('.fa-long-arrow-right').eq(i).show();
 
+                var level = item.attr('data-level');
+                for (var i = 0; i < level; i++) {
+                    item.find('.fa-long-arrow-right').eq(i).show();
+                }
                 menu.append(item);
             });
         });
