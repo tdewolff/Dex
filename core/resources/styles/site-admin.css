@@ -1003,11 +1003,13 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   vertical-align: middle;
   display: inline-block;
   white-space: normal;
+  margin: 30px 0;
 }
 .dex.popup-wrapper .popup > div:not(:first-of-type) {
   display: none;
 }
 .dex.popup-wrapper .popup h2 {
+  margin-top: 0;
   padding-bottom: 0;
 }
 .dex.popup-wrapper .popup #external-link {

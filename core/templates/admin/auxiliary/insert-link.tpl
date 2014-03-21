@@ -2,12 +2,12 @@
     <div class="popup">
         <div>
             <h2>Insert link</h2>
-            <h3>External link</h3>
+            <h3>Website link</h3>
             <div id="external-link">
                 <input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button"><i class="fa fa-arrow-right"></i>&ensp;Properties</a>
             </div>
 
-            <h3>Internal links</h3>
+            <h3>Page links</h3>
             <ul id="links" class="small-table">
               <li>
                 <div style="width:120px;">Title</div>
@@ -47,7 +47,7 @@
     });
 
     var popup = $('.popup');
-    links.on('click', 'li', function () {
+    links.on('click', 'li:not(:first)', function () {
         $('#insert_title').val($(this).attr('data-title'));
         $('#insert_url').val($(this).attr('data-url'));
         switchPopupFrame(popup);

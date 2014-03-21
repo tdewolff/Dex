@@ -16,13 +16,13 @@
 		<div class="navigate">Go to <?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
 		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="<?php echo (Common::requestAdmin() ? '/' . $_['base_url'] . 'admin/' : '#'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
 	</div>
-	<?php } ?>
+	<?php } if (!Common::requestAdmin() || User::loggedIn()) { ?>
 	<div class="logged-out">
 		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/">log back in</a></div>
 		<?php if (!Common::requestAdmin()) { ?>
 		<div class="current-user"><a href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
 		<?php } ?>
 	</div>
-	<?php } ?>
+	<?php } } ?>
 </div>
 <?php } ?>

@@ -7,7 +7,7 @@ var DexEdit = function (root) {
 	this.menu = $('<div class="dexedit_menu">\
 		<div class="dexedit_menu_arrow"></div>\
 		<span class="dexedit_menu_b"><i class="fa fa-fw fa-bold"></i></span><span class="dexedit_menu_i"><i class="fa fa-fw fa-italic"></i></span><span class="dexedit_menu_h3">H3</span><span class="dexedit_menu_h4">H4</span><span class="dexedit_menu_blockquote"><i class="fa fa-fw fa-quote-right"></i></span><span class="dexedit_menu_link"><i class="fa fa-fw fa-link"></i></span><span class="dexedit_menu_image"><i class="fa fa-fw fa-picture-o"></i></span>\
-	</div>').prependTo('body');
+	</div>').prependTo(this.root);
 
 	this.root.find('figure, hr').attr('contenteditable', 'false');
 	this.root.find('img').each(function (i, img) {
@@ -25,13 +25,15 @@ var DexEdit = function (root) {
 
 	this.setRange = function (range) {
 		self.selection.removeAllRanges();
-		self.selection.addRange(range);
-		self.range = range;
+		if (range !== null) {
+			self.selection.addRange(range);
+			self.range = range;
 
-		if (!range.collapsed && !/^[\s]+$/.test(self.selection.toString())) {
-			self.repositionMenu(range);
-		} else {
-			self.hideMenu();
+			if (!range.collapsed && !/^[\s]+$/.test(self.selection.toString())) {
+				self.repositionMenu(range);
+			} else {
+				self.hideMenu();
+			}
 		}
 	}
 	this.range = null;
@@ -41,7 +43,7 @@ var DexEdit = function (root) {
 		while (node.parentNode) {
 			if (node === self.root[0]) {
 				break;
-			} else if (node.nodeName === 'DIV' || node.nodeName === 'UL' || node.nodeName === 'OL' || node.nodeName === 'P' || node.nodeName === 'H3' || node.nodeName === 'H4' || node.nodeName === 'BLOCKQUOTE') {
+			} else if (node.nodeName.toLowerCase() === 'div' || node.nodeName.toLowerCase() === 'hr' || node.nodeName.toLowerCase() === 'ul' || node.nodeName.toLowerCase() === 'ol' || node.nodeName.toLowerCase() === 'p' || node.nodeName.toLowerCase() === 'h3' || node.nodeName.toLowerCase() === 'h4' || node.nodeName.toLowerCase() === 'blockquote') {
 				return node;
 			}
 			node = node.parentNode;
@@ -76,12 +78,12 @@ var DexEdit = function (root) {
 		if (left < 5) {
 			left = 5;
 			self.menu.find('.dexedit_menu_arrow').css({
-				left: rect.left + rect.width / 2 - 5
+				left: rect.left + rect.width / 2 - left
 			});
 		} else if (left + self.menu.width() > window.innerWidth - 5) {
 			left = window.innerWidth - self.menu.width() - 5;
 			self.menu.find('.dexedit_menu_arrow').css({
-				left: rect.left + rect.width / 2 - 5
+				left: rect.left + rect.width / 2 - left
 			});
 		} else {
 			self.menu.find('.dexedit_menu_arrow').css({
@@ -101,25 +103,25 @@ var DexEdit = function (root) {
 			self.menu.find('.dexedit_menu_i').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'H3')) {
+		if (self.hasParentTag(range.commonAncestorContainer, 'h3')) {
 			self.menu.find('.dexedit_menu_h3').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_h3').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'H4')) {
+		if (self.hasParentTag(range.commonAncestorContainer, 'h4')) {
 			self.menu.find('.dexedit_menu_h4').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_h4').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'BLOCKQUOTE')) {
+		if (self.hasParentTag(range.commonAncestorContainer, 'blockquote')) {
 			self.menu.find('.dexedit_menu_blockquote').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_blockquote').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'A')) {
+		if (self.hasParentTag(range.commonAncestorContainer, 'a')) {
 			self.menu.find('.dexedit_menu_link').addClass('enabled');
 			self.menu.find('.dexedit_menu_link > i').attr('class', 'fa fa-unlink');
 		} else {
@@ -159,7 +161,7 @@ var DexEdit = function (root) {
 		while (node.parentNode) {
 			if (node === self.root[0]) {
 				return null;
-			} else if (node.nodeName === tag) {
+			} else if (node.nodeName.toLowerCase() === tag) {
 				return node;
 			}
 			node = node.parentNode;
@@ -188,10 +190,10 @@ var DexEdit = function (root) {
 	this.toggleFormat = function (tag) {
 		var action = '';
 		switch (tag) {
-		case 'B':
+		case 'b':
 			action = 'bold';
 			break;
-		case 'I':
+		case 'i':
 			action = 'italic';
 			break;
 		}
@@ -203,127 +205,104 @@ var DexEdit = function (root) {
 	this.toggleFormatBlock = function (tag) {
 		var block = self.getBlock();
 		if (block) {
-			// TODO: removes, was used to select all text in block
-			//var parent = block.parentNode;
-			//block = block.previousSibling;
-
 			if (!self.hasParentTag(self.range.commonAncestorContainer, tag)) {
-				document.execCommand('formatBlock', false, tag);
+				document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
 			} else {
-				document.execCommand('formatBlock', false, 'P');
+				document.execCommand('formatBlock', false, '<P>');
 				document.execCommand('outdent', false);
 			}
 			self.setRange(self.selection.getRangeAt(0));
-
-			/*if (block === null) {
-				block = parent.childNodes[0];
-			} else {
-				block = block.nextSibling;
-			}
-
-			var range = document.createRange();
-			range.selectNodeContents(block);
-			self.setRange(range);*/
 		}
 	}
 
-	this.toggleLink = function (link) {
-		if (self.hasParentTag(self.range.commonAncestorContainer, 'A')) {
-			document.execCommand('unlink', false);
-		} else {
-			document.execCommand('createLink', false, link);
-		}
+	this.removeLink = function (link) {
+		document.execCommand('unlink', false);
 		self.setRange(self.selection.getRangeAt(0));
 	}
 
-	this.replaceText = function (text) {
-		var startContainer = self.range.startContainer;
-		var startOffset = self.range.startOffset;
-		var endContainer = self.range.endContainer;
-		var endOffset = self.range.endOffset;
+	this.insertLink = function (url, title, text) {
+		var a = document.createElement('a');
+		a.appendChild(document.createTextNode(text));
+		a.title = title;
+		a.href = url;
 
-		document.execCommand('insertText', false, text);
-
-		var range = document.createRange();
-		range.setStart(startContainer, startOffset);
-		range.setEnd(endContainer, text.length);
-		self.setRange(range);
+		self.range.deleteContents();
+		self.range.insertNode(a);
+		self.range.setStartAfter(a);
+		self.setRange(self.range);
 	}
 
 	this.insertList = function (tag) {
-		document.execCommand(tag === 'OL' ? 'insertOrderedList' : 'insertUnorderedList');
+		document.execCommand(tag === 'ol' ? 'insertOrderedList' : 'insertUnorderedList');
 		self.setText(self.selection.anchorNode, '');
 		self.setRange(self.selection.getRangeAt(0));
 	}
 
-	this.root.on('selectstart', function () {
-		self.hideMenu();
-		$(document).one('mouseup', function () {
-			if (!self.selection.isCollapsed) {
-				var text = self.selection.toString();
-				var beginTrim = text.match(/^(\s*)/)[1].length;
-				var endTrim = text.match(/(\s*)$/)[1].length;
+	this.root.on('selectstart', function (e) {
+		if (!self.hasParentClass(e.target, 'dexedit_menu')) {
+			self.hideMenu();
+			$(document).one('mouseup', function () {
+				if (!self.selection.isCollapsed) {
+					var text = self.selection.toString();
+					var beginTrim = text.match(/^(\s*)/)[1].length;
+					var endTrim = text.match(/(\s*)$/)[1].length;
 
-				// remove whitespace begin and end of selection
-				var range = document.createRange();
-				if (!self.isBackwards()) {
-					range.setStart(self.selection.anchorNode, self.selection.anchorOffset + beginTrim <= self.getText(self.selection.anchorNode).length ? self.selection.anchorOffset + beginTrim : self.getText(self.selection.anchorNode).length);
-					range.setEnd(self.selection.focusNode, self.selection.focusOffset - endTrim > 0 ? self.selection.focusOffset - endTrim : 0);
-				} else {
-					range.setStart(self.selection.focusNode, self.selection.focusOffset + beginTrim <= self.getText(self.selection.focusNode).length ? self.selection.focusOffset + beginTrim : self.getText(self.selection.focusNode).length);
-					range.setEnd(self.selection.anchorNode, self.selection.anchorOffset - endTrim > 0 ? self.selection.anchorOffset - endTrim : 0);
+					// remove whitespace begin and end of selection
+					var range = document.createRange();
+					if (!self.isBackwards()) {
+						range.setStart(self.selection.anchorNode, self.selection.anchorOffset + beginTrim <= self.getText(self.selection.anchorNode).length ? self.selection.anchorOffset + beginTrim : self.getText(self.selection.anchorNode).length);
+						range.setEnd(self.selection.focusNode, self.selection.focusOffset - endTrim > 0 ? self.selection.focusOffset - endTrim : 0);
+					} else {
+						range.setStart(self.selection.focusNode, self.selection.focusOffset + beginTrim <= self.getText(self.selection.focusNode).length ? self.selection.focusOffset + beginTrim : self.getText(self.selection.focusNode).length);
+						range.setEnd(self.selection.anchorNode, self.selection.anchorOffset - endTrim > 0 ? self.selection.anchorOffset - endTrim : 0);
+					}
+					self.setRange(range);
 				}
-				self.setRange(range);
-			}
-		});
+			});
+		}
 	});
 
 	// mouse
-	$(document).on('mousedown', function (e) {
-		if (!self.hasParentClass(e.toElement, 'fancybox-wrap')) {
+	$('html').on('mousedown', function (e) {
+		if (!self.hasParentClass(e.target, 'fancybox-wrap') && !self.hasParentClass(e.target, 'dexedit_menu')) {
 			self.menu.stop().fadeOut('fast');
 		}
 	});
 
 	this.root.on('mousedown', function (e) {
-		e.stopPropagation();
-		if (self.range) {
+		if (!((e.target.nodeName.toLowerCase() == 'i' || e.target.nodeName.toLowerCase() == 'span') && self.hasParentClass(e.target, 'dexedit_menu')) && self.range) {
+			e.stopPropagation();
 			self.menu.stop().fadeOut('fast');
 		}
 	});
 
-	this.menu.on('mousedown', function (e) {
-		e.stopPropagation();
-		self.setRange(self.range);
-	});
-
-	this.menu.on('click', '.arrow', function (e) {
-		e.stopPropagation();
-		self.setRange(self.range);
+	this.root.on('mouseup', function (e) {
+		if (self.isFirefox && !self.hasParentClass(e.target, 'dexedit_menu')) {
+			self.root.trigger('selectstart'); // FF
+		}
 	});
 
 	this.menu.on('click', 'span', function (e) {
 		e.stopPropagation();
-
 		if (e.which == 1 && self.range) {
 			// reselect text after blur due to button click
 			self.setRange(self.range);
 
 			var target = $(this);
 			if (target.hasClass('dexedit_menu_b')) {
-				self.toggleFormat('B');
+				self.toggleFormat('b');
 			} else if (target.hasClass('dexedit_menu_i')) {
-				self.toggleFormat('I');
+				self.toggleFormat('i');
 			} else if (target.hasClass('dexedit_menu_h3')) {
-				self.toggleFormatBlock('H3');
+				self.toggleFormatBlock('h3');
 			} else if (target.hasClass('dexedit_menu_h4')) {
-				self.toggleFormatBlock('H4');
+				self.toggleFormatBlock('h4');
 			} else if (target.hasClass('dexedit_menu_blockquote')) {
-				self.toggleFormatBlock('BLOCKQUOTE');
+				self.toggleFormatBlock('blockquote');
 			} else if (target.hasClass('dexedit_menu_link')) {
 				self.setRange(self.range);
-				if (self.hasParentTag(self.range.commonAncestorContainer, 'A')) {
-					self.toggleLink();
+				if (self.hasParentTag(self.range.commonAncestorContainer, 'a')) {
+					self.removeLink();
 				} else {
 					$.fancybox.open({
 						'type': 'ajax',
@@ -340,9 +319,9 @@ var DexEdit = function (root) {
 								var text = $('#insert_text').val();
 
 								self.setRange(self.range);
-								self.toggleLink(url);
-								self.replaceText(text);
-								self.range.commonAncestorContainer.parentNode.title = title;
+								self.insertLink(url, title, text);
+							} else {
+								self.setRange(self.range);
 							}
 						},
 						helpers:  {
@@ -392,12 +371,12 @@ var DexEdit = function (root) {
 			self.hideMenu();
 		} else if (e.keyCode === 13) { // enter
 			// insert horizontal rule
-			var paragraph = self.getParentTag(self.selection.anchorNode, 'P');
+			var paragraph = self.getParentTag(self.selection.anchorNode, 'p');
 			if (paragraph && paragraph.previousSibling) {
 				var previousParagraph = paragraph.previousSibling;
-				if (previousParagraph.nodeName === 'P'	&& !previousParagraph.textContent.length) {
-					if (!previousParagraph.previousSibling || previousParagraph.previousSibling.nodeName !== 'HR') {
-						var hr = document.createElement("hr");
+				if (previousParagraph.nodeName.toLowerCase() === 'p' && !previousParagraph.textContent.length) {
+					if (!previousParagraph.previousSibling || previousParagraph.previousSibling.nodeName.toLowerCase() !== 'hr') {
+						var hr = document.createElement('hr');
 						hr.contentEditable = false;
 						previousParagraph.parentNode.replaceChild(hr, previousParagraph);
 					}
@@ -415,8 +394,8 @@ var DexEdit = function (root) {
 			self.setRange(range);
 
 			var block = self.getBlock();
-			if (block && (block.nodeName === 'DIV' || block.nodeName === 'BLOCKQUOTE')) {
-				self.toggleFormatBlock('P');
+			if (block && (block.nodeName.toLowerCase() === 'div' || block.nodeName.toLowerCase() === 'blockquote')) {
+				self.toggleFormatBlock('p');
 			}
 		}
 
@@ -426,12 +405,12 @@ var DexEdit = function (root) {
 			//	return;
 			//}
 
-			if (self.selection.anchorNode.parentNode.nodeName === 'P') {
+			if (self.selection.anchorNode.parentNode.nodeName === 'p') {
 				var text = self.getText(self.selection.anchorNode);
 				if (text.match(/^[-*]\s/)) {
-					self.insertList('UL');
+					self.insertList('ul');
 				} else if (text.match(/^1\.\s/)) {
-					self.insertList('OL');
+					self.insertList('ol');
 				}
 			}
 
@@ -471,7 +450,7 @@ var DexEditImg = function (root, img) {
 	this.root = root;
 	this.img = $(img).wrap('<div class="dexedit_img" contenteditable="false"></div>');
 	this.wrapper = this.img.parent();
-	this.figure	= (this.wrapper.parent()[0] && this.wrapper.parent()[0].nodeName === 'FIGURE' ? self.wrapper.parent() : null);
+	this.figure	= (this.wrapper.parent()[0] && this.wrapper.parent()[0].nodeName.toLowerCase() === 'figure' ? self.wrapper.parent() : null);
 	if (this.figure === null) {
 		return;
 	}
@@ -524,20 +503,19 @@ var DexEditImg = function (root, img) {
 		});
 	}
 
-	console.log(this.img[0].width);
-	console.log(this.img.width());
-
-	if (this.img[0].width == 0 || this.img[0].height == 0) {
-		this.img_ratio = 1;
-	} else {
-		this.img_ratio = this.img[0].height / this.img[0].width;
-	}
-	this.setDimensions(this.img[0].width, this.img[0].height);
+	setTimeout(function () { // race condition
+		if (self.img[0].width == 0 || self.img[0].height == 0) {
+			self.img_ratio = 1;
+		} else {
+			self.img_ratio = self.img[0].height / self.img[0].width;
+		}
+		self.setDimensions(self.img[0].width, self.img[0].height);
+	}, 0);
 
 	this.getPreviousBlock = function (node) {
 		node = node.previousSibling;
 		while (node) {
-			if (node.nodeName === 'DIV' || node.nodeName === 'HR' || node.nodeName === 'UL' || node.nodeName === 'OL' || node.nodeName === 'P' || node.nodeName === 'H3' || node.nodeName === 'H4' || node.nodeName === 'BLOCKQUOTE') {
+			if (node.nodeName.toLowerCase() === 'div' || node.nodeName.toLowerCase() === 'hr' || node.nodeName.toLowerCase() === 'ul' || node.nodeName.toLowerCase() === 'ol' || node.nodeName.toLowerCase() === 'p' || node.nodeName.toLowerCase() === 'h3' || node.nodeName.toLowerCase() === 'h4' || node.nodeName.toLowerCase() === 'blockquote') {
 				return node;
 			}
 			node = node.previousSibling;
@@ -548,7 +526,7 @@ var DexEditImg = function (root, img) {
 	this.getNextBlock = function (node) {
 		node = node.nextSibling;
 		while (node) {
-			if (node.nodeName === 'DIV' || node.nodeName === 'HR' || node.nodeName === 'UL' || node.nodeName === 'OL' || node.nodeName === 'P' || node.nodeName === 'H3' || node.nodeName === 'H4' || node.nodeName === 'BLOCKQUOTE') {
+			if (node.nodeName.toLowerCase() === 'div' || node.nodeName.toLowerCase() === 'hr' || node.nodeName.toLowerCase() === 'ul' || node.nodeName.toLowerCase() === 'ol' || node.nodeName.toLowerCase() === 'p' || node.nodeName.toLowerCase() === 'h3' || node.nodeName.toLowerCase() === 'h4' || node.nodeName.toLowerCase() === 'blockquote') {
 				return node;
 			}
 			node = node.nextSibling;
@@ -695,7 +673,7 @@ var DexEditImg = function (root, img) {
 					self.drag_sign_y = 1;
 				}
 			} else if (target.hasClass('dexedit_img_menu')) {
-				if (e.target.nodeName === 'I') {
+				if (e.target.nodeName.toLowerCase() === 'i') {
 					buttonTarget = $(e.target.parentNode);
 				}
 
@@ -707,6 +685,7 @@ var DexEditImg = function (root, img) {
 					self.figure.css('float', '');
 				} else if (buttonTarget.hasClass('dexedit_img_menu_trash')) {
 					self.figure.remove();
+					self.placeholder.remove();
 				} else if (buttonTarget.hasClass('dexedit_img_menu_right')) {
 					self.figure.css('float', 'right');
 				} else {
@@ -714,7 +693,7 @@ var DexEditImg = function (root, img) {
 				}
 				self.root.trigger('input');
 				return;
-			} else if (target[0].nodeName === 'IMG') {
+			} else if (target[0].nodeName.toLowerCase() === 'img') {
 				if (self.hovering === true) {
 					self.img_menu.stop().fadeOut('fast');
 					self.img_resize.stop().fadeOut('fast');
@@ -802,9 +781,11 @@ var DexEditImg = function (root, img) {
 };
 
 $(function () {
-	$('[data-dexeditable]').each(function (i, root) {
-		new DexEdit(root);
-	});
+	if ($('.logged-in').length) {
+		$('[data-dexeditable]').each(function (i, root) {
+			new DexEdit(root);
+		});
+	}
 });
 
 function getDexEditContent(selector) {
@@ -815,8 +796,9 @@ function getDexEditContent(selector) {
 
 function removeDexEdit(root) {
 	root.find('.dexedit_menu, .dexedit_img_placeholder, .dexedit_img_resize, .dexedit_img_menu').remove();
-	root.find('[data-dexeditable], figure, hr').attr('contenteditable', null);
+	root.find('figure, hr').attr('contenteditable', null);
 	root.find('.dexedit_img > img').unwrap();
+	root.attr('contenteditable', null);
 }
 
 function removeAllDexEdit() {

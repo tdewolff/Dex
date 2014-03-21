@@ -1,4 +1,6 @@
 <h2>Error</h2>
-<p id="error-content">
-	<?php echo $_['error']; ?>
-</p>
+<div id="content">
+	<p id="error-content">
+		<?php echo $_['error']; ?>
+	</p>
+</div>
