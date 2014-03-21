@@ -89,13 +89,13 @@ var DexEdit = function (root) {
 			});
 		}
 
-    	if (document.queryCommandState('bold')) {
+		if (document.queryCommandState('bold')) {
 			self.menu.find('.dexedit_menu_b').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_b').removeClass('enabled');
 		}
 
-    	if (document.queryCommandState('italic')) {
+		if (document.queryCommandState('italic')) {
 			self.menu.find('.dexedit_menu_i').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_i').removeClass('enabled');
@@ -119,7 +119,7 @@ var DexEdit = function (root) {
 			self.menu.find('.dexedit_menu_blockquote').removeClass('enabled');
 		}
 
-    	if (self.hasParentTag(range.commonAncestorContainer, 'A')) {
+		if (self.hasParentTag(range.commonAncestorContainer, 'A')) {
 			self.menu.find('.dexedit_menu_link').addClass('enabled');
 			self.menu.find('.dexedit_menu_link > i').attr('class', 'fa fa-unlink');
 		} else {
@@ -275,7 +275,7 @@ var DexEdit = function (root) {
 				}
 				self.setRange(range);
 			}
-        });
+		});
 	});
 
 	// mouse
@@ -354,56 +354,43 @@ var DexEdit = function (root) {
 				}
 			} else if (target.hasClass('dexedit_menu_image')) {
 				self.setRange(self.range);
-				//if (self.hasParentTag(self.range.commonAncestorContainer, 'A')) {
-				//	self.toggleLink();
-				//} else {
-					$.fancybox.open({
-						'type': 'ajax',
-						'href': '/' + base_url + 'admin/auxiliary/insert-image/',
-						beforeShow: function () {
-							$('.fancybox-skin').css('background', 'white');
-							$('#insert_text').val(self.selection.toString());
-						},
-						beforeClose: function () {
-							if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
-								var title = $('#insert_title').val();
-								var url = $('#insert_url').val();
-								var text = $('#insert_text').val();
+				$.fancybox.open({
+					'type': 'ajax',
+					'href': '/' + base_url + 'admin/auxiliary/insert-image/',
+					beforeShow: function () {
+						$('.fancybox-skin').css('background', 'white');
+						$('#insert_text').val(self.selection.toString());
+					},
+					beforeClose: function () {
+						if ($('#insert_submit').val() == 1 && $('#insert_url').val()) {
+							var title = $('#insert_title').val();
+							var url = $('#insert_url').val();
+							var text = $('#insert_text').val();
 
-					            var figure = $('<figure style="float: left;"><img src="' + url + '" title="' + title + '" alt="' + text + '"></figure>');
-					            new DexEditImg(self.root, figure.find('img'));
-					            figure.insertBefore(self.getBlock());
+							var figure = $('<figure style="float: left;"><img src="' + url + '" title="' + title + '" alt="' + text + '"></figure>');
+							figure.insertBefore(self.getBlock());
+							new DexEditImg(self.root, figure.find('img'));
 
-					            self.selection.removeAllRanges();
-								self.menu.stop().fadeOut('fast');
-								self.root.trigger('input');
-
-
-					            // Preserve the selection
-					   //          range = range.cloneRange();
-					   //          range.setStartAfter(element);
-					   //          range.collapse(true);
-					   //          sel.removeAllRanges();
-					   //          sel.addRange(range);
-								// document.execCommand('insertHtml', false, '<figure style="float: left;"><img src="' + url + '" title="' + title + '" alt="' + text + '"></figure>');
-								// console.log(self.range.commonAncestorContainer);
-								//new DexEditImg(self.range.commonAncestorContainer);
-							}
-						},
-						helpers:  {
-							overlay: {
-								locked: false
-							}
+							self.selection.removeAllRanges();
+							self.menu.stop().fadeOut('fast');
+							self.root.trigger('input');
 						}
-					});
-				//}
+					},
+					helpers:  {
+						overlay: {
+							locked: false
+						}
+					}
+				});
 			}
 		}
 	});
 
 	// keyboard
-    this.root.on('keyup', function (e) {
-		if (e.keyCode === 13) {
+	this.root.on('keyup', function (e) {
+		if (e.keyCode == 8 || e.keyCode == 46) { // backspace or delete
+			self.hideMenu();
+		} else if (e.keyCode === 13) { // enter
 			// insert horizontal rule
 			var paragraph = self.getParentTag(self.selection.anchorNode, 'P');
 			if (paragraph && paragraph.previousSibling) {
@@ -433,7 +420,7 @@ var DexEdit = function (root) {
 			}
 		}
 
-    	if (self.selection.isCollapsed) {
+		if (self.selection.isCollapsed) {
 			// FF will return sel.anchorNode to be the parentNode when the triggered keyCode is 13
 			//if (!self.selection.anchorNode || self.selection.anchorNode.nodeName === 'ARTICLE') {
 			//	return;
@@ -475,7 +462,7 @@ var DexEdit = function (root) {
 				self.setRange(range);
 			}
 		}
-    });
+	});
 };
 
 var DexEditImg = function (root, img) {
@@ -570,7 +557,7 @@ var DexEditImg = function (root, img) {
 	};
 
 	this.resize = function (e) {
-        if (self.resizing === false) {
+		if (self.resizing === false) {
 			$(document).unbind('mousemove', self.resize);
 			return;
 		}
@@ -589,15 +576,18 @@ var DexEditImg = function (root, img) {
 	};
 
 	this.drag = function (e) {
-        if (self.dragging === false) {
+		if (self.dragging === false) {
 			$(document).unbind('mousemove', self.drag);
 			return;
 		}
 
+		var x = self.drag_offset_x + (e.pageX - self.drag_start_x);
+		var y = self.drag_offset_y + (e.pageY - window.scrollY - self.drag_start_y);
+
 		var previous = self.getPreviousBlock(self.placeholder[0]);
 		if (previous) {
 			var rect = previous.getBoundingClientRect();
-			if (e.pageY < rect.top + rect.height / 2) {
+			if (y < rect.top + rect.height + window.scrollY) {
 				self.placeholder.insertBefore(previous);
 			}
 		}
@@ -605,13 +595,11 @@ var DexEditImg = function (root, img) {
 		var next = self.getNextBlock(self.placeholder[0]);
 		if (next) {
 			var rect = next.getBoundingClientRect();
-			if (e.pageY > rect.top + rect.height / 2) {
+			if (y > rect.top + rect.height + window.scrollY) {
 				self.placeholder.insertAfter(next);
 			}
 		}
 
-		var x = self.drag_offset_x + (e.pageX - self.drag_start_x);
-		var y = self.drag_offset_y + (e.pageY - window.scrollY - self.drag_start_y);
 		self.figure.css({
 			top: y,
 			left: x
@@ -627,9 +615,9 @@ var DexEditImg = function (root, img) {
 		}
 
 		var left = 10 + (rect.width - self.img_menu.width()) / 2;
-		if (rect.left + left < 5) {
+		if (rect.left + left < 5 + 10) {
 			left = 5 - rect.left + 10;
-		} else if (rect.left + left + self.img_menu.width() > window.innerWidth - 5) {
+		} else if (rect.left + left + self.img_menu.width() > window.innerWidth - 5 - 10) {
 			left = window.innerWidth - rect.left - self.img_menu.width() - 5 - 10;
 		}
 
@@ -640,12 +628,12 @@ var DexEditImg = function (root, img) {
 	}
 
 	this.img.on({
-	    mouseenter: function () {
-	        $(this).data('title', this.title).prop('title', '');
-	    },
-	    mouseleave: function () {
-	        $(this).prop('title', $(this).data('title'));
-	    }
+		mouseenter: function () {
+			$(this).data('title', this.title).prop('title', '');
+		},
+		mouseleave: function () {
+			$(this).prop('title', $(this).data('title'));
+		}
 	});
 
 	this.wrapper.on({
@@ -670,10 +658,17 @@ var DexEditImg = function (root, img) {
 	});
 
 	this.wrapper.on('mousedown', '>div, img', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+		e.preventDefault();
+		e.stopPropagation();
 
-        if (e.which == 1) {
+		$('.dexedit_menu').hide();
+		if (window.getSelection) {
+			window.getSelection().removeAllRanges();
+		} else if (document.selection) { // Opera
+			document.selection.createRange().removeAllRanges();
+		}
+
+		if (e.which == 1) {
 			var target = $(this);
 			var buttonTarget = $(e.target);
 
@@ -761,7 +756,7 @@ var DexEditImg = function (root, img) {
 
 	$('html').on('mouseup', function (e) {
 		if (self.resizing === true) {
-            e.preventDefault();
+			e.preventDefault();
 			$(document).unbind('mousemove', self.resize);
 
 			$('html').removeClass('dexedit_img_resize_nwse');
@@ -782,7 +777,7 @@ var DexEditImg = function (root, img) {
 			self.root.trigger('input');
 			self.resizing = false;
 		} else if (self.dragging) {
-            e.preventDefault();
+			e.preventDefault();
 			$(document).unbind('mousemove', self.drag);
 
 			if (self.hovering === true) {
@@ -831,33 +826,33 @@ function removeAllDexEdit() {
 }
 
 function addParameter(url, param, value) {
-    // Using a positive lookahead (?=\=) to find the
-    // given parameter, preceded by a ? or &, and followed
-    // by a = with a value after than (using a non-greedy selector)
-    // and then followed by a & or the end of the string
-    var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
-        parts = url.toString().split('#'),
-        url = parts[0],
-        hash = parts[1]
-        qstring = /\?.+$/,
-        newURL = url;
+	// Using a positive lookahead (?=\=) to find the
+	// given parameter, preceded by a ? or &, and followed
+	// by a = with a value after than (using a non-greedy selector)
+	// and then followed by a & or the end of the string
+	var val = new RegExp('(\\?|\\&)' + param + '=.*?(?=(&|$))'),
+		parts = url.toString().split('#'),
+		url = parts[0],
+		hash = parts[1]
+		qstring = /\?.+$/,
+		newURL = url;
 
-    // Check if the parameter exists
-    if (val.test(url)) {
-        // if it does, replace it, using the captured group
-        // to determine & or ? at the beginning
-        newURL = url.replace(val, '$1' + param + '=' + value);
-    } else if (qstring.test(url)) {
-        // otherwise, if there is a query string at all
-        // add the param to the end of it
-        newURL = url + '&' + param + '=' + value;
-    } else {
-        // if there's no query string, add one
-        newURL = url + '?' + param + '=' + value;
-    }
+	// Check if the parameter exists
+	if (val.test(url)) {
+		// if it does, replace it, using the captured group
+		// to determine & or ? at the beginning
+		newURL = url.replace(val, '$1' + param + '=' + value);
+	} else if (qstring.test(url)) {
+		// otherwise, if there is a query string at all
+		// add the param to the end of it
+		newURL = url + '&' + param + '=' + value;
+	} else {
+		// if there's no query string, add one
+		newURL = url + '?' + param + '=' + value;
+	}
 
-    if (hash) {
-        newURL += '#' + hash;
-    }
-    return newURL;
+	if (hash) {
+		newURL += '#' + hash;
+	}
+	return newURL;
 }
