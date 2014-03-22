@@ -44,6 +44,7 @@ if (API::action('get'))
 				continue;
 		}
 
+
 		$message = substr(implode(' ', array_slice($logline, 3)), 8);
 		$logs[] = array(
 			'datetime' => substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1),

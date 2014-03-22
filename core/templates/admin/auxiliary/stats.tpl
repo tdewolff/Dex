@@ -128,17 +128,21 @@ path.area {
 				.style('text-anchor', 'end')
 				.text('Visits');
 
-			svg.append('text')
-				.attr('transform', 'translate(' + x(visits[visits.length - 1].date) + ',' + y(visits[visits.length - 1].visits) + ')')
-				.attr('x', 5)
-				.attr('dy', '.4em')
-				.text('Total');
+			if (visits.length > 1) {
+				if (visits[visits.length - 1].visits != visits[visits.length - 1].unique_visits) {
+					svg.append('text')
+						.attr('transform', 'translate(' + x(visits[visits.length - 1].date) + ',' + y(visits[visits.length - 1].visits) + ')')
+						.attr('x', 5)
+						.attr('dy', '.4em')
+						.text('Total');
+				}
 
-			svg.append('text')
-				.attr('transform', 'translate(' + x(visits[visits.length - 1].date) + ',' + y(visits[visits.length - 1].unique_visits) + ')')
-				.attr('x', 5)
-				.attr('dy', '.4em')
-				.text('Unique');
+				svg.append('text')
+					.attr('transform', 'translate(' + x(visits[visits.length - 1].date) + ',' + y(visits[visits.length - 1].unique_visits) + ')')
+					.attr('x', 5)
+					.attr('dy', '.4em')
+					.text('Unique');
+			}
 		}
 	}
 </script>

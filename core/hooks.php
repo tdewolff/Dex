@@ -100,19 +100,6 @@ Hooks::attach('admin-footer', 0, function () {
 
 ////////////////////////////////////////////////////////////////
 
-/*Hooks::attach('main', 0, function() {
-	$link_id = Core::getLinkId();
-	$template_name = Core::getTemplateName();
-
-	$table = Db::query("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "';");
-	while ($row = $table->fetch())
-		Core::assign($row['name'], $row['content']);
-
-	Core::renderTemplate($template_name);
-});*/
-
-////////////////////////////////////////////////////////////////
-
 function site_header() {
 	$titles = Core::getTitles();
 	$externalStyles = Core::getExternalStyles();

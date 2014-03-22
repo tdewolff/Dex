@@ -25,7 +25,7 @@
 <script id="log_item" type="text/x-dot-template">
 	<li data-html="{{=it.html}}">
 		<div>{{=it.datetime}}</div>
-		<div title="{{=it.message}}">{{=it.message}}</div>
+		<div>{{=it.message}}</div>
 	</li>
 </script>
 
