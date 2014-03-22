@@ -1,8 +1,10 @@
 <?php
 
-if (get_magic_quotes_gpc()) {
-	function strip_array($var) {
-		return is_array($var) ? array_map("strip_array", $var) : stripslashes($var);
+if (get_magic_quotes_gpc())
+{
+	function strip_array($var)
+	{
+		return is_array($var) ? array_map('strip_array', $var) : stripslashes($var);
 	}
 
 	$_POST = strip_array($_POST);
@@ -10,7 +12,8 @@ if (get_magic_quotes_gpc()) {
 	$_GET = strip_array($_GET);
 }
 
-function _sqliteRegexp($pattern, $string) {
+function _sqliteRegexp($pattern, $string)
+{
 	$pattern = preg_replace('/\//', '\/', $pattern);
 	return preg_match('/^' . $pattern . '$/', $string);
 }
@@ -84,6 +87,12 @@ class Db
 		return self::$handle->lastInsertRowID();
 	}
 
+	public static function lastError()
+	{
+		if (self::$handle->lastErrorCode() == 0)
+			return null;
+		return self::$handle->lastErrorMsg();
+	}
 }
 
 class Result

@@ -7,14 +7,21 @@ if (API::action('get'))
 {
 	$errors = API::has('errors') ? API::get('errors') : false;
 	if ($errors || !API::has('lines'))
-		$logfile = array_reverse(Log::getAllLines());
+		$loglines = array_reverse(Log::getAllLines());
 	else
-		$logfile = array_reverse(Log::getLastLines(API::get('lines')));
+		$loglines = array_reverse(Log::getLastLines(API::get('lines')));
 
 	$logs = array();
-	$oldDatetime = false;
-	foreach ($logfile as $logline)
+	foreach ($loglines as $logline)
 	{
+		$backtrace = '';
+		$backtrace_pos = strpos($logline, '[', 1);
+		if ($backtrace_pos !== false)
+		{
+			$backtrace = json_decode(substr($logline, $backtrace_pos), true);
+			$logline = substr($logline, 0, $backtrace_pos);
+		}
+
 		$logline = explode(' ', $logline);
 		if (count($logline) < 4)
 			continue;
@@ -36,27 +43,14 @@ if (API::action('get'))
 			if ($logline[3] != 'ERROR' && $logline[3] != 'WARNING')
 				continue;
 		}
-		else
-		{
-			if (!$oldDatetime)
-				$oldDatetime = $datetime;
-			else if ($oldDatetime->diff($datetime)->s > 1)
-			{
-				$logs[] = array(
-					'datetime' => '',
-					'ipaddress' => '',
-					'type' => '',
-					'message' => ''
-				);
-				$oldDatetime = $datetime;
-			}
-		}
 
+		$message = substr(implode(' ', array_slice($logline, 3)), 8);
 		$logs[] = array(
 			'datetime' => substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1),
 			'ipaddress' => $logline[2],
 			'type' => $logline[3],
-			'message' => htmlentities(implode(' ', array_slice($logline, 4)))
+			'message' => htmlentities($message),
+			'html' => htmlentities(Error::formatError($message, $backtrace))
 		);
 	}
 	API::set('logs', $logs);

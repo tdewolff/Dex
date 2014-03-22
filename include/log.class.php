@@ -81,34 +81,34 @@ class Log
 	    return array_slice(explode("\r\n", rtrim($input)), -$n);
 	}
 
-	public static function error($message) {
-		self::entry('ERROR  ', $message);
+	public static function error($message, $backtrace = '') {
+		self::entry('ERROR  ', $message, $backtrace);
 	}
 
-	public static function warning($message) {
-		self::entry('WARNING', $message);
+	public static function warning($message, $backtrace = '') {
+		self::entry('WARNING', $message, $backtrace);
 	}
 
-	public static function notice($message) {
+	public static function notice($message, $backtrace = '') {
 		if (self::$verbose)
-			self::entry('NOTICE ', $message);
+			self::entry('NOTICE ', $message, $backtrace);
 	}
 
-	public static function request($message) {
+	public static function request($message, $backtrace = '') {
 		if (self::$verbose)
-			self::entry('REQUEST', $message);
+			self::entry('REQUEST', $message, $backtrace);
 	}
 
-	public static function caching($message) {
+	public static function caching($message, $backtrace = '') {
 		if (self::$verbose)
-			self::entry('CACHING', $message);
+			self::entry('CACHING', $message, $backtrace);
 	}
 
-	private static function entry($type, $message)
+	private static function entry($type, $message, $backtrace)
 	{
 		if (self::$file)
 		{
-			$message = '[' . date('Y-m-d H:i:s') . '] ' . self::$ipaddress . ' ' . $type . ' ' . $message . "\r\n";
+			$message = '[' . date('Y-m-d H:i:s') . '] ' . self::$ipaddress . ' ' . $type . ' ' . $message . (is_array($backtrace) ? ' ' . json_encode($backtrace) : '') . "\r\n";
 
 			// try a few times to acquire file lock, if we don't lock simultaneous write might occur!
 			for ($i = 0; $i < 10; $i++)

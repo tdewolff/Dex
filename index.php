@@ -24,7 +24,7 @@ Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false));
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function() {
 	$error = error_get_last();
-	if ($error['type'] > 0)
+	if (is_array($error))
 		Error::report($error['type'], $error['message'], $error['file'], $error['line']);
 });
 
@@ -90,6 +90,10 @@ if (!session_start())
 register_shutdown_function(function() {
 	global $starttime;
 
+	$last_error = Db::lastError();
+	if ($last_error)
+		user_error('Database error "' . $last_error . '" occurred', ERROR);
+
 	$endtime = explode(' ', microtime());
 	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
@@ -129,7 +133,7 @@ if (User::loggedIn())
 	Core::assign('username', User::getUsername());
 	Core::assign('role', User::getRole());
 }
-else
+else if (!Common::requestAdmin())
 	Stats::registerPageVisit();
 
 Core::assign('base_url', Common::$base_url);

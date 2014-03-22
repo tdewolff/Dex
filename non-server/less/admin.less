@@ -70,7 +70,7 @@ body {
 	.border-top-right-radius(5px);
 }
 
-#main #content {
+#main #content, #main #error-content {
 	background-color: white;
 	border-left: 1px solid #d4d4d4;
 	border-right: 1px solid #d4d4d4;
@@ -142,10 +142,6 @@ body {
 /*****************/
 /* page specific */
 /*****************/
-
-#error-content {
-	text-align:center;
-}
 
 .stats-frame {
 	display: none;
@@ -250,6 +246,8 @@ body {
 	}
 
 	li {
+		cursor: pointer;
+
 		>div:nth-child(1) {
 			width: 17%;
 		}

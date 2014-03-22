@@ -268,7 +268,7 @@ class Form
 
 	public function validate()
 	{
-		if (!isset($this->data['nonce']) || !isset($_SESSION['form_nonce']) || $this->data['nonce'] != $_SESSION['form_nonce'])
+		if (!isset($this->data['nonce']) || !isset($_SESSION['form_nonce_' . $this->name]) || $this->data['nonce'] != $_SESSION['form_nonce_' . $this->name])
 		{
 			$this->errors[] = 'Form submission from external source is forbidden';
 			return false;
@@ -352,14 +352,14 @@ class Form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
 
-		$_SESSION['form_nonce'] = random();
+		$_SESSION['form_nonce_' . $this->name] = random();
 
 		$form = array(
 			'name' => $this->name,
 			'items' => $this->items,
 			'submit' => $this->submit,
 			'optionals' => json_encode($this->optionals),
-			'nonce' => $_SESSION['form_nonce']
+			'nonce' => $_SESSION['form_nonce_' . $this->name]
 		);
 
 		include('core/templates/include/form.tpl');

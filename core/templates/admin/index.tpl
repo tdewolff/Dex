@@ -23,7 +23,7 @@
 <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="button indent view-logs"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
 
 <script id="log_item" type="text/x-dot-template">
-	<li>
+	<li data-html="{{=it.html}}">
 		<div>{{=it.datetime}}</div>
 		<div title="{{=it.message}}">{{=it.message}}</div>
 	</li>
@@ -35,11 +35,11 @@
 		$('.stats-frame').load(function () {
 			$('.stats-frame').ready(function () {
 				api('/' + base_url + 'api/core/stats/', {
-					action: 'page-visits'
+					action: 'get_visits'
 				}, function (data) {
 					apiLoadStatusSuccess($('#load_stats'));
 					$('.stats-frame').slideDown();
-					$('.stats-frame')[0].contentWindow.drawStats(data['page-visits']);
+					$('.stats-frame')[0].contentWindow.drawStats(data['visits']);
 				}, function () {
 					apiLoadStatusError($('#load_stats'));
 				});
@@ -70,6 +70,17 @@
 			});
 		}, function () {
 			apiLoadStatusError($('#load_logs'));
+		});
+
+		logs.on('click', 'li', function () {
+			$.fancybox.open({
+				content: $(this).attr('data-html'),
+				closeBtn: false,
+				overlay: {
+					closeClick: true,
+					locked: false
+				}
+			});
 		});
 	});
 </script>

@@ -3,6 +3,8 @@
 if (!User::isAdmin())
 	user_error('Forbidden access', ERROR);
 
+user_error('test', ERROR);
+
 if (API::action('clear_logs'))
 {
 	Log::close();

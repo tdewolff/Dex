@@ -9,6 +9,7 @@ if (API::action('save'))
         user_error('No link ID or content set', ERROR);
 
     Db::exec("
+    DELETE FROM content WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'content';
     INSERT INTO content (link_id, name, content, modify_time) VALUES (
         '" . Db::escape(API::get('link_id')) . "',
         'content',

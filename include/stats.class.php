@@ -22,17 +22,21 @@ class Stats
 
 	public static function pageVisitChart()
 	{
-		$page_visits = array();
+		$visits = array();
 		$table = Db::query("SELECT * FROM stats;");
 		while ($row = $table->fetch())
-		{
-			if (!isset($page_visits[date('M j', time())]))
-				$page_visits[date('M j', time())] = 1;
+			if (!count($visits) || date('M j', $visits[count($visits) - 1]['date']) !== date('M j', $row['time']))
+				$visits[] = array(
+					'date' => $row['time'],
+					'visits' => $row['n'],
+					'unique_visits' => 1
+				);
 			else
-				$page_visits[date('M j', time())]++;
-		}
-
-		// TODO: implement
+			{
+				$visits[count($visits) - 1]['visits'] += $row['n'];
+				$visits[count($visits) - 1]['unique_visits']++;
+			}
+		return $visits;
 	}
 }
 

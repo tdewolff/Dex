@@ -47,7 +47,7 @@ function api(url, data, success, error) {
 
 function apiFatal(message) {
 	$.fancybox.open({
-		content: message,
+		content: '<h2 class="error">Error</h2>' + message,
 		closeBtn: false,
 		beforeShow: function () {
 			this.skin.css({

@@ -35,7 +35,7 @@ Hooks::attach('error', 0, function () {
 	$error_loop = true;
 
 	Core::addTitle('Error');
-	Core::assign('error', Error::getLast());
+	Core::assign('error', Error::getErrors());
 
 	Hooks::emit('site-header');
 	echo '<section class="page-wrapper">';
@@ -69,7 +69,7 @@ Hooks::attach('admin-error', 0, function () {
 	$error_loop = true;
 
 	Core::addTitle('Error');
-	Core::assign('error', Error::getLast());
+	Core::assign('error', Error::getErrors());
 
 	Hooks::emit('admin-header');
 	Core::render('admin/error.tpl');

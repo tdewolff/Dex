@@ -12,5 +12,6 @@ logs/
 *.min.css
 
 dex.db
+dex.db-journal
 GRONINGENBIJLES.md
 console.txt

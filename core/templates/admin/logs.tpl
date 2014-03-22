@@ -14,10 +14,10 @@
 </ul>
 
 <script id="log_item" type="text/x-dot-template">
-	<li>
+	<li data-html="{{=it.html}}">
 		<div>{{=it.datetime}}</div>
 		<div>{{=it.ipaddress}}</div>
-		<div title="{{=it.message}}">{{=it.message}}</div>
+		<div>{{=it.message}}</div>
 	</li>
 </script>
 
@@ -54,6 +54,17 @@
 			});
 		}, function () {
 			apiLoadStatusError($('#load_status'));
+		});
+
+		logs.on('click', 'li', function () {
+			$.fancybox.open({
+				content: $(this).attr('data-html'),
+				closeBtn: false,
+				overlay: {
+					closeClick: true,
+					locked: false
+				}
+			});
 		});
 	});
 </script>

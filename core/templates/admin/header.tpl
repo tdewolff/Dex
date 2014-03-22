@@ -22,7 +22,7 @@
 <?php endif; ?>
 
 	<body>
-		<?php include('core/templates/include/site-admin.tpl'); ?>
+		<?php include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/include/site-admin.tpl'); // absolute path needed for register_shutdown_function() ?>
 
 		<?php if (isset($_['admin_links'])): ?>
 		<section class="page-wrapper">
