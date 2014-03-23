@@ -182,7 +182,7 @@ class Core extends Dex
 		if (!Common::validUrl($url))
 			return 'Must be valid URL';
 
-		if (Db::querySingle("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
+		if (Db::singleQuery("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
 			return 'Already used';
 
 		$url_base = substr($url, 0, strpos($url, '/') + 1);

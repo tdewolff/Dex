@@ -6,7 +6,7 @@ class User
 {
 	public static function logIn($user_id)
 	{
-		$user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
+		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
 		if (!$user)
 			user_error('Could not login', ERROR);
 
@@ -36,7 +36,7 @@ class User
 			return false;
 
 		if ($_SESSION['user']['time'] + SESSION_TIME > time())
-			if (Db::isValid() && Db::querySingle("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;"))
+			if (Db::isValid() && Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;"))
 				return true;
 
 		return false;
@@ -86,13 +86,13 @@ class User
 	public static function isBlocked($username)
 	{
 		Db::exec("DELETE FROM bruteforce WHERE time <= '" . Db::escape(time() - (60 * 15)) . "';");
-		$bruteforce = Db::querySingle("SELECT SUM(n) AS attempts FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' OR username = '" . Db::escape($username) . "';");
+		$bruteforce = Db::singleQuery("SELECT SUM(n) AS attempts FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' OR username = '" . Db::escape($username) . "';");
 		return $bruteforce && $bruteforce['attempts'] >= 10; // eleventh attempt
 	}
 
 	public static function addAttempt($username)
 	{
-		$bruteforce = Db::querySingle("SELECT * FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' AND username = '" . Db::escape($username) . "' LIMIT 1;");
+		$bruteforce = Db::singleQuery("SELECT * FROM bruteforce WHERE ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' AND username = '" . Db::escape($username) . "' LIMIT 1;");
 		if (!$bruteforce)
 			Db::exec("INSERT INTO bruteforce (n, time, ip_address, username) VALUES (
 				'1',

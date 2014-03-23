@@ -5,8 +5,11 @@ require_once('include/console.class.php');
 if (!User::isAdmin())
 	user_error('Forbidden access', ERROR);
 
+
+Console::append('Optimizing database...');
+$database_size = Db::filesize();
+
 /* TODO: Future implementation of versioning
-Console::append('Optimizing sitent...');
 
 // remove old content versions so that visitors get to see the latest
 Db::exec("
@@ -16,8 +19,10 @@ WHERE content_id NOT IN (
 	GROUP BY link_id, name
 	ORDER BY modify_time DESC LIMIT 1
 );");
+*/
 
-Console::appendLine('done');*/
+Db::exec("VACUUM;");
+Console::appendLine('done (' . number_format((float) Db::filesize() / $database_size * 100.0, 1) . '%)');
 
 
 require_once('vendor/closure-compiler.php');
@@ -103,7 +108,6 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 	{
 		$hasCompressed = true;
 		Console::append('Compressing \'' . $image_name . '\'...');
-		Console::appendLine(Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name);
 		try {
 			$output_info = SmushIt::compress(Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name);
 		} catch (Exception $e) {

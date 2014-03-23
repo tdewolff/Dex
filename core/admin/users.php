@@ -16,7 +16,7 @@ else
 {
     if ($url[2] != 'new')
     {
-		$user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
+		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
 		if (!$user)
 			user_error('User ID "' . $url[2] . '" doesn\'t exist', ERROR);
 	}
@@ -45,8 +45,8 @@ else
 	{
 		if ($form->validate())
 		{
-			$current_user = Db::querySingle("SELECT * FROM user WHERE user_id = '" . Db::escape(User::getUserId()) . "' LIMIT 1;");
-            if (Db::querySingle("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
+			$current_user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape(User::getUserId()) . "' LIMIT 1;");
+            if (Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
             else if (!$current_user)
                 $form->appendError('Unknown error');

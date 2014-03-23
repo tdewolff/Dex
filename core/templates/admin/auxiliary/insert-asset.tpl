@@ -39,7 +39,7 @@
 </script>
 
 <script id="asset_item" type="text/x-dot-template">
-	<li  data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}" class="asset">
+	<li  data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}" class="asset">
 		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
 		<div>{{=it.size}}</div>
 		<div></div>

@@ -25,44 +25,44 @@ class Error
 	{
 		if (!self::$display)
 			return '<span class="error">An error occurred, check the logs for additional information</span>';
-		return implode('', self::$messages);
+		return implode('', self::$messages) . '!';
 	}
 
-	public static function stripBacktrace($_backtrace)
+	public static function stripBacktrace($backtrace)
 	{
-		if (!is_array($_backtrace))
+		if (!is_array($backtrace))
 			return '';
 
-		$backtrace = array();
-		foreach ($_backtrace as $row)
-			$backtrace[] = array(
+		$stripped_backtrace = array();
+		foreach ($backtrace as $row)
+			$stripped_backtrace[] = array(
 				'file' => (isset($row['file']) ? $row['file'] : '') . (isset($row['line']) ? ':' . $row['line'] : ''),
 				'function' => (isset($row['class']) ? $row['class'] : '') . (isset($row['type']) ? $row['type'] : '') . (isset($row['function']) ? $row['function'] : '')
 			);
-		return $backtrace;
+		return $stripped_backtrace;
 	}
 
-	public static function formatError($message, $_backtrace)
+	public static function formatError($message, $location, $backtrace)
 	{
-		$backtrace = '';
-		if (is_array($_backtrace))
-		{
-			$backtrace = '<table class="backtrace"><thead><tr><th>File</th><th>Function</th></tr></thead><tbody>';
-			foreach ($_backtrace as $row)
-				$backtrace .= '<tr><td>' . (isset($row['file']) ? $row['file'] : '') . '</td><td>' . (isset($row['function']) ? $row['function'] : '') . '</td></tr>';
-		}
+		$formatted_message = '<span class="error"><strong>' . $message . '</strong></span><span class="error-source">' . $location . '</span>';
 
-		$bracket_pos = strrpos($message, '(');
-		$source = substr($message, $bracket_pos);
-		$message = substr($message, 0, $bracket_pos - 1);
-		return '<span class="error"><strong>' . $message . '</strong></span><span class="error-source">' . $source . '</span>' . $backtrace . '</tbody></table>';
+		$formatted_backtrace = '';
+		if (is_array($backtrace))
+		{
+			$formatted_backtrace = '<table class="backtrace"><thead><tr><th>File</th><th>Function</th></tr></thead><tbody>';
+			foreach ($backtrace as $row)
+				$formatted_backtrace .= '<tr><td>' . (isset($row['file']) ? $row['file'] : '') . '</td><td>' . (isset($row['function']) ? $row['function'] : '') . '</td></tr>';
+		}
+		$formatted_backtrace .= '</tbody></table>';
+
+		return $formatted_message . $formatted_backtrace;
 	}
 
 	public static function report($type, $message, $file, $line)
 	{
-		$message = $message . ($file && $line ? ' (' . $file . ':' . $line . ')' : '');
+		$location = ($file && $line ? $file . ':' . $line : '');
 		$backtrace = self::stripBacktrace(debug_backtrace());
-		$formatted_message = self::formatError($message, $backtrace);
+		$formatted_message = self::formatError($message, $location, $backtrace);
 
 		$display_message = self::$display ? $formatted_message : '<span class="error">An error occurred, check the logs for additional information</span>';
 		self::$messages[] = $formatted_message;
@@ -77,13 +77,13 @@ class Error
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
 			case E_RECOVERABLE_ERROR:
-				Log::warning($message, $backtrace);
+				Log::warning($message, $location, $backtrace);
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestAjax())
 						API::warning($message);
 					else if (Common::requestAdmin())
-						echo $formatted_message;
+						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
 				}
 				break;
 
@@ -92,13 +92,13 @@ class Error
 			case E_STRICT:
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
-				Log::notice($message, $backtrace);
+				Log::notice($message, $location, $backtrace);
 				if (self::$display && !Common::requestResource())
 				{
 					if (Common::requestAjax())
 						API::notice($message);
 					else if (Common::requestAdmin())
-						echo $formatted_message;
+						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
 				}
 				break;
 
@@ -108,7 +108,7 @@ class Error
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
 			default:
-				Log::error($message, $backtrace);
+				Log::error($message, $location, $backtrace);
 				if (!Common::requestResource())
 				{
 					if (Common::requestAjax())

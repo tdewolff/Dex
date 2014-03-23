@@ -200,7 +200,7 @@ else if (API::action('get_assets'))
 			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 			$extension = substr($name, strrpos($name, '.') + 1);
 
-			if (!Resource::isImage($extension))
+			if (Resource::isResource($extension) && !Resource::isImage($extension))
 			{
 				list($width, $height, $type, $attribute) = getimagesize('assets/' . $dir . $name);
 				$assets[] = array(

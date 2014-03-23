@@ -36,7 +36,7 @@ var DexEdit = function (root) {
 			self.range = range;
 
 			if (!range.collapsed && !/^[\s]+$/.test(self.selection.toString())) {
-				self.repositionMenu(range);
+				self.repositionMenu();
 			} else {
 				self.hideMenu();
 			}
@@ -69,12 +69,24 @@ var DexEdit = function (root) {
 		return backwards;
 	}
 
-	this.repositionMenu = function (range) {
-		var rect = range.getClientRects()[0];
+	this.isSurroundedBy = function (tag) {
+		if (self.hasParentTag(self.range.commonAncestorContainer, tag)) {
+			return true;
+		}
 
-		var top = window.scrollY + rect.top - self.menu.height() - 6;
+		if (self.hasParentTag(self.range.startContainer, tag) || (self.range.startContainer.nextSibling && self.range.startContainer.nextSibling.nodeName.toLowerCase() === tag) &&
+			self.hasParentTag(self.range.endContainer, tag) || (self.range.endContainer.previousSibling	&& self.range.endContainer.previousSibling.nodeName.toLowerCase() === tag)) {
+			return true;
+		}
+		return false;
+	}
+
+	this.repositionMenu = function () {
+		var rect = self.range.getClientRects()[0];
+
+		var top = window.scrollY + rect.top - self.menu.height() - 7;
 		if (top - window.scrollY < 38) { // include admin-bar
-			top = window.scrollY + rect.bottom + 6;
+			top = window.scrollY + rect.bottom + 7;
 			self.menu.find('.dexedit_menu_arrow').addClass('dexedit_menu_arrow_upsidedown');
 		} else {
 			self.menu.find('.dexedit_menu_arrow').removeClass('dexedit_menu_arrow_upsidedown');
@@ -109,25 +121,25 @@ var DexEdit = function (root) {
 			self.menu.find('.dexedit_menu_i').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'h3')) {
+		if (self.isSurroundedBy('h3')) {
 			self.menu.find('.dexedit_menu_h3').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_h3').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'h4')) {
+		if (self.isSurroundedBy('h4')) {
 			self.menu.find('.dexedit_menu_h4').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_h4').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'blockquote')) {
+		if (self.isSurroundedBy('blockquote')) {
 			self.menu.find('.dexedit_menu_blockquote').addClass('enabled');
 		} else {
 			self.menu.find('.dexedit_menu_blockquote').removeClass('enabled');
 		}
 
-		if (self.hasParentTag(range.commonAncestorContainer, 'a')) {
+		if (self.isSurroundedBy('a')) {
 			self.menu.find('.dexedit_menu_link').addClass('enabled');
 			self.menu.find('.dexedit_menu_link > i').attr('class', 'fa fa-unlink');
 		} else {
@@ -211,7 +223,7 @@ var DexEdit = function (root) {
 	this.toggleFormatBlock = function (tag) {
 		var block = self.getBlock();
 		if (block) {
-			if (!self.hasParentTag(self.range.commonAncestorContainer, tag)) {
+			if (!self.isSurroundedBy(tag)) {
 				document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
 			} else {
 				document.execCommand('formatBlock', false, '<P>');
@@ -307,7 +319,7 @@ var DexEdit = function (root) {
 				self.toggleFormatBlock('blockquote');
 			} else if (target.hasClass('dexedit_menu_link')) {
 				self.setRange(self.range);
-				if (self.hasParentTag(self.range.commonAncestorContainer, 'a')) {
+				if (self.isSurroundedBy('a')) {
 					self.removeLink();
 				} else {
 					$.fancybox.open({
@@ -326,6 +338,7 @@ var DexEdit = function (root) {
 
 								self.setRange(self.range);
 								self.insertLink(url, title, text);
+								self.root.trigger('input');
 							} else {
 								self.setRange(self.range);
 							}
@@ -373,7 +386,7 @@ var DexEdit = function (root) {
 				});
 			} else if (target.hasClass('dexedit_menu_asset')) {
 				self.setRange(self.range);
-				if (self.hasParentTag(self.range.commonAncestorContainer, 'a')) {
+				if (self.isSurroundedBy('a')) {
 					self.removeLink();
 				} else {
 					$.fancybox.open({
@@ -392,6 +405,7 @@ var DexEdit = function (root) {
 
 								self.setRange(self.range);
 								self.insertLink(url, title, text);
+								self.root.trigger('input');
 							} else {
 								self.setRange(self.range);
 							}

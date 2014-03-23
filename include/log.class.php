@@ -44,10 +44,10 @@ class Log
 
 	public static function getAllLines()
 	{
-		$all = trim(file_get_contents(self::$filename));
+		$all = preg_replace("/\r\n|\r/", "\n", trim(file_get_contents(self::$filename)));
 		if (!$all)
 	    	return array();
-	    return explode("\r\n", $all);
+	    return explode("\n", $all);
 	}
 
 	public static function getLastLines($n)
@@ -69,8 +69,8 @@ class Log
 	        fseek($fp, $pos - $read_size, SEEK_SET);
 
 	        // prepend the current block, and count the new lines
-	        $input = fread($fp, $read_size).$input;
-	        $line_count = substr_count(ltrim($input), "\r\n");
+	        $input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
+	        //$line_count = substr_count(ltrim($input), "\n");
 
 	        // if $pos is == 0 we are at start of file
 	        $pos -= $read_size;
@@ -78,37 +78,74 @@ class Log
 	            break;
 	    }
 	    fclose($fp);
-	    return array_slice(explode("\r\n", rtrim($input)), -$n);
+	    return array_slice(explode("\n", rtrim($input)), -$n);
 	}
 
-	public static function error($message, $backtrace = '') {
-		self::entry('ERROR  ', $message, $backtrace);
+	public static function getLoglineDetails($logline)
+	{
+		$details = array('message' => '', 'location' => '', 'backtrace' => '');
+
+		$backtrace_pos = strpos($logline, '[', 1);
+		if ($backtrace_pos !== false)
+		{
+			$details['backtrace'] = json_decode(substr($logline, $backtrace_pos), true);
+			$logline = substr($logline, 0, $backtrace_pos - 1);
+		}
+
+		$location_pos = strrpos($logline, '(');
+		if ($location_pos !== false)
+		{
+			$details['location'] = preg_replace(array('/&lpar;/', '/&rpar;/'), array('(', ')'), substr($logline, $location_pos));
+			$logline = substr($logline, 0, $location_pos - 1);
+		}
+
+		$logline = explode(' ', $logline);
+		if (count($logline) < 4)
+			return false;
+
+		$details['datetime'] = substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1);
+		$details['ipaddress'] = $logline[2];
+		$details['type'] = $logline[3];
+
+		$message = implode(' ', array_slice($logline, 3));
+		if (strlen($message) > 8)
+			$details['message'] = preg_replace(array('/&lbrack;/', '/&rbrack;/'), array('[', ']'), substr($message, 8));
+
+		return $details;
 	}
 
-	public static function warning($message, $backtrace = '') {
-		self::entry('WARNING', $message, $backtrace);
+	public static function error($message, $location = '', $backtrace = '') {
+		self::appendLog('ERROR  ', $message, $location, $backtrace);
 	}
 
-	public static function notice($message, $backtrace = '') {
+	public static function warning($message, $location = '', $backtrace = '') {
+		self::appendLog('WARNING', $message, $location, $backtrace);
+	}
+
+	public static function notice($message, $location = '', $backtrace = '') {
 		if (self::$verbose)
-			self::entry('NOTICE ', $message, $backtrace);
+			self::appendLog('NOTICE ', $message, $location, $backtrace);
 	}
 
-	public static function request($message, $backtrace = '') {
+	public static function request($message, $location = '', $backtrace = '') {
 		if (self::$verbose)
-			self::entry('REQUEST', $message, $backtrace);
+			self::appendLog('REQUEST', $message, $location, $backtrace);
 	}
 
-	public static function caching($message, $backtrace = '') {
+	public static function caching($message, $location = '', $backtrace = '') {
 		if (self::$verbose)
-			self::entry('CACHING', $message, $backtrace);
+			self::appendLog('CACHING', $message, $location, $backtrace);
 	}
 
-	private static function entry($type, $message, $backtrace)
+	private static function appendLog($type, $message, $location, $backtrace)
 	{
 		if (self::$file)
 		{
-			$message = '[' . date('Y-m-d H:i:s') . '] ' . self::$ipaddress . ' ' . $type . ' ' . $message . (is_array($backtrace) ? ' ' . json_encode($backtrace) : '') . "\r\n";
+			$message = preg_replace(array('/\[/', '/\]/'), array('&lbrack;', '&rbrack;'), $message);
+			if (strlen($location))
+				$location = ' (' . preg_replace(array('/\(/', '/\)/'), array('&lpar;', '&rpar;'), $location) . ')';
+
+			$message = '[' . date('Y-m-d H:i:s') . '] ' . self::$ipaddress . ' ' . $type . ' ' . $message . $location . (is_array($backtrace) ? ' ' . json_encode($backtrace) : '') . "\r\n";
 
 			// try a few times to acquire file lock, if we don't lock simultaneous write might occur!
 			for ($i = 0; $i < 10; $i++)

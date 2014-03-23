@@ -5,7 +5,7 @@ Hooks::attach('main', 0, function () {
 
     $link_id = Core::getLinkId();
     // TODO: future implementation of versioning
-    $content = Db::querySingle("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' ORDER BY modify_time " . /*(User::loggedIn() ? "DESC" : "ASC")*/ "DESC" . " LIMIT 1;");
+    $content = Db::singleQuery("SELECT * FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'content' ORDER BY modify_time " . /*(User::loggedIn() ? "DESC" : "ASC")*/ "DESC" . " LIMIT 1;");
     if ($content)
     {
     	$content['content'] = preg_replace('/\[base_url\]/', $base_url, $content['content']);

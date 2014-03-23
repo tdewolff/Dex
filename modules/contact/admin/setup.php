@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS module_contact (
     value TEXT
 );");
 
-if (!Db::querySingle("SELECT * FROM link_module WHERE link_id = '0' AND module_name = 'contact' LIMIT 1"))
+if (!Db::singleQuery("SELECT * FROM link_module WHERE link_id = '0' AND module_name = 'contact' LIMIT 1"))
     Db::exec("
     INSERT INTO link_module (link_id, module_name) VALUES (
         0,

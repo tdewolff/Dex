@@ -20,8 +20,8 @@ function _sqliteRegexp($pattern, $string)
 
 class Db
 {
-	private static $filename = '';
-	private static $handle = null;
+	public static $filename = '';
+	public static $handle = null;
 	private static $queries = 0;
 
 	public static function open($filename)
@@ -29,7 +29,8 @@ class Db
 		if (self::$handle)
 			self::close();
 
-		self::$filename = $filename;
+		// absolute path needed for register_shutdown_function()
+		self::$filename = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename;
 		self::$handle = new SQLite3($filename);
 		self::$handle->createFunction('REGEXP', '_sqliteRegexp', 2);
 
@@ -49,6 +50,11 @@ class Db
 		unlink(self::$filename);
 	}
 
+	public static function filesize()
+	{
+		return filesize(self::$filename);
+	}
+
 	public static function isValid()
 	{
 		return self::$handle && is_file(self::$filename) && filesize(self::$filename) !== 0;
@@ -62,11 +68,11 @@ class Db
 
 	public static function query($sql)
 	{
-		self::$queries += 2; // SQLite seems to do two queries in this case .. !
+		self::$queries++;
 		return new Result(self::$handle->query($sql));
 	}
 
-	public static function querySingle($sql)
+	public static function singleQuery($sql)
 	{
 		self::$queries++;
 		return self::$handle->querySingle($sql, true);
@@ -89,9 +95,9 @@ class Db
 
 	public static function lastError()
 	{
-		if (self::$handle->lastErrorCode() == 0)
+		if (self::$handle->lastErrorCode() == 0 || self::$handle->lastErrorCode() >= 100)
 			return null;
-		return self::$handle->lastErrorMsg();
+		return self::$handle->lastErrorMsg() . ' (' . self::$handle->lastErrorCode() . ')';
 	}
 }
 

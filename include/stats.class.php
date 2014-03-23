@@ -7,7 +7,7 @@ class Stats
 		if (!Db::isValid())
 			return false;
 
-		$stat = Db::querySingle("SELECT * FROM stats WHERE time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1;");
+		$stat = Db::singleQuery("SELECT * FROM stats WHERE time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1;");
 		if (!$stat)
 			Db::exec("INSERT INTO stats (n, time, ip_address, request_url, referral) VALUES (
 				'1',
@@ -23,11 +23,11 @@ class Stats
 	public static function pageVisitChart()
 	{
 		$visits = array();
-		$table = Db::query("SELECT * FROM stats;");
+		$table = Db::query("SELECT * FROM stats ORDER BY time ASC;");
 		while ($row = $table->fetch())
 			if (!count($visits) || date('M j', $visits[count($visits) - 1]['date']) !== date('M j', $row['time']))
 				$visits[] = array(
-					'date' => $row['time'],
+					'date' => floor($row['time'] / 86400) * 86400,
 					'visits' => $row['n'],
 					'unique_visits' => 1
 				);

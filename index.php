@@ -37,6 +37,8 @@ Common::$base_url = preg_replace('/\/+$/', '/', Common::$base_url); // remove ad
 Common::$request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp(Common::$base_url, Common::$request_url, strlen(Common::$base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
+if (strpos(Common::$request_url, '?') !== false)
+	Common::$request_url = substr(Common::$request_url, 0, strpos(Common::$request_url, '?'));
 
 Common::$request_url = urldecode(substr(Common::$request_url, strlen(Common::$base_url))); // remove basedir from URI
 
@@ -160,7 +162,7 @@ Core::$theme_name = $settings['theme'];
 
 
 // load page
-$link = Db::querySingle("SELECT * FROM link WHERE '" . Db::escape(Common::$request_url) . "' REGEXP url or '/" . Db::escape(Common::$request_url) . "' = url LIMIT 1;");
+$link = Db::singleQuery("SELECT * FROM link WHERE '" . Db::escape(Common::$request_url) . "' REGEXP url or '/" . Db::escape(Common::$request_url) . "' = url LIMIT 1;");
 if ($link)
 {
 	Core::addTitle($link['title']);
@@ -207,15 +209,16 @@ if (is_file('themes/' . Core::getThemeName() . '/hooks.php') !== false)
 	include_once('themes/' . Core::getThemeName() . '/hooks.php');
 
 
-// load in template
-if (is_file('templates/' . Core::getTemplateName() . '/hooks.php') !== false)
-	include_once('templates/' . Core::getTemplateName() . '/hooks.php');
-
-
 // show page
 if ($link)
+{
+	// load in template
+	if (is_file('templates/' . Core::getTemplateName() . '/hooks.php') !== false)
+		include_once('templates/' . Core::getTemplateName() . '/hooks.php');
+
 	Hooks::emit('site');
+}
 else
-	user_error('Page not found', ERROR);
+	user_error('Page not found "' . Common::$request_url . '"', ERROR);
 
 ?>

@@ -59,6 +59,7 @@ path.area {
 			.y(function (d) { return y(d.unique_visits); });
 
 		var area = d3.svg.area()
+    		.interpolate('monotone')
 			.x(function (d) { return x(d.date); })
 			.y0(height)
 			.y1(function (d) { return y(d.unique_visits); });

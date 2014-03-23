@@ -1090,6 +1090,7 @@ body {
   cursor: pointer;
 }
 #assets #directories-assets li img {
+  display: inline;
   margin-right: 10px;
   vertical-align: middle;
 }
@@ -1100,10 +1101,10 @@ body {
   display: block;
 }
 #assets #directories-assets li div:nth-child(1) {
-  width: 76%;
+  width: 72%;
 }
 #assets #directories-assets li div:nth-child(2) {
-  width: 17%;
+  width: 21%;
 }
 #assets #directories-assets li div:nth-child(3) {
   width: 7%;

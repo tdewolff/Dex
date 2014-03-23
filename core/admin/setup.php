@@ -95,7 +95,6 @@ if ($form->submitted())
 			'content',
 			'" . Db::escape('<h3>Sample content</h3>
 			 <p>When logged in you can start editing by clicking this text. Try it!</p>
-			 <figure contenteditable="false"><img src="[base_url]res/assets/natalie-portman.jpg"></figure>
 			 <p>Select text to make it <b>bold</b> or <i>italic</i>, or to insert links, images or quotes like below:</p>
 			 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
 			 <hr contenteditable="false">

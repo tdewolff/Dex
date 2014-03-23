@@ -1,6 +1,6 @@
 <?php if (!headers_sent()): ?>
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
 		<?php if (User::getTimeLeft() !== false) { ?>
 		<script>
 			var base_url = '<?php echo $_['base_url']; ?>';
-			var link_id = '<?php echo $_['link_id']; ?>';
+			var link_id = '<?php echo (isset($_['link_id']) ? $_['link_id'] : 0); ?>';
 			var session_time = '<?php echo $_['session_time']; ?>';
 		</script>
 		<?php } ?>

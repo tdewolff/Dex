@@ -19,17 +19,22 @@ if ($form->submitted())
 			$form->appendError('Too many login attempts within short time, please wait 15 minutes');
 		else
 		{
-			$user = Db::querySingle("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
+			$user = Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
 			if (!$user)
-				$user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
+				$user = Db::singleQuery("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
 
 			if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 			{
 				User::logIn($user['user_id']);
 
-				$form->setRedirect('/' . Common::$base_url . Common::$request_url);
-				if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')
+				Log::notice(print_r($_GET, true));
+
+				if (isset($_GET['url']))
+					$form->setRedirect('/' . Common::$base_url . $_GET['url']);
+				else if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')
 					$form->setRedirect('/' . Common::$base_url . 'admin/');
+				else
+					$form->setRedirect('/' . Common::$base_url . Common::$request_url);
 			}
 			else
 			{

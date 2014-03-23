@@ -14,16 +14,8 @@ if (API::action('get'))
 	$logs = array();
 	foreach ($loglines as $logline)
 	{
-		$backtrace = '';
-		$backtrace_pos = strpos($logline, '[', 1);
-		if ($backtrace_pos !== false)
-		{
-			$backtrace = json_decode(substr($logline, $backtrace_pos), true);
-			$logline = substr($logline, 0, $backtrace_pos);
-		}
-
-		$logline = explode(' ', $logline);
-		if (count($logline) < 4)
+		$details = Log::getLoglineDetails($logline);
+		if (!$details)
 			continue;
 
 		try
@@ -44,15 +36,9 @@ if (API::action('get'))
 				continue;
 		}
 
-
-		$message = substr(implode(' ', array_slice($logline, 3)), 8);
-		$logs[] = array(
-			'datetime' => substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1),
-			'ipaddress' => $logline[2],
-			'type' => $logline[3],
-			'message' => htmlentities($message),
-			'html' => htmlentities(Error::formatError($message, $backtrace))
-		);
+		$details['message'] = htmlentities($details['message']);
+		$details['html'] = htmlentities(Error::formatError($details['message'], $details['location'], $details['backtrace']));
+		$logs[] = $details;
 	}
 	API::set('logs', $logs);
 	API::finish();

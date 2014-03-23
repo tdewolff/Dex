@@ -21,7 +21,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 	$recover = false;
 	if (isset($_GET['i']) && isset($_GET['t']))
 	{
-		$recover = Db::querySingle("SELECT * FROM recover WHERE recover_id = '" . Db::escape($_GET['i']) . "' LIMIT 1;");
+		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($_GET['i']) . "' LIMIT 1;");
 		if (!Bcrypt::verify($_GET['t'], $recover['token']))
 			$recover = false;
 	}
@@ -100,7 +100,7 @@ else
 	{
 		if ($form->validate())
 		{
-			$user = Db::querySingle("SELECT * FROM user WHERE email = '" . Db::escape($form->get('email')) . "' LIMIT 1;");
+			$user = Db::singleQuery("SELECT * FROM user WHERE email = '" . Db::escape($form->get('email')) . "' LIMIT 1;");
 			if ($user)
 			{
 				$token = random(24);

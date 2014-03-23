@@ -47,7 +47,7 @@ else
 			else
 			{
 				$link_id = 0;
-				$link = Db::querySingle("
+				$link = Db::singleQuery("
 					SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
 				if ($link)
 				{
