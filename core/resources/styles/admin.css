@@ -900,6 +900,16 @@ body {
   border-top: 1px solid #f8f8f8;
   border-bottom: 1px solid #e8e8e8;
 }
+#left-column li:first-of-type > a {
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+}
+#left-column li:last-of-type > a {
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
 #left-column li > a.selected {
   background-color: #a9cc66;
   border-top: 1px solid #b4d279;

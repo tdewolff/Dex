@@ -39,7 +39,7 @@
 </script>
 
 <script id="asset_item" type="text/x-dot-template">
-	<li  data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}" class="asset">
+	<li  data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}" class="asset">
 		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
 		<div>{{=it.size}}</div>
 		<div></div>
@@ -82,24 +82,24 @@
 			$.each(data['directories'], function () {
 				$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
 			});
-		});
 
-		apiLoadStatusWorking($('#load_directories_assets'));
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_assets',
-			dir: dir
-		}, function (data) {
-			if (!data['assets'].length) {
-				apiLoadStatusEmpty($('#load_directories_assets'));
-				return;
-			}
+			apiLoadStatusWorking($('#load_directories_assets'));
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_assets',
+				dir: dir
+			}, function (data) {
+				if (!data['assets'].length) {
+					apiLoadStatusEmpty($('#load_directories_assets'));
+					return;
+				}
 
-			apiLoadStatusSuccess($('#load_directories_assets'));
-			$.each(data['assets'], function () {
-				$(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				apiLoadStatusSuccess($('#load_directories_assets'));
+				$.each(data['assets'], function () {
+					$(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				});
+			}, function () {
+				apiLoadStatusError($('#load_directories_assets'));
 			});
-		}, function () {
-			apiLoadStatusError($('#load_directories_assets'));
 		});
 	}
 	loadDir('');

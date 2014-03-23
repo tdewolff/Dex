@@ -46,20 +46,22 @@ function api(url, data, success, error) {
 }
 
 function apiFatal(message) {
-	$.fancybox.open({
-		content: '<h2 class="error">Error</h2>' + message,
-		beforeShow: function () {
-			this.skin.css({
-				'background': '#F2DEDE',
-				'color': '#B94A48',
-				'border': 'solid 1px #EED3D7'
-			});
-		},
-		overlay: {
-			closeClick: true,
-			locked: false
-		}
-	});
+	//if (!$('div#fancybox-frame:empty')) {
+		$.fancybox.open({
+			content: '<h2 class="error">Error</h2>' + message,
+			beforeShow: function () {
+				this.skin.css({
+					'background': '#F2DEDE',
+					'color': '#B94A48',
+					'border': 'solid 1px #EED3D7'
+				});
+			},
+			overlay: {
+				closeClick: true,
+				locked: false
+			}
+		});
+	//}
 }
 
 function apiStatusClear() {

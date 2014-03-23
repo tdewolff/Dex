@@ -103,6 +103,14 @@ body {
 	border-bottom: 1px solid #e8e8e8;
 }
 
+#left-column li:first-of-type > a {
+	.border-top-left-radius(3px);
+}
+
+#left-column li:last-of-type > a {
+	.border-bottom-left-radius(3px);
+}
+
 #left-column li > a.selected {
 	background-color: @auxiliary;
 	border-top: 1px solid lighten(@auxiliary, 5%);
