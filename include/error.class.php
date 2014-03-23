@@ -9,13 +9,15 @@ ini_set('display_errors', false);
 
 class Error
 {
-	private static $display = false;
+	private static $display_errors = false;
+	private static $display_notices = false;
 	private static $messages = array();
 
-	public static function setDisplay($display)
+	public static function setDisplay($display_errors, $display_notices)
 	{
-		self::$display = $display;
-		if (self::$display)
+		self::$display_errors = $display_errors;
+		self::$display_notices = $display_notices;
+		if (self::$display_errors)
 			ini_set('error_reporting', E_ALL | E_STRICT);
 		else
 			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
@@ -23,7 +25,7 @@ class Error
 
 	public static function getErrors()
 	{
-		if (!self::$display)
+		if (!self::$display_errors)
 			return '<span class="error">An error occurred, check the logs for additional information</span>';
 		return implode('', self::$messages) . '!';
 	}
@@ -64,7 +66,7 @@ class Error
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
 
-		$display_message = self::$display ? $formatted_message : '<span class="error">An error occurred, check the logs for additional information</span>';
+		$display_message = self::$display_errors ? $formatted_message : '<span class="error">An error occurred, check the logs for additional information</span>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))
@@ -78,12 +80,12 @@ class Error
 			case E_USER_WARNING:
 			case E_RECOVERABLE_ERROR:
 				Log::warning($message, $location, $backtrace);
-				if (self::$display && !Common::requestResource())
+				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
 						API::warning($message);
 					else if (Common::requestAdmin())
-						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
+						echo $formatted_message;
 				}
 				break;
 
@@ -93,12 +95,12 @@ class Error
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				Log::notice($message, $location, $backtrace);
-				if (self::$display && !Common::requestResource())
+				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
 						API::notice($message);
 					else if (Common::requestAdmin())
-						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
+						echo $formatted_message;
 				}
 				break;
 

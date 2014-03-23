@@ -19,7 +19,7 @@ Common::ensureWritableDirectory('logs/');
 
 Log::initialize();
 Log::setVerbose(Common::tryOrDefault($config, 'verbose_logging', false));
-Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false));
+Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false), Common::tryOrDefault($config, 'display_notices', false));
 
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function() {
