@@ -37,9 +37,14 @@ Common::$base_url = preg_replace('/\/+$/', '/', Common::$base_url); // remove ad
 Common::$request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front slash
 if (strncmp(Common::$base_url, Common::$request_url, strlen(Common::$base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
-if (strpos(Common::$request_url, '?') !== false)
-	Common::$request_url = substr(Common::$request_url, 0, strpos(Common::$request_url, '?'));
 
+Common::$request_query = '';
+$query_pos = strpos(Common::$request_url, '?');
+if ($query_pos !== false)
+{
+	Common::$request_query = substr(Common::$request_url, $query_pos);
+	Common::$request_url = substr(Common::$request_url, 0, $query_pos);
+}
 Common::$request_url = urldecode(substr(Common::$request_url, strlen(Common::$base_url))); // remove basedir from URI
 
 $url = explode('/', Common::$request_url);

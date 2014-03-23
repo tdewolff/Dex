@@ -3,6 +3,7 @@
 class Common
 {
 	public static $request_url = '';
+	public static $request_query = '';
 	public static $base_url = '';
 
 	////////////////
