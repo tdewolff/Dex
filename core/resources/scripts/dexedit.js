@@ -4,7 +4,7 @@ var DexEdit = function (root) {
 	this.isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 
 	this.root = $(root).attr('contenteditable', 'true');
-	this.menu = $('<div class="dexedit_menu">\
+	this.menu = $('<div class="dexedit_menu" contenteditable="false">\
 		<div class="dexedit_menu_arrow"></div>\
 <span class="dexedit_menu_b"><i class="fa fa-fw fa-bold"></i></span>\
 <span class="dexedit_menu_i"><i class="fa fa-fw fa-italic"></i></span>\

@@ -45,11 +45,12 @@ $(function () {
 	}, session_time * 1000);
 
 	$('.dex.admin-bar .logged-in .current-user a').click(function () {
-		api('/' + base_url + 'api/core/users/', {
+		adminBarLogOut();
+		/*api('/' + base_url + 'api/core/users/', {
 			'action': 'logout'
 		}, function(data) {
 			adminBarLogOut();
-		});
+		});*/
 	});
 
 	$('.dex.admin-bar .logged-out .current-user a').click(function () {

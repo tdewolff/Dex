@@ -8,39 +8,48 @@ span.amp {
 }
 
 .fancybox-inner {
-	margin: 1em 0;
+	margin: 1em 0.5em;
 }
 
 .api-error {
 	background: #F2DEDE;
-	color: #B94A48;
 	border: solid 1px #EED3D7;
-	text-align: center;
 
-	&h1 {
+	h1 {
 	    color: #B94A48;
 		font-size: 200%;
+		text-align: center;
 	}
 
-	&h2 {
-	    color: #B94A48;
-	    margin-top: 0;
+	h2 {
 	    padding: 0;
+	    margin-top: 0;
+	    color: #B94A48;
+		text-align: center;
 	}
 
-	&p.error {
+	p {
+	    color: #B94A48;
+		text-align: center;
+	}
+
+	p.error {
 		margin-top: 10px;
+		padding-bottom: 0;
+		margin-bottom: 5px;
 	}
 
-	&p.error-source {
+	p.error-source {
+		margin-top: 5px;
 		margin-bottom: 20px;
 		font-size: 90%;
 	}
 
-	&table.backtrace {
+	table.backtrace {
 		margin-bottom: 10px;
 		width: 100%;
 		font-size: 80%;
+	    color: #B94A48;
 
 		th, td {
 			padding: 0 1em;

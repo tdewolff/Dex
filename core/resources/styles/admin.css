@@ -20,37 +20,45 @@ span.amp {
   font-style: italic;
 }
 .fancybox-inner {
-  margin: 1em 0;
+  margin: 1em 0.5em;
 }
 .api-error {
   background: #F2DEDE;
-  color: #B94A48;
   border: solid 1px #EED3D7;
-  text-align: center;
 }
-.api-errorh1 {
+.api-error h1 {
   color: #B94A48;
   font-size: 200%;
+  text-align: center;
 }
-.api-errorh2 {
-  color: #B94A48;
-  margin-top: 0;
+.api-error h2 {
   padding: 0;
+  margin-top: 0;
+  color: #B94A48;
+  text-align: center;
 }
-.api-errorp.error {
+.api-error p {
+  color: #B94A48;
+  text-align: center;
+}
+.api-error p.error {
   margin-top: 10px;
+  padding-bottom: 0;
+  margin-bottom: 5px;
 }
-.api-errorp.error-source {
+.api-error p.error-source {
+  margin-top: 5px;
   margin-bottom: 20px;
   font-size: 90%;
 }
-.api-errortable.backtrace {
+.api-error table.backtrace {
   margin-bottom: 10px;
   width: 100%;
   font-size: 80%;
+  color: #B94A48;
 }
-.api-errortable.backtrace th,
-.api-errortable.backtrace td {
+.api-error table.backtrace th,
+.api-error table.backtrace td {
   padding: 0 1em;
 }
 .api .status {
