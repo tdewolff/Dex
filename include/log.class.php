@@ -86,8 +86,7 @@ class Log
 	{
 		$details = array('message' => '', 'location' => '', 'backtrace' => '');
 
-		$logline_array = explode(' ', $logline);
-		if (count($logline_array) < 4)
+		if (strlen($logline) == 0)
 			return false;
 
 		$backtrace_pos = strpos($logline, '[', 1);
@@ -103,6 +102,10 @@ class Log
 			$details['location'] = preg_replace(array('/&lpar;/', '/&rpar;/'), array('(', ')'), substr($logline, $location_pos));
 			$logline = substr($logline, 0, $location_pos - 1);
 		}
+
+		$logline_array = explode(' ', $logline);
+		if (count($logline_array) < 4)
+			return false;
 
 		$details['datetime'] = substr($logline_array[0], 1) . ' ' . substr($logline_array[1], 0, -1);
 		$details['ipaddress'] = $logline_array[2];
