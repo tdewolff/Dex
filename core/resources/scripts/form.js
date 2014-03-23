@@ -102,6 +102,7 @@ var Form = function (form) {
 					hidden.val('');
 			}
 		});
+		console.log(window.location.href);
 		api(window.location.href, self.form.serialize(), self.success, self.error); // AJAX
 	};
 

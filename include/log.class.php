@@ -69,7 +69,8 @@ class Log
 	        fseek($fp, $pos - $read_size, SEEK_SET);
 
 	        // prepend the current block, and count the new lines
-	        $input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
+	        if ($read_size > 0)
+	        	$input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
 	        //$line_count = substr_count(ltrim($input), "\n");
 
 	        // if $pos is == 0 we are at start of file
@@ -85,6 +86,10 @@ class Log
 	{
 		$details = array('message' => '', 'location' => '', 'backtrace' => '');
 
+		$logline_array = explode(' ', $logline);
+		if (count($logline_array) < 4)
+			return false;
+
 		$backtrace_pos = strpos($logline, '[', 1);
 		if ($backtrace_pos !== false)
 		{
@@ -99,17 +104,13 @@ class Log
 			$logline = substr($logline, 0, $location_pos - 1);
 		}
 
-		$logline = explode(' ', $logline);
-		if (count($logline) < 4)
-			return false;
+		$details['datetime'] = substr($logline_array[0], 1) . ' ' . substr($logline_array[1], 0, -1);
+		$details['ipaddress'] = $logline_array[2];
+		$details['type'] = $logline_array[3];
 
-		$details['datetime'] = substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1);
-		$details['ipaddress'] = $logline[2];
-		$details['type'] = $logline[3];
-
-		$message = implode(' ', array_slice($logline, 3));
+		$message = implode(' ', array_slice($logline_array, 3));
 		if (strlen($message) > 8)
-			$details['message'] = preg_replace(array('/&lbrack;/', '/&rbrack;/'), array('[', ']'), substr($message, 8));
+			$details['message'] = preg_replace(array('/&lpar;/', '/&rpar;/', '/&lbrack;/', '/&rbrack;/'), array('(', ')', '[', ']'), substr($message, 8));
 
 		return $details;
 	}
@@ -141,7 +142,7 @@ class Log
 	{
 		if (self::$file)
 		{
-			$message = preg_replace(array('/\[/', '/\]/'), array('&lbrack;', '&rbrack;'), $message);
+			$message = preg_replace(array('/\(/', '/\)/', '/\[/', '/\]/', "/\r\n|\r|\n/"), array('&lpar;', '&rpar;', '&lbrack;', '&rbrack;', ' '), $message);
 			if (strlen($location))
 				$location = ' (' . preg_replace(array('/\(/', '/\)/'), array('&lpar;', '&rpar;'), $location) . ')';
 

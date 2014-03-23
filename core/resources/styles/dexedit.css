@@ -15,7 +15,7 @@
 [data-dexeditable] {
   outline: 0;
 }
-img {
+[contenteditable] img {
   display: block;
 }
 .dexedit_img_resize_nwse {

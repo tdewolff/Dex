@@ -18,7 +18,7 @@
 	</div>
 	<?php } if (!Common::requestAdmin() || User::loggedIn()) { ?>
 	<div class="logged-out">
-		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/<?php echo (!Common::requestAdmin() ? '?url=' . Common::$request_url . urlencode(Common::$request_url) : ''); ?>">log back in</a></div>
+		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/<?php echo (!Common::requestAdmin() ? '?url=' . urlencode('/' . Common::$request_url) : ''); ?>">log back in</a></div>
 		<?php if (!Common::requestAdmin()) { ?>
 		<div class="current-user"><a href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
 		<?php } ?>

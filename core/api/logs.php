@@ -20,7 +20,7 @@ if (API::action('get'))
 
 		try
 		{
-			$datetime = new DateTime(substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1));
+			$datetime = new DateTime($details['datetime']);
 		}
 		catch (Exception $e)
 		{
@@ -32,7 +32,7 @@ if (API::action('get'))
 			if (count($logs) >= API::get('lines') || $datetime->diff(new DateTime())->m > 0)
 				break;
 
-			if ($logline[3] != 'ERROR' && $logline[3] != 'WARNING')
+			if ($details['type'] != 'ERROR' && $details['type'] != 'WARNING')
 				continue;
 		}
 

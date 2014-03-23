@@ -219,6 +219,6 @@ if ($link)
 	Hooks::emit('site');
 }
 else
-	user_error('Page not found "' . Common::$request_url . '"', ERROR);
+	user_error('Page not found "/' . Common::$request_url . '"', ERROR);
 
 ?>

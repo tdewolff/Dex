@@ -348,11 +348,10 @@ class Form
 
 	public function render()
 	{
+		$_SESSION['form_nonce_' . $this->name] = random();
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
-
-		$_SESSION['form_nonce_' . $this->name] = random();
 
 		$form = array(
 			'name' => $this->name,
@@ -361,7 +360,6 @@ class Form
 			'optionals' => json_encode($this->optionals),
 			'nonce' => $_SESSION['form_nonce_' . $this->name]
 		);
-
 		include('core/templates/include/form.tpl');
 	}
 
