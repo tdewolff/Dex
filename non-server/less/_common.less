@@ -11,31 +11,39 @@ span.amp {
 	margin: 1em 0;
 }
 
-h2.error {
-    color: #B94A48;
-    margin-top: 0;
-    padding: 0;
-}
-
-span.error {
-	display: block;
-	margin-top: 10px;
+.api-error {
+	background: #F2DEDE;
+	color: #B94A48;
+	border: solid 1px #EED3D7;
 	text-align: center;
-}
 
-span.error-source {
-	display: block;
-	margin-bottom: 20px;
-	text-align: center;
-	font-size: 90%;
-}
+	&h1 {
+	    color: #B94A48;
+		font-size: 200%;
+	}
 
-table.backtrace {
-	margin-bottom: 10px;
-	width: 100%;
-	font-size: 80%;
+	&h2 {
+	    color: #B94A48;
+	    margin-top: 0;
+	    padding: 0;
+	}
 
-	th, td {
-		padding: 0 1em;
+	&p.error {
+		margin-top: 10px;
+	}
+
+	&p.error-source {
+		margin-bottom: 20px;
+		font-size: 90%;
+	}
+
+	&table.backtrace {
+		margin-bottom: 10px;
+		width: 100%;
+		font-size: 80%;
+
+		th, td {
+			padding: 0 1em;
+		}
 	}
 }

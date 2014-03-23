@@ -22,29 +22,35 @@ span.amp {
 .fancybox-inner {
   margin: 1em 0;
 }
-h2.error {
+.api-error {
+  background: #F2DEDE;
+  color: #B94A48;
+  border: solid 1px #EED3D7;
+  text-align: center;
+}
+.api-errorh1 {
+  color: #B94A48;
+  font-size: 200%;
+}
+.api-errorh2 {
   color: #B94A48;
   margin-top: 0;
   padding: 0;
 }
-span.error {
-  display: block;
+.api-errorp.error {
   margin-top: 10px;
-  text-align: center;
 }
-span.error-source {
-  display: block;
+.api-errorp.error-source {
   margin-bottom: 20px;
-  text-align: center;
   font-size: 90%;
 }
-table.backtrace {
+.api-errortable.backtrace {
   margin-bottom: 10px;
   width: 100%;
   font-size: 80%;
 }
-table.backtrace th,
-table.backtrace td {
+.api-errortable.backtrace th,
+.api-errortable.backtrace td {
   padding: 0 1em;
 }
 .api .status {

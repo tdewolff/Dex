@@ -27,8 +27,6 @@ if ($form->submitted())
 			{
 				User::logIn($user['user_id']);
 
-				Log::warning(print_r($_GET, true));
-
 				if (isset($_GET['url']) && strlen($_GET['url']))
 					$form->setRedirect('/' . Common::$base_url . substr($_GET['url'], 1));
 				else if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')

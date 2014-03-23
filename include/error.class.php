@@ -26,7 +26,7 @@ class Error
 	public static function getErrors()
 	{
 		if (!self::$display_errors)
-			return '<span class="error">An error occurred, check the logs for additional information</span>';
+			return '<p class="error">An error occurred, check the logs for additional information</p>';
 		return implode('', self::$messages) . '!';
 	}
 
@@ -46,7 +46,7 @@ class Error
 
 	public static function formatError($message, $location, $backtrace)
 	{
-		$formatted_message = '<span class="error"><strong>' . $message . '</strong></span><span class="error-source">' . $location . '</span>';
+		$formatted_message = '<p class="error"><strong>' . $message . '</strong></p><p class="error-source">' . $location . '</p>';
 
 		$formatted_backtrace = '';
 		if (is_array($backtrace))
@@ -66,7 +66,7 @@ class Error
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
 
-		$display_message = self::$display_errors ? $formatted_message : '<span class="error">An error occurred, check the logs for additional information</span>';
+		$display_message = self::$display_errors ? $formatted_message : '<p class="error">An error occurred, check the logs for additional information</p>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))

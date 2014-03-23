@@ -151,6 +151,34 @@ class Common
 
 	////////////////
 
+	public static function getUrlContents($url)
+	{
+		$contents = false;
+		$allow_url_fopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
+        if ($allow_url_fopen)
+        {
+            $contents = file_get_contents($url, false, stream_context_create(array(
+                'http' => array(
+                    'method' => 'GET',
+                    'max_redirects' => 0,
+                    'timeout' => 5,
+                )
+            )));
+        }
+        elseif (extension_loaded('curl'))
+        {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            $contents = curl_exec($ch);
+            curl_close($ch);
+        }
+        return $contents;
+	}
+
+	////////////////
+
 	public static function fullBaseUrl()
 	{
 		$s = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');

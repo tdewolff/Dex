@@ -56,11 +56,7 @@ function apiFatal(message) {
 		$.fancybox.open({
 			content: '<h2 class="error">Error</h2>' + message,
 			beforeShow: function () {
-				this.skin.css({
-					'background': '#F2DEDE',
-					'color': '#B94A48',
-					'border': 'solid 1px #EED3D7'
-				});
+				this.skin.addClass('api-error');
 			},
 			overlay: {
 				closeClick: true,

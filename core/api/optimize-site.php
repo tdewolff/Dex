@@ -59,7 +59,6 @@ foreach ($script_directories as $script_directory)
 			!is_file($script_min_name) ||
 			$info->getMTime() > filemtime($script_min_name)))
 		{
-			$hasCompressed = true;
 			Console::append('Compressing \'' . $script_name . '\'...');
 			$input = file_get_contents($script_name);
 			try {
@@ -67,7 +66,7 @@ foreach ($script_directories as $script_directory)
 				file_put_contents($script_min_name, $output);
 			} catch (Exception $e) {
 				$error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
-				Console::appendLine('failed: ' . $error);
+				Console::appendLine('failed: ' . lcfirst($error));
 				continue;
 			}
 			Console::appendLine('done (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
@@ -86,7 +85,6 @@ foreach ($style_directories as $style_directory)
 			!is_file($style_min_name) ||
 			$info->getMTime() > filemtime($style_min_name)))
 		{
-			$hasCompressed = true;
 			Console::append('Compressing \'' . $style_name . '\'...');
 			$input = file_get_contents($style_name);
 			$output = CssCompressor::process($input);
@@ -106,19 +104,25 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 		!is_file($image_min_name) ||
 		$info->getMTime() > filemtime($image_min_name)))
 	{
-		$hasCompressed = true;
 		Console::append('Compressing \'' . $image_name . '\'...');
-		try {
-			$output_info = SmushIt::compress(Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name);
-		} catch (Exception $e) {
-			$error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
-			Console::appendLine('failed: ' . $error);
+
+		$image_url = Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name;
+		$contents = Common::getUrlContents('http://www.smushit.com/ysmush.it/ws.php?' . http_build_query(array('img' => $image_url)));
+		if ($contents === false)
+		{
+			Console::appendLine('failed: could not make HTTP request');
 			continue;
 		}
 
-		$output = file_get_contents($output_info->dest);
-		file_put_contents($image_min_name, $output);
-		Console::appendLine('done (' . ($info->getSize() ? number_format((float) $output_info->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
+		$smushit = json_decode(trim($contents));
+        if (isset($smushit->error))
+		{
+			Console::appendLine('failed: ' . lcfirst($smushit->error));
+			continue;
+		}
+		file_put_contents($image_min_name, Common::getUrlContents(urldecode($smushit->dest)));
+
+		Console::appendLine('done (' . ($info->getSize() ? number_format((float) $smushit->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
 	}
 }
 
