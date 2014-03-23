@@ -14,7 +14,7 @@
 	<?php if (Db::isValid()) { if (User::getTimeLeft() > 0) { ?>
 	<div class="logged-in">
 		<div class="navigate">Go to <?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
-		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="<?php echo (Common::requestAdmin() && 0 ? '/' . $_['base_url'] . 'admin/' : '#'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
+		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="<?php echo (Common::requestAdmin() ? '/' . $_['base_url'] . 'admin/' : '#'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
 	</div>
 	<?php } if (!Common::requestAdmin() || User::loggedIn()) { ?>
 	<div class="logged-out">

@@ -44,13 +44,18 @@ $(function () {
 		adminBarLogOut();
 	}, session_time * 1000);
 
-	$('.dex.admin-bar .logged-in .current-user a').click(function () {
-		adminBarLogOut();
-		/*api('/' + base_url + 'api/core/users/', {
+	$('.dex.admin-bar .logged-in .current-user a').click(function (e) {
+		e.preventDefault();
+		var href = this.href;
+		api('/' + base_url + 'api/core/users/', {
 			'action': 'logout'
 		}, function(data) {
-			adminBarLogOut();
-		});*/
+			if (href[href.length - 1] == '#') {
+				adminBarLogOut();
+			} else {
+				window.location = href;
+			}
+		});
 	});
 
 	$('.dex.admin-bar .logged-out .current-user a').click(function () {
