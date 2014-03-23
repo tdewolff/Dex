@@ -4,6 +4,13 @@ $(function () {
 });
 
 function api(url, data, success, error) {
+	if (typeof sessionTimeout !== 'undefined') {
+		clearTimeout(sessionTimeout);
+		sessionTimeout = setTimeout(function () {
+			adminBarLogOut();
+		}, session_time * 1000);
+	}
+
 	if (!url)
 		apiFatal('no API URL set');
 	else
@@ -13,40 +20,39 @@ function api(url, data, success, error) {
 			data: data,
 			dataType: 'json',
 			success: function (data) {
-				if (typeof data['error'] !== 'undefined')
-				{
-					if (typeof error !== 'undefined' && error)
-						if (error(data) === false)
-							return;
+				if (typeof data['error'] !== 'undefined') {
+					if (typeof error !== 'undefined' && error && error(data) === false) {
+						return;
+					}
 
 					apiFatal(data['error'].join('<br>'));
-				}
-				else if (typeof success !== 'undefined' && success)
-				{
+				} else if (typeof success !== 'undefined' && success)	{
 					success(data);
-					if (typeof applyTooltips !== 'undefined')
+					if (typeof applyTooltips !== 'undefined') {
 						applyTooltips();
+					}
 				}
 			},
 			error: function (data) {
-				if (typeof error !== 'undefined' && error)
-					if (error(data) === false)
-						return;
+				if (typeof error !== 'undefined' && error && error(data) === false) {
+					return;
+				}
 
-				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['error'] !== 'undefined') // PHP error but still handled by API
+				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['error'] !== 'undefined') { // PHP error but still handled by API
 					apiFatal(data['responseJSON']['error'].join('<br>'));
-				else if (typeof data['responseText'] !== 'undefined') // Non-JSON response
+				} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
 					apiFatal(data['responseText']);
-				else if (typeof data['statusText'] !== 'undefined') // Some XHR thing went wrong
+				} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
 					apiFatal(data['statusText']);
-				else // ...shrugs
+				} else { // ...shrugs
 					apiFatal(data);
+				}
 			}
 		});
 }
 
 function apiFatal(message) {
-	//if (!$('div#fancybox-frame:empty')) {
+	if (!$('div.fancybox-wrap').length) {
 		$.fancybox.open({
 			content: '<h2 class="error">Error</h2>' + message,
 			beforeShow: function () {
@@ -61,7 +67,7 @@ function apiFatal(message) {
 				locked: false
 			}
 		});
-	//}
+	}
 }
 
 function apiStatusClear() {

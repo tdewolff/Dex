@@ -40,7 +40,7 @@ $(function () {
 		});
 	}
 
-	setTimeout(function () {
+	var sessionTimeout = setTimeout(function () {
 		adminBarLogOut();
 	}, session_time * 1000);
 

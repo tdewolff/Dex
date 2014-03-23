@@ -452,6 +452,12 @@ button.list-button:visited:active {
   background-image: -o-linear-gradient(top, #f2f2f2, #ffffff);
   background-image: linear-gradient(to bottom, #f2f2f2, #ffffff);
 }
+a.list-button.dropdown-select,
+button.list-button.dropdown-select,
+a.list-button:visited.dropdown-select,
+button.list-button:visited.dropdown-select {
+  border-right: 0;
+}
 label {
   display: block;
   float: left;

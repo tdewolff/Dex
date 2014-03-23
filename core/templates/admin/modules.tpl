@@ -66,6 +66,10 @@
 			apiLoadStatusError($('#load_status'));
 		});
 
+		modules.on('click', 'li.disabled a.dropdown-select', function (e) {
+			e.preventDefault();
+		});
+
 		modules.on('click', 'a.enable', function () {
 			apiStatusWorking('Enabling module...');
 			var item = $(this);

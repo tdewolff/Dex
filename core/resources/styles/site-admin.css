@@ -484,6 +484,12 @@ body {
   background-image: -o-linear-gradient(top, #f2f2f2, #ffffff);
   background-image: linear-gradient(to bottom, #f2f2f2, #ffffff);
 }
+.dex.popup-wrapper a.list-button.dropdown-select,
+.dex.popup-wrapper button.list-button.dropdown-select,
+.dex.popup-wrapper a.list-button:visited.dropdown-select,
+.dex.popup-wrapper button.list-button:visited.dropdown-select {
+  border-right: 0;
+}
 .dex.popup-wrapper label {
   display: block;
   float: left;
