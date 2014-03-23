@@ -59,7 +59,6 @@
 		logs.on('click', 'li', function () {
 			$.fancybox.open({
 				content: $(this).attr('data-html'),
-				closeBtn: false,
 				overlay: {
 					closeClick: true,
 					locked: false

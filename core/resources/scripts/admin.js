@@ -3,7 +3,6 @@ $(function () {
     if ($.fn.fancybox) {
         $('.fancybox').fancybox({
             closeClick: true,
-            closeBtn: false,
 
             openEffect : 'elastic',
             openSpeed  : 150,

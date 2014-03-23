@@ -92,10 +92,8 @@
 		}
 
 		pages.on('keyup', 'input[name="title"]', function () {
-			console.log('a');
 			var link_id = $(this).attr('data-link-id');
 			if ($('#page_' + link_id + ' input[name="url"]').attr('data-use-feed') == 'true') {
-				console.log('b');
 				var link_url = $(this).val().toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
 				$('#page_' + link_id + ' input[name="url"]').val(link_url + '/');
 				$('#page_' + $(this).attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url + '/');
@@ -104,8 +102,8 @@
 
 		pages.on('keyup', 'input[name="url"]', function () {
 			$(this).attr('data-use-feed', 'false');
-			var link_url = $(this).val();
-			if (link_url[link_url.length - 1] != '/') {
+			var link_url = $(this).val().replace(/[\/]+$/, '');
+			if (link_url.length) {
 				link_url += '/';
 			}
 			$('#page_' + $(this).attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url);

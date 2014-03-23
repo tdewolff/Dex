@@ -58,7 +58,6 @@
 	var first_load = true;
 	function loadDir(dir) {
 		if (!first_load) {
-			console.log('clear');
 			directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
 		}
 		first_load = false;
@@ -69,8 +68,9 @@
 		}, function (data) {
 			breadcrumbs.empty();
 			$.each(data['breadcrumbs'], function (i) {
-				if (i)
+				if (i) {
 					breadcrumbs.append('&gt;');
+				}
 				breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
 			});
 		});
@@ -79,7 +79,6 @@
 			action: 'get_directories',
 			dir: dir
 		}, function (data) {
-			console.log('success1');
 			$.each(data['directories'], function () {
 				$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
 			});
