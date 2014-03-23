@@ -110,7 +110,7 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 		$contents = Common::getUrlContents('http://www.smushit.com/ysmush.it/ws.php?' . http_build_query(array('img' => $image_url)));
 		if ($contents === false)
 		{
-			Console::appendLine('failed: could not make HTTP request');
+			Console::appendLine('failed: could not make HTTP request to SmushIt');
 			continue;
 		}
 
@@ -118,6 +118,11 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
         if (isset($smushit->error))
 		{
 			Console::appendLine('failed: ' . lcfirst($smushit->error));
+			continue;
+		}
+		else if ($smushit->dest_size == 0)
+		{
+			Console::appendLine('failed: no response from SmushIt');
 			continue;
 		}
 		file_put_contents($image_min_name, Common::getUrlContents(urldecode($smushit->dest)));

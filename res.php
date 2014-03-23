@@ -19,21 +19,27 @@ else if (!is_file($filename))
 	user_error('Could not find resource file "' . $filename . '"', ERROR);
 else
 {
+	Log::warning('a ' . $filename);
 	if (Resource::isImage($extension))
 	{
+		Log::warning('b ' . $filename);
 		if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
 			$filename = Common::insertMinExtension($filename);
+		Log::warning('c ' . $filename);
 
 		if ($querystring_position !== false)
 		{
+			Log::warning('d ' . $filename);
 			// resize images
 			$w = Common::tryOrZero($_GET, 'w');
 			$h = Common::tryOrZero($_GET, 'h');
 			$s = Common::tryOrZero($_GET, 's');
 			$filename = Resource::imageResize($filename, $w, $h, $s);
 		}
+		Log::warning('e ' . $filename);
 	}
 
+	Log::warning('f ' . $filename);
 	header('Content-Type: ' . Resource::getMime($extension));
 	echo file_get_contents($filename);
 }

@@ -131,9 +131,7 @@ else if (API::action('get_directories'))
 	{
 		if (is_dir($dir . $name) && $name != '.')
 		{
-			Log::error($name);
 			$url = $dir . $name . '/';
-			Log::error($url);
 			if ($name == '..')
 			{
 				if ($dir == 'assets/')

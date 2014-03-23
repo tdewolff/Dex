@@ -75,6 +75,9 @@
 		logs.on('click', 'li', function () {
 			$.fancybox.open({
 				content: $(this).attr('data-html'),
+				beforeShow: function () {
+					this.skin.addClass('api-error');
+				},
 				overlay: {
 					closeClick: true,
 					locked: false

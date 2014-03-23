@@ -182,11 +182,6 @@
 		window.onhashchange = hashchange;
 		hashchange();
 
-		// click events on directories, assets and images
-		/*breadcrumbs.on('click', 'a', function () {
-			loadDir($(this).attr('data-dir'));
-		});*/
-
 		directories_assets.on('click', '.directory > div:nth-child(1)', function (e) {
 			e.stopPropagation();
 			$(this).find('a').click();
@@ -196,7 +191,6 @@
 			e.stopPropagation();
 			if (typeof $(this).attr('data-dir') !== 'undefined') {
 				window.location.hash = '!dir=' + $(this).attr('data-dir');
-				//loadDir($(this).attr('data-dir'));
 			}
 		});
 
