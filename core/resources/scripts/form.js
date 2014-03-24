@@ -57,6 +57,10 @@ var Form = function (form) {
 		}
 	});
 
+	this.form.on('resize', 'textarea', function () {
+		console.log('resize');
+	});
+
 	this.needsSave = function () {
 		self.hasChange = true;
 		clearTimeout(self.saveTimeout);

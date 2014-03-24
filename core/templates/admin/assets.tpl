@@ -20,14 +20,13 @@
 	</form>
 
 	<div id="breadcrumbs"><a href="#!dir=" data-dir="">Assets</a></div>
-
 	<ul id="directories-assets" class="table">
 		<li>
 			<div>Filename</div>
 			<div>Size</div>
 			<div></div>
 		</li>
-		<li id="load_status_directories" class="api load-status">
+		<li id="load_status_directories_assets" class="api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
 			<div class="empty">empty</div>
@@ -104,72 +103,67 @@
 
 		// loading initial data
 		var dir = '';
-		var first_load = true;
 		function loadDir(newDir) {
 			dir = newDir;
 			$('#upload input[name="dir"]').val(dir);
 
-			if (!first_load) {
-				directories_assets.find('li:not(:first)').slideUp(100, function () { $(this).remove(); });
-				images.find('li').slideUp(100, function () { $(this).remove(); });
-			}
-			first_load = false;
+			directories_assets.find('li:not(:first):not(.load-status)').slideUp(100, function () { $(this).remove(); });
+			images.find('li:not(.load-status)').slideUp(100, function () { $(this).remove(); });
 
-			api('/' + base_url + 'api/core/assets/', {
-				action: 'get_breadcrumbs',
-				dir: dir
-			}, function (data) {
-				breadcrumbs.find('*:not(a:first)').remove();
-				$.each(data['breadcrumbs'], function (i) {
-					breadcrumbs.append('<span>&gt;</span><a href="#!dir=' + this.dir + '">' + this.name + '</a>');
-				});
-			});
-
-			apiLoadStatusWorking($('#load_status_directories'));
-			api('/' + base_url + 'api/core/assets/', {
-				action: 'get_directories',
-				dir: dir
-			}, function (data) {
-				if (!data['directories'].length) {
-					apiLoadStatusEmpty($('#load_status_directories'));
-					return;
-				}
-
-				apiLoadStatusSuccess($('#load_status_directories'));
-				$.each(data['directories'], function () {
-					$(directory_item(this)).hide().appendTo(directories_assets).slideDown(100);
-				});
-
+			setTimeout(function () {
 				api('/' + base_url + 'api/core/assets/', {
-					action: 'get_assets',
+					action: 'get_breadcrumbs',
 					dir: dir
 				}, function (data) {
+					breadcrumbs.find('*:not(a:first)').remove();
+					$.each(data['breadcrumbs'], function (i) {
+						breadcrumbs.append('<span>&gt;</span><a href="#!dir=' + this.dir + '">' + this.name + '</a>');
+					});
+				});
+
+				apiLoadStatusWorking($('#load_status_directories_assets'));
+				$('#load_status_directories_assets').show();
+				api('/' + base_url + 'api/core/assets/', {
+					action: 'get_directories_assets',
+					dir: dir
+				}, function (data) {
+					if (!data['directories'].length && !data['assets'].length) {
+						apiLoadStatusEmpty($('#load_status_directories_assets'));
+						return;
+					}
+					$('#load_status_directories_assets').hide();
+
+					$.each(data['directories'], function () {
+						$(directory_item(this)).hide().appendTo(directories_assets).slideDown(100);
+					});
+
 					$.each(data['assets'], function () {
 						$(asset_item(this)).hide().appendTo(directories_assets).slideDown(100);
 					});
+				}, function () {
+					apiLoadStatusError($('#load_status_directories_assets'));
 				});
-			}, function () {
-				apiLoadStatusError($('#load_status_directories'));
-			});
 
-			apiLoadStatusWorking($('#load_status_images'));
-			api('/' + base_url + 'api/core/assets/', {
-				action: 'get_images',
-				dir: dir,
-				max_width: 200
-			}, function (data) {
-				if (!data['images'].length) {
-					apiLoadStatusEmpty($('#load_status_images'));
-					return;
-				}
+				apiLoadStatusWorking($('#load_status_images'));
+				$('#load_status_images').show();
+				api('/' + base_url + 'api/core/assets/', {
+					action: 'get_images',
+					dir: dir,
+					max_width: 200
+				}, function (data) {
+					if (!data['images'].length) {
+						apiLoadStatusEmpty($('#load_status_images'));
+						return;
+					}
+					$('#load_status_images').hide();
 
-				apiLoadStatusSuccess($('#load_status_images'));
-				$.each(data['images'], function () {
-					$(image_item(this)).hide().appendTo(images).slideDown(100);
+					$.each(data['images'], function () {
+						$(image_item(this)).hide().appendTo(images).slideDown(100);
+					});
+				}, function () {
+					apiLoadStatusError($('#load_status_images'));
 				});
-			}, function () {
-				apiLoadStatusError($('#load_status_images'));
-			});
+			}, 100);
 		}
 
 		function hashchange() {

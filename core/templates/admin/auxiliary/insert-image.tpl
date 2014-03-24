@@ -20,20 +20,26 @@
 				<ul></ul>
 			</form>
 
-			<div id="breadcrumbs"></div>
+			<div id="breadcrumbs"><a href="#" data-dir="">Assets</a></div>
 			<ul id="directories-assets" class="small-table">
 				<li>
 					<div>Filename</div>
 					<div>Size</div>
 					<div></div>
 				</li>
-				<li id="load_directories_assets" class="dex api load-status">
+				<li id="load_status_directories" class="dex api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
 					<div class="empty">empty</div>
 				</li>
 			</ul>
-			<ul id="images" class="grid"></ul>
+			<ul id="images" class="grid">
+				<li id="load_status_images" class="api load-status">
+					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
+					<div class="error"><i class="fa fa-times"></i></div>
+					<div class="empty">empty</div>
+				</li>
+			</ul>
 		</div>
 		<div>
 			<h2>Properties</h2>
@@ -58,15 +64,15 @@
 </script>
 
 <script id="image_item" type="text/x-dot-template">
-	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}">
+	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}">
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 100}}
-		<img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=100"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}?w=100"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}>
 		{{??}}
-		<img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}
@@ -85,53 +91,60 @@
 	var image_item = doT.template($('#image_item').text());
 
 	// loading initial data
-	var first_load = true;
 	function loadDir(dir) {
-		if (!first_load) {
-			directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
-			images.find('li').slideUp('fast', function () { $(this).remove(); });
-		}
-		first_load = false;
+		directories_assets.find('li:not(:first):not(.load-status)').slideUp('fast', function () { $(this).remove(); });
+		images.find('li:not(.load-status)').slideUp('fast', function () { $(this).remove(); });
 
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_breadcrumbs',
-			dir: dir
-		}, function (data) {
-			breadcrumbs.empty();
-			$.each(data['breadcrumbs'], function (i) {
-				if (i)
-					breadcrumbs.append('&gt;');
-				breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+		setTimeout(function () {
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_breadcrumbs',
+				dir: dir
+			}, function (data) {
+				breadcrumbs.find('*:not(a:first)').remove();
+				$.each(data['breadcrumbs'], function (i) {
+					breadcrumbs.append('<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+				});
 			});
-		});
 
-		apiLoadStatusWorking($('#load_directories_assets'));
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_directories',
-			dir: dir
-		}, function (data) {
-			if (!data['directories'].length) {
-				apiLoadStatusEmpty($('#load_directories_assets'));
-				return;
-			}
+			apiLoadStatusWorking($('#load_status_directories'));
+			$('#load_status_directories').show();
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_directories',
+				dir: dir
+			}, function (data) {
+				if (!data['directories'].length) {
+					apiLoadStatusEmpty($('#load_status_directories'));
+					return;
+				}
+				$('#load_status_directories').hide();
 
-			apiLoadStatusSuccess($('#load_directories_assets'));
-			$.each(data['directories'], function () {
-				$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				$.each(data['directories'], function () {
+					$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				});
+			}, function () {
+				apiLoadStatusError($('#load_status_directories'));
 			});
-		}, function () {
-			apiLoadStatusError($('#load_directories_assets'));
-		});
 
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_images',
-			dir: dir,
-			max_width: 100
-		}, function (data) {
-			$.each(data['images'], function () {
-				$(image_item(this)).hide().appendTo(images).slideDown('fast');
+			apiLoadStatusWorking($('#load_status_images'));
+			$('#load_status_images').show();
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_images',
+				dir: dir,
+				max_width: 100
+			}, function (data) {
+				if (!data['images'].length) {
+					apiLoadStatusEmpty($('#load_status_images'));
+					return;
+				}
+				$('#load_status_images').hide();
+
+				$.each(data['images'], function () {
+					$(image_item(this)).hide().appendTo(images).slideDown('fast');
+				});
+			}, function () {
+				apiLoadStatusError($('#load_status_images'));
 			});
-		});
+		}, 100);
 	}
 	loadDir('');
 
@@ -140,7 +153,13 @@
 		loadDir($(this).attr('data-dir'));
 	});
 
-	directories_assets.on('click', '.directory a', function () {
+	directories_assets.on('click', '.directory', function (e) {
+		e.stopPropagation();
+		$(this).find('a').click();
+	});
+
+	directories_assets.on('click', '.directory a', function (e) {
+		e.stopPropagation();
 		loadDir($(this).attr('data-dir'));
 	});
 

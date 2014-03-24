@@ -38,13 +38,8 @@ Common::$request_url = substr($_SERVER['REQUEST_URI'], 1); // get rid of front s
 if (strncmp(Common::$base_url, Common::$request_url, strlen(Common::$base_url)))
 	user_error('Base directory PHP_SELF does not equal the root directories of REQUEST_URL', ERROR);
 
-Common::$request_query = '';
-$query_pos = strpos(Common::$request_url, '?');
-if ($query_pos !== false)
-{
-	Common::$request_query = substr(Common::$request_url, $query_pos);
-	Common::$request_url = substr(Common::$request_url, 0, $query_pos);
-}
+if (strpos(Common::$request_url, '?') !== false) // remove query
+	Common::$request_url = substr(Common::$request_url, 0, strpos(Common::$request_url, '?'));
 Common::$request_url = urldecode(substr(Common::$request_url, strlen(Common::$base_url))); // remove basedir from URI
 
 $url = explode('/', Common::$request_url);
@@ -119,7 +114,7 @@ if (Common::requestApi())
 	if (!is_file($filename))
 		user_error('Could not find API file "' . $filename . '"', ERROR);
 
-	require_once($filename);
+	require_once($filename); // exits
 	user_error('API not handled in "' . $filename . '"', ERROR);
 }
 
@@ -139,6 +134,14 @@ if (User::loggedIn())
 	User::refreshLogin();
 	Core::assign('username', User::getUsername());
 	Core::assign('role', User::getRole());
+
+	if (Common::requestAdmin())
+	{
+		if (!Common::requestAdminAuxiliary())
+			$_SESSION['last_admin_request'] = Common::$request_url;
+	}
+	else
+		$_SESSION['last_site_request'] = Common::$request_url;
 }
 else if (!Common::requestAdmin())
 	Stats::registerPageVisit();

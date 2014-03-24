@@ -43,7 +43,7 @@ if (!User::loggedIn())
 else // didn't go through login screen
 	Core::checkModules();
 
-if (isset($url[1]) && $url[1] == 'auxiliary' && isset($url[2]))
+if (Common::requestAdminAuxiliary() && isset($url[2]))
 {
 	if (!is_file('core/templates/admin/auxiliary/' . $url[2] . '.tpl'))
 		user_error('Auxiliary "' . $url[2] . '" does not exist', ERROR);

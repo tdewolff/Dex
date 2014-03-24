@@ -19,7 +19,7 @@ else
 		if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
 			$filename = Common::insertMinExtension($filename);
 
-		if (strlen(Common::$request_query))
+		if (isset($_GET['w']) || isset($_GET['h']) || isset($_GET['s']))
 		{
 			// resize images
 			$w = Common::tryOrZero($_GET, 'w');

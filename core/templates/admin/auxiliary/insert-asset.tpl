@@ -2,15 +2,14 @@
 	<div class="popup">
 		<div id="assets">
 			<h2>Assets</h2>
-			<div id="breadcrumbs">
-			</div>
+			<div id="breadcrumbs"><a href="#" data-dir="">Assets</a></div>
 			<ul id="directories-assets" class="small-table">
 				<li>
 					<div>Filename</div>
 					<div>Size</div>
 					<div></div>
 				</li>
-				<li id="load_directories_assets" class="dex api load-status">
+				<li id="load_status_directories_assets" class="dex api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
 					<div class="empty">empty</div>
@@ -55,52 +54,43 @@
 	var asset_item = doT.template($('#asset_item').text());
 
 	// loading initial data
-	var first_load = true;
 	function loadDir(dir) {
-		if (!first_load) {
-			directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
-		}
-		first_load = false;
+		directories_assets.find('li:not(:first):not(.load-status)').slideUp('fast', function () { $(this).remove(); });
 
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_breadcrumbs',
-			dir: dir
-		}, function (data) {
-			breadcrumbs.empty();
-			$.each(data['breadcrumbs'], function (i) {
-				if (i) {
-					breadcrumbs.append('&gt;');
-				}
-				breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
-			});
-		});
-
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_directories',
-			dir: dir
-		}, function (data) {
-			$.each(data['directories'], function () {
-				$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
-			});
-
-			apiLoadStatusWorking($('#load_directories_assets'));
+		setTimeout(function () {
 			api('/' + base_url + 'api/core/assets/', {
-				action: 'get_assets',
+				action: 'get_breadcrumbs',
 				dir: dir
 			}, function (data) {
-				if (!data['assets'].length) {
-					apiLoadStatusEmpty($('#load_directories_assets'));
+				breadcrumbs.find('*:not(a:first)').remove();
+				$.each(data['breadcrumbs'], function (i) {
+					breadcrumbs.append('<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+				});
+			});
+
+			apiLoadStatusWorking($('#load_status_directories_assets'));
+			$('#load_status_directories_assets').show();
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_directories_assets',
+				dir: dir
+			}, function (data) {
+				if (!data['directories'].length && !data['assets'].length) {
+					apiLoadStatusEmpty($('#load_status_directories_assets'));
 					return;
 				}
+				$('#load_status_directories_assets').hide();
 
-				apiLoadStatusSuccess($('#load_directories_assets'));
+				$.each(data['directories'], function () {
+					$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				});
+
 				$.each(data['assets'], function () {
 					$(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
 				});
 			}, function () {
-				apiLoadStatusError($('#load_directories_assets'));
+				apiLoadStatusError($('#load_status_directories_assets'));
 			});
-		});
+		}, 100);
 	}
 	loadDir('');
 
@@ -109,7 +99,13 @@
 		loadDir($(this).attr('data-dir'));
 	});
 
+	directories_assets.on('click', '.directory', function (e) {
+		e.stopPropagation();
+		$(this).find('a').click();
+	});
+
 	directories_assets.on('click', '.directory a', function () {
+		e.stopPropagation();
 		loadDir($(this).attr('data-dir'));
 	});
 

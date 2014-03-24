@@ -1,3 +1,7 @@
+function padZero(value) {
+	return (value < 10 ? '0' + value : value);
+}
+
 $(function () {
 	var saveTimeout = null;
 	$('[data-dexeditable]').on('input', function (e) {
@@ -10,7 +14,9 @@ $(function () {
 		$.event.trigger({
 			type: 'save'
 		});
-		apiStatusSuccess();
+
+		var time = new Date();
+		apiStatusSuccess(time.getHours() + ':' + padZero(time.getMinutes()));
 	}
 
 	$(document).on('keydown', function (e) {
@@ -46,14 +52,15 @@ $(function () {
 
 	$('.dex.admin-bar .logged-in .current-user a').click(function (e) {
 		e.preventDefault();
-		var href = this.href;
+		var admin = ($(this).attr('data-admin') === '1' ? 1 : 0);
 		api('/' + base_url + 'api/core/users/', {
-			'action': 'logout'
+			'action': 'logout',
+			'admin': admin
 		}, function(data) {
-			if (href[href.length - 1] == '#') {
+			if (admin === 0) {
 				adminBarLogOut();
 			} else {
-				window.location = href;
+				location.reload();
 			}
 		});
 	});

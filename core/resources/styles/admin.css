@@ -545,6 +545,7 @@ textarea[type="radio"] {
 }
 textarea {
   min-height: 5em;
+  max-width: 680px;
 }
 form {
   margin: 0 auto;
@@ -556,7 +557,15 @@ form > h3 {
 form > p {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  zoom: 1;
+}
+form > p:before,
+form > p:after {
+  content: "";
+  display: table;
+}
+form > p:after {
+  clear: both;
 }
 form .separator {
   clear: both;
@@ -1123,6 +1132,9 @@ body {
   display: inline;
   margin-right: 10px;
   vertical-align: middle;
+}
+#assets #directories-assets li a {
+  text-decoration: none;
 }
 #assets #directories-assets li div:last-of-type {
   display: none;

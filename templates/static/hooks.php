@@ -10,8 +10,12 @@ Hooks::attach('main', 0, function () {
     {
     	$content['content'] = preg_replace('/\[base_url\]/', $base_url, $content['content']);
         Template::assign('content', $content['content']);
-    }
 
+        $user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($content['user_id']) . "' LIMIT 1;");
+        if ($user)
+            Template::assign('author', $user['username']);
+        Template::assign('time', $content['modify_time']);
+    }
     Template::render('index.tpl');
 });
 

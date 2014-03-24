@@ -36,7 +36,9 @@
 	$(function () {
 		var pages = $('#pages');
 		var page_item = doT.template($('#page_item').text());
+
 		apiLoadStatusWorking($('#load_status'));
+		$('#load_status').show();
 		api('/' + base_url + 'api/core/pages/', {
 			action: 'get_pages'
 		}, function (data) {
@@ -45,7 +47,7 @@
 				return;
 			}
 
-			apiLoadStatusSuccess($('#load_status'));
+			$('#load_status').hide();
 			$.each(data['pages'], function () {
 				pages.append(page_item(this));
 			});
@@ -63,6 +65,11 @@
 				apiStatusSuccess('Deleted page');
 				$('.dropdown-menu').fadeOut('fast');
 				$('#page_' + item.attr('data-link-id')).remove();
+
+				if (pages.find('li').length == 2) {
+					apiLoadStatusEmpty($('#load_status'));
+					$('#load_status').show();
+				}
 			}, function () {
 				apiStatusError('Deleting page failed');
 			});

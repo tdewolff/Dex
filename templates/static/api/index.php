@@ -10,8 +10,9 @@ if (API::action('save'))
 
     Db::exec("
     DELETE FROM content WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'content';
-    INSERT INTO content (link_id, name, content, modify_time) VALUES (
+    INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
         '" . Db::escape(API::get('link_id')) . "',
+        '" . Db::escape(User::getUserId()) . "',
         'content',
         '" . Db::escape(API::get('content')) . "',
         '" . Db::escape(time()) . "'

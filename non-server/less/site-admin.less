@@ -113,6 +113,25 @@ body {
 				padding-bottom: 0;
 			}
 
+		    .load-status > div {
+		        display: none;
+		        min-width: 100%;
+		        width: 100%;
+		        text-align: center;
+		        white-space: nowrap;
+		        font-size: 12px;
+		        font-family: @sans-serif;
+
+		        &.empty {
+		            color: #D0D0D0;
+		            font-style: italic;
+		        }
+
+		        &.error {
+		            color: #D11F49;
+		        }
+		    }
+
 			#external-link {
 				margin: 0 auto;
 				width: 500px;

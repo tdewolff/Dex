@@ -52,6 +52,16 @@ if ($form->submitted())
 			username TEXT
 		);
 
+		CREATE TABLE stats (
+			stat_id INTEGER PRIMARY KEY,
+			n INTEGER,
+			time INTEGER,
+			end_time INTEGER,
+			ip_address TEXT,
+			request_url TEXT,
+			referral TEXT
+		);
+
 		CREATE TABLE link (
 			link_id INTEGER PRIMARY KEY,
 			url TEXT,
@@ -63,10 +73,11 @@ if ($form->submitted())
 		CREATE TABLE content (
 			content_id INTEGER PRIMARY KEY,
 			link_id INTEGER,
+			user_id INTEGER,
 			name TEXT,
 			content TEXT,
 			modify_time INTEGER,
-			FOREIGN KEY(link_id) REFERENCES link(link_id)
+			FOREIGN KEY(user_id) REFERENCES user(user_id)
 		);
 
 		CREATE TABLE module (
@@ -90,7 +101,8 @@ if ($form->submitted())
 			'" . Db::escape(time()) . "'
 		);
 
-		INSERT INTO content (link_id, name, content, modify_time) VALUES (
+		INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
+			'1',
 			'1',
 			'content',
 			'" . Db::escape('<h3>Sample content</h3>
@@ -135,15 +147,6 @@ if ($form->submitted())
 			'" . Db::escape($form->get('email')) . "',
 			'" . Db::escape(Bcrypt::hash($form->get('password'))) . "',
 			'admin'
-		);
-
-		CREATE TABLE stats (
-			stat_id INTEGER PRIMARY KEY,
-			n INTEGER,
-			time INTEGER,
-			ip_address TEXT,
-			request_url TEXT,
-			referral TEXT
 		);");
 
 		if (!$valid)

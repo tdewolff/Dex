@@ -8,12 +8,10 @@ if (API::action('forget'))
 }
 else if (API::action('logout'))
 {
+	if (API::has('admin') && API::get('admin') == 1 && isset($_SESSION['last_site_request']))
+		unset($_SESSION['last_site_request']);
+
 	User::logOut();
-	API::finish();
-}
-else if (API::action('forget'))
-{
-	User::forget();
 	API::finish();
 }
 

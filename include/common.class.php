@@ -3,7 +3,6 @@
 class Common
 {
 	public static $request_url = '';
-	public static $request_query = '';
 	public static $base_url = '';
 
 	////////////////
@@ -28,6 +27,11 @@ class Common
 	public static function requestAdmin()
 	{
 		return strpos(self::$request_url, 'admin/') === 0 || !Db::isValid();
+	}
+
+	public static function requestAdminAuxiliary()
+	{
+		return strpos(self::$request_url, 'admin/auxiliary/') === 0;
 	}
 
 	public static function requestApi()

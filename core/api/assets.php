@@ -123,36 +123,68 @@ else if (API::action('get_breadcrumbs'))
 	API::set('breadcrumbs', $breadcrumbs);
 	API::finish();
 }
-else if (API::action('get_directories'))
+else if (API::action('get_directories') || API::action('get_assets') || API::action('get_directories_assets'))
 {
-	$directories = array();
-	$handle = opendir($dir);
-	while (($name = readdir($handle)) !== false)
+	if (API::action('get_directories') || API::action('get_directories_assets'))
 	{
-		if (is_dir($dir . $name) && $name != '.')
+		$directories = array();
+		$handle = opendir($dir);
+		while (($name = readdir($handle)) !== false)
 		{
-			$url = $dir . $name . '/';
-			if ($name == '..')
+			if (is_dir($dir . $name) && $name != '.')
 			{
-				if ($dir == 'assets/')
-					continue;
+				$url = $dir . $name . '/';
+				if ($name == '..')
+				{
+					if ($dir == 'assets/')
+						continue;
 
-				$url = substr($dir, 0, strlen($dir) - 1);
-				$last_slash = strrpos($url, '/');
-				$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
-				$name = '..';
+					$url = substr($dir, 0, strlen($dir) - 1);
+					$last_slash = strrpos($url, '/');
+					$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
+					$name = '..';
+				}
+
+				$directories[] = array(
+					'dir' => ($url == 'assets/' ? '' : substr($url, 7)), // remove leading "assets/"
+					'name' => $name,
+					'icon' => ($name == '..' ? 'dirup.png' : 'folder.png')
+				);
 			}
-
-			$directories[] = array(
-				'dir' => ($url == 'assets/' ? '' : substr($url, 7)), // remove leading "assets/"
-				'name' => $name,
-				'icon' => ($name == '..' ? 'dirup.png' : 'folder.png')
-			);
 		}
+		Common::sortOn($directories, 'name');
+		API::set('directories', $directories);
 	}
-	Common::sortOn($directories, 'name');
 
-	API::set('directories', $directories);
+	if (API::action('get_assets') || API::action('get_directories_assets'))
+	{
+		$assets = array();
+		$handle = opendir($dir);
+		while (($name = readdir($handle)) !== false)
+		{
+			if (is_file($dir . $name) && !Common::hasMinExtension($name))
+			{
+				$last_slash = strrpos($name, '/');
+				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
+				$extension = substr($name, strrpos($name, '.') + 1);
+
+				if (Resource::isResource($extension) && !Resource::isImage($extension))
+				{
+					list($width, $height, $type, $attribute) = getimagesize($dir . $name);
+					$assets[] = array(
+						'url' => $dir . $name,
+						'name' => $name,
+						'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+						'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+						'size' => Common::formatBytes(filesize($dir . $name), 2),
+						'width' => $width
+					);
+				}
+			}
+		}
+		Common::sortOn($assets, 'name');
+		API::set('assets', $assets);
+	}
 	API::finish();
 }
 else if (API::action('get_images'))
@@ -187,37 +219,6 @@ else if (API::action('get_images'))
 	Common::sortOn($images, 'name');
 
 	API::set('images', $images);
-	API::finish();
-}
-else if (API::action('get_assets'))
-{
-	$assets = array();
-	$handle = opendir($dir);
-	while (($name = readdir($handle)) !== false)
-	{
-		if (is_file($dir . $name) && !Common::hasMinExtension($name))
-		{
-			$last_slash = strrpos($name, '/');
-			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
-			$extension = substr($name, strrpos($name, '.') + 1);
-
-			if (Resource::isResource($extension) && !Resource::isImage($extension))
-			{
-				list($width, $height, $type, $attribute) = getimagesize($dir . $name);
-				$assets[] = array(
-					'url' => $dir . $name,
-					'name' => $name,
-					'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
-					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-					'size' => Common::formatBytes(filesize($dir . $name), 2),
-					'width' => $width
-				);
-			}
-		}
-	}
-	Common::sortOn($assets, 'name');
-
-	API::set('assets', $assets);
 	API::finish();
 }
 

@@ -11,5 +11,10 @@
 			content: getDexEditContent('article.main')
 		});
 	});
+
+	$(function () {
+		var time = new Date(new Date(0).setUTCSeconds(<?php echo $_['time']; ?>));
+		apiStatusSuccess('<?php echo (isset($_['author']) ? $_['author'] : ''); ?> (' + time.getDate() + '-' + padZero(time.getMonth() + 1) + ' ' + time.getHours() + ':' + padZero(time.getMinutes()) + ')');
+	});
 </script>
 <?php } ?>

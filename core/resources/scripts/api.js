@@ -89,7 +89,7 @@ function apiStatusSuccess(message) {
 	$('.dex.api .status div.success').fadeIn('fast');
 	if (typeof message !== 'undefined') {
 		$('.dex.api .status div.success span').show().html(message);
-		setTimeout(apiStatusFade, 5000);
+		//setTimeout(apiStatusFade, 5000);
 	} else {
 		$('.dex.api .status div.success span').hide();
 	}

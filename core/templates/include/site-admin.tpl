@@ -13,12 +13,16 @@
 <div class="dex admin-bar">
 	<?php if (Db::isValid()) { if (User::getTimeLeft() > 0) { ?>
 	<div class="logged-in">
-		<div class="navigate">Go to <?php if (Common::requestAdmin()) { echo '<a href="/' . $_['base_url'] . '">Site</a>'; } else { echo '<a href="/' . $_['base_url'] . 'admin/">Admin panel</a>'; } ?></div>
-		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="<?php echo (Common::requestAdmin() ? '/' . $_['base_url'] . 'admin/' : '#'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
+		<div class="navigate">Go back to <?php if (Common::requestAdmin()) {
+			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_site_request']) ? $_SESSION['last_site_request'] : '') . '">Site</a>';
+		} else {
+			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_admin_request']) ? $_SESSION['last_admin_request'] : 'admin/') . '">Admin panel</a>';
+		} ?></div>
+		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="#" data-admin="<?php echo (Common::requestAdmin() ? '1' : '0'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
 	</div>
 	<?php } if (!Common::requestAdmin() || User::loggedIn()) { ?>
 	<div class="logged-out">
-		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/<?php echo (!Common::requestAdmin() ? '?url=' . urlencode('/' . Common::$request_url) : ''); ?>">log back in</a></div>
+		<div class="navigate">You are logged out, <a href="/<?php echo $_['base_url']; ?>admin/">log back in</a></div>
 		<?php if (!Common::requestAdmin()) { ?>
 		<div class="current-user"><a href="#" data-tooltip="Hide"><i class="fa fa-fw fa-chevron-up"></i></a></div>
 		<?php } ?>
