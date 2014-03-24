@@ -17,9 +17,14 @@ $root = dirname($_SERVER['SCRIPT_FILENAME']) . '/assets';
 if (strlen($dir) < strlen($root) || substr($dir, 0, strlen($root)) !== $root)
 	user_error('Directory "' . $request_dir . '" doesn\'t exist or is outside assets directory', ERROR);
 
-$dir = 'assets/' . substr($dir, strlen($root));
-if (strlen($dir) > 7)
-	$dir .= '/';
+$dir = substr($dir, strlen($root));
+if (!empty($dir))
+	$dir = 'assets' . $dir . '/';
+else
+	$dir = 'assets/' . $dir;
+
+if (!is_readable($dir) || !is_dir($dir))
+	user_error('Directory "' . $request_dir . '" doesn\'t exist or is not readable', ERROR);
 
 
 // upload file
@@ -131,8 +136,9 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 		$handle = opendir($dir);
 		while (($name = readdir($handle)) !== false)
 		{
-			if (is_dir($dir . $name) && $name != '.')
+			if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.')
 			{
+  				$empty = true;
 				$url = $dir . $name . '/';
 				if ($name == '..')
 				{
@@ -142,13 +148,23 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 					$url = substr($dir, 0, strlen($dir) - 1);
 					$last_slash = strrpos($url, '/');
 					$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
-					$name = '..';
+				}
+				else
+				{
+					$handle_sub = opendir($dir . $name);
+					while (($name_sub = readdir($handle_sub)) !== false)
+						if ($name_sub != '.' && $name_sub != '..')
+						{
+  							$empty = false;
+							break;
+						}
 				}
 
 				$directories[] = array(
 					'dir' => ($url == 'assets/' ? '' : substr($url, 7)), // remove leading "assets/"
 					'name' => $name,
-					'icon' => ($name == '..' ? 'dirup.png' : 'folder.png')
+					'icon' => ($name == '..' ? 'dirup.png' : 'folder.png'),
+					'is_deletable' => $empty && $name != '..'
 				);
 			}
 		}

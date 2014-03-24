@@ -47,7 +47,7 @@
 		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a data-dir="{{=it.dir}}">{{=it.name}}</a></div>
 		<div>-</div>
 		<div>
-			{{?it.dir.length}}
+			{{?it.is_deletable}}
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
 			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 			{{?}}
@@ -189,7 +189,7 @@
 		});
 
 		// deleting directories, assets or images
-		$('#directories-assets').on('click', 'li.directory a.sure', function () {
+		directories_assets.on('click', 'li.directory a.sure', function () {
 			apiStatusWorking('Deleting directory...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
@@ -198,13 +198,20 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted directory');
-				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+				item.closest('li').slideUp('fast', function () {
+					$(this).remove();
+
+					if (directories_assets.find('li').length == 2) {
+						apiLoadStatusEmpty($('#load_status_directories_assets'));
+						$('#load_status_directories_assets').slideDown(100)
+					}
+				});
 			}, function () {
 				apiStatusError('Deleting directory failed');
 			});
 		});
 
-		$('#directories-assets').on('click', 'li.asset a.sure', function () {
+		directories_assets.on('click', 'li.asset a.sure', function () {
 			apiStatusWorking('Deleting asset...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
@@ -213,13 +220,20 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted asset');
-				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+				item.closest('li').slideUp('fast', function () {
+					$(this).remove();
+
+					if (directories_assets.find('li').length == 2) {
+						apiLoadStatusEmpty($('#load_status_directories_assets'));
+						$('#load_status_directories_assets').slideDown(100);
+					}
+				});
 			}, function () {
 				apiStatusError('Deleting asset failed');
 			});
 		});
 
-		$('#images').on('click', 'a.sure', function () {
+		images.on('click', 'a.sure', function () {
 			apiStatusWorking('Deleting image...');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
@@ -228,7 +242,14 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted image');
-				item.closest('li').slideUp('fast', function () { $(this).remove(); });
+				item.closest('li').slideUp('fast', function () {
+					$(this).remove();
+
+					if (images.find('li').length == 2) {
+						apiLoadStatusEmpty($('#load_status_images'));
+						$('#load_status_images').slideDown(100)
+					}
+				});
 			}, function () {
 				apiStatusError('Deleting image failed');
 			});
