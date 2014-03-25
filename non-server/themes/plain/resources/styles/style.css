@@ -1,0 +1,122 @@
+body {
+    background: white;
+    font-family: 'lora', sans-serif;
+    color: #333;
+}
+
+article.main>p:first-child {
+    margin-top:0;
+}
+
+nav {
+    z-index: 7998;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    background-color: #282F33;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
+    min-height: 50px;
+    border-bottom: 1px solid rgb(128, 128, 128);
+}
+
+nav>.logo {
+    background-color: white;
+}
+
+#nav {
+    margin: 0px;
+}
+
+nav a {
+    color: #333;
+}
+
+nav>.logo, #nav li {
+    padding: 0px 5px;
+    text-align:center;
+    display: block;
+    float: left;
+    height: 50px;
+    margin: 0px;
+    min-width: 100px;
+    transition: background-color 0.5s;
+}
+
+#nav li {
+    background-color: rgb(230, 230, 230);
+}
+
+#nav li.selected {
+    background-color: #A9CC66;
+    height: 48px;
+    border-bottom: 1px solid #9EC653;
+    border-top: 1px solid #B4D279;
+}
+
+#nav li:hover, nav>.logo:hover {
+    background-color:  #FDE792;
+}
+
+#nav li>a, nav>.logo, nav>.logo>span {
+    font-size: 22px;
+    line-height: 50px;
+    text-decoration: none;
+}
+
+header {
+    z-index: 5;
+    top: 50px;
+    margin-bottom: 150px;
+}
+
+h1 {
+    font-size: 35px;
+    line-height: 35px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 28px;
+    line-height: 28px;
+    text-align: center;
+}
+
+header, footer {
+    color: rgb(135, 135, 135);
+    position: relative;
+    text-align: center;
+    height: 150px;
+}
+
+header, article, footer {
+    margin: 0px auto;
+    width: 1200px;
+}
+
+article.main {
+    position: relative;
+    display: block;
+    z-index: 4;
+    padding: 15px;
+    margin-top: 50px;
+    width: 1170px;
+    background-position: 0px;
+}
+
+footer {
+    z-index: 3;
+    bottom: 0px;
+}
+
+blockquote {
+    background-color: #EEE;
+    border-radius: 0 5em 5em 5em;
+    box-shadow: 0px 0px 25px #A9CC66;
+    border-left: 20px solid #282F33;
+    border-bottom: 1px solid #282F33;
+    font-style:italic;
+    padding: 20px;
+    padding-left: 10px;
+    margin: 1em 40px;
+}
