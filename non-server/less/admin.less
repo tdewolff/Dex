@@ -291,8 +291,6 @@ body {
 		    margin:0;
 		    width:100%;
 		    height:24px;
-
-		    line-height:24px;
 		    font-size:14px;
 		}
 
@@ -462,6 +460,34 @@ a.recover {
 
 .recovery > h3, .recovery > p {
 	text-align: center;
+}
+
+#error-content {
+	p {
+		text-align: center;
+	}
+
+	p.error {
+		margin-top: 10px;
+		padding-bottom: 0;
+		margin-bottom: 5px;
+	}
+
+	p.error-source {
+		margin-top: 5px;
+		margin-bottom: 20px;
+		font-size: 90%;
+	}
+
+	table.backtrace {
+		margin: 0 auto;
+		margin-bottom: 10px;
+		font-size: 80%;
+
+		th, td {
+			padding: 0 1em;
+		}
+	}
 }
 
 

@@ -19,9 +19,6 @@ span.amp {
   font-family: Baskerville, "Goudy Old Style", Palatino, "Book Antiqua", serif;
   font-style: italic;
 }
-.fancybox-inner {
-  margin: 1em 0.5em;
-}
 .api-error {
   background: #F2DEDE;
   border: solid 1px #EED3D7;
@@ -79,7 +76,7 @@ span.amp {
   background-color: #374147;
   vertical-align: middle;
   color: #F0F0F0;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
 }
 .api .status > div > i {
@@ -100,7 +97,7 @@ span.amp {
   text-align: center;
   white-space: nowrap;
   font-size: 12px;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .api.load-status > div.empty {
   color: #D0D0D0;
@@ -121,44 +118,48 @@ h1 {
   margin: 0.4em 0;
   font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
   font-size: 70px;
+  font-weight: normal;
   text-align: center;
   color: #ffffff;
 }
 h2 {
-  font-family: SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  font-size: 2em;
-  color: #477725;
-  text-align: center;
   padding-top: 60px;
   padding-bottom: 30px;
+  font-family: SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size: 2em;
+  font-weight: normal;
+  color: #477725;
+  text-align: center;
   text-shadow: 0 1px 1px white;
 }
 h2:first-of-type {
   padding-top: 0;
 }
 h3 {
-  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
-  color: #477725;
-  font-size: 1.5em;
   margin-top: 30px;
   margin-bottom: 10px;
+  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
+  font-size: 1.5em;
+  font-weight: normal;
+  color: #477725;
 }
 h3:first-of-type {
   margin-top: 0;
 }
 h4 {
-  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
-  color: #477725;
-  text-align: center;
-  font-size: 1.1em;
   margin-top: 10px;
   margin-bottom: 0;
+  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
+  font-size: 1.1em;
+  font-weight: normal;
+  text-align: center;
+  color: #477725;
 }
 p {
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
-  color: #303030;
   padding-top: 2px;
   padding-bottom: 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #303030;
 }
 a {
   color: #d1570d;
@@ -850,7 +851,7 @@ strong {
 body {
   background: #374147;
   color: #ffffff;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 100%;
   text-align: justify;
 }
@@ -1111,6 +1112,7 @@ body {
   margin-left: 10px;
   margin-right: 0;
   width: 150px;
+  white-space: nowrap;
 }
 #assets #breadcrumbs {
   margin: 0 auto;
@@ -1262,7 +1264,6 @@ body {
   margin: 0;
   width: 100%;
   height: 24px;
-  line-height: 24px;
   font-size: 14px;
 }
 #pages li > div:nth-child(1) {
@@ -1394,6 +1395,28 @@ a.recover {
 .recovery > h3,
 .recovery > p {
   text-align: center;
+}
+#error-content p {
+  text-align: center;
+}
+#error-content p.error {
+  margin-top: 10px;
+  padding-bottom: 0;
+  margin-bottom: 5px;
+}
+#error-content p.error-source {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  font-size: 90%;
+}
+#error-content table.backtrace {
+  margin: 0 auto;
+  margin-bottom: 10px;
+  font-size: 80%;
+}
+#error-content table.backtrace th,
+#error-content table.backtrace td {
+  padding: 0 1em;
 }
 /*********/
 /* other */

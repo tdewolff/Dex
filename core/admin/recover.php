@@ -19,10 +19,10 @@ else if (isset($url[2]) && $url[2] == 'reset')
 {
 	// even if token doesn't exist, show password change form so hackers never know whether they're right or wrong
 	$recover = false;
-	if (isset($_GET['i']) && isset($_GET['t']))
+	if (isset($url[3]) && isset($url[4]))
 	{
-		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($_GET['i']) . "' LIMIT 1;");
-		if (!Bcrypt::verify($_GET['t'], $recover['token']))
+		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($url[3]) . "' LIMIT 1;");
+		if ($recover && !Bcrypt::verify($url[4], $recover['token']))
 			$recover = false;
 	}
 
@@ -56,7 +56,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 		$form->finish();
 	}
 
-	if (($recover && $recover['expiry_time'] <= time()) || !isset($_GET['i']) || !isset($_GET['t']) || strlen($_GET['t']) != 24)
+	if (($recover && $recover['expiry_time'] <= time()) || !isset($url[3]) || !isset($url[4]) || strlen($url[4]) != 24)
 	{
 		Hooks::emit('admin-header');
 
@@ -112,7 +112,7 @@ else
 					'" . Db::escape(time() + (60 * 30)) . "'
 				);");
 
-				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . Common::$base_url . 'admin/reset/?i=' . Db::lastId() . '&t=' . urlencode($token);
+				$link = Common::fullBaseUrl() . Common::$base_url . 'admin/recover/reset/' . Db::lastId() . '/' . urlencode($token) . '/';
 
 				require_once('vendor/swift-mailer/swift_required.php');
 

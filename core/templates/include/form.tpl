@@ -89,7 +89,7 @@
 			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 			<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 			<?php foreach ($item['options'] as $id => $name): ?>
-			<option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>><?php echo $name; ?></option>
+			<option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected' : ''); ?>><?php echo $name; ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -102,7 +102,7 @@
 				value="<?php echo $id; ?>"
 				<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 				<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
-				<?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>>
+				<?php echo ($id == $item['value'] ? 'checked' : ''); ?>>
 			<?php echo $name; ?>
 		</label>
 		<?php endforeach; ?>

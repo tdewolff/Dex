@@ -28,6 +28,8 @@ class User
 	public static function forget()
 	{
 		unset($_SESSION['user']);
+		unset($_SESSION['last_site_request']);
+		unset($_SESSION['last_admin_request']);
 	}
 
 	public static function loggedIn()

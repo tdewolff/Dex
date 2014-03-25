@@ -60,15 +60,20 @@ foreach ($script_directories as $script_directory)
 			$info->getMTime() > filemtime($script_min_name)))
 		{
 			Console::append('Compressing \'' . $script_name . '\'...');
+
 			$input = file_get_contents($script_name);
 			try {
 				$output = ClosureCompiler::minify($input);
+
+				if (file_exists($script_min_name))
+					unlink($script_min_name);
 				file_put_contents($script_min_name, $output);
 			} catch (Exception $e) {
 				$error = strlen($e->getMessage()) ? $e->getMessage() : 'Unknown error';
 				Console::appendLine('failed: ' . lcfirst($error));
 				continue;
 			}
+
 			Console::appendLine('done (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
 		}
 	}
@@ -86,9 +91,14 @@ foreach ($style_directories as $style_directory)
 			$info->getMTime() > filemtime($style_min_name)))
 		{
 			Console::append('Compressing \'' . $style_name . '\'...');
+
 			$input = file_get_contents($style_name);
 			$output = CssCompressor::process($input);
+
+			if (file_exists($style_min_name))
+				unlink($style_min_name);
 			file_put_contents($style_min_name, $output);
+
 			Console::appendLine('done (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
 		}
 	}
@@ -125,6 +135,9 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 			Console::appendLine('failed: no response from SmushIt');
 			continue;
 		}
+
+		if (file_exists($image_min_name))
+			unlink($image_min_name);
 		file_put_contents($image_min_name, Common::getUrlContents(urldecode($smushit->dest)));
 
 		Console::appendLine('done (' . ($info->getSize() ? number_format((float) $smushit->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');

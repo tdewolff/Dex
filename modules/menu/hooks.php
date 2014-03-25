@@ -4,16 +4,26 @@ Hooks::attach('navigation', 0, function () {
     Module::set('menu');
 
     $menu = array();
-    $link_id = Module::getLinkId();
-    $table = Db::query("SELECT * FROM module_menu
-        JOIN link ON module_menu.link_id = link.link_id
-        WHERE enabled = '1' ORDER BY position ASC;");
+    $non_menu = array();
+    $table = Db::query("SELECT *, link.link_id AS link_id FROM link
+        LEFT JOIN module_menu ON link.link_id = module_menu.link_id
+        ORDER BY module_menu.position ASC;");
     while ($row = $table->fetch())
     {
         $row['url'] = '/' . Common::$base_url . $row['url'];
         $row['selected'] = ($link_id == $row['link_id'] ? '1' : '0');
-        $menu[] = $row;
+
+        if (!isset($row['module_menu_id']))
+        {
+            $row['level'] = 0;
+            $row['name'] = $row['title'];
+            $row['enabled'] = 1;
+            $non_menu[] = $row;
+        }
+        else
+            $menu[] = $row;
     }
+    $menu = array_merge($menu, $non_menu); // non_menu items come last
 
     Module::assign('menu', $menu);
     Module::render('index.tpl');

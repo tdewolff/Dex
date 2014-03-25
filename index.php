@@ -134,14 +134,6 @@ if (User::loggedIn())
 	User::refreshLogin();
 	Core::assign('username', User::getUsername());
 	Core::assign('role', User::getRole());
-
-	if (Common::requestAdmin())
-	{
-		if (!Common::requestAdminAuxiliary())
-			$_SESSION['last_admin_request'] = Common::$request_url;
-	}
-	else
-		$_SESSION['last_site_request'] = Common::$request_url;
 }
 else if (!Common::requestAdmin())
 	Stats::registerPageVisit();
@@ -153,6 +145,9 @@ Core::assign('session_time', SESSION_TIME);
 // handle admin area
 if (Common::requestAdmin())
 	require_once('admin.php'); // always exits
+
+if (User::loggedIn())
+	$_SESSION['last_site_request'] = Common::$request_url;
 
 
 // load all site ettings

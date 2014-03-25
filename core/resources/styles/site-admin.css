@@ -33,7 +33,7 @@ body {
   background-color: #374147;
   vertical-align: middle;
   color: #F0F0F0;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
 }
 .dex.api .status > div > i {
@@ -54,7 +54,7 @@ body {
   text-align: center;
   white-space: nowrap;
   font-size: 12px;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .dex.api.load-status > div.empty {
   color: #D0D0D0;
@@ -82,7 +82,7 @@ body {
   left: 0;
   z-index: 7999;
   color: #E0E0E0;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -126,7 +126,7 @@ body {
   width: 600px;
   overflow: hidden;
   white-space: nowrap;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 100%;
   text-align: justify;
 }
@@ -139,44 +139,48 @@ body {
   margin: 0.4em 0;
   font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
   font-size: 70px;
+  font-weight: normal;
   text-align: center;
   color: #ffffff;
 }
 .dex.popup-wrapper h2 {
-  font-family: SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  font-size: 2em;
-  color: #477725;
-  text-align: center;
   padding-top: 60px;
   padding-bottom: 30px;
+  font-family: SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size: 2em;
+  font-weight: normal;
+  color: #477725;
+  text-align: center;
   text-shadow: 0 1px 1px white;
 }
 .dex.popup-wrapper h2:first-of-type {
   padding-top: 0;
 }
 .dex.popup-wrapper h3 {
-  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
-  color: #477725;
-  font-size: 1.5em;
   margin-top: 30px;
   margin-bottom: 10px;
+  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
+  font-size: 1.5em;
+  font-weight: normal;
+  color: #477725;
 }
 .dex.popup-wrapper h3:first-of-type {
   margin-top: 0;
 }
 .dex.popup-wrapper h4 {
-  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
-  color: #477725;
-  text-align: center;
-  font-size: 1.1em;
   margin-top: 10px;
   margin-bottom: 0;
+  font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
+  font-size: 1.1em;
+  font-weight: normal;
+  text-align: center;
+  color: #477725;
 }
 .dex.popup-wrapper p {
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
-  color: #303030;
   padding-top: 2px;
   padding-bottom: 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #303030;
 }
 .dex.popup-wrapper a {
   color: #d1570d;
@@ -940,6 +944,7 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   margin-left: 10px;
   margin-right: 0;
   width: 150px;
+  white-space: nowrap;
 }
 .dex.popup-wrapper #assets #breadcrumbs {
   margin: 0 auto;
@@ -1040,7 +1045,7 @@ input.parameter_val + .dex.popup-wrapper form input.parameter-key {
   text-align: center;
   white-space: nowrap;
   font-size: 12px;
-  font-family: /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .dex.popup-wrapper .popup .load-status > div.empty {
   color: #D0D0D0;

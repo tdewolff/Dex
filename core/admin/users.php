@@ -55,6 +55,7 @@ else
             else if ($url[2] != 'new' && User::getUserId() == $url[2] && $current_user['role'] != $form->get('role'))
                 $form->setError('role', 'Can\'t change your own role');
             else
+            {
 				if ($url[2] != 'new')
 				{
 					if ($form->get('password') != '')
@@ -74,7 +75,6 @@ else
 						WHERE user_id = '" . Db::escape($url[2]) . "';");
 				}
 				else
-				{
 					Db::exec("
 					INSERT INTO user (username, email, password, role) VALUES (
 						'" . Db::escape($form->get('username')) . "',
@@ -82,8 +82,8 @@ else
 						'" . Db::escape(Bcrypt::hash($form->get('password'))) . "',
 						'" . Db::escape($form->get('role')) . "'
 					);");
-					$form->setRedirect('/' . Common::$base_url . 'admin/users/');
-				}
+				$form->setRedirect('/' . Common::$base_url . 'admin/users/');
+			}
 		}
 		$form->finish();
 	}

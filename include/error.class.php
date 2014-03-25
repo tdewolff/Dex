@@ -27,7 +27,7 @@ class Error
 	{
 		if (!self::$display_errors)
 			return '<p class="error">An error occurred, check the logs for additional information</p>';
-		return implode('', self::$messages) . '!';
+		return implode('', self::$messages);
 	}
 
 	public static function stripBacktrace($backtrace)
@@ -62,6 +62,9 @@ class Error
 
 	public static function report($type, $message, $file, $line)
 	{
+		if (error_reporting() === 0) // ignore error when prepended with @
+		    return true;
+
 		$location = ($file && $line ? $file . ':' . $line : '');
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);

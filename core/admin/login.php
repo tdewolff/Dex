@@ -27,8 +27,7 @@ if ($form->submitted())
 			{
 				User::logIn($user['user_id']);
 
-				//if (isset($_GET['url']) && strlen($_GET['url']))
-				if (isset($_SESSION['last_site_request']))
+				if (isset($url[1]) && $url[1] == 'return' && isset($_SESSION['last_site_request']))
 					$form->setRedirect('/' . Common::$base_url . $_SESSION['last_site_request']);
 				else if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')
 					$form->setRedirect('/' . Common::$base_url . 'admin/');
