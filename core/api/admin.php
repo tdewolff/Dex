@@ -97,6 +97,8 @@ else if (API::action('get_warnings'))
 		$warnings[] = 'Apache module mod_filter is not enabled';
 	if (!in_array('mod_headers', $apache_modules))
 		$warnings[] = 'Apache module mod_headers is not enabled';
+	if (!extension_loaded('curl') && !preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen')))
+		$warnings[] = 'Neither PHP module cURL is enabled nor PHP setting allow_url_fopen is true';
 
 	if (!$config['minifying'])
 		$warnings[] = 'Minifying is disabled in config.ini';

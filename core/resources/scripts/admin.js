@@ -59,3 +59,11 @@ $('html').on('mouseleave', 'a.sure', function (e) {
 		$(this).parent().find('a.halt').fadeIn('fast');
 	});
 });
+
+function titleToUrl(title) {
+	var url = title.toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
+	if (url.length) {
+		url += '/';
+	}
+	return url;
+}

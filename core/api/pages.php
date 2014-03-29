@@ -15,21 +15,31 @@ if (API::action('delete_page'))
 	");
 	API::finish();
 }
-else if (API::action('edit_page'))
+else if (API::action('edit_pages'))
 {
-	if (!API::has('link_id') || !API::has('title') || !API::has('url'))
-		user_error('No link ID, title or url set', ERROR);
+	require_once('include/dex.class.php');
 
-	$url = API::get('url');
-	if ($url[strlen($url) - 1] != '/')
-		$url .= '/';
+	if (!API::has('pages'))
+		user_error('No pages set', ERROR);
 
-	Db::exec("
-	UPDATE link SET
-		title = '" . Db::escape(API::get('title')) . "',
-		url = '" . Db::escape($url) . "'
-	WHERE link_id = '" . Db::escape(API::get('link_id')) . "';
-	");
+	$errors = array();
+	foreach (API::get('pages') as $page)
+	{
+		if (strlen($page['url']) && $page['url'][strlen($page['url']) - 1] != '/')
+			$page['url'] .= '/';
+
+		if (($error = Core::verifyLinkUrl($page['url'], $page['link_id'])) !== true)
+			$errors[] = array('link_id' => $page['link_id'], 'error' => $error);
+		else
+			Db::exec("
+			UPDATE link SET
+				title = '" . Db::escape($page['title']) . "',
+				url = '" . Db::escape($page['url']) . "',
+				modify_time = '" . Db::escape(time()) . "'
+			WHERE link_id = '" . Db::escape($page['link_id']) . "';
+			");
+	}
+	API::set('errors', $errors);
 	API::finish();
 }
 else if (API::action('get_pages'))
@@ -48,6 +58,7 @@ else if (API::action('get_pages'))
 			$row['content'][] = $row2['content'];
 		$row['content'] = strip_tags(implode(' ', $row['content']));
 		$row['content'] = strlen($row['content']) > 100 ? substr($row['content'], 0, 100) . '...' : $row['content'];
+
 		$row['length'] = Common::formatBytes(strlen($row['content']));
 		$pages[] = $row;
 	}

@@ -170,7 +170,7 @@
 		<?php endif; ?>
 	</p>
 
-	<div class="error" data-for-name="<?php echo $item['name']; ?>">
+	<div class="input_error" data-for-name="<?php echo $item['name']; ?>">
 		<div class="box">
 			<div class="arrow"></div>
 			<div class="arrow-border"></div>

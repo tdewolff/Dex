@@ -16,6 +16,8 @@ Hooks::attach('main', 0, function () {
             Template::assign('author', $user['username']);
         Template::assign('time', $content['modify_time']);
     }
+    else
+        Template::assign('content', 'Edit this&#x2026;');
     Template::render('index.tpl');
 });
 

@@ -47,8 +47,6 @@ circle {
 			var y = d3.scale.linear().range([height, 0]);
 			var color = d3.scale.category10();
 
-			console.log(visits);
-
 			visits.forEach(function (d) {
 				d.date = d.date * 1000;
 				d.visits = +d.visits;
@@ -113,6 +111,7 @@ circle {
 				.call(yAxis)
 			.append('text')
 				.attr('transform', 'rotate(-90)')
+				.attr('x', -5)
 				.attr('y', 6)
 				.attr('dy', '.71em')
 				.style('text-anchor', 'end')

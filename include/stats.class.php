@@ -7,6 +7,9 @@ class Stats
 		if (!Db::isValid())
 			return false;
 
+		if (preg_match('/robot|spider|crawler|curl|^$/i', $_SERVER['HTTP_USER_AGENT']))
+			return false;
+
 		$stat = Db::singleQuery("SELECT * FROM stats WHERE end_time >= '" . Db::escape(time() - 60 * 30) . "' AND ip_address = '" . Db::escape($_SERVER['REMOTE_ADDR']) . "' LIMIT 1;");
 		if (!$stat)
 			Db::exec("INSERT INTO stats (n, time, end_time, ip_address, request_url, referral) VALUES (

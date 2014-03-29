@@ -8,8 +8,8 @@
 		var use_feed = true;
 		$('#url-feed').on('keyup', function () {
 			if (use_feed) {
-				var link_url = $(this).val().toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
-				$('#url').val(link_url + '/');
+				var link_url = titleToUrl($(this).val());
+				$('#url').val(link_url);
 			}
 		});
 
@@ -19,8 +19,9 @@
 
 		$('#url').on('blur', function () {
 			var link_url = $(this).val();
-			if (link_url.length && link_url[link_url.length - 1] != '/')
+			if (link_url.length && link_url[link_url.length - 1] != '/') {
 				$(this).val(link_url + '/');
+			}
 		});
 	});
 </script>

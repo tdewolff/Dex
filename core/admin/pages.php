@@ -9,14 +9,11 @@ if (!isset($url[2]))
 	Hooks::emit('admin-footer');
 	exit;
 }
-else
+else if ($url[2] == 'new')
 {
-	if ($url[2] != 'new')
-		user_error('Page ID "' . $url[2] . '" doesn\'t exist', ERROR);
-
 	$form = new Form('page');
 
-	$form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
+	$form->addSection('New page', '');
 	$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
 	$form->addLinkUrl('url', 'Link', 'Leave empty for homepage');
 
