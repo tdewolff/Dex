@@ -26,7 +26,7 @@
         <div><i class="fa fa-home"></i></div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
-			<input name="url" type="text" value="{{=it.url}}" placeholder="(root)" data-link-id="{{=it.link_id}}" data-use-feed="true" {{?it.url==''}}disabled{{?}}>
+			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="true" {{?it.url==''}}disabled{{?}}>
 			<div class="input_error">
 				<div class="box">
 					<div class="arrow"></div>

@@ -15,7 +15,7 @@
         <div><i class="fa fa-long-arrow-right"></i><i class="fa fa-long-arrow-right"></i><i class="fa fa-bars"></i></div>
         <div><input type="text" value="{{=it.name}}" {{?!it.enabled}}class="unused"{{?}}></div>
         <div>{{=it.title}}</div>
-        <div><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}/{{=it.url}}{{??}}(root){{?}}</a></div>
+        <div><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}{{=it.url}}{{??}}<em>(home)</em>{{?}}</a></div>
     </li>
 </script>
 
