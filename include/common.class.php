@@ -217,7 +217,7 @@ class Common
 		$table = Db::query("SELECT * FROM link;");
 		while ($row = $table->fetch())
 		{
-			$slashes = preg_match_all('/', $row['url']);
+			$slashes = preg_match_all('/\//', $row['url'], $matches); // $matches not used but required for old PHP versions
 			$priority = '0.5';
 			if ($row['url'] == '')
 				$priority = '1';

@@ -38,15 +38,15 @@ class Error
 		$stripped_backtrace = array();
 		foreach ($backtrace as $row)
 			$stripped_backtrace[] = array(
-				'file' => (isset($row['file']) ? $row['file'] : '') . (isset($row['line']) ? ':' . $row['line'] : ''),
-				'function' => (isset($row['class']) ? $row['class'] : '') . (isset($row['type']) ? $row['type'] : '') . (isset($row['function']) ? $row['function'] : '')
+				'file' => (isset($row['file']) ? $row['file'] : '-') . (isset($row['line']) ? ':' . $row['line'] : ''),
+				'function' => (isset($row['class']) ? $row['class'] : '') . (isset($row['type']) ? $row['type'] : '') . (isset($row['function']) ? $row['function'] : '-')
 			);
 		return $stripped_backtrace;
 	}
 
 	public static function formatError($message, $location, $backtrace)
 	{
-		$formatted_message = '<p class="error"><strong>' . $message . '</strong></p><p class="error-source">' . $location . '</p>';
+		$formatted_message = '<p class="error"><strong>' . $message . '</strong><br><small>' . $location . '</small></p>';
 
 		$formatted_backtrace = '';
 		if (is_array($backtrace))

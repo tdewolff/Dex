@@ -64,7 +64,7 @@ var Draggable = function (ul) {
 
             self.draggee.find('.fa-long-arrow-right').hide();
             for (var i = 0; i < level; i++)
-                self.draggee.find('.fa-long-arrow-right').eq(i).show();
+                self.draggee.find('.fa-long-arrow-right').eq(i).show().css('display', 'inline-block');
 
             // apply CSS
             self.draggee.css('top', top + 'px');

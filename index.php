@@ -4,22 +4,29 @@
 // preliminaries //
 
 $starttime = explode(' ', microtime());
-$config = is_file('config.ini') ? parse_ini_file('config.ini') : array();
-if ($config === false) // for if parse_ini_file fails
-	$config = array();
 
 require_once('include/common.class.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
 
-Common::setMinifying(Common::tryOrDefault($config, 'minifying', true));
+$config = is_file('config.ini') ? parse_ini_file('config.ini') : array();
+if ($config === false) // for if parse_ini_file fails
+	$config = array();
+
+$config['minifying'] 		= Common::tryOrDefault($config, 'minifying', true);
+$config['caching'] 			= Common::tryOrDefault($config, 'caching', true);
+$config['verbose_logging'] 	= Common::tryOrDefault($config, 'verbose_logging', false);
+$config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', false);
+$config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
+
+Common::setMinifying($config['minifying']);
 Common::ensureWritableDirectory('assets/');
 Common::ensureWritableDirectory('cache/');
 Common::ensureWritableDirectory('logs/');
 
 Log::initialize();
-Log::setVerbose(Common::tryOrDefault($config, 'verbose_logging', false));
-Error::setDisplay(Common::tryOrDefault($config, 'display_errors', false), Common::tryOrDefault($config, 'display_notices', false));
+Log::setVerbose($config['verbose_logging']);
+Error::setDisplay($config['display_errors'], $config['display_notices']);
 
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function() {
@@ -27,6 +34,15 @@ register_shutdown_function(function() {
 	if (is_array($error))
 		Error::report($error['type'], $error['message'], $error['file'], $error['line']);
 });
+
+if (!in_array('mod_rewrite', apache_get_modules()))
+	user_error('Apache module mod_rewrite is not enabled', ERROR);
+if (!extension_loaded('sqlite3'))
+	user_error('PHP module SQLite3 is not enabled', ERROR);
+
+
+/////////////////
+// request URR //
 
 // form the request URI
 Log::request($_SERVER['REQUEST_URI']);

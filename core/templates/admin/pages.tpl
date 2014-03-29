@@ -23,7 +23,7 @@
 			</a>
 		</div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
-		<div><input name="url" type="text" value="{{=it.url}}" data-link-id="{{=it.link_id}}" data-use-feed="true"></div>
+		<div><input name="url" type="text" value="{{=it.url}}" placeholder="(root)" data-link-id="{{=it.link_id}}" data-use-feed="true"></div>
 		<div>{{=it.content}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
@@ -109,10 +109,8 @@
 
 		pages.on('keyup', 'input[name="url"]', function () {
 			$(this).attr('data-use-feed', 'false');
-			var link_url = $(this).val().replace(/[\/]+$/, '');
-			if (link_url.length) {
-				link_url += '/';
-			}
+			var link_url = $(this).val().replace(/\s/, '-').replace(/[^a-z0-9\-_\/]+/, '');
+			$(this).val(link_url);
 			$('#page_' + $(this).attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url);
 		});
 

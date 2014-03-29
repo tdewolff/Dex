@@ -84,5 +84,33 @@ else if (API::action('diskspace_usage'))
 	API::set('diskspace_total', $total);
 	API::finish();
 }
+else if (API::action('get_warnings'))
+{
+	$warnings = array();
+
+	$apache_modules = apache_get_modules();
+	if (!in_array('mod_deflate', $apache_modules))
+		$warnings[] = 'Apache module mod_deflate is not enabled';
+	if (!in_array('mod_expires', $apache_modules))
+		$warnings[] = 'Apache module mod_expires is not enabled';
+	if (!in_array('mod_filter', $apache_modules))
+		$warnings[] = 'Apache module mod_filter is not enabled';
+	if (!in_array('mod_headers', $apache_modules))
+		$warnings[] = 'Apache module mod_headers is not enabled';
+
+	if (!$config['minifying'])
+		$warnings[] = 'Minifying is disabled in config.ini';
+	if (!$config['caching'])
+		$warnings[] = 'Caching is disabled in config.ini';
+	if ($config['verbose_logging'])
+		$warnings[] = 'Verbose logging is enabled in config.ini';
+	if ($config['display_errors'])
+		$warnings[] = 'Displaying errors is enabled in config.ini';
+	if ($config['display_notices'])
+		$warnings[] = 'Displaying notices is enabled in config.ini';
+
+	API::set('warnings', $warnings);
+	API::finish();
+}
 
 ?>

@@ -32,7 +32,7 @@
 
                 var level = item.attr('data-level');
                 for (var i = 0; i < level; i++) {
-                    item.find('.fa-long-arrow-right').eq(i).show();
+                    item.find('.fa-long-arrow-right').eq(i).show().css('display', 'inline-block');
                 }
                 menu.append(item);
             });

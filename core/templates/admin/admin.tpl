@@ -21,11 +21,18 @@
 <h3>Maintenance</h3>
 <div>
 	<a href="#" class="button" data-tooltip="Optimize images and scripts of the site" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;Optimize site</a>
-</div>
-<div>
 	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a>
 	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;Clear logs</a>
 </div>
+
+<h3>Warnings</h3>
+<ul id="warnings">
+	<li id="load_warnings" class="api load-status">
+		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
+		<div class="error"><i class="fa fa-times"></i></div>
+		<div class="empty">empty</div>
+	</li>
+</ul>
 
 <script type="text/javascript">
 	$(function () {
@@ -62,6 +69,25 @@
 			});
 		}
 		loadDiskusage();
+
+		var warnings = $('#warnings');
+		apiLoadStatusWorking($('#load_warnings'));
+		$('#load_warnings').show();
+		api('/' + base_url + 'api/core/admin/', {
+			action: 'get_warnings'
+		}, function (data) {
+			if (!data['warnings'].length) {
+				apiLoadStatusEmpty($('#load_warnings'));
+				return;
+			}
+
+			$('#load_warnings').hide();
+			$.each(data['warnings'], function () {
+				warnings.append('<li>' + this + '</li>');
+			});
+		}, function () {
+			apiLoadStatusError($('#load_warnings'));
+		});
 
 		$('a[data-action]').click(function () {
 			var action = $(this).attr('data-action');

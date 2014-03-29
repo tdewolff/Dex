@@ -1,6 +1,6 @@
 <?php
 
-Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
+Resource::setCaching($config['caching']);
 
 $filename = Resource::expandUrl($url);
 
