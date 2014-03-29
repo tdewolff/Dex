@@ -23,12 +23,12 @@ else
 
 	$form = new Form('user');
 
-	$form->addSection('User', 'These users can access the admin area. Admins have access to everything.');
+	$form->addSection('User', 'These users can access the admin area. Admins have access to everything while editors have access only to a few admin pages related to editing content.');
 	$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
 	$form->addEmail('email', 'Email address', 'Used for notifications and password recovery');
 	$form->addPassword('password', 'Password', ($url[2] != 'new' ? 'Leave empty to keep current' : ''));
 	$form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
-	$form->addRadios('role', 'Role', 'Restricts access', array('admin' => 'Admin', 'editor' => 'Editor'));
+	$form->addRadios('role', 'Role', '', array('admin' => 'Admin', 'editor' => 'Editor'));
 
 	$form->addSeparator();
 

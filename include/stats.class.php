@@ -26,9 +26,11 @@ class Stats
 		$visits = array();
 		$table = Db::query("SELECT * FROM stats ORDER BY time ASC;");
 		while ($row = $table->fetch())
-			if (!count($visits) || date('M j', $visits[count($visits) - 1]['date']) !== date('M j', $row['time']))
+		{
+			$time = floor($row['time'] / 86400) * 86400;
+			if (!count($visits) || $visits[count($visits) - 1]['date'] !== $time)
 				$visits[] = array(
-					'date' => floor($row['time'] / 86400) * 86400,
+					'date' => $time,
 					'visits' => $row['n'],
 					'unique_visits' => 1
 				);
@@ -37,6 +39,7 @@ class Stats
 				$visits[count($visits) - 1]['visits'] += $row['n'];
 				$visits[count($visits) - 1]['unique_visits']++;
 			}
+		}
 		return $visits;
 	}
 }
