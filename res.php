@@ -12,6 +12,8 @@ if ($parameters_position !== false)
 	$extension = substr($extension, 0, $parameters_position);
 }
 
+$starttime_res = explode(' ', microtime());
+
 if (!Resource::isResource($extension))
 	user_error('Resource file extension "' . $extension . '" invalid of "' . Common::$request_url . '"', ERROR);
 else if (!is_file($filename))
@@ -35,13 +37,21 @@ else
 	header('Content-Type: ' . Resource::getMime($extension) . '; charset: UTF-8');
 	$headers = apache_request_headers();
     if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename)))
+    {
+    	Log::notice('304');
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 304);
+    }
     else
     {
+    	Log::notice('200');
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 200);
         header('Content-Length: ' . filesize($filename));
 		print file_get_contents($filename);
     }
+
+	$endtime_res = explode(' ', microtime());
+	$totaltime = ($endtime_res[1] + $endtime_res[0] - $starttime_res[1] - $starttime_res[0]);
+	Log::caching('Loading res took ' . number_format($totaltime, 4) . 's');
 }
 exit;
 
