@@ -103,16 +103,16 @@ var Form = function (form) {
 	};
 
 	this.success = function (data) {
+		self.form.find('.errors').hide();
 		if (data['errors'].length) {
 			var errors = data['errors'].join('<br>');
 			var form_errors = self.form.find('.errors');
 			if (form_errors.html() != errors)
 				form_errors.html(errors).hide();
 			form_errors.fadeIn();
-		} else {
-			self.form.find('.errors').hide();
 		}
 
+		self.form.find('.input_error').hide();
 		if (data['item_errors'].length) {
 			$.each(data['item_errors'], function (i, item_error) {
 				var input = self.form.find('[name="' + item_error['name'] + '"], [data-name="' + item_error['name'] + '"]');
@@ -125,8 +125,6 @@ var Form = function (form) {
 				}
 				error_box.fadeIn();
 			});
-		} else {
-			self.form.find('.input_error').hide();
 		}
 
 		if (data['errors'].length || data['item_errors'].length) {
@@ -194,8 +192,16 @@ $('form input[data-type="array"]').each(function (i, array) {
 		var input = $(this),
 			li = input.closest('li');
 
-		if (input.val().length > 0 && li.next().length == 0) {
-			$(template({value: ''})).appendTo(ul).hide().fadeIn();
+		if (li.next().length == 0 && input.val().length > 0) {
+			$(template({placeholder: '', value: ''})).appendTo(ul).hide().fadeIn();
+		} else if (li.next().length > 0 && li.next().next().length == 0 && input.val().length == 0) { // remove empties
+			var prev = li;
+			li = li.next();
+			while (prev.length && prev.find('input').val().length == 0) {
+				li.remove();
+				li = prev;
+				prev = prev.prev();
+			}
 		}
 	});
 });
@@ -220,7 +226,7 @@ $('form input[data-type="parameters"]').each(function (i, array) {
 		var input = $(this),
 			li = input.closest('li');
 
-		if (input.val().length > 0 && li.next().length == 0) {
+		if (li.next().length == 0 && input.val().length > 0) {
 			$(template({key: '', value: ''})).appendTo(ul).hide().fadeIn();
 		}
 	});

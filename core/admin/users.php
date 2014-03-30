@@ -19,6 +19,14 @@ else
 		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
 		if (!$user)
 			user_error('User ID "' . $url[2] . '" doesn\'t exist', ERROR);
+		$current_user = $user;
+	}
+
+	if (User::getUserId() != $url[2])
+	{
+		$current_user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape(User::getUserId()) . "' LIMIT 1;");
+		if (!$current_user)
+			user_error('Current user ID "' . User::getUserId() . '" doesn\'t exist', ERROR);
 	}
 
 	$form = new Form('user');
@@ -28,8 +36,11 @@ else
 	$form->addEmail('email', 'Email address', 'Used for notifications and password recovery');
 	$form->addPassword('password', 'Password', ($url[2] != 'new' ? 'Leave empty to keep current' : ''));
 	$form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
-	$form->addRadios('role', 'Role', '', array('admin' => 'Admin', 'editor' => 'Editor'));
 
+	if (User::getUserId() == $url[2])
+		$form->addRadios('role', 'Role', '', array($current_user['role'] => ucfirst($current_user['role'])));
+	else
+		$form->addRadios('role', 'Role', '', array('admin' => 'Admin', 'editor' => 'Editor'));
 	$form->addSeparator();
 
     if ($url[2] != 'new')
@@ -45,11 +56,8 @@ else
 	{
 		if ($form->validate())
 		{
-			$current_user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape(User::getUserId()) . "' LIMIT 1;");
             if (Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
-            else if (!$current_user)
-                $form->appendError('Unknown error');
             else if ($url[2] != 'new' && !Bcrypt::verify($form->get('current_password'), $current_user['password']))
                 $form->setError('current_password', 'Wrong password');
             else if ($url[2] != 'new' && User::getUserId() == $url[2] && $current_user['role'] != $form->get('role'))
