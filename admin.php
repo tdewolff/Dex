@@ -93,9 +93,7 @@ Core::assign('admin_links', $admin_links);
 
 foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
-	{
-		$admin_link['regex'] = preg_replace('/\//', '\/', $admin_link['regex']);
-		if (preg_match('/^' . $admin_link['regex'] . '$/', Common::$request_url))
+		if (preg_match('/^' . preg_replace('/\//', '\/', $admin_link['regex']) . '$/', Common::$request_url))
 		{
 			Core::assign('current_admin_i', $i);
 
@@ -105,7 +103,6 @@ foreach ($admin_links as $i => $admin_link)
 			require_once($admin_link['file']);
 			break;
 		}
-	}
 
 user_error('Could not find page at "' . Common::$request_url . '"', ERROR);
 
