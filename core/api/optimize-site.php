@@ -42,9 +42,20 @@ foreach ($extension_directories as $extension_directory)
 			is_dir($extension_directory . $module_name . '/resources/'))
 		{
 			if (is_dir($extension_directory . $module_name . '/resources/scripts/'))
-				$script_directories[] = $extension_directory . $module_name . '/resources/scripts/';
+			{
+				if (is_writable($extension_directory . $module_name . '/resources/scripts/'))
+					$script_directories[] = $extension_directory . $module_name . '/resources/scripts/';
+				else
+					Console::appendLine('Warning: "' . $extension_directory . $module_name . '/resources/scripts/' . '" is not writable');
+			}
+
 			if (is_dir($extension_directory . $module_name . '/resources/styles/'))
-				$style_directories[] = $extension_directory . $module_name . '/resources/styles/';
+			{
+				if (is_writable($extension_directory . $module_name . '/resources/styles/'))
+					$style_directories[] = $extension_directory . $module_name . '/resources/styles/';
+				else
+					Console::appendLine('Warning: "' . $extension_directory . $module_name . '/resources/styles/' . '" is not writable');
+			}
 		}
 }
 

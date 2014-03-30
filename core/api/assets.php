@@ -81,7 +81,9 @@ else if (API::action('create_directory'))
 	if (is_dir($dir . API::get('name') . '/'))
 		user_error('Directory "' . $dir . API::get('name') . '" already exists', ERROR);
 
-	mkdir($dir . API::get('name') . '/', 0755);
+	if (!mkdir($dir . API::get('name') . '/', 0755))
+		user_error('Directory "' . $dir . API::get('name') . '" could not be created', ERROR);
+
 	API::set('directory', array(
 		'dir' => $dir . API::get('name'),
 		'name' => API::get('name'),
@@ -97,7 +99,9 @@ else if (API::action('delete_directory'))
 	if (!is_dir($dir . API::get('name') . '/'))
 		user_error('Directory "' . $dir . API::get('name') . '" doesn\'t exist', ERROR);
 
-	rmdir($dir . API::get('name') . '/');
+	if (!rmdir($dir . API::get('name') . '/'))
+		user_error('Directory "' . $dir . API::get('name') . '" could not be deleted', ERROR);
+
 	API::finish();
 }
 else if (API::action('delete_file'))
@@ -106,9 +110,11 @@ else if (API::action('delete_file'))
 		user_error('No name set', ERROR);
 
 	if (!is_file($dir . API::get('name')))
-		user_error('Asset "' . $dir . API::get('name') . '" doesn\'t exist', ERROR);
+		user_error('File "' . $dir . API::get('name') . '" doesn\'t exist', ERROR);
 
-	unlink($dir . API::get('name'));
+	if (!unlink($dir . API::get('name')))
+		user_error('File "' . $dir . API::get('name') . '" could not be deleted', ERROR);
+
 	API::finish();
 }
 else if (API::action('get_breadcrumbs'))
