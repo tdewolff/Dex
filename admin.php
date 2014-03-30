@@ -12,7 +12,6 @@ Core::addStyle('admin.css');
 Core::addStyle('site-admin.css');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
-Core::addScript('slidein.js');
 Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
 Core::addDeferredScript('vendor/jquery.fileupload.min.js');
