@@ -89,14 +89,11 @@ else if (API::action('get_warnings'))
 	$warnings = array();
 
 	$apache_modules = apache_get_modules();
-	if (!in_array('mod_deflate', $apache_modules))
-		$warnings[] = 'Apache module mod_deflate is not enabled';
-	if (!in_array('mod_expires', $apache_modules))
-		$warnings[] = 'Apache module mod_expires is not enabled';
-	if (!in_array('mod_filter', $apache_modules))
-		$warnings[] = 'Apache module mod_filter is not enabled';
-	if (!in_array('mod_headers', $apache_modules))
-		$warnings[] = 'Apache module mod_headers is not enabled';
+	$apache_modules_needed = array('mod_deflate', 'mod_expires', 'mod_filter', 'mod_headers', 'mod_setenvif');
+	foreach ($apache_modules_needed as $module)
+		if (!in_array($module, $apache_modules))
+			$warnings[] = 'Apache module ' . $module . ' is not enabled';
+
 	if (!extension_loaded('curl') && !preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen')))
 		$warnings[] = 'Neither PHP module cURL is enabled nor PHP setting allow_url_fopen is true';
 

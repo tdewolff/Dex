@@ -113,7 +113,7 @@ class Resource
 		return $filename;
 	}
 
-	public static function imageSize($filename, $max_width, $max_height = 0, $scale = 0)
+	public static function imageSize($filename, $max_width, $max_height = 0)
 	{
 		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
 		{
@@ -145,29 +145,24 @@ class Resource
 				$new_height = floor($height * ($new_width / $width));
 			}
 		}
-		else if ($scale != 0)
-		{
-			$new_width = floor($scale * $width);
-			$new_height = floor($scale * $height);
-		}
 		return array($new_width, $new_height);
 	}
 
-	public static function imageSizeAttributes($request_url, $max_width, $max_height = 0, $scale = 0)
+	public static function imageSizeAttributes($request_url, $max_width, $max_height = 0)
 	{
 		$filename = self::expandUrl($request_url);
-		list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
+		list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height);
 		return 'width="' . $new_width . '" height="' . $new_height . '"';
 	}
 
-	public static function imageResize($filename, $max_width, $max_height = 0, $scale = 0)
+	public static function imageResize($filename, $max_width, $max_height = 0)
 	{
 		$starttime_local = explode(' ', microtime());
-		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
+		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
 		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename))
 		{
 			list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
-			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
+			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height);
 
 			switch (image_type_to_mime_type($mime_type))
 			{

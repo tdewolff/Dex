@@ -545,10 +545,8 @@ var DexEditImg = function (root, img) {
 			width = height / self.img_ratio;
 		}
 
-		self.img.css({
-			width: width,
-			height: height
-		});
+		self.img.attr('width', width);
+		self.img.attr('height', height);
 
 		self.wrapper.css({
 			width: width,
@@ -888,6 +886,7 @@ function removeDexEdit(root) {
 	root.find('.dexedit_menu, .dexedit_img_placeholder, .dexedit_img_resize, .dexedit_img_menu').remove();
 	root.find('figure, hr').attr('contenteditable', null);
 	root.find('.dexedit_img > img').unwrap();
+	root.find('figure').css('top', '');
 	root.attr('contenteditable', null);
 }
 

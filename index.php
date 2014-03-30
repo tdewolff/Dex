@@ -5,6 +5,9 @@
 
 $starttime = explode(' ', microtime());
 
+ini_set('zlib.output_compression', 'On');
+ini_set('zlib.output_compression_level', '5');
+
 require_once('include/common.class.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
@@ -70,6 +73,8 @@ else if (Common::$request_url == 'favicon.ico')
 	Common::outputFaviconIco();
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
+
+Resource::setCaching($config['caching']);
 
 
 ///////////////

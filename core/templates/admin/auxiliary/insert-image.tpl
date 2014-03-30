@@ -67,7 +67,7 @@
 	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}">
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 100}}
-		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}?w=100"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/100/"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}>

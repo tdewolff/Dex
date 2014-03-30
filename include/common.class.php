@@ -267,7 +267,6 @@ function minifyHtml($text)
 	$text = preg_replace($re, ' ', $text);
 	if ($text === null)
 		user_error('Output HTML too large');
-
 	return $text;
 }
 

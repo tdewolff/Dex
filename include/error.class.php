@@ -114,20 +114,21 @@ class Error
 			case E_USER_ERROR:
 			default:
 				Log::error($message, $location, $backtrace);
-				if (!Common::requestResource())
+				http_response_code(500);
+				if (Common::requestResource())
+					header('Content-Type: text/html; charset: UTF-8');
+
+				if (Common::requestAjax())
+					API::error($display_message);
+				else if (class_exists('Hooks'))
 				{
-					if (Common::requestAjax())
-						API::error($display_message);
-					else if (class_exists('Hooks'))
-					{
-						if (Common::requestAdmin())
-							Hooks::emit('admin-error');
-						else
-							Hooks::emit('error');
-					}
+					if (Common::requestAdmin())
+						Hooks::emit('admin-error');
 					else
-						echo $display_message;
+						Hooks::emit('error');
 				}
+				else
+					echo $display_message;
 				exit;
 		}
 		return true;

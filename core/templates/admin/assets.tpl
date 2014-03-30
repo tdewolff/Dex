@@ -75,7 +75,7 @@
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 200}}
 		<a href="/<?php echo $_['base_url']; ?>res/{{=it.url}}" rel="gallery" class="fancybox">
-			<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}?w=200"
+			<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/200/"
 				 alt="{{=it.name}}"
 				 title="{{=it.title}}"
 				 {{=it.attr}}>
