@@ -48,6 +48,11 @@ AddDefaultCharset UTF-8
 	AddCharset utf-8 .atom .css .js .json .rss .vtt .webapp .xml
 </IfModule>
 
+<IfModule mod_deflate.c>
+    SetOutputFilter DEFLATE
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)[0-9\/]*$ no-gzip
+</IfModule>
+
 <IfModule mod_headers.c>
 	Header set X-UA-Compatible "IE=edge"
 	# `mod_headers` can't match based on the content-type, however, we only
