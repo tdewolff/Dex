@@ -75,7 +75,7 @@ else if ($url[2] == 'new')
 
 	Hooks::emit('admin-header');
 
-	Core::assign('page', $form);
+	Core::set('page', $form);
 	Core::render('admin/page.tpl');
 
 	Hooks::emit('admin-footer');

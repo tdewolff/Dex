@@ -7,7 +7,7 @@ $(function () {
 	$('[data-dexeditable]').on('input', function (e) {
 		apiStatusClear();
 		clearTimeout(saveTimeout);
-		saveTimeout = setTimeout(save, 2000);
+		saveTimeout = setTimeout(save, 1000);
 	});
 
 	function save() {
@@ -60,7 +60,7 @@ $(function () {
 			if (admin === 0) {
 				adminBarLogOut();
 			} else {
-				location.reload();
+				location = '/' + base_url + 'admin/';
 			}
 		});
 	});

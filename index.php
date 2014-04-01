@@ -150,14 +150,14 @@ require_once('core/hooks.php');
 if (User::loggedIn())
 {
 	User::refreshLogin();
-	Core::assign('username', User::getUsername());
-	Core::assign('role', User::getRole());
+	Core::set('username', User::getUsername());
+	Core::set('role', User::getRole());
 }
 else if (!Common::requestAdmin())
 	Stats::registerPageVisit();
 
-Core::assign('base_url', Common::$base_url);
-Core::assign('session_time', SESSION_TIME);
+Core::set('base_url', Common::$base_url);
+Core::set('session_time', SESSION_TIME);
 
 
 // handle admin area
@@ -175,11 +175,11 @@ while ($row = $table->fetch())
 {
 	$settings[$row['key']] = $row['value'];
 	if (!empty($row['value']))
-	   Core::assign('setting_' . $row['key'], $row['value']);
+	   Core::set('setting_' . $row['key'], $row['value']);
 }
 
 Core::addTitle($settings['title']);
-Core::$theme_name = $settings['theme'];
+Core::setThemeName($settings['theme']);
 
 
 // load page
@@ -187,10 +187,9 @@ $link = Db::singleQuery("SELECT * FROM link WHERE '" . Db::escape(Common::$reque
 if ($link)
 {
 	Core::addTitle($link['title']);
-	Core::$link_id = $link['link_id'];
-	Core::$template_name = $link['template_name'];
-
-	Core::assign('link_id', $link['link_id']);
+	Core::setLinkId($link['link_id']);
+	Core::setTemplateName($link['template_name']);
+	Core::set('link_id', $link['link_id']);
 }
 
 

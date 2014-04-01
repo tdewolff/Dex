@@ -269,12 +269,14 @@
 				dir: dir
 			}, function (data) {
 				apiStatusSuccess('Created directory');
+				$('#load_status_directories_assets').hide();
+
 				$('#create-directory input').val('');
 				var item = directory_item(data['directory']);
 				if (directories_assets.find('li.directory').length) {
 					addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
 				} else {
-					$(item).hide().insertAfter(directories_assets.find('li:first')).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown('fast');
 				}
 			}, function () {
 				apiStatusError('Creating directory failed');
@@ -283,13 +285,19 @@
 
 		initAdminUpload('#upload', function (data) {
 			if (!data['file'].is_image) {
+				$('#load_status_directories_assets').hide();
+
 				var item = asset_item(data['file']);
 				if (directories_assets.find('li.asset').length) {
 					addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
-				} else {
+				} else if (directories_assets.find('.directory').length) {
 					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+				} else {
+					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown('fast');
 				}
 			} else {
+				$('#load_status_images').hide();
+
 				var item = image_item(data['file']);
 				if (images.find('li').length) {
 					addAlphabetically(images.find('li'), item, data['file']['name']);

@@ -85,9 +85,10 @@ else if (API::action('create_directory'))
 		user_error('Directory "' . $dir . API::get('name') . '" could not be created', ERROR);
 
 	API::set('directory', array(
-		'dir' => $dir . API::get('name'),
+		'dir' => substr($dir, strlen('assets/')) . API::get('name') . '/',
 		'name' => API::get('name'),
-		'icon' => 'folder.png'
+		'icon' => 'folder.png',
+		'is_deletable' => true
 	));
 	API::finish();
 }

@@ -14,7 +14,7 @@ $log_name = $slash_position ? substr($log_name, $slash_position + 1) : $log_name
 
 Hooks::emit('admin-header');
 
-Core::assign('log_name', $log_name);
+Core::set('log_name', $log_name);
 Core::render('admin/index.tpl');
 
 Hooks::emit('admin-footer');

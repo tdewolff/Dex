@@ -8,7 +8,7 @@ if (isset($url[2]) && ($url[2] == 'sent' || $url[2] == 'success'))
 {
 	Hooks::emit('admin-header');
 
-	Core::assign($url[2], true);
+	Core::set($url[2], true);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');
@@ -63,10 +63,10 @@ else if (isset($url[2]) && $url[2] == 'reset')
 		if ($recover && $recover['expiry_time'] <= time())
 		{
 			Db::exec("DELETE FROM recover WHERE recover_id = '" . Db::escape($recover['recover_id']) . "';");
-			Core::assign('expired', true);
+			Core::set('expired', true);
 		}
 		else
-			Core::assign('malformed', true);
+			Core::set('malformed', true);
 		Core::render('admin/recover.tpl');
 
 		Hooks::emit('admin-footer');
@@ -75,7 +75,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 
 	Hooks::emit('admin-header');
 
-	Core::assign('reset', $form);
+	Core::set('reset', $form);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');
@@ -138,7 +138,7 @@ else
 
 	Hooks::emit('admin-header');
 
-	Core::assign('recover', $form);
+	Core::set('recover', $form);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');

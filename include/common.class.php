@@ -1,5 +1,13 @@
 <?php
 
+if (!function_exists('http_response_code'))
+{
+    function http_response_code($code)
+    {
+        header('X-PHP-Response-Code: ' . $code, true, $code);
+    }
+}
+
 class Common
 {
 	public static $request_url = '';

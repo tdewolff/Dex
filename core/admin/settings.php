@@ -30,7 +30,7 @@ while ($setting = $settings->fetch())
 
 Hooks::emit('admin-header');
 
-Core::assign('settings', $form);
+Core::set('settings', $form);
 Core::render('admin/settings.tpl');
 
 Hooks::emit('admin-footer');

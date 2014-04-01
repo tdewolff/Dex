@@ -2,7 +2,7 @@
 
 require_once('include/stats.class.php');
 
-if (!User::isAdmin())
+if (!User::loggedIn())
 	user_error('Forbidden access', ERROR);
 
 if (API::action('get_visits'))

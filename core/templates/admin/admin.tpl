@@ -27,6 +27,11 @@
 
 <h3>Warnings</h3>
 <ul id="warnings">
+<?php foreach ($_['warnings'] as $warning) {
+	echo '<li>' . $warning . '</li>';
+} if (!count($_['warnings'])) {
+	echo '<li class="empty">none</li>';
+} ?>
 	<li id="load_warnings" class="api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
@@ -69,25 +74,6 @@
 			});
 		}
 		loadDiskusage();
-
-		var warnings = $('#warnings');
-		apiLoadStatusWorking($('#load_warnings'));
-		$('#load_warnings').show();
-		api('/' + base_url + 'api/core/admin/', {
-			action: 'get_warnings'
-		}, function (data) {
-			if (!data['warnings'].length) {
-				apiLoadStatusEmpty($('#load_warnings'));
-				return;
-			}
-
-			$('#load_warnings').hide();
-			$.each(data['warnings'], function () {
-				warnings.append('<li>' + this + '</li>');
-			});
-		}, function () {
-			apiLoadStatusError($('#load_warnings'));
-		});
 
 		$('a[data-action]').click(function () {
 			var action = $(this).attr('data-action');

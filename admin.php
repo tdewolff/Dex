@@ -89,13 +89,13 @@ $admin_links[] = array('name' => 'themes',    'regex' => 'admin/themes/',       
 $admin_links[] = array('name' => 'admin',     'regex' => 'admin/admin/',                'file' => 'core/admin/admin.php',     'url' => 'admin/admin/',     'icon' => 'fa-book',     'title' => 'Admin',          'admin_only' => 1);
 $admin_links[] = array('name' => 'logout',    'regex' => 'admin/logout/',               'file' => 'core/admin/logout.php',    'url' => 'admin/logout/',    'icon' => 'fa-sign-out', 'title' => 'Log out',        'admin_only' => 0);
 
-Core::assign('admin_links', $admin_links);
+Core::set('admin_links', $admin_links);
 
 foreach ($admin_links as $i => $admin_link)
 	if (!empty($admin_link))
 		if (preg_match('/^' . preg_replace('/\//', '\/', $admin_link['regex']) . '$/', Common::$request_url))
 		{
-			Core::assign('current_admin_i', $i);
+			Core::set('current_admin_i', $i);
 
 			if (!is_file($admin_link['file']))
 				user_error('Admin file "' . $admin_link['file'] . '" does not exist', ERROR);

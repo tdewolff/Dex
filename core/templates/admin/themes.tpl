@@ -37,9 +37,9 @@
 		});
 
 		themes.on('click', 'li', function () {
-			apiStatusWorking('Switching theme...');
 			var item = $(this);
-			if (!item.hasClass('current'))
+			if (!item.hasClass('current')) {
+				apiStatusWorking('Switching theme...');
 				api('/' + base_url + 'api/core/themes/', {
 					action: 'change_theme',
 					theme_name: item.attr('data-theme-name')
@@ -50,6 +50,7 @@
 				}, function () {
 					apiStatusError('Switching theme failed');
 				});
+			}
 		});
 	});
 </script>

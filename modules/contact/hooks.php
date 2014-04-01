@@ -1,7 +1,7 @@
 <?php
 
 function contact_render() {
-    Module::set('contact');
+    Module::setModuleName('contact');
 
     $contact = array();
     $table = Db::query("SELECT * FROM module_contact;");
@@ -14,7 +14,7 @@ function contact_render() {
                 $contact[$row['key']] = $row['value'];
         }
 
-    Module::assign('contact', $contact);
+    Module::set('contact', $contact);
     Module::render('index.tpl');
 }
 

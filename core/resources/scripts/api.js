@@ -41,11 +41,11 @@ function api(url, data, success, error) {
 				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['error'] !== 'undefined') { // PHP error but still handled by API
 					apiFatal(data['responseJSON']['error'].join('<br>'));
 				} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
-					apiFatal(data['responseText']);
+					apiFatal(escapeHtml(data['responseText']));
 				} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
-					apiFatal(data['statusText']);
+					apiFatal(escapeHtml(data['statusText']));
 				} else { // ...shrugs
-					apiFatal(data);
+					apiFatal(escapeHtml(data));
 				}
 			}
 		});

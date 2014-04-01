@@ -9,6 +9,8 @@ class Resource
 		'css' => 'text/css',
 		'htm' => 'text/html',
 		'html' => 'text/html',
+		'xml' => 'application/xml',
+		'txt' => 'text/plain',
 
 		'svg' => 'image/svg+xml',
 		'eot' => 'application/vnd.ms-fontobject',
@@ -16,18 +18,32 @@ class Resource
 		'otf' => 'application/octet-stream',
 		'ttf' => 'application/x-font-ttf',
 
+		'bmp' => 'image/bmp',
 		'png' => 'image/png',
 		'gif' => 'image/gif',
 		'jpg' => 'image/jpeg',
 		'jpeg' => 'image/jpeg',
+		'tif' => 'image/tiff',
+		'tiff' => 'image/tiff',
 
+		'wav' => 'audio/x-wav',
+		'avi' => 'video/x-msvideo',
 		'mp3' => 'audio/mpeg',
+		'mp4' => 'video/mp4',
+		'mov' => 'video/quicktime',
+		'mpe' => 'video/mpeg',
+		'mpeg' => 'video/mpeg',
+		'mpg' => 'video/mpeg',
+		'swf' => 'application/x-shockwave-flash',
 
 		'doc' => 'application/msword',
+		'ppt' => 'application/vnd.ms-powerpoint',
+		'xls' => 'application/vnd.ms-excel',
 		'pdf' => 'application/pdf',
 		'zip' => 'application/zip',
 		'rar' => 'application/x-rar-compressed',
-		'7z' => 'application/x-7z-compressed'
+		'7z' => 'application/x-7z-compressed',
+		'tar' => 'application/x-tar',
 	);
 
 	public static function setCaching($caching) {
@@ -47,7 +63,7 @@ class Resource
 	public static function isImage($extension)
 	{
 		$extension = strtolower($extension);
-		return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg');
+		return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg'); // only types that can be resized
 	}
 
 	private static function cacheFilename($filenames, $cache_formatted_filename)

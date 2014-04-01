@@ -3,7 +3,7 @@
 $form = new Form('login');
 
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');
-$form->addText('username', 'Username or Email', '', '', array('[a-zA-Z0-9-_]*|[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 3, 50, 'Must be a valid username or email address format'));
+$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Must be a valid username'));
 $form->addPassword('password', 'Password', '');
 
 $form->addSeparator();
@@ -20,9 +20,6 @@ if ($form->submitted())
 		else
 		{
 			$user = Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
-			if (!$user)
-				$user = Db::singleQuery("SELECT * FROM user WHERE email = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
-
 			if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 			{
 				User::logIn($user['user_id']);
@@ -48,7 +45,7 @@ Core::addTitle('Admin panel');
 
 Hooks::emit('admin-header');
 
-Core::assign('login', $form);
+Core::set('login', $form);
 Core::render('admin/login.tpl');
 
 Hooks::emit('admin-footer');

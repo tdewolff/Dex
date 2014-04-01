@@ -1,7 +1,7 @@
 <?php
 
 Hooks::attach('navigation', 0, function () {
-    Module::set('menu');
+    Module::setModuleName('menu');
 
     $menu = array();
     $non_menu = array();
@@ -25,7 +25,7 @@ Hooks::attach('navigation', 0, function () {
     }
     $menu = array_merge($menu, $non_menu); // non_menu items come last
 
-    Module::assign('menu', $menu);
+    Module::set('menu', $menu);
     Module::render('index.tpl');
 });
 

@@ -1,5 +1,5 @@
 <?php
-Module::set('contact');
+Module::setModuleName('contact');
 
 $form = new Form('contact');
 
@@ -43,7 +43,7 @@ foreach ($contact as $key => $value)
 
 Hooks::emit('admin-header');
 
-Module::assign('contact', $form);
+Module::set('contact', $form);
 Module::render('admin/contact.tpl');
 
 Hooks::emit('admin-footer');

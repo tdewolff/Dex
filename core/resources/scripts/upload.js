@@ -111,9 +111,13 @@ function initAdminUpload(_upload, success) {
 			success(result);
 		}
 	}, function (i, response) {
-		if (typeof response !== 'undefined') {
-			apiFatal(response);
+		response = $.parseJSON(response);
+		if (typeof response['error'] !== 'undefined') { // PHP error but still handled by API
+			apiFatal(response['error'].join('<br>'));
+		} else {
+			apiFatal(escapeHtml(response));
 		}
+
 		upload.find('#upload_' + i).addClass('fail').append(' (Unknown error)').find('i').attr('class', 'fa fa-fw fa-times');
 		upload.find('#knob').stop().hide();
 	});

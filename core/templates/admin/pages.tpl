@@ -26,7 +26,7 @@
         <div><i class="fa fa-home"></i></div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
-			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="true" {{?it.url==''}}disabled{{?}}>
+			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url==''}}false{{??}}true{{?}}" {{?it.url==''}}disabled{{?}}>
 			<div class="input_error">
 				<div class="box">
 					<div class="arrow"></div>
@@ -60,7 +60,7 @@
 				return;
 			}
 
-			$('#load_status').hide();
+			apiLoadStatusSuccess($('#load_status'));
 			$.each(data['pages'], function () {
 				pages.append(page_item(this));
 			});
@@ -142,13 +142,13 @@
 	    pages.on('mousedown', '.fa-home', function (e) {
         	e.preventDefault();
 
-	    	var old_li = pages.find('li.home').toggleClass('home');
+	    	var old_li = pages.find('li.home').removeClass('home');
 	    	if (old_li.length)
-	    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false);
+	    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
 
 	        var li = $(this).closest('li');
-	        li.toggleClass('home');
-	        li.find('input[name="url"]').val('').prop('disabled', true).trigger('input');
+	        li.addClass('home');
+	        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
 	    });
 
 		pages.on('keyup', 'input[name="title"]', function () {

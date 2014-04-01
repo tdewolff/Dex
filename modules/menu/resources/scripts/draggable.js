@@ -20,10 +20,11 @@ var Draggable = function (ul) {
             var top = e.pageY - self.draggee_y_offset;
             var min_top = elements.first().offset().top + 1;
             var max_top = elements.last().offset().top + 1;
-            if (top < min_top)
+            if (top < min_top) {
                 top = min_top;
-            else if (top > max_top)
+            } else if (top > max_top) {
                 top = max_top;
+            }
 
             // placement
             var places = elements.filter(function () {
@@ -35,10 +36,11 @@ var Draggable = function (ul) {
                 places.each(function () {
                     var place = $(this);
                     if (y >= place.offset().top && y < place.offset().top + place.outerHeight()) {
-                        if (top < self.placeholder.offset().top)
+                        if (top < self.placeholder.offset().top) {
                             self.placeholder.insertBefore(place);
-                        else
+                        } else {
                             self.placeholder.insertAfter(place);
+                        }
                         return false;
                     }
                 });
@@ -49,29 +51,31 @@ var Draggable = function (ul) {
             var previous = false;
             elements.each(function () {
                 var element = $(this);
-                if (element.hasClass('placeholder'))
+                if (element.hasClass('placeholder')) {
                     return false;
+                }
                 previous = element;
             });
 
-            if (previous !== false && typeof previous.attr('data-level') !== 'undefined')
-            {
+            if (previous !== false && typeof previous.attr('data-level') !== 'undefined') {
                 level = Math.floor((e.pageX - self.draggee_x_start + 20.0) / 40.0);
                 var previous_level = previous.attr('data-level');
-                if (level >= previous_level + 2)
+                if (level >= previous_level + 2) {
                     level = previous_level + 1;
+                }
             }
 
             self.draggee.find('.fa-long-arrow-right').hide();
-            for (var i = 0; i < level; i++)
+            for (var i = 0; i < level; i++) {
                 self.draggee.find('.fa-long-arrow-right').eq(i).show().css('display', 'inline-block');
+            }
 
             // apply CSS
             self.draggee.css('top', top + 'px');
             self.draggee.attr('data-level', level);
-        }
-        else
+        }  else {
             $(document).unbind('mousemove', self.drag);
+        }
     };
 
     this.ul.on('mousedown', '.fa-eye', function (e) {
@@ -79,19 +83,24 @@ var Draggable = function (ul) {
         apiStatusClear();
 
         var li = $(this).closest('li');
+        var parent = self.getParent(li);
+        if (parent && parent.hasClass('unused') && li.hasClass('unused'))
+            return;
+
         li.toggleClass('unused');
         li.find('input').toggleClass('unused');
 
+        // childs
         var level = li.attr('data-level');
         var elements = li.nextAll('li').filter(function () {
             return !$(this).hasClass('placeholder');
         }).each(function () {
             var element = $(this);
-            if (element.attr('data-level') <= level)
+            if (element.attr('data-level') <= level) {
                 return false;
+            }
 
-            if (element.hasClass('unused') != li.hasClass('unused'))
-            {
+            if (element.hasClass('unused') != li.hasClass('unused')) {
                 element.toggleClass('unused');
                 element.find('input').toggleClass('unused');
             }
@@ -135,11 +144,28 @@ var Draggable = function (ul) {
             });
 
             // toggle unused class
-            if (self.draggee.prev('li').attr('data-level') < self.draggee.attr('data-level') && self.draggee.prev('li').hasClass('unused') && !self.draggee.hasClass('unused'))
-            {
+            var parent = self.getParent(self.draggee);
+            if (parent && parent.hasClass('unused') && !self.draggee.hasClass('unused')) {
                 self.draggee.toggleClass('unused');
                 self.draggee.find('input').toggleClass('unused');
             }
+
+            // childs
+            var level = self.draggee.attr('data-level');
+            var elements = self.draggee.nextAll('li').filter(function () {
+                return !$(this).hasClass('placeholder');
+            }).each(function () {
+                var element = $(this);
+                if (element.attr('data-level') <= level) {
+                    return false;
+                }
+
+                if (element.hasClass('unused') != self.draggee.hasClass('unused')) {
+                    element.toggleClass('unused');
+                    element.find('input').toggleClass('unused');
+                }
+            });
+
             self.draggee = false;
             self.needsSave();
         }
@@ -151,13 +177,23 @@ var Draggable = function (ul) {
     });
 
     this.ul.on('change', 'input', function (e) {
-        if (self.hasChange)
-        {
+        if (self.hasChange) {
             clearTimeout(self.saveTimeout);
             self.save();
             self.hasChange = false;
         }
     });
+
+    this.getParent = function (item) {
+        var prev = item.prev('li');
+        while (prev.length) {
+            if (prev.attr('data-level') < item.attr('data-level')) {
+                return prev;
+            }
+            prev = prev.prev('li');
+        }
+        return false;
+    };
 
     this.needsSave = function () {
         self.hasChange = true;

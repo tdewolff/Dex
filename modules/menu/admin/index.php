@@ -1,5 +1,5 @@
 <?php
-Module::set('menu');
+Module::setModuleName('menu');
 
 Module::addStyle('draggable.css');
 Module::addDeferredScript('draggable.js');

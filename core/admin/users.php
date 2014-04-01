@@ -40,12 +40,15 @@ else
 	if (User::getUserId() == $url[2])
 		$form->addRadios('role', 'Role', '', array($current_user['role'] => ucfirst($current_user['role'])));
 	else
+	{
 		$form->addRadios('role', 'Role', '', array('admin' => 'Admin', 'editor' => 'Editor'));
+		$form->set('role', 'editor');
+	}
 	$form->addSeparator();
 
     if ($url[2] != 'new')
     {
-		$form->addPassword('current_password', 'Current password', 'Confirm with your current password');
+		$form->addPassword('current_password', 'Admin password', 'Confirm with your password');
 		$form->optional(array('password', 'password2'));
     }
 
@@ -105,7 +108,7 @@ else
 
 	Hooks::emit('admin-header');
 
-	Core::assign('user', $form);
+	Core::set('user', $form);
 	Core::render('admin/user.tpl');
 
 	Hooks::emit('admin-footer');

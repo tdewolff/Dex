@@ -22,15 +22,30 @@ else if (API::action('edit_pages'))
 	if (!API::has('pages'))
 		user_error('No pages set', ERROR);
 
-	$errors = array();
-	foreach (API::get('pages') as $page)
-	{
-		if (strlen($page['url']) && $page['url'][strlen($page['url']) - 1] != '/')
-			$page['url'] .= '/';
+	$pages = API::get('pages');
 
-		if (($error = Core::verifyLinkUrl($page['url'], $page['link_id'])) !== true)
+	$errors = array();
+	foreach ($pages as $i => $page)
+	{
+		if (strlen($pages[$i]['url']) && $pages[$i]['url'][strlen($pages[$i]['url']) - 1] != '/')
+			$pages[$i]['url'] .= '/';
+
+		$error = Core::verifyLinkUrl($page['url'], $page['link_id']);
+		if ($error !== true && $error != 'Already used')
 			$errors[] = array('link_id' => $page['link_id'], 'error' => $error);
-		else
+
+		foreach (API::get('pages') as $page2)
+		{
+			if ($page2['link_id'] == $page['link_id'])
+				break;
+
+			if ($page2['url'] == $page['url'])
+				$errors[] = array('link_id' => $page['link_id'], 'error' => 'Already used');
+		}
+	}
+
+	if (!count($errors))
+		foreach ($pages as $page)
 			Db::exec("
 			UPDATE link SET
 				title = '" . Db::escape($page['title']) . "',
@@ -38,7 +53,7 @@ else if (API::action('edit_pages'))
 				modify_time = '" . Db::escape(time()) . "'
 			WHERE link_id = '" . Db::escape($page['link_id']) . "';
 			");
-	}
+
 	API::set('errors', $errors);
 	API::finish();
 }

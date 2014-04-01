@@ -12,7 +12,7 @@ ul.table, ul.small-table {
 	>li {
 		border-top: 1px solid darken(@light, 10%);
 		height: 33px;
-		background-color: @light;
+		background-color: darken(@light, 2%);
 		font-size: 90%;
 	}
 
@@ -26,7 +26,7 @@ ul.table, ul.small-table {
 	}
 
 	>li:nth-child(odd) {
-		background-color: darken(@light, 2%);
+		background-color: @light;
 	}
 
 	>li:first-of-type {
@@ -78,12 +78,11 @@ ul.table, ul.small-table {
 
 		vertical-align: middle;
 		white-space: nowrap;
-		text-overflow: ellipsis;
 		overflow: hidden;
 	}
 
 	>li > div * {
-		line-height: initial;
+		line-height: 100%;
 	}
 }
 

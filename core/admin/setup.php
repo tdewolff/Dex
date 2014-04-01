@@ -165,7 +165,7 @@ Core::addTitle('Setup Dex');
 
 Hooks::emit('admin-header');
 
-Core::assign('setup', $form);
+Core::set('setup', $form);
 Core::render('admin/setup.tpl');
 
 Hooks::emit('admin-footer');
