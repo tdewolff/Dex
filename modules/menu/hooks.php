@@ -16,12 +16,15 @@ Hooks::attach('navigation', 0, function () {
         if (!isset($row['module_menu_id']))
         {
             $row['level'] = 0;
-            $row['name'] = $row['title'];
+            $row['name'] = htmlspecialchars($row['title']);
             $row['enabled'] = 1;
             $non_menu[] = $row;
         }
         else
+        {
+            $row['name'] = htmlspecialchars($row['name']);
             $menu[] = $row;
+        }
     }
     $menu = array_merge($menu, $non_menu); // non_menu items come last
 

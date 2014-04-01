@@ -14,7 +14,7 @@
 </ul>
 
 <script id="module_item" type="text/x-dot-template">
-	<li id="module_{{=it.module_name}}" {{? !it.enabled}}class="disabled"{{?}}>
+	<li id="module_{{=it.module_name}}"{{? !it.enabled}} class="disabled"{{?}}>
 		<div>
 			<div class="dropdown">
 				<a href="/<?php echo $_['base_url']; ?>admin/module/{{=it.module_name}}/" class="dropdown-select list-button">

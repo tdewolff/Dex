@@ -24,9 +24,11 @@ if ($form->submitted())
 			{
 				User::logIn($user['user_id']);
 
-				if (isset($url[1]) && $url[1] == 'return' && isset($_SESSION['last_site_request']))
-					$form->setRedirect('/' . Common::$base_url . $_SESSION['last_site_request']);
-				else if (Common::$request_url == 'admin/login/' || Common::$request_url == 'admin/logout/')
+				if (isset($url[1]) && strpos($url[1], 'r=') === 0)
+				{
+					$form->setRedirect('/' . Common::$base_url . rawurldecode(substr($url[1], 2)));
+				}
+				else if (Common::$request_url == 'admin/logout/')
 					$form->setRedirect('/' . Common::$base_url . 'admin/');
 				else
 					$form->setRedirect('/' . Common::$base_url . Common::$request_url);

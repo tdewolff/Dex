@@ -14,7 +14,7 @@ else if ($url[2] == 'new')
 	$form = new Form('page');
 
 	$form->addSection('New page', '');
-	$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
+	$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('.*', 1, 20, 'Unknown error'));
 	$form->addLinkUrl('url', 'Link', 'Leave empty for homepage');
 
 	$form->setId('title', 'url-feed');

@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<?php if (isset($_['setting_description'])): ?><meta name="description" content="<?php echo $_['setting_description']; ?>"><?php endif; ?>
-		<?php if (isset($_['setting_keywords'])): ?><meta name="keywords" content="<?php echo implode(',', json_decode($_['setting_keywords'])); ?>"><?php endif; ?>
+		<?php if (isset($_['setting_description'])): ?><meta name="description" content="<?php echo htmlspecialchars($_['setting_description']); ?>"><?php endif; ?>
+		<?php if (isset($_['setting_keywords'])): ?><meta name="keywords" content="<?php echo htmlspecialchars(implode(',', json_decode($_['setting_keywords']))); ?>"><?php endif; ?>
 
-		<title><?php if (isset($_['header_title'])) { echo $_['header_title']; } ?></title>
+		<title><?php if (isset($_['header_title'])) { echo htmlspecialchars($_['header_title']); } ?></title>
 
 		<?php foreach ($_['header_external_styles'] as $external_style): ?><link rel="stylesheet" href="<?php echo $external_style; ?>"><?php endforeach; ?>
 		<?php if (isset($_['header_style'])): ?><link rel="stylesheet" href="/<?php echo $_['base_url'] . $_['header_style']; ?>"><?php endif; ?>
@@ -24,7 +24,7 @@
 		<?php } ?>
 	</head>
 
-	<?php //ob_flush(); flush(); ?>
+	<?php //ob_flush(); flush(); // escaped to allow gzip // TODO: remove ?>
 <?php endif; ?>
 
 	<body>

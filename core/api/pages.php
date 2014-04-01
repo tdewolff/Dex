@@ -67,6 +67,8 @@ else if (API::action('get_pages'))
 		if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
 			$row['template_name'] = Common::tryOrEmpty($ini, 'title');
 
+		$row['title'] = htmlspecialchars($row['title']);
+
 		$row['content'] = array();
 		$table2 = Db::query("SELECT * FROM content WHERE link_id = '" . $row['link_id'] . "';");
 		while ($row2 = $table2->fetch())

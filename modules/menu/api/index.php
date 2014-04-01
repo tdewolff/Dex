@@ -8,6 +8,7 @@ if (API::action('modify_menu'))
 	Db::exec("DELETE FROM module_menu;");
 	foreach (API::get('menu') as $i => $item)
 	{
+		// TODO: error handling for too long names
 		Db::exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
 			'" . Db::escape($item['link_id']) . "',
 			'" . Db::escape($i) . "',
@@ -30,12 +31,15 @@ else if (API::action('get_menu'))
 		if (!isset($row['module_menu_id']))
 		{
 			$row['level'] = 0;
-			$row['name'] = $row['title'];
+			$row['name'] = htmlspecialchars($row['title']);
 			$row['enabled'] = 1;
 			$non_menu[] = $row;
 		}
 		else
+		{
+			$row['name'] = htmlspecialchars($row['name']);
 			$menu[] = $row;
+		}
 	}
 	$menu = array_merge($menu, $non_menu); // non_menu items come last
 

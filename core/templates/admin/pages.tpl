@@ -26,7 +26,7 @@
         <div><i class="fa fa-home"></i></div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
-			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url==''}}false{{??}}true{{?}}" {{?it.url==''}}disabled{{?}}>
+			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url==''}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
 			<div class="input_error">
 				<div class="box">
 					<div class="arrow"></div>
@@ -103,7 +103,7 @@
 
 			var data = [];
 			pages.find('li').each(function (i) {
-				if (i > 1) {
+				if (i > 0) {
 					var li = $(this);
 					data.push({
 						link_id: li.find('input[name="title"]').attr('data-link-id'),
@@ -142,13 +142,16 @@
 	    pages.on('mousedown', '.fa-home', function (e) {
         	e.preventDefault();
 
-	    	var old_li = pages.find('li.home').removeClass('home');
-	    	if (old_li.length)
-	    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
-
 	        var li = $(this).closest('li');
-	        li.addClass('home');
-	        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
+	        if (!li.hasClass('home')) {
+		    	var old_li = pages.find('li.home').removeClass('home');
+		    	if (old_li.length) {
+		    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
+		    	}
+
+		        li.addClass('home');
+		        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
+	        }
 	    });
 
 		pages.on('keyup', 'input[name="title"]', function () {
@@ -164,7 +167,7 @@
 			var input = $(this);
 			input.attr('data-use-feed', 'false');
 
-			var link_url = input.val().replace(/\s/, '-').replace(/[^a-z0-9\-_\/]+/, '');
+			var link_url = input.val().replace(/\s/g, '-').replace(/[^a-z0-9\-_\/]+/g, '');
 			input.val(link_url);
 			$('#page_' + input.attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url);
 		});

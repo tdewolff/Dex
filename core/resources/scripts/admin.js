@@ -61,7 +61,7 @@ $('html').on('mouseleave', 'a.sure', function (e) {
 });
 
 function titleToUrl(title) {
-	var url = title.toLowerCase().replace(/\s/, '-').replace(/[^a-z0-9\-_]+/, '');
+	var url = title.toLowerCase().replace(/\s/g, '-').replace(/[^a-z0-9\-_]+/g, '');
 	if (url.length) {
 		url += '/';
 	}

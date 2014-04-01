@@ -54,7 +54,7 @@ if (Common::requestAdminAuxiliary() && isset($url[2]))
 $_SESSION['last_admin_request'] = Common::$request_url;
 
 $admin_links = array();
-$admin_links[] = array('name' => 'index',  'regex' => 'admin/(return/|logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'fa-home',        'title' => 'Admin panel', 'admin_only' => 0);
+$admin_links[] = array('name' => 'index',  'regex' => 'admin/(r=.+|logs/)?',              'file' => 'core/admin/index.php',  'url' => 'admin/',        'icon' => 'fa-home',        'title' => 'Admin panel', 'admin_only' => 0);
 $admin_links[] = array('name' => 'pages',  'regex' => 'admin/pages/([0-9]+/|new/)?', 'file' => 'core/admin/pages.php',  'url' => 'admin/pages/',  'icon' => 'fa-file-text-o', 'title' => 'Pages',       'admin_only' => 0);
 $admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',               'file' => 'core/admin/assets.php', 'url' => 'admin/assets/', 'icon' => 'fa-picture-o',   'title' => 'Assets',      'admin_only' => 0);
 

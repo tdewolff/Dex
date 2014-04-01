@@ -21,6 +21,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 	$recover = false;
 	if (isset($url[3]) && isset($url[4]))
 	{
+		$url[4] = rawurldecode($url[4]);
 		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($url[3]) . "' LIMIT 1;");
 		if ($recover && !Bcrypt::verify($url[4], $recover['token']))
 			$recover = false;
@@ -112,7 +113,7 @@ else
 					'" . Db::escape(time() + (60 * 30)) . "'
 				);");
 
-				$link = Common::fullBaseUrl() . Common::$base_url . 'admin/recover/reset/' . Db::lastId() . '/' . urlencode($token) . '/';
+				$link = Common::fullBaseUrl() . Common::$base_url . 'admin/recover/reset/' . Db::lastId() . '/' . rawurlencode($token) . '/';
 
 				require_once('vendor/swift-mailer/swift_required.php');
 

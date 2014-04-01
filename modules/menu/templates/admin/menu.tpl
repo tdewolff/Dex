@@ -10,10 +10,10 @@
 </ul>
 
 <script id="menu_item" type="text/x-dot-template">
-    <li data-link-id="{{=it.link_id}}" data-level="{{=it.level}}" {{?!it.enabled}}class="unused"{{?}}>
+    <li data-link-id="{{=it.link_id}}" data-level="{{=it.level}}"{{?!it.enabled}} class="unused"{{?}}>
         <div><i class="fa fa-eye"></i></div>
         <div><i class="fa fa-long-arrow-right"></i><i class="fa fa-long-arrow-right"></i><i class="fa fa-bars"></i></div>
-        <div><input type="text" value="{{=it.name}}" {{?!it.enabled}}class="unused"{{?}}></div>
+        <div><input type="text" value="{{=it.name}}"{{?!it.enabled}} class="unused"{{?}}></div>
         <div>{{=it.title}}</div>
         <div><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}{{=it.url}}{{??}}<em>(home)</em>{{?}}</a></div>
     </li>

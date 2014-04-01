@@ -99,6 +99,7 @@ body {
 	background-color: #f0f0f0;
 	border-top: 1px solid #f8f8f8;
 	border-bottom: 1px solid #e8e8e8;
+	border-right: 1px solid #f0f0f0;
 }
 
 #left-column li:first-of-type > a {
@@ -113,12 +114,14 @@ body {
 	background-color: @auxiliary;
 	border-top: 1px solid lighten(@auxiliary, 5%);
 	border-bottom: 1px solid darken(@auxiliary, 5%);
+	border-right: 1px solid @auxiliary;
 }
 
 #left-column li > a:hover {
 	background-color: @subtle;
 	border-top: 1px solid lighten(@subtle, 5%);
 	border-bottom: 1px solid darken(@subtle, 5%);
+	border-right: 1px solid @subtle;
 }
 
 #left-column li.separator {
@@ -325,6 +328,9 @@ body {
 		padding-right: 5px;
 		color: #A0A0A0;
 		text-align: center;
+	}
+
+	&:not(.home) > div:nth-child(2) {
 		cursor: pointer;
 	}
 

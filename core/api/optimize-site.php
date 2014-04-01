@@ -127,6 +127,12 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 	{
 		Console::append('Compressing \'' . $image_name . '\'...');
 
+		if (filesize($image_name) > 1024 * 1024)
+		{
+			Console::appendLine('failed: too big for SmushIt');
+			continue;
+		}
+
 		$image_url = Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name;
 		$contents = Common::getUrlContents('http://www.smushit.com/ysmush.it/ws.php?' . http_build_query(array('img' => $image_url)));
 		if ($contents === false)

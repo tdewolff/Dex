@@ -122,6 +122,11 @@
 		width: 602px;
 
 		li {
+			background-color: darken(@light, 2%);
+			&:nth-child(odd) {
+				background-color: @light;
+			}
+
 			&.directory > div:first-of-type {
 				cursor: pointer;
 			}

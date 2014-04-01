@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title><?php if (isset($_['header_title'])) { echo $_['header_title']; } ?></title>
+		<title><?php if (isset($_['header_title'])) { echo htmlspecialchars($_['header_title']); } ?></title>
 
 		<?php foreach ($_['header_external_styles'] as $external_style): ?><link rel="stylesheet" href="<?php echo $external_style; ?>"><?php endforeach; ?>
 		<?php if (isset($_['header_style'])): ?><link rel="stylesheet" href="/<?php echo $_['base_url'] . $_['header_style']; ?>"><?php endif; ?>
@@ -18,7 +18,7 @@
 		</script>
 	</head>
 
-	<?php ob_flush(); flush(); ?>
+	<?php //ob_flush(); flush(); // escaped to allow gzip // TODO: remove ?>
 <?php endif; ?>
 
 	<body>
@@ -33,9 +33,9 @@
 					<?php if (empty($link)): ?>
 					<li class="separator"></li>
 					<?php elseif ($link['admin_only'] == 0 || $_['role'] == 'admin'): ?>
-					<li id="admin_link_<?php echo $link['name']; ?>" <?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'class="hidden"'; } ?>>
-						<a href="/<?php echo $_['base_url'] . $link['url']; ?>" <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'class="selected"'; } ?>>
-							<i class="fa fa-fw <?php echo (strlen($link['icon']) ? $link['icon'] : 'fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
+					<li id="admin_link_<?php echo $link['name']; ?>"<?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo ' class="hidden"'; } ?>>
+						<a href="/<?php echo $_['base_url'] . $link['url']; ?>"<?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo ' class="selected"'; } ?>>
+							<i class="fa fa-fw<?php echo (strlen($link['icon']) ? ' ' . $link['icon'] : ' fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
 						</a>
 					</li>
 					<?php endif; ?>

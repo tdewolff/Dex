@@ -33,7 +33,10 @@ $(function () {
 		$('.dex.admin-bar .logged-in').fadeOut(function () {
 			$('.dex.admin-bar .logged-out').fadeIn();
 		});
-		removeAllDexEdit();
+
+		if (typeof removeAllDexEdit !== 'undefined') {
+			removeAllDexEdit();
+		}
 	}
 
 	function adminBarForget() {
@@ -60,7 +63,7 @@ $(function () {
 			if (admin === 0) {
 				adminBarLogOut();
 			} else {
-				location = '/' + base_url + 'admin/';
+				window.location = '/' + base_url + 'admin/';
 			}
 		});
 	});

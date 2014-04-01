@@ -248,11 +248,12 @@ class Common
 ini_set('pcre.recursion_limit', '16777');
 function minifyHtml($text)
 {
-	if (!Common::isMinifying()) {
+	if (!Common::isMinifying())
 		return $text;
-	}
 
-	$re = '%# Collapse whitespace everywhere but in blacklisted elements.
+	$text = preg_replace('/(?<=>)([^\S ]\s|\s{2,})(?=<)/Ssi', '', $text);// remove any whitespace between tags except one space
+
+	$regex = '%# Collapse whitespace everywhere but in blacklisted elements.
 		(?>             # Match all whitespans other than single space.
 		  [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
 		| \s{2,}        # or two or more consecutive-any-whitespace.
@@ -271,10 +272,12 @@ function minifyHtml($text)
 		  )             # End alternation group.
 		)  # If we made it here, we are not in a blacklist tag.
 		%Six';
-
-	$text = preg_replace($re, ' ', $text);
+	$text = preg_replace($regex, ' ', $text);
 	if ($text === null)
 		user_error('Output HTML too large');
+
+	// TODO: minify inline JS
+
 	return $text;
 }
 
