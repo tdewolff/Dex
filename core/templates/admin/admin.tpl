@@ -20,8 +20,8 @@
 
 <h3>Maintenance</h3>
 <div>
-	<a href="#" class="button" data-tooltip="Optimize images and scripts of the site" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;Optimize site</a>
-	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a>
+	<a href="#" class="button" data-tooltip="Optimize images and scripts of the site" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;Optimize site</a>&nbsp;
+	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a>&nbsp;
 	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;Clear logs</a>
 </div>
 

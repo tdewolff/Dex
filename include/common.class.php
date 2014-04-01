@@ -251,13 +251,12 @@ function minifyHtml($text)
 	if (!Common::isMinifying())
 		return $text;
 
-	$text = preg_replace('/(?<=>)([^\S ]\s|\s{2,})(?=<)/Ssi', '', $text);// remove any whitespace between tags except one space
+	$text = preg_replace('/(?<=>)\s+(?=<)/Ssi', '', $text); // remove any whitespace between tags except one space
 
 	$regex = '%# Collapse whitespace everywhere but in blacklisted elements.
 		(?>             # Match all whitespans other than single space.
-		  [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
-		| \s{2,}        # or two or more consecutive-any-whitespace.
-		) # Note: The remaining regex consumes no text at all...
+		  \s+           # or two or more consecutive-any-whitespace.
+		)               # Note: The remaining regex consumes no text at all...
 		(?=             # Ensure we are not in a blacklist tag.
 		  [^<]*+        # Either zero or more non-"<" {normal*}
 		  (?:           # Begin {(special normal*)*} construct
