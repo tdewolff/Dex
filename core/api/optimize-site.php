@@ -72,6 +72,12 @@ foreach ($script_directories as $script_directory)
 		{
 			Console::append('Compressing \'' . $script_name . '\'...');
 
+			if (!is_readable($script_name))
+			{
+				Console::appendLine('failed: file unreadable');
+				continue;
+			}
+
 			$input = file_get_contents($script_name);
 			try {
 				$output = ClosureCompiler::minify($input);
@@ -103,6 +109,12 @@ foreach ($style_directories as $style_directory)
 		{
 			Console::append('Compressing \'' . $style_name . '\'...');
 
+			if (!is_readable($style_name))
+			{
+				Console::appendLine('failed: file unreadable');
+				continue;
+			}
+
 			$input = file_get_contents($style_name);
 			$output = CssCompressor::process($input);
 
@@ -126,6 +138,12 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 		$info->getMTime() > filemtime($image_min_name)))
 	{
 		Console::append('Compressing \'' . $image_name . '\'...');
+
+		if (!is_readable($image_name))
+		{
+			Console::appendLine('failed: file unreadable');
+			continue;
+		}
 
 		if (filesize($image_name) > 1024 * 1024)
 		{

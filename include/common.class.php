@@ -170,13 +170,20 @@ class Common
 		$allow_url_fopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
         if ($allow_url_fopen)
         {
-            $contents = file_get_contents($url, false, stream_context_create(array(
-                'http' => array(
-                    'method' => 'GET',
-                    'max_redirects' => 0,
-                    'timeout' => 5,
-                )
-            )));
+        	try
+        	{
+	            $contents = @file_get_contents($url, false, stream_context_create(array(
+	                'http' => array(
+	                    'method' => 'GET',
+	                    'max_redirects' => 0,
+	                    'timeout' => 5,
+	                )
+	            )));
+	        }
+	        catch (Exception $e)
+	        {
+            	user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
+	        }
         }
         elseif (extension_loaded('curl'))
         {
@@ -186,6 +193,9 @@ class Common
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
             $contents = curl_exec($ch);
             curl_close($ch);
+
+            if ($contents === null)
+            	user_error('cURL error: "' . curl_error($ch) . '"', WARNING);
         }
         return $contents;
 	}
