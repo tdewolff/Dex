@@ -184,6 +184,9 @@ class Common
 	        {
             	user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
 	        }
+
+            if ($contents === null)
+            	user_error('file_get_contents error: "' . error_get_last() . '"', WARNING);
         }
         elseif (extension_loaded('curl'))
         {
