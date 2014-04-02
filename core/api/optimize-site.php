@@ -144,8 +144,7 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 			Console::appendLine('failed: file unreadable');
 			continue;
 		}
-
-		if (filesize($image_name) > 1024 * 1024)
+		else if (filesize($image_name) > 1024 * 1024)
 		{
 			Console::appendLine('failed: too big for SmushIt');
 			continue;
@@ -160,14 +159,14 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 		}
 
 		$smushit = json_decode(trim($contents));
-        if (isset($smushit->error))
-		{
-			Console::appendLine('failed: ' . lcfirst($smushit->error));
-			continue;
-		}
-		else if ($smushit->dest_size == 0)
+        if (empty($smushit))
 		{
 			Console::appendLine('failed: no response from SmushIt');
+			continue;
+		}
+		else if (isset($smushit->error))
+		{
+			Console::appendLine('failed: ' . lcfirst($smushit->error));
 			continue;
 		}
 

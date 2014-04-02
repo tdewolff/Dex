@@ -229,5 +229,7 @@ $('form input[data-type="parameters"]').each(function (i, array) {
 		if (li.next().length == 0 && input.val().length > 0) {
 			$(template({key: '', value: ''})).appendTo(ul).hide().fadeIn();
 		}
+
+		// TODO: remove empty pairs at the end (like array above)
 	});
 });

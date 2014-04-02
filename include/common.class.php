@@ -184,9 +184,6 @@ class Common
 	        {
             	user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
 	        }
-
-            if ($contents === null)
-            	user_error('file_get_contents error: "' . error_get_last() . '"', WARNING);
         }
         elseif (extension_loaded('curl'))
         {
@@ -264,7 +261,7 @@ function minifyHtml($text)
 	if (!Common::isMinifying())
 		return $text;
 
-	$text = preg_replace('/(?<=>)\s+(?=<)/Ssi', '', $text); // remove any whitespace between tags except one space
+	$text = trim(preg_replace('/(?<=>)\s+(?=<)/Ssi', '', $text)); // remove any whitespace between tags except one space
 
 	$regex = '%# Collapse whitespace everywhere but in blacklisted elements.
 		(?>             # Match all whitespans other than single space.

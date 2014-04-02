@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 
 		<title><?php if (isset($_['header_title'])) { echo htmlspecialchars($_['header_title']); } ?></title>
 
@@ -18,7 +18,7 @@
 		</script>
 	</head>
 
-	<?php //ob_flush(); flush(); // escaped to allow gzip // TODO: remove ?>
+	<?php ob_flush(); flush(); ?>
 <?php endif; ?>
 
 	<body>

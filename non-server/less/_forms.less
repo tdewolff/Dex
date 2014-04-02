@@ -136,15 +136,17 @@ form {
 	}
 
 	ul {
+		.clearfix();
+
 		margin: -32px 30px 0 200px;
 		padding: 0;
 
-		>li input {
-			margin: 8px 0 0 10px;
+		>li {
+			float: left;
 		}
 
-		>li:last-of-type input {
-		    float: none;
+		>li input {
+			margin: 8px 0 0 10px;
 		}
 
 		>li:last-of-type span.comma {

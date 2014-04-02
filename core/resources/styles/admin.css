@@ -610,14 +610,23 @@ form span.comma {
   text-align: center;
 }
 form ul {
+  zoom: 1;
   margin: -32px 30px 0 200px;
   padding: 0;
 }
+form ul:before,
+form ul:after {
+  content: "";
+  display: table;
+}
+form ul:after {
+  clear: both;
+}
+form ul > li {
+  float: left;
+}
 form ul > li input {
   margin: 8px 0 0 10px;
-}
-form ul > li:last-of-type input {
-  float: none;
 }
 form ul > li:last-of-type span.comma {
   display: none;

@@ -118,14 +118,6 @@ class Result
 		$ret = $this->result->fetchArray(SQLITE3_ASSOC);
 		return ($ret && isset($ret[$key]) ? $ret[$key] : false);
 	}
-
-	public function fetchAll($key = '')
-	{
-		$result = array();
-		while ($result[] = $this->fetch($key));
-		array_pop($result); // TODO: why?
-		return $result;
-	}
 }
 
 ?>

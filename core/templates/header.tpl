@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<?php if (isset($_['setting_description'])): ?><meta name="description" content="<?php echo htmlspecialchars($_['setting_description']); ?>"><?php endif; ?>
 		<?php if (isset($_['setting_keywords'])): ?><meta name="keywords" content="<?php echo htmlspecialchars(implode(',', json_decode($_['setting_keywords']))); ?>"><?php endif; ?>
 
@@ -24,7 +24,7 @@
 		<?php } ?>
 	</head>
 
-	<?php //ob_flush(); flush(); // escaped to allow gzip // TODO: remove ?>
+	<?php ob_flush(); flush(); ?>
 <?php endif; ?>
 
 	<body>

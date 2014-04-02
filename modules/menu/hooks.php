@@ -17,12 +17,14 @@ Hooks::attach('navigation', 0, function () {
         {
             $row['level'] = 0;
             $row['name'] = htmlspecialchars($row['title']);
+            $row['title'] = htmlspecialchars($row['title']);
             $row['enabled'] = 1;
             $non_menu[] = $row;
         }
         else
         {
             $row['name'] = htmlspecialchars($row['name']);
+            $row['title'] = htmlspecialchars($row['title']);
             $menu[] = $row;
         }
     }

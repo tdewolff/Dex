@@ -640,14 +640,23 @@ body {
   text-align: center;
 }
 .dex.popup-wrapper form ul {
+  zoom: 1;
   margin: -32px 30px 0 200px;
   padding: 0;
 }
+.dex.popup-wrapper form ul:before,
+.dex.popup-wrapper form ul:after {
+  content: "";
+  display: table;
+}
+.dex.popup-wrapper form ul:after {
+  clear: both;
+}
+.dex.popup-wrapper form ul > li {
+  float: left;
+}
 .dex.popup-wrapper form ul > li input {
   margin: 8px 0 0 10px;
-}
-.dex.popup-wrapper form ul > li:last-of-type input {
-  float: none;
 }
 .dex.popup-wrapper form ul > li:last-of-type span.comma {
   display: none;
