@@ -166,13 +166,13 @@ class Common
 
 	public static function getUrlContents($url)
 	{
-		$contents = false;
+		$contents = null;
 		$allow_url_fopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
         if ($allow_url_fopen)
         {
         	try
         	{
-	            $contents = @file_get_contents($url, false, stream_context_create(array(
+	            $contents = file_get_contents($url, false, stream_context_create(array(
 	                'http' => array(
 	                    'method' => 'GET',
 	                    'max_redirects' => 0,
