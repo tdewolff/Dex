@@ -552,7 +552,7 @@ a.inline-rounded {
 	padding: 0 2px;
 }
 
-.input_error {
+.input-error-right, .input-error-below {
 	display: none;
 
 	.box {
@@ -614,6 +614,33 @@ a.inline-rounded {
 			top: 5px;
 			left: -7px;
 			z-index: 1000;
+		}
+	}
+}
+
+.input-error-below {
+	.box {
+		top: 6px;
+		left: 0;
+
+		.arrow {
+			border: 0;
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-bottom: 6px solid #F2DEDE;
+
+			top: -5px;
+			left: 5px;
+		}
+
+		.arrow-border {
+			border: 0;
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-bottom: 6px solid #EED3D7;
+
+			top: -7px;
+			left: 5px;
 		}
 	}
 }

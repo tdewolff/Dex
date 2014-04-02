@@ -76,20 +76,18 @@ else if (API::action('create_directory'))
 		user_error('No name set', ERROR);
 
 	if (!preg_match('/^[a-zA-Z_0-9]+$/', API::get('name')))
-		user_error('May only contain alphanumeric characters', ERROR);
-
-	if (is_dir($dir . API::get('name') . '/'))
-		user_error('Directory "' . $dir . API::get('name') . '" already exists', ERROR);
-
-	if (!mkdir($dir . API::get('name') . '/', 0755))
-		user_error('Directory "' . $dir . API::get('name') . '" could not be created', ERROR);
-
-	API::set('directory', array(
-		'dir' => substr($dir, strlen('assets/')) . API::get('name') . '/',
-		'name' => API::get('name'),
-		'icon' => 'folder.png',
-		'is_deletable' => true
-	));
+		API::set('error', 'May only contain alphanumeric characters');
+	else if (is_dir($dir . API::get('name') . '/'))
+		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
+	else if (!mkdir($dir . API::get('name') . '/', 0755))
+		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
+	else
+		API::set('directory', array(
+			'dir' => substr($dir, strlen('assets/')) . API::get('name') . '/',
+			'name' => API::get('name'),
+			'icon' => 'folder.png',
+			'is_deletable' => true
+		));
 	API::finish();
 }
 else if (API::action('delete_directory'))

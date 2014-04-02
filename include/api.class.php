@@ -58,18 +58,18 @@ class API
 
 	public static function error($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 		self::finish();
 	}
 
 	public static function warning($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 	}
 
 	public static function notice($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 	}
 
 	////////////////

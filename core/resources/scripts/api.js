@@ -12,7 +12,7 @@ function api(url, data, success, error) {
 	}
 
 	if (!url)
-		apiFatal('no API URL set');
+		apiFatal('No API URL set');
 	else
 		$.ajax({
 			type: (data == null ? 'GET' : 'POST'),
@@ -20,12 +20,12 @@ function api(url, data, success, error) {
 			data: data,
 			dataType: 'json',
 			success: function (data) {
-				if (typeof data['error'] !== 'undefined') {
+				if (typeof data['_error'] !== 'undefined') {
 					if (typeof error !== 'undefined' && error && error(data) === false) {
 						return;
 					}
 
-					apiFatal(data['error'].join('<br>'));
+					apiFatal(data['_error'].join('<br>'));
 				} else if (typeof success !== 'undefined' && success)	{
 					success(data);
 					if (typeof applyTooltips !== 'undefined') {

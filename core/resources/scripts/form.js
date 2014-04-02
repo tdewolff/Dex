@@ -112,13 +112,13 @@ var Form = function (form) {
 			form_errors.fadeIn();
 		}
 
-		self.form.find('.input_error').hide();
+		self.form.find('.input-error-below').hide();
 		if (data['item_errors'].length) {
 			$.each(data['item_errors'], function (i, item_error) {
 				var input = self.form.find('[name="' + item_error['name'] + '"], [data-name="' + item_error['name'] + '"]');
 				input.addClass('invalid');
 
-				var error_box = self.form.find('.input_error[data-for-name="' + item_error['name'] + '"]');
+				var error_box = self.form.find('.input-error-below[data-for-name="' + item_error['name'] + '"]');
 				if (error_box.find('span').text() != item_error['error']) {
 					error_box.hide();
 					error_box.find('span').text(item_error['error']);

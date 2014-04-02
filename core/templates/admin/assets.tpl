@@ -2,6 +2,15 @@
 <div id="assets">
 	<div id="create-directory">
 		<input type="text"><a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
+		<div class="input-error-below">
+			<div class="box">
+				<div class="arrow"></div>
+				<div class="arrow-border"></div>
+				<p>
+					<i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
+				</p>
+			</div>
+		</div>
 	</div>
 
 	<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
@@ -268,6 +277,16 @@
 				name: $(this).prev('input').val(),
 				dir: dir
 			}, function (data) {
+				if (typeof data['error'] !== 'undefined') {
+					var error_box = $('#create-directory').find('div.input-error-below');
+					if (error_box.find('span').text() != data['error']) {
+						error_box.hide();
+						error_box.find('span').text(data['error']);
+					}
+					error_box.fadeIn();
+					return;
+				}
+
 				apiStatusSuccess('Created directory');
 				$('#load_status_directories_assets').hide();
 

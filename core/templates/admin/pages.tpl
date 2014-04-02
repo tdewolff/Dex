@@ -27,7 +27,7 @@
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
 			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url==''}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
-			<div class="input_error">
+			<div class="input-error-right">
 				<div class="box">
 					<div class="arrow"></div>
 					<div class="arrow-border"></div>
@@ -99,7 +99,7 @@
 			apiStatusWorking('Saving pages...');
 			savePagesTimeout = null;
 
-			pages.find('div.input_error').hide();
+			pages.find('div.input-error-right').hide();
 
 			var data = [];
 			pages.find('li').each(function (i) {
@@ -124,7 +124,7 @@
 						var li = $('#page_' + data['errors'][i]['link_id']);
 						li.find('input[name="url"]').addClass('invalid');
 
-						var error_box = li.find('div.input_error');
+						var error_box = li.find('div.input-error-right');
 						if (error_box.find('span').text() != data['errors'][i]['error']) {
 							error_box.hide();
 							error_box.find('span').text(data['errors'][i]['error']);
@@ -166,10 +166,7 @@
 		pages.on('keyup', 'input[name="url"]', function () {
 			var input = $(this);
 			input.attr('data-use-feed', 'false');
-
-			var link_url = input.val().replace(/\s/g, '-').replace(/[^a-z0-9\-_\/]+/g, '');
-			input.val(link_url);
-			$('#page_' + input.attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + link_url);
+			$('#page_' + input.attr('data-link-id') + ' > div:first > a').attr('href', '/' + base_url + input.val());
 		});
 
 		pages.on('blur', 'input[name="url"]', function () {
