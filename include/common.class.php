@@ -285,6 +285,7 @@ function minifyHtml($text)
 	if ($text === null)
 		user_error('Output HTML too large');
 
+	// TODO: remove unneccessary quotes around HTML attributes
 	// TODO: minify inline JS
 
 	return $text;
