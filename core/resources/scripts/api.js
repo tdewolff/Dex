@@ -38,8 +38,8 @@ function api(url, data, success, error) {
 					return;
 				}
 
-				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['error'] !== 'undefined') { // PHP error but still handled by API
-					apiFatal(data['responseJSON']['error'].join('<br>'));
+				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['_error'] !== 'undefined') { // PHP error but still handled by API
+					apiFatal(data['responseJSON']['_error'].join('<br>'));
 				} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
 					apiFatal(escapeHtml(data['responseText']));
 				} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong

@@ -135,7 +135,7 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 
 		$image_url = Common::fullBaseUrl() . Common::$base_url . 'res/' . $image_name;
 		$contents = Common::getUrlContents('http://www.smushit.com/ysmush.it/ws.php?' . http_build_query(array('img' => $image_url)));
-		Log::warning($contents);
+		Log::warning($image_url . $contents);
 		if ($contents === false)
 		{
 			Console::appendLine('failed: could not make HTTP request to SmushIt');

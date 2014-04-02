@@ -1,7 +1,12 @@
 <?php
 
 // doesn't have to be logged in for these functions
-if (API::action('forget'))
+if (API::action('timeleft'))
+{
+	API::set('timeleft', User::getTimeleft());
+	API::finish();
+}
+else if (API::action('forget'))
 {
 	User::forget();
 	API::finish();

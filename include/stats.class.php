@@ -31,6 +31,20 @@ class Stats
 		while ($row = $table->fetch())
 		{
 			$time = floor($row['time'] / 86400) * 86400;
+			while ($oldTime)
+			{
+				$oldTime += 86400;
+				if ($oldTime >= $time)
+					break;
+
+				$visits[] = array(
+					'date' => $oldTime,
+					'visits' => 0,
+					'unique_visits' => 0
+				);
+			}
+			$oldTime = $time;
+
 			if (!count($visits) || $visits[count($visits) - 1]['date'] !== $time)
 				$visits[] = array(
 					'date' => $time,

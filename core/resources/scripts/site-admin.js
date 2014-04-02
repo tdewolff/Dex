@@ -49,9 +49,21 @@ $(function () {
 		});
 	}
 
-	var sessionTimeout = setTimeout(function () {
-		adminBarLogOut();
-	}, session_time * 1000);
+	function session() {
+		api('/' + base_url + 'api/core/users/', {
+			'action': 'timeleft'
+		}, function(data) {
+			console.log(data);
+			if (data['timeleft'] > 0) {
+				setTimeout(session, data['timeleft'] * 1000);
+			} else {
+				adminBarLogOut();
+			}
+		}, function () {
+			adminBarLogOut();
+		});
+	}
+	setTimeout(session, session_time * 1000);
 
 	$('.dex.admin-bar .logged-in .current-user a').click(function (e) {
 		e.preventDefault();
