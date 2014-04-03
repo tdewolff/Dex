@@ -464,14 +464,18 @@ DexEdit.Text = function (root) {
 		});
 	};
 
+	this.selection = function () {
+		if (!DexEdit.Selection.isCollapsed) {
+			var range = DexEdit.Range.getTrimmed();
+			self.select(range);
+		}
+	};
+
 	this.root.on('selectstart', function (e) {
 		if (!DexEdit.DOM.hasParentClass(e.target, 'dexedit-menu', self.root[0])) {
 			self.hideMenu();
 			$(document).one('mouseup', function () {
-				if (!DexEdit.Selection.isCollapsed) {
-					var range = DexEdit.Range.getTrimmed();
-					self.select(range);
-				}
+				self.selection();
 			});
 		}
 	});
@@ -604,9 +608,7 @@ DexEdit.Text = function (root) {
 	});
 
 	this.root.on('keyup', function (e) {
-		// TODO: move to keydown for faster response
-		if (e.keyCode === 13) { // enter
-			// insert horizontal rule
+		if (e.keyCode === 13) {
 			var p = DexEdit.DOM.getClosestTag(DexEdit.Selection.anchorNode, 'p', self.root[0]);
 			if (p && p.previousSibling && DexEdit.DOM.getTag(p.previousSibling) === 'p' && !p.previousSibling.textContent.length) {
 				var prev = p.previousSibling;
@@ -623,6 +625,14 @@ DexEdit.Text = function (root) {
 			var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
 			if (DexEdit.DOM.getTag(block) === 'div' || DexEdit.DOM.getTag(block) === 'blockquote') {
 				self.toggleFormatBlock('p');
+			}
+		}
+
+		if (e.keyCode >= 37 && e.keyCode <= 40) {
+			if (e.shiftKey) { // keyboard selection of text
+				self.selection();
+			} else {
+				self.hideMenu();
 			}
 		}
 

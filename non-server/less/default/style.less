@@ -1,0 +1,99 @@
+@import "../__include.less";
+@import "../_content.less";
+
+@font-face {
+	.fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
+}
+
+@font-face {
+	.fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
+}
+
+
+@font-face {
+	.fontface("OpenSans", "../theme/default/fonts/OpenSans-Regular-webfont");
+}
+
+* {
+	.border-box();
+}
+
+body {
+	background: @dark;
+	color: @light;
+	font-size: 100%;
+	font-family: @sans-serif;
+	text-align: justify;
+}
+
+article, nav, h1, h2 {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+nav {
+	background: darken(@light, 5%);
+	color: @text-black;
+	border-bottom: 1px solid darken(@light, 11%);
+	padding: 0 5px;
+
+	.border-top-left-radius(3px);
+	.border-top-right-radius(3px);
+}
+
+nav ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav a {
+	text-decoration: none;
+}
+
+nav > ul > li {
+	display: inline-block;
+	border-right: 1px solid darken(@light, 8%);
+}
+
+nav > ul > li:first-of-type {
+	border-left: 1px solid darken(@light, 8%);
+}
+
+nav > ul > li > a {
+	display: inline-block;
+	padding: 0 2em;
+	font-size: 110%;
+	line-height: 250%;
+}
+
+nav > ul > li > a:hover {
+	background: darken(@light, 11%);
+}
+
+nav > ul > li > ul {
+	display: none;
+}
+
+article {
+	background: @light;
+	color: @text-black;
+	padding: 3em 6em;
+	margin-bottom: 1em;
+
+	.border-bottom-left-radius(3px);
+	.border-bottom-right-radius(3px);
+}
+
+h1 {
+	padding-left: 1em;
+	text-align: left;
+}
+
+hr {
+	border:0;
+	border-top: 1px dashed @dark;
+	width: 94%;
+	margin: 0 auto;
+}

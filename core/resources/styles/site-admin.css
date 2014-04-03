@@ -1,17 +1,3 @@
-@font-face {
-  font-family: "SourceSansRegular";
-  src: url('../core/fonts/sourcesanspro-regular-webfont.eot');
-  src: url('../core/fonts/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-regular-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-regular-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-regular-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "SourceSansLight";
-  src: url('../core/fonts/sourcesanspro-light-webfont.eot');
-  src: url('../core/fonts/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-light-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-light-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-light-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 .dex-api .status {
   position: fixed;
   top: 15px;
@@ -67,6 +53,20 @@
   width: 800px;
   height: 250px;
   font-size: 12px;
+}
+@font-face {
+  font-family: "SourceSansRegular";
+  src: url('../core/fonts/sourcesanspro-regular-webfont.eot');
+  src: url('../core/fonts/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-regular-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-regular-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-regular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SourceSansLight";
+  src: url('../core/fonts/sourcesanspro-light-webfont.eot');
+  src: url('../core/fonts/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-light-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-light-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-light-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 body {
   padding-top: 33px;

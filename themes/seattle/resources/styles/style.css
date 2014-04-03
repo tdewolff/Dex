@@ -19,79 +19,94 @@ D70206
 }
 
 html, body {
-    background-color:#E0D2BC;
-    color:#001A25;
-    font-family: 'sinanova';
-    font-size:110%;
+	background-color:#E0D2BC;
+	color:#001A25;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 a {
-    color:#D70206;
+	color:#D70206;
 }
 
 header {
-    background-color:#001A25;
-    color:#FFFFFF;
-    padding:3em;
-    padding-bottom:2em;
-    text-align: center;
+	background-color:#001A25;
+	color:#FFFFFF;
+	padding:3em;
+	padding-bottom:2em;
+	font-family: "sinanova";
+	text-align: center;
 }
 
 header h1 {
-    margin:0;
-    font-size:300%;
+	margin:0;
+	font-size:600%;
 }
 
 header h2 {
-    display:none;
+	display:none;
 }
 
 nav {
-    background-color: #046971;
-    border-bottom:10px solid #E0D2BC;
+	background-color: #046971;
+	border-bottom:10px solid #E0D2BC;
+	font-family: "sinanova";
 }
 
 nav > ul {
-    margin:0;
-    padding:0;
-    text-align: center;
+	margin:0;
+	padding:0;
+	text-align: center;
 }
 
 nav li {
-    margin:0 2px;
-    padding:0 1em;
-    line-height:200%;
-    display:inline-block;
-    background-color:#F4C63D;
-    font-size:120%;
+	margin:0 2px;
+	padding:0 1em;
+	line-height:200%;
+	display:inline-block;
+	background-color:#F4C63D;
+	font-size:200%;
 }
 
 nav a {
-    text-decoration:none;
+	text-decoration:none;
+}
+
+nav > ul > li > ul {
+	display: none;
 }
 
 footer {
-    background-color:#E0D2BC;
-    color:#B0A593;
-    font-style: italic;
-    text-align: center;
-    font-size:70%;
-    padding:1em;
+	background-color:#E0D2BC;
+	color:#B0A593;
+	font-style: italic;
+	text-align: center;
+	font-size:70%;
+	padding:1em;
 }
 
 .page-wrapper {
-    background-color:#EADBC4;
+	background-color:#EADBC4;
 }
 
 .main {
-    padding:3em 6em;
-    width:800px;
-    margin:0 auto;
+	padding:3em 6em;
+	width:800px;
+	margin:0 auto;
+}
+
+h3 {
+	font-family: "sinanova";
+	font-size: 300%;
+}
+
+h4 {
+	font-family: "sinanova";
+	font-size: 200%;
 }
 
 hr {
-    border:0;
-    border-top:1px solid #B0A593;
-    width:90%;
-    margin:0 auto;
+	border:0;
+	border-top:1px solid #B0A593;
+	width:90%;
+	margin:0 auto;
 }
