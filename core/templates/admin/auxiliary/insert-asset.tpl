@@ -113,6 +113,9 @@
 	directories_assets.on('click', '.asset', function () {
 		$('#insert_title').val($(this).attr('data-title'));
 		$('#insert_url').val($(this).attr('data-url'));
+		if (!$('#insert_text').val().length) {
+			$('#insert_text').val($(this).attr('data-title'));
+		}
 		switchPopupFrame(popup);
 	});
 

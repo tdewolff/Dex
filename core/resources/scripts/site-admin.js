@@ -3,6 +3,12 @@ function padZero(value) {
 }
 
 $(function () {
+	if ($('.logged-in').length) {
+		if (typeof DexEdit.init !== 'undefined') {
+			DexEdit.init();
+		}
+	}
+
 	var saveTimeout = null;
 	$('[data-dexeditable]').on('input', function (e) {
 		apiStatusClear();
@@ -34,8 +40,8 @@ $(function () {
 			$('.dex.admin-bar .logged-out').fadeIn();
 		});
 
-		if (typeof removeAllDexEdit !== 'undefined') {
-			removeAllDexEdit();
+		if (typeof DexEdit.destroy !== 'undefined') {
+			DexEdit.destroy();
 		}
 	}
 
@@ -53,7 +59,6 @@ $(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'timeleft'
 		}, function(data) {
-			console.log(data);
 			if (data['timeleft'] > 0) {
 				setTimeout(session, data['timeleft'] * 1000);
 			} else {

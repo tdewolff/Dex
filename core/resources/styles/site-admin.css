@@ -122,6 +122,14 @@ body {
 .dex.admin-bar .current-user a {
   margin-left: 5px;
 }
+.dex.admin-bar .dexedit-insert {
+  display: inline-block;
+  margin-left: 60px;
+  line-height: 28px;
+}
+.dex.admin-bar .dexedit-insert a {
+  padding-left: 10px;
+}
 .dex.popup-wrapper {
   width: 600px;
   overflow: hidden;

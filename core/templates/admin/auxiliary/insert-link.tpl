@@ -50,11 +50,17 @@
 	links.on('click', 'li:not(:first)', function () {
 		$('#insert_title').val($(this).attr('data-title'));
 		$('#insert_url').val($(this).attr('data-url'));
+		if ($('#insert_text').val().length === 0) {
+			$('#insert_text').val($(this).attr('data-title'));
+		}
 		switchPopupFrame(popup);
 	});
 
 	popup.on('click', '#external-link a', function () {
 		$('#insert_url').val($('#external-link input').val());
+		if ($('#insert_text').val().length === 0) {
+			$('#insert_text').val($('#insert_url').val());
+		}
 		switchPopupFrame(popup);
 	});
 
