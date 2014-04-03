@@ -3,12 +3,24 @@ function padZero(value) {
 }
 
 $(function () {
+	// init
 	if ($('.logged-in').length) {
-		if (typeof DexEdit.init !== 'undefined') {
+		if (typeof DexEdit !== 'undefined') {
 			DexEdit.init();
+			$('[contenteditable="true"]').each(function () {
+				var bg = $(this).css('backgroundColor');
+				$(this).animate({'backgroundColor': '#A9CC66'}, 50, function () {
+					$(this).animate({'backgroundColor': bg}, 2000);
+				});
+			});
+
+			if (author && last_save) {
+				apiStatusSuccess(author + ' (' + padZero(last_save.getDate()) + '-' + padZero(last_save.getMonth() + 1) + ' ' + last_save.getHours() + ':' + padZero(last_save.getMinutes()) + ')');
+			}
 		}
 	}
 
+	// saving
 	var saveTimeout = null;
 	$('[data-dexeditable]').on('input', function (e) {
 		apiStatusClear();
@@ -33,20 +45,20 @@ $(function () {
 	    }
 	});
 
-
+	// logging out
 	function adminBarLogOut() {
-		$('.dex.api').fadeOut().remove();
-		$('.dex.admin-bar .logged-in').fadeOut(function () {
-			$('.dex.admin-bar .logged-out').fadeIn();
+		$('.dex-api').fadeOut().remove();
+		$('.dex-admin-bar .logged-in').fadeOut(function () {
+			$('.dex-admin-bar .logged-out').fadeIn();
 		});
 
-		if (typeof DexEdit.destroy !== 'undefined') {
+		if (typeof DexEdit !== 'undefined') {
 			DexEdit.destroy();
 		}
 	}
 
 	function adminBarForget() {
-		$('.dex.admin-bar').slideUp(function () {
+		$('.dex-admin-bar').slideUp(function () {
 			$(this).remove();
 		});
 
@@ -70,7 +82,7 @@ $(function () {
 	}
 	setTimeout(session, session_time * 1000);
 
-	$('.dex.admin-bar .logged-in .current-user a').click(function (e) {
+	$('.dex-admin-bar .logged-in .current-user a').click(function (e) {
 		e.preventDefault();
 		var admin = ($(this).attr('data-admin') === '1' ? 1 : 0);
 		api('/' + base_url + 'api/core/users/', {
@@ -85,7 +97,7 @@ $(function () {
 		});
 	});
 
-	$('.dex.admin-bar .logged-out .current-user a').click(function () {
+	$('.dex-admin-bar .logged-out .current-user a').click(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'forget'
 		}, function (data) {

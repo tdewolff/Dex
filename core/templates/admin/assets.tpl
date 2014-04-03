@@ -35,7 +35,7 @@
 			<div>Size</div>
 			<div></div>
 		</li>
-		<li id="load_status_directories_assets" class="api load-status">
+		<li id="load_status_directories_assets" class="dex-api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
 			<div class="empty">empty</div>
@@ -43,7 +43,7 @@
 	</ul>
 
 	<ul id="images" class="grid">
-		<li id="load_status_images" class="api load-status">
+		<li id="load_status_images" class="dex-api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
 			<div class="empty">empty</div>

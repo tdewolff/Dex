@@ -1,5 +1,5 @@
 <?php if (User::loggedIn()) { ?>
-<div class="dex api">
+<div class="dex-api">
 	<div class="fatal"></div>
 	<div class="status">
 		<div class="working"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
@@ -10,7 +10,7 @@
 <?php } ?>
 
 <?php if (User::getTimeLeft() !== false || Common::requestAdmin()) { ?>
-<div class="dex admin-bar">
+<div class="dex-admin-bar">
 	<?php if (Db::isValid()) { if (User::getTimeLeft() > 0) { ?>
 	<div class="logged-in">
 		<div class="navigate">Go<?php if (Common::requestAdmin() && isset($_SESSION['last_site_request']) || !Common::requestAdmin()) { echo ' back'; } ?> to <?php if (Common::requestAdmin()) {

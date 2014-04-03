@@ -33,6 +33,13 @@ circle {
 	fill: white;
 	stroke-width: 1.5px;
 }
+
+.empty {
+	text-anchor: middle;
+	font-size: 12px;
+	font-style: italic;
+	fill: #aaa;
+}
 </style>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -145,9 +152,7 @@ circle {
   				.style('stroke', function(d) { return color(1); });
 
   			// legend
-			svg.selectAll('dot')
-				.data(visits)
-			.enter().append('circle')
+			svg.append('circle')
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 10)
@@ -159,9 +164,7 @@ circle {
 				.attr('dy', '.35em')
 				.text('Total');
 
-			svg.selectAll('dot')
-				.data(visits)
-			.enter().append('circle')
+			svg.append('circle')
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 30)
@@ -172,6 +175,14 @@ circle {
 				.attr('x', 25)
 				.attr('dy', '.35em')
 				.text('Unique');
+
+			if (!visits.length) {
+				svg.append('text')
+					.attr('x', width / 2)
+					.attr('y', height / 2)
+					.attr('class', 'empty')
+					.text('No visitor data yet');
+			}
 		}
 	}
 </script>

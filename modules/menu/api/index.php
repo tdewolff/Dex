@@ -5,18 +5,33 @@ if (!User::loggedIn())
 
 if (API::action('modify_menu'))
 {
-	Db::exec("DELETE FROM module_menu;");
-	foreach (API::get('menu') as $i => $item)
+	if (!API::has('menu'))
+		user_error('No menu set', ERROR);
+
+	$menu = API::get('menu');
+
+	$errors = array();
+	foreach ($menu as $item)
+		if (strlen($menu_item) > 20)
+			$errors[] = array('link_id' => $item['link_id'], 'error' => 'Too long'); // TODO: implement at .tpl, inline form errors need refactoring first
+
+	if (!count($errors))
 	{
-		// TODO: error handling for too long names
-		Db::exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
-			'" . Db::escape($item['link_id']) . "',
-			'" . Db::escape($i) . "',
-			'" . Db::escape($item['level']) . "',
-			'" . Db::escape($item['name']) . "',
-			'" . Db::escape($item['enabled']) . "'
-		);");
+		Db::exec("DELETE FROM module_menu;");
+		foreach ($menu as $i => $item)
+		{
+			// TODO: error handling for too long names
+			Db::exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
+				'" . Db::escape($item['link_id']) . "',
+				'" . Db::escape($i) . "',
+				'" . Db::escape($item['level']) . "',
+				'" . Db::escape($item['name']) . "',
+				'" . Db::escape($item['enabled']) . "'
+			);");
+		}
 	}
+
+	API::set('errors', $errors);
 	API::finish();
 }
 else if (API::action('get_menu'))

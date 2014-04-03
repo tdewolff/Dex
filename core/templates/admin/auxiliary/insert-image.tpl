@@ -1,4 +1,4 @@
-<div class="dex popup-wrapper">
+<div class="dex-popup-wrapper">
 	<div class="popup">
 		<div id="assets">
 			<h2>Images</h2>
@@ -27,14 +27,14 @@
 					<div>Size</div>
 					<div></div>
 				</li>
-				<li id="load_status_directories" class="dex api load-status">
+				<li id="load_status_directories" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
 					<div class="empty">empty</div>
 				</li>
 			</ul>
 			<ul id="images" class="grid">
-				<li id="load_status_images" class="api load-status">
+				<li id="load_status_images" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
 					<div class="empty">empty</div>

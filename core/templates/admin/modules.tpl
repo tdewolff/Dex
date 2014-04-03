@@ -6,7 +6,7 @@
 		<div>Author</div>
 		<div>Description</div>
 	</li>
-	<li id="load_status" class="api load-status">
+	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>

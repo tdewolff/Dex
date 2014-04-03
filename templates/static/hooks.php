@@ -11,8 +11,10 @@ Hooks::attach('main', 0, function () {
 
         $user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($content['user_id']) . "' LIMIT 1;");
         if ($user)
+        {
             Template::set('author', $user['username']);
-        Template::set('time', $content['modify_time']);
+            Template::set('last_save', $content['modify_time']);
+        }
     }
     else
         Template::set('content', 'Edit this&#x2026;');

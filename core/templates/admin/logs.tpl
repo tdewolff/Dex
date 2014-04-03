@@ -6,7 +6,7 @@
 		<div>IP Address</div>
 		<div>Message</div>
 	</li>
-	<li id="load_status" class="api load-status">
+	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
@@ -60,7 +60,7 @@
 			$.fancybox.open({
 				content: $(this).attr('data-html'),
 				beforeShow: function () {
-					this.skin.addClass('api-error');
+					this.skin.addClass('dex-api-error');
 				},
 				overlay: {
 					closeClick: true,

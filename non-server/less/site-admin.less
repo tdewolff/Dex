@@ -1,199 +1,198 @@
 @import "__include.less";
+@import "_api.less";
 
 body {
     padding-top:33px;
 }
 
-.dex {
-	@import "_api.less";
+.dex-admin-bar {
+    padding: 2px 0;
+    border-bottom: 1px solid #414D54;
+    //border-bottom: 1px solid #161c21;
 
-	&.admin-bar {
-	    padding: 2px 0;
-	    border-bottom: 1px solid #414D54;
-	    //border-bottom: 1px solid #161c21;
+    background-color: #282F33;
+    width: 100%;
+    height: 33px;
 
-	    background-color: #282F33;
-	    width: 100%;
-	    height: 33px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 7999;
 
-	    position: fixed;
-	    top: 0;
-	    left: 0;
-	    z-index: 7999;
+    color: #E0E0E0;
+    font-family: @sans-serif;
+    font-size: 14px;
 
-	    color: #E0E0E0;
-	    font-family: @sans-serif;
-	    font-size: 14px;
+	.border-box();
 
-		.border-box();
+	a {
+	    color: #D1570D;
+	    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
 
-		a {
-		    color: #D1570D;
-		    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
-
-		    &:hover {
-			    color: lighten(@alert, 5%);
-			}
-
-			&:visited {
-			    color: darken(@alert, 5%);
-			}
+	    &:hover {
+		    color: lighten(@alert, 5%);
 		}
 
-		>div {
-		    height: 28px;
-
-		    &:nth-child(2) {
-		    	display: none;
-		    }
-		}
-
-		.navigate {
-		    display: inline-block;
-		    float: left;
-		    margin-left: 20px;
-		    line-height: 28px;
-
-		    a {
-			    text-decoration: none;
-			}
-		}
-
-		.current-user {
-		    display: inline-block;
-		    float: right;
-		    margin-right: 20px;
-		    line-height: 28px;
-
-		    a {
-			    margin-left: 5px;
-			}
-		}
-
-		.dexedit-insert {
-		    display: inline-block;
-		    margin-left: 60px;
-		    line-height: 28px;
-
-		    a {
-		    	padding-left: 10px;
-		    }
+		&:visited {
+		    color: darken(@alert, 5%);
 		}
 	}
 
-	&.popup-wrapper {
-		width: 600px;
-		overflow: hidden;
-		white-space: nowrap;
+	>div {
+	    height: 28px;
 
-		* {
-			.border-box();
+	    &:nth-child(2) {
+	    	display: none;
+	    }
+	}
+
+	.navigate {
+	    display: inline-block;
+	    float: left;
+	    margin-left: 20px;
+	    line-height: 28px;
+
+	    a {
+		    text-decoration: none;
+		}
+	}
+
+	.current-user {
+	    display: inline-block;
+	    float: right;
+	    margin-right: 20px;
+	    line-height: 28px;
+
+	    a {
+		    margin-left: 5px;
+		}
+	}
+
+	.dexedit-insert {
+	    display: inline-block;
+	    margin-left: 60px;
+	    line-height: 28px;
+
+	    a {
+	    	padding-left: 10px;
+	    }
+	}
+}
+
+.dex-popup-wrapper {
+	@import "normalize.less";
+
+	width: 600px;
+	overflow: hidden;
+	white-space: nowrap;
+
+	* {
+		.border-box();
+	}
+
+	@import "_content.less";
+	@import "_buttons.less";
+	@import "_forms.less";
+	@import "_tables.less";
+	@import "_assets.less";
+
+	font-family: @sans-serif;
+	font-size: 100%;
+	text-align: justify;
+
+	h3 {
+		margin-left: 50px;
+		margin-right: -50px;
+	}
+
+	.popup {
+		>div {
+            width: 600px;
+			vertical-align: middle;
+  			display: inline-block;
+			white-space: normal;
+			margin: 30px 0;
 		}
 
-		@import "_content.less";
-		@import "_buttons.less";
-		@import "_forms.less";
-		@import "_tables.less";
-		@import "_assets.less";
+        >div:not(:first-of-type) {
+            display: none;
+        }
 
-		font-family: @sans-serif;
-		font-size: 100%;
-		text-align: justify;
-
-		h3 {
-			margin-left: 50px;
-			margin-right: -50px;
+		h2 {
+			margin-top: 0;
+			padding-bottom: 0;
 		}
 
-		.popup {
-			>div {
-	            width: 600px;
-				vertical-align: middle;
-	  			display: inline-block;
-				white-space: normal;
-				margin: 30px 0;
-			}
+	    .load-status > div {
+	        display: none;
+	        min-width: 100%;
+	        width: 100%;
+	        text-align: center;
+	        white-space: nowrap;
+	        font-size: 12px;
+	        font-family: @sans-serif;
 
-	        >div:not(:first-of-type) {
-	            display: none;
+	        &.empty {
+	            color: #D0D0D0;
+	            font-style: italic;
 	        }
 
-			h2 {
-				margin-top: 0;
-				padding-bottom: 0;
+	        &.error {
+	            color: #D11F49;
+	        }
+	    }
+
+		#external-link {
+			margin: 0 auto;
+			width: 500px;
+			margin-bottom: 30px;
+
+			input {
+				width: 370px;
+				margin: 0;
+				float: none;
 			}
 
-		    .load-status > div {
-		        display: none;
-		        min-width: 100%;
-		        width: 100%;
-		        text-align: center;
-		        white-space: nowrap;
-		        font-size: 12px;
-		        font-family: @sans-serif;
+			a {
+				width: 120px;
+				margin-left: 10px;
+				margin-right: 0;
+				text-align: center;
+				white-space: nowrap;
+			}
+		}
 
-		        &.empty {
-		            color: #D0D0D0;
-		            font-style: italic;
-		        }
+		#links {
+			li:not(:first-of-type):hover {
+				cursor: pointer;
+			}
+		}
 
-		        &.error {
-		            color: #D11F49;
-		        }
-		    }
+		#assets {
+            width: 600px;
 
-			#external-link {
-				margin: 0 auto;
+			#upload {
 				width: 500px;
-				margin-bottom: 30px;
 
-				input {
-					width: 370px;
-					margin: 0;
-					float: none;
-				}
-
-				a {
-					width: 120px;
-					margin-left: 10px;
-					margin-right: 0;
-					text-align: center;
-					white-space: nowrap;
+				#drop {
+				    height:50px;
 				}
 			}
 
-			#links {
-				li:not(:first-of-type):hover {
+			#breadcrumbs {
+				width: 500px;
+			}
+
+			#directories-assets {
+				width: 502px;
+
+				li.asset:hover {
 					cursor: pointer;
 				}
 			}
 
-			#assets {
-	            width: 600px;
-
-				#upload {
-					width: 500px;
-
-					#drop {
-					    height:50px;
-					}
-				}
-
-				#breadcrumbs {
-					width: 500px;
-				}
-
-				#directories-assets {
-					width: 502px;
-
-					li.asset:hover {
-						cursor: pointer;
-					}
-				}
-
-				#images li:hover {
-					cursor: pointer;
-				}
+			#images li:hover {
+				cursor: pointer;
 			}
 		}
 	}

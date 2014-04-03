@@ -1,6 +1,6 @@
 $(function () {
-	if ($('.dex.admin-bar').length)
-		$('.dex.api .status').css('top', '+=33px');
+	if ($('.dex-admin-bar').length)
+		$('.dex-api .status').css('top', '+=33px');
 });
 
 function api(url, data, success, error) {
@@ -56,7 +56,7 @@ function apiFatal(message) {
 		$.fancybox.open({
 			content: '<h2 class="error">Error</h2>' + message,
 			beforeShow: function () {
-				this.skin.addClass('api-error');
+				this.skin.addClass('dex-api-error');
 			},
 			overlay: {
 				closeClick: true,
@@ -67,41 +67,41 @@ function apiFatal(message) {
 }
 
 function apiStatusClear() {
-	$('.dex.api .status div').stop(true).hide();
+	$('.dex-api .status div').stop(true).hide();
 }
 
 function apiStatusFade() {
-	$('.dex.api .status div').stop(true).fadeOut('fast');
+	$('.dex-api .status div').stop(true).fadeOut('fast');
 }
 
 function apiStatusWorking(message) {
 	apiStatusClear();
-	$('.dex.api .status div.working').delay(800).fadeIn('fast');
+	$('.dex-api .status div.working').delay(800).fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.working span').delay(800).show().html(message);
+		$('.dex-api .status div.working span').delay(800).show().html(message);
 	} else {
-		$('.dex.api .status div.working span').hide();
+		$('.dex-api .status div.working span').hide();
 	}
 }
 
 function apiStatusSuccess(message) {
 	apiStatusClear();
-	$('.dex.api .status div.success').fadeIn('fast');
+	$('.dex-api .status div.success').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.success span').show().html(message);
+		$('.dex-api .status div.success span').show().html(message);
 		//setTimeout(apiStatusFade, 5000);
 	} else {
-		$('.dex.api .status div.success span').hide();
+		$('.dex-api .status div.success span').hide();
 	}
 }
 
 function apiStatusError(message) {
 	apiStatusClear();
-	$('.dex.api .status div.error').fadeIn('fast');
+	$('.dex-api .status div.error').fadeIn('fast');
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.error span').show().html(message);
+		$('.dex-api .status div.error span').show().html(message);
 	} else {
-		$('.dex.api .status div.error span').hide();
+		$('.dex-api .status div.error span').hide();
 	}
 }
 

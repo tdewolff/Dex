@@ -14,12 +14,9 @@
 		}
 	});
 
-	<?php if (isset($_['time'])) { ?>
-	$(function () {
-		var time = new Date(new Date(0).setUTCSeconds(<?php echo $_['time']; ?>));
-		// TODO: functions are only defined in footer
-		//apiStatusSuccess('<?php echo (isset($_['author']) ? $_['author'] : ''); ?> (' + time.getDate() + '-' + padZero(time.getMonth() + 1) + ' ' + time.getHours() + ':' + padZero(time.getMinutes()) + ')');
-	});
+	<?php if (isset($_['author'])) { ?>
+	var author = '<?php echo (isset($_['author']) ? $_['author'] : ''); ?>';
+	var last_save = <?php echo (isset($_['last_save']) ? 'new Date(new Date(0).setUTCSeconds(' . $_['last_save'] . '))' : 'null'); ?>;
 	<?php } ?>
 </script>
 <?php } ?>

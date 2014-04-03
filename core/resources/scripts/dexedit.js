@@ -125,6 +125,9 @@ DexEdit.Range = {
 	},
 
 	get: function () {
+		if (!DexEdit.Selection.rangeCount) {
+			return null;
+		}
 		return DexEdit.Selection.getRangeAt(0);
 	},
 
@@ -401,7 +404,7 @@ DexEdit.Text = function (root) {
 						caption = '<figcaption>' + caption + '</figcaption>';
 					}
 
-					$('<img src="' + url + '" title="' + title + '" alt="' + alt + '">').load(function () {
+					function afterLoad() {
 						var img = $(this);
 
 						var width = img[0].width;
@@ -416,13 +419,14 @@ DexEdit.Text = function (root) {
 
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
 						figure.insertAfter(DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer));
-
 						new DexEdit.Image(self.root, img);
 
 						DexEdit.Selection.removeAllRanges();
 						self.menu.stop().fadeOut('fast');
 						self.root.trigger('input');
-				    });
+						$(this).off('load', afterLoad);
+					}
+					$('<img src="' + url + '" title="' + title + '" alt="' + alt + '">').on('load', afterLoad);
 				}
 			},
 			helpers:  {
@@ -481,7 +485,7 @@ DexEdit.Text = function (root) {
 
 	this.root.on('mousedown', function (e) {
 		var tag = DexEdit.DOM.getTag(e.target);
-		if (!((tag == 'i' || tag == 'span') && DexEdit.DOM.hasParentClass(e.target, 'dexedit-menu', self.root[0])) && self.range) {
+		if (!((tag === 'i' || tag === 'span') && DexEdit.DOM.hasParentClass(e.target, 'dexedit-menu', self.root[0])) && self.range) {
 			e.stopPropagation();
 			self.menu.stop().fadeOut('fast');
 		}
@@ -495,7 +499,7 @@ DexEdit.Text = function (root) {
 
 	this.menu.on('click', 'span', function (e) {
 		e.stopPropagation();
-		if (e.which == 1 && self.range) {
+		if (e.which === 1 && self.range) {
 			// reselect text after blur due to button click
 			self.reselect();
 
@@ -520,19 +524,17 @@ DexEdit.Text = function (root) {
 		}
 	});
 
-	$('.dex.admin-bar .dexedit-insert').on('click', 'a', function (e) {
+	$('.dex-admin-bar .dexedit-insert').on('click', 'a', function (e) {
+		e.preventDefault();
 		e.stopPropagation();
-		if (e.which == 1) {
+
+		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
 			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0])) {
 				var last = self.root.find('*:last');
-				var tag = DexEdit.DOM.getTag(last[0]);
-				if (!last || (tag !== 'p' && tag !== 'blockquote')) {
+				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
 					last = $('<p></p>').appendTo(self.root);
-				}
-
-				if (DexEdit.DOM.getTag(last[0]) === 'p' && last[0].innerHtml == '<br>') {
-					while (last[0].firstChild ) {
+					while (last[0].firstChild) {
 					    last[0].removeChild(last[0].childNodes[0]);
 					}
 				}
@@ -545,9 +547,21 @@ DexEdit.Text = function (root) {
 				if (self.isLink()) {
 					self.removeLink();
 				}
-		    }
 
-		    console.log(self.range);
+				var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+				var tag = DexEdit.DOM.getTag(block);
+				if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
+					var figure = DexEdit.DOM.getParentTag(block, 'figure');
+					if (!!figure) {
+						block = figure;
+					}
+
+					var p = $('<p></p>').after($(block));
+					while (p[0].firstChild) {
+					    p[0].removeChild(p[0].childNodes[0]);
+					}
+				}
+		    }
 
 			var target = $(this);
 			if (target.hasClass('dexedit-menu-link')) {
@@ -562,17 +576,17 @@ DexEdit.Text = function (root) {
 
 	// keyboard
 	this.root.on('keydown', function (e) {
-		if (e.keyCode == 8 || e.keyCode == 46) { // backspace or delete
+		if (e.keyCode === 8 || e.keyCode === 46) { // backspace or delete
 			self.hideMenu();
 
 			var block = DexEdit.DOM.getClosestBlock(DexEdit.Range.get().commonAncestorContainer);
 			if (block) {
-				var sibling = (e.keyCode == 8 ? block.previousSibling : block.nextSibling);
+				var sibling = (e.keyCode === 8 ? block.previousSibling : block.nextSibling);
 				if (sibling) {
 					if (DexEdit.DOM.getTag(sibling) === 'figure') {
 						e.preventDefault();
 
-						var secondSibling = (e.keyCode == 8 ? sibling.previousSibling : sibling.nextSibling);
+						var secondSibling = (e.keyCode === 8 ? sibling.previousSibling : sibling.nextSibling);
 						sibling.remove();
 						if (secondSibling && DexEdit.DOM.getTag(sibling) === 'figure') {
 							secondSibling.remove();
@@ -697,7 +711,7 @@ DexEdit.Image = function (root, img) {
 	};
 
 	this.resize = function (e) {
-		if (self.resizing === false) {
+		if (!self.resizing) {
 			$(document).unbind('mousemove', self.resize);
 			return;
 		}
@@ -718,7 +732,7 @@ DexEdit.Image = function (root, img) {
 	};
 
 	this.drag = function (e) {
-		if (self.dragging === false) {
+		if (!self.dragging) {
 			$(document).unbind('mousemove', self.drag);
 			return;
 		}
@@ -729,7 +743,7 @@ DexEdit.Image = function (root, img) {
 		var y = self.drag_offset_y + (e.pageY - scrollY - self.drag_start_y);
 
 		var previous = DexEdit.DOM.getPreviousBlock(self.placeholder[0]);
-		if (previous == self.figure[0]) {
+		if (previous === self.figure[0]) {
 			previous = DexEdit.DOM.getPreviousBlock(self.figure[0]);
 		}
 		if (previous) {
@@ -740,7 +754,7 @@ DexEdit.Image = function (root, img) {
 		}
 
 		var next = DexEdit.DOM.getNextBlock(self.placeholder[0]);
-		if (next == self.figure[0]) {
+		if (next === self.figure[0]) {
 			next = DexEdit.DOM.getNextBlock(self.figure[0]);
 		}
 		if (next) {
@@ -789,8 +803,8 @@ DexEdit.Image = function (root, img) {
 	this.wrapper.on({
 		mouseenter: function (e) {
 			self.hovering = true;
-			if (self.dragging === false) {
-				if (self.resizing === false) {
+			if (!self.dragging) {
+				if (!self.resizing) {
 					self.showMenu();
 				}
 				self.img_resize.stop().fadeIn('fast');
@@ -798,9 +812,9 @@ DexEdit.Image = function (root, img) {
 		},
 		mouseleave: function (e) {
 			self.hovering = false;
-			if (self.dragging === false) {
+			if (!self.dragging) {
 				self.img_menu.stop().fadeOut('fast');
-				if (self.resizing === false) {
+				if (!self.resizing) {
 					self.img_resize.stop().fadeOut('fast');
 				}
 			}
@@ -814,7 +828,7 @@ DexEdit.Image = function (root, img) {
 		$('.dexedit-menu').hide();
 		DexEdit.Selection.removeAllRanges();
 
-		if (e.which == 1) {
+		if (e.which === 1) {
 			var target = $(this);
 			var buttonTarget = $(e.target);
 			var scrollY = window.scrollY || document.documentElement.scrollTop;
@@ -897,11 +911,10 @@ DexEdit.Image = function (root, img) {
 				self.root.trigger('input');
 				return;
 			} else if (DexEdit.DOM.getTag(target[0]) === 'img') {
-				if (self.hovering === true) {
+				if (self.hovering) {
 					self.img_menu.stop().fadeOut('fast');
 					self.img_resize.stop().fadeOut('fast');
 				}
-
 
 				self.dragging = true;
 				self.drag_start_x = e.pageX;
@@ -923,7 +936,7 @@ DexEdit.Image = function (root, img) {
 				return;
 			}
 
-			if (self.hovering === true) {
+			if (self.hovering) {
 				self.img_menu.stop().fadeOut('fast');
 			}
 
@@ -938,7 +951,7 @@ DexEdit.Image = function (root, img) {
 	});
 
 	$('html').on('mouseup', function (e) {
-		if (self.resizing === true) {
+		if (self.resizing) {
 			e.preventDefault();
 			$(document).unbind('mousemove', self.resize);
 
@@ -947,7 +960,7 @@ DexEdit.Image = function (root, img) {
 			self.img.removeClass('dexedit-img-resize-nwse');
 			self.img.removeClass('dexedit-img-resize-nesw');
 
-			if (self.hovering === true) {
+			if (self.hovering) {
 				self.showMenu();
 			} else {
 				self.img_resize.stop().fadeOut('fast');
@@ -955,7 +968,7 @@ DexEdit.Image = function (root, img) {
 
 			var src = self.img.attr('src');
 			var len = src.indexOf('/', src.lastIndexOf('.'));
-			if (len == -1) {
+			if (len === -1) {
 				len = src.length;
 			}
 			self.img.attr('src', src.substr(0, len) + '/' + self.img[0].width + '/');
@@ -966,7 +979,7 @@ DexEdit.Image = function (root, img) {
 			e.preventDefault();
 			$(document).unbind('mousemove', self.drag);
 
-			if (self.hovering === true) {
+			if (self.hovering) {
 				self.showMenu();
 				self.img_resize.stop().fadeIn('fast');
 			}

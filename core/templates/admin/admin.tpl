@@ -2,7 +2,7 @@
 <h3>Diskspace</h3>
 <div id="diskspace-total"></div>
 <div id="diskspace">
-	<span id="load_diskspace" class="api load-status">
+	<span id="load_diskspace" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
@@ -32,7 +32,7 @@
 } if (!count($_['warnings'])) {
 	echo '<li class="empty">none</li>';
 } ?>
-	<li id="load_warnings" class="api load-status">
+	<li id="load_warnings" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
@@ -79,7 +79,7 @@
 			var action = $(this).attr('data-action');
 			if (action == 'optimize_size') {
 				$.fancybox.open({
-					content: '<textarea class="api console" readonly></textarea>',
+					content: '<textarea class="dex-api console" readonly></textarea>',
 					helpers:  {
 						overlay: {
 							locked: false
@@ -88,7 +88,7 @@
 				});
 
 				apiStatusWorking('Publishing site...');
-				apiUpdateConsole($('.api.console'));
+				apiUpdateConsole($('.dex-api.console'));
 				api('/' + base_url + 'api/core/optimize-site/', {
 				}, function (data) {
 					apiStopConsole();

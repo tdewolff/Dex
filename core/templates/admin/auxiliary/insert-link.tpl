@@ -1,4 +1,4 @@
-<div class="dex popup-wrapper">
+<div class="dex-popup-wrapper">
 	<div class="popup">
 		<div>
 			<h2>Insert link</h2>

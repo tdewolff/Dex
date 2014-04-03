@@ -1,7 +1,7 @@
 <h2>Admin panel</h2>
 
 <h3>Visitors</h3>
-<div id="load_stats" class="api load-status">
+<div id="load_stats" class="dex-api load-status">
 	<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 	<div class="error"><i class="fa fa-times"></i></div>
 </div>
@@ -13,7 +13,7 @@
 		<div>Date time</div>
 		<div>Message</div>
 	</li>
-	<li id="load_logs" class="api load-status">
+	<li id="load_logs" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
@@ -76,7 +76,7 @@
 			$.fancybox.open({
 				content: $(this).attr('data-html'),
 				beforeShow: function () {
-					this.skin.addClass('api-error');
+					this.skin.addClass('dex-api-error');
 				},
 				overlay: {
 					closeClick: true,

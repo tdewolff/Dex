@@ -286,7 +286,7 @@ function minifyHtml($text)
 		user_error('Output HTML too large');
 
 	// TODO: remove unneccessary quotes around HTML attributes NEEDS TO BE IMPROVED! Is this save?
-	$text = preg_replace('/(\s\w+=)"([^"\'`=<>\s]+)"/S', '\1\2', $text); // remove any whitespace between tags except one space
+	//$text = preg_replace('/(\s\w+=)"([^"\'`=<>\s]+)"/S', '\1\2', $text); // remove any whitespace between tags except one space
 
 	// TODO: minify inline JS
 

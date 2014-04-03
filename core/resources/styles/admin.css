@@ -19,47 +19,46 @@ span.amp {
   font-family: Baskerville, "Goudy Old Style", Palatino, "Book Antiqua", serif;
   font-style: italic;
 }
-.api-error {
+.dex-api-error {
   background: #F2DEDE;
   border: solid 1px #EED3D7;
 }
-.api-error h1 {
+.dex-api-error h1 {
   color: #B94A48;
   font-size: 200%;
   text-align: center;
 }
-.api-error h2 {
+.dex-api-error h2 {
   padding: 0;
   color: #B94A48;
   text-align: center;
 }
-.api-error p.error {
-  margin-top: 10px;
-  margin-bottom: 20px;
+.dex-api-error p.error {
+  margin: 10px 30px;
   color: #B94A48;
   text-align: center;
 }
-.api-error table.backtrace {
+.dex-api-error table.backtrace {
   margin-bottom: 10px;
   width: 100%;
   font-size: 80%;
   color: #B94A48;
 }
-.api-error table.backtrace th,
-.api-error table.backtrace td {
+.dex-api-error table.backtrace th,
+.dex-api-error table.backtrace td {
   padding: 0 2em;
 }
-.api .status {
+.dex-api .status {
   position: fixed;
   top: 15px;
   right: 15px;
   z-index: 7999;
 }
-.api .status > div {
+.dex-api .status > div {
   display: none;
   white-space: nowrap;
 }
-.api .status > div > span {
+.dex-api .status > div > span {
   padding: 0.5em 1em;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -70,18 +69,18 @@ span.amp {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
 }
-.api .status > div > i {
+.dex-api .status > div > i {
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
   vertical-align: middle;
   font-size: 24px;
 }
-.api .status > div.success > i {
+.dex-api .status > div.success > i {
   color: #24c279;
 }
-.api .status > div.error > i {
+.dex-api .status > div.error > i {
   color: #D11F49;
 }
-.api.load-status > div {
+.dex-api.load-status > div {
   display: none;
   min-width: 100%;
   width: 100%;
@@ -90,14 +89,14 @@ span.amp {
   font-size: 12px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.api.load-status > div.empty {
+.dex-api.load-status > div.empty {
   color: #D0D0D0;
   font-style: italic;
 }
-.api.load-status > div.error {
+.dex-api.load-status > div.error {
   color: #D11F49;
 }
-.api.console {
+.dex-api.console {
   float: none;
   margin-left: 0;
   margin-right: 0;
