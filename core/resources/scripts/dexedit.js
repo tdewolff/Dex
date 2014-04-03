@@ -105,7 +105,7 @@ DexEdit.DOM = {
 
 	getText: function (node) {
 		return node[DexEdit.DOM.getTextProperty(node)];
-	},
+	}
 };
 
 DexEdit.Selection = (function () {
@@ -192,7 +192,7 @@ DexEdit.Range = {
 			return true;
 		}
 		return false;
-	},
+	}
 };
 
 DexEdit.Typography = function (s) {
