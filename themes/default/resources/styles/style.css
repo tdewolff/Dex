@@ -87,15 +87,28 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-align: justify;
 }
-article,
-nav,
-h1,
-h2 {
+.page-wrapper article,
+.page-wrapper nav,
+.page-wrapper h1,
+.page-wrapper h2 {
   width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
-nav {
+.page-wrapper h1 {
+  padding-left: 1em;
+  text-align: left;
+  margin: 0 auto;
+  margin-top: 0.5em;
+}
+.page-wrapper h2 {
+  padding: 0;
+  padding-left: 5em;
+  margin: 0 auto;
+  text-align: left;
+  text-shadow: none;
+}
+.page-wrapper nav {
   background: #f2f2f2;
   color: #303030;
   border-bottom: 1px solid #e3e3e3;
@@ -108,34 +121,35 @@ nav {
   -moz-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
-nav ul {
+.page-wrapper nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   font-family: "SourceSansLight";
 }
-nav a {
+.page-wrapper nav a {
   text-decoration: none;
 }
-nav > ul > li {
+.page-wrapper nav > ul > li {
   display: inline-block;
   border-right: 1px solid #ebebeb;
 }
-nav > ul > li:first-of-type {
+.page-wrapper nav > ul > li:first-of-type {
   border-left: 1px solid #ebebeb;
 }
-nav > ul > li > a {
+.page-wrapper nav > ul > li > a {
   display: inline-block;
   padding: 0.6em 2em;
   font-size: 110%;
 }
-nav > ul > li > a:hover {
+.page-wrapper nav > ul > li > a:hover {
   background: #e3e3e3;
 }
-nav > ul > li > ul {
+.page-wrapper nav > ul > li > ul {
   display: none;
 }
-article {
+.page-wrapper article {
+  zoom: 1;
   background: #ffffff;
   color: #303030;
   padding: 3em 6em;
@@ -147,26 +161,21 @@ article {
   -moz-border-bottom-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-h1 {
-  padding-left: 1em;
-  text-align: left;
-  margin: 0 auto;
-  margin-top: 0.5em;
+.page-wrapper article:before,
+.page-wrapper article:after {
+  content: "";
+  display: table;
 }
-h2 {
-  padding: 0;
-  padding-left: 5em;
-  margin: 0 auto;
-  text-align: left;
-  text-shadow: none;
+.page-wrapper article:after {
+  clear: both;
 }
-hr {
+.page-wrapper article hr {
   border: 0;
   border-top: 1px solid #e6e6e6;
   width: 94%;
   margin: 3em auto;
 }
-blockquote {
+.page-wrapper article blockquote {
   margin-left: 1em;
   padding-left: 1em;
   border-left: 3px solid #477725;

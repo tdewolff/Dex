@@ -55,6 +55,8 @@ if (isset($_FILES['upload']))
 		$title = $filename . ' (' . $i . ')';
 	}
 
+	Common::ensureWritableDirectory($dir);
+
 	if (!Resource::isResource($extension))
 		API::set('upload_error', 'Wrong extension');
 	else if (!is_writable($dir))
@@ -67,6 +69,8 @@ if (isset($_FILES['upload']))
 		if (Resource::isImage($extension))
 			list($width, $height, $type, $attribute) = getimagesize($dir . $name);
 
+		$max_width = (isset($_POST['max_width']) ? $_POST['max_width'] : 0);
+
 		API::set('file', array(
 			'url' => $dir . $name,
 			'name' => $name,
@@ -75,7 +79,7 @@ if (isset($_FILES['upload']))
 			'size' => Common::formatBytes(filesize($dir . $name), 2),
 			'width' => $width,
 			'is_image' => Resource::isImage($extension),
-			'attr' => Resource::isImage($extension) ? Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name), 200) : ''
+			'attr' => Resource::isImage($extension) ? Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name), $max_width) : ''
 		));
 	}
 	API::finish();
@@ -85,11 +89,11 @@ else if (API::action('create_directory'))
 	if (!API::has('name'))
 		user_error('No name set', ERROR);
 
-	if (!preg_match('/^[a-zA-Z_0-9]+$/', API::get('name')))
-		API::set('error', 'May only contain alphanumeric characters');
+	if (!preg_match('/^[a-zA-Z0-9_\-\s]+$/', API::get('name')))
+		API::set('error', 'May only contain alphanumeric or (_-) characters');
 	else if (is_dir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
-	else if (!mkdir($dir . API::get('name') . '/', 2775))
+	else if (!mkdir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
 	else
 		API::set('directory', array(

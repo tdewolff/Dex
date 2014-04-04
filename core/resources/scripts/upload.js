@@ -94,11 +94,12 @@ function initAdminUpload(_upload, success) {
 	});
 
 	initUpload(_upload, function (i, name, refresh) {
+		removeMask();
 		upload.find('#knob').stop().fadeIn();
 		if (refresh) {
 			upload.find('ul li').remove();
 		}
-		$('<li id="upload_' + i + '"><i class="fa fa-fw fa-cog fa-spin"></i>&ensp;' + name + '</li>').hide().appendTo('#upload ul').slideDown();
+		$('<li id="upload_' + i + '"><i class="fa fa-fw fa-cog fa-spin"></i>' + name + '</li>').hide().appendTo('#upload ul').slideDown();
 	}, function (totalProgress, progress) {
 		upload.find('#big-knob input').val(totalProgress).change();
 		upload.find('#small-knob input').val(progress).change();

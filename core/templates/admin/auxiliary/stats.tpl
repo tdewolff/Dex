@@ -124,32 +124,34 @@ circle {
 				.style('text-anchor', 'end')
 				.text('Visits');
 
-    		// paths and points
-			svg.append('path')
-				.attr('class', 'line')
-				.attr('d', line(visits))
-  				.style('stroke', function(d) { return color(0); });
+			if (visits.length > 1) {
+	    		// paths and points
+				svg.append('path')
+					.attr('class', 'line')
+					.attr('d', line(visits))
+	  				.style('stroke', function(d) { return color(0); });
 
-			svg.selectAll('dot')
-				.data(visits)
-			.enter().append('circle')
-				.attr('r', 2.5)
-				.attr('cx', function(d) { return x(d.date); })
-				.attr('cy', function(d) { return y(d.visits); })
-  				.style('stroke', function(d) { return color(0); });
+				svg.selectAll('dot')
+					.data(visits)
+				.enter().append('circle')
+					.attr('r', 2.5)
+					.attr('cx', function(d) { return x(d.date); })
+					.attr('cy', function(d) { return y(d.visits); })
+	  				.style('stroke', function(d) { return color(0); });
 
-			svg.append('path')
-				.attr('class', 'line unique')
-				.attr('d', line_unique(visits))
-  				.style('stroke', function(d) { return color(1); });
+				svg.append('path')
+					.attr('class', 'line unique')
+					.attr('d', line_unique(visits))
+	  				.style('stroke', function(d) { return color(1); });
 
-			svg.selectAll('dot')
-				.data(visits)
-			.enter().append('circle')
-				.attr('r', 2.5)
-				.attr('cx', function(d) { return x(d.date); })
-				.attr('cy', function(d) { return y(d.unique_visits); })
-  				.style('stroke', function(d) { return color(1); });
+				svg.selectAll('dot')
+					.data(visits)
+				.enter().append('circle')
+					.attr('r', 2.5)
+					.attr('cx', function(d) { return x(d.date); })
+					.attr('cy', function(d) { return y(d.unique_visits); })
+	  				.style('stroke', function(d) { return color(1); });
+	  		}
 
   			// legend
 			svg.append('circle')
@@ -176,7 +178,7 @@ circle {
 				.attr('dy', '.35em')
 				.text('Unique');
 
-			if (!visits.length) {
+			if (visits.length < 2) {
 				svg.append('text')
 					.attr('x', width / 2)
 					.attr('y', height / 2)

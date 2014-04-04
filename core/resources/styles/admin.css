@@ -1018,9 +1018,14 @@ body {
 #assets #upload ul li {
   height: 16px;
   line-height: 16px;
+  padding-left: 2em;
 }
 #assets #upload ul li i {
+  float: left;
+  margin-left: -2em;
   vertical-align: middle;
+  height: 16px;
+  line-height: 16px;
 }
 #assets #upload ul li.done {
   color: #477725;

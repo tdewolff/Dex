@@ -57,9 +57,9 @@ class Common
 	public static function ensureWritableDirectory($directory)
 	{
 		if (!is_dir($directory))
-			mkdir($directory, 0755);
-		else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0755')
-			chmod($directory, 0755);
+			mkdir($directory, 2775);
+		else if (substr(sprintf('%o', fileperms($directory)), -4) !== '2775')
+			chmod($directory, 2775);
 	}
 
 	public static function validUrl($input) // unused

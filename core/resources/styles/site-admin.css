@@ -478,11 +478,6 @@ body {
   border-collapse: collapse;
   border-spacing: 0;
 }
-.dex-popup-wrapper * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 .dex-popup-wrapper h1 {
   margin: 0.4em 0;
   font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
@@ -1207,9 +1202,14 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
 .dex-popup-wrapper #assets #upload ul li {
   height: 16px;
   line-height: 16px;
+  padding-left: 2em;
 }
 .dex-popup-wrapper #assets #upload ul li i {
+  float: left;
+  margin-left: -2em;
   vertical-align: middle;
+  height: 16px;
+  line-height: 16px;
 }
 .dex-popup-wrapper #assets #upload ul li.done {
   color: #477725;
@@ -1335,6 +1335,15 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   -moz-border-radius: 0;
   border-radius: 0;
 }
+.dex-popup-wrapper * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.dex-popup-wrapper h2 {
+  margin-top: 0;
+  padding-bottom: 0;
+}
 .dex-popup-wrapper h3 {
   margin-left: 50px;
   margin-right: -50px;
@@ -1348,10 +1357,6 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
 }
 .dex-popup-wrapper .popup > div:not(:first-of-type) {
   display: none;
-}
-.dex-popup-wrapper .popup h2 {
-  margin-top: 0;
-  padding-bottom: 0;
 }
 .dex-popup-wrapper .popup .load-status > div {
   display: none;

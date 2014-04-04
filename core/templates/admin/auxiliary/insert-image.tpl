@@ -8,6 +8,7 @@
 
 			<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
 				<input type="hidden" name="dir" value="">
+				<input type="hidden" name="max_width" value="100">
 				<div id="drop">
 					<span>Drop Here</span><br>
 					<a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
@@ -92,6 +93,10 @@
 
 	// loading initial data
 	function loadDir(dir) {
+		$('#upload input[name="dir"]').val(dir);
+		$('#upload').find('#knob').stop().fadeOut();
+		$('#upload').find('ul li').remove();
+
 		directories_assets.find('li:not(:first):not(.load-status)').slideUp('fast', function () { $(this).remove(); });
 		images.find('li:not(.load-status)').slideUp('fast', function () { $(this).remove(); });
 

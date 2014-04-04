@@ -16,6 +16,7 @@
 	<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
 		<div id="drop-mask"></div>
 		<input type="hidden" name="dir" value="">
+		<input type="hidden" name="max_width" value="200">
 		<div id="drop">
 			<span>Drop Here</span><br>
 			<a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
@@ -181,8 +182,8 @@
 			// use copy-pastable AJAX links for directory navigation
 			if (window.location.hash.substr(0, 6) == '#!dir=') {
 				dir = window.location.hash.substr(6);
+				loadDir(dir);
 			}
-			loadDir(dir);
 		}
 		window.onhashchange = hashchange;
 		hashchange();
@@ -274,12 +275,17 @@
 
 		$('#create-directory').on('click', 'a', function () {
 			apiStatusWorking('Creating directory...');
+
+			$('#create-directory').find('div.input-error-below').hide();
+
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'create_directory',
 				name: $(this).prev('input').val(),
 				dir: dir
 			}, function (data) {
 				if (typeof data['error'] !== 'undefined') {
+					apiStatusError('Creating directory failed');
+
 					var error_box = $('#create-directory').find('div.input-error-below');
 					if (error_box.find('span').text() != data['error']) {
 						error_box.hide();
