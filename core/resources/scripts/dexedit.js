@@ -668,13 +668,40 @@ DexEdit.Text = function (root) {
 		self.hideMenu();
 
     	var content = '';
-    	if (e.clipboardData) {
-	        content = e.clipboardData.getData('text/plain');
-	    } else if (e.originalEvent.clipboardData) {
-				content = e.originalEvent.clipboardData.getData('text');
-		} else if (window.clipboardData) {
-	        content = window.clipboardData.getData('Text');
-	    }
+    	if (/text\/html/.test(e.clipboardData.types)) {
+            content = e.clipboardData.getData('text/html');
+        } else if (/text\/plain/.test(e.clipboardData.types)) {
+            content = e.clipboardData.getData('text/plain');
+        }
+
+        content = $('<div>').html(content).html();
+
+	    // remove Word or other formatting
+	    content = content.replace(/(<!--[^]*?-->|\s{2,}|\r|\n)/gi, '');
+	    content = content.replace(/<(style|script|applet|embed|noframes|noscript|w:[a-z]+)[^]*?\/$1>/gi, '');
+	    content = content.replace(/<(\/)*(meta|link|span|\\?xml:|st1:|o:|font)([^]*?)>/gi, '');
+
+	    // only certain tags are allowed
+	    content = content.replace(/<(\/?)([^>\s]+)[^>]*>/gi, function (all, close, tag) {
+	    	tag = tag.toLowerCase();
+	    	if (tag === 'p' || tag === 'ul' || tag === 'ol' || tag === 'li' || tag === 'blockquote' || tag === 'strong' || tag === 'i' || tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4') {
+	    		if (tag === 'h1') {
+	    			tag = 'h3';
+	    		} else if (tag === 'h2') {
+	    			tag = 'h4';
+	    		}
+
+	    		return '<' + close + tag + '>';
+	    	}
+	    	return '';
+	    });
+
+	    // no redundant whitespaces
+	    content = content.replace(/<p>(&nbsp;)?<\/p>/gi, '');
+	    content = content.trim();
+
+	    // TODO: Word copy; a garbage line remains at the end
+
 	    document.execCommand('insertHTML', false, content);
     });
 };

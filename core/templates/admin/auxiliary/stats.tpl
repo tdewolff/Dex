@@ -38,7 +38,7 @@ circle {
 	text-anchor: middle;
 	font-size: 12px;
 	font-style: italic;
-	fill: #aaa;
+	fill: #D0D0D0;
 }
 </style>
 
