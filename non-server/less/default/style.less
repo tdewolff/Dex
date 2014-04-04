@@ -37,6 +37,7 @@ nav {
 	color: @text-black;
 	border-bottom: 1px solid darken(@light, 11%);
 	padding: 0 5px;
+	margin-top: 2em;
 
 	.border-top-left-radius(3px);
 	.border-top-right-radius(3px);
@@ -46,6 +47,7 @@ nav ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+	font-family: "SourceSansLight";
 }
 
 nav a {
@@ -63,9 +65,8 @@ nav > ul > li:first-of-type {
 
 nav > ul > li > a {
 	display: inline-block;
-	padding: 0 2em;
+	padding: 0.6em 2em;
 	font-size: 110%;
-	line-height: 250%;
 }
 
 nav > ul > li > a:hover {
@@ -89,11 +90,27 @@ article {
 h1 {
 	padding-left: 1em;
 	text-align: left;
+	margin: 0 auto;
+	margin-top: 0.5em;
+}
+
+h2 {
+	padding: 0;
+	padding-left: 5em;
+	margin: 0 auto;
+	text-align: left;
+	text-shadow: none;
 }
 
 hr {
 	border:0;
-	border-top: 1px dashed @dark;
+	border-top: 1px solid darken(@light, 10%);
 	width: 94%;
-	margin: 0 auto;
+	margin: 3em auto;
+}
+
+blockquote {
+	margin-left: 1em;
+	padding-left: 1em;
+	border-left: 3px solid @base;
 }

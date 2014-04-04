@@ -115,6 +115,8 @@
 		function loadDir(newDir) {
 			dir = newDir;
 			$('#upload input[name="dir"]').val(dir);
+			$('#upload').find('#knob').stop().fadeOut();
+			$('#upload').find('ul li').remove();
 
 			directories_assets.find('li:not(:first):not(.load-status)').slideUp(100, function () { $(this).remove(); });
 			images.find('li:not(.load-status)').slideUp(100, function () { $(this).remove(); });

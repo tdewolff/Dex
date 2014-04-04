@@ -57,6 +57,16 @@ class Stats
 				$visits[count($visits) - 1]['unique_visits']++;
 			}
 		}
+
+		$now = floor(time() / 86400) * 86400;
+		if (count($visits))
+			while ($visits[count($visits) - 1]['date'] < $now)
+				$visits[] = array(
+					'date' => $visits[count($visits) - 1]['date'] + 86400,
+					'visits' => 0,
+					'unique_visits' => 0
+				);
+
 		return $visits;
 	}
 }

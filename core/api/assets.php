@@ -45,10 +45,22 @@ if (isset($_FILES['upload']))
 	$title = substr($name, $slash_position ? $slash_position + 1 : 0, $dot_position);
 	$extension = strtolower(substr($name, $dot_position + 1));
 
+	if (is_file($dir . $name))
+	{
+		$i = 1;
+		$filename = substr($name, 0, $dot_position);
+		while (is_file($dir . $filename . ' (' . $i . ').' . $extension))
+			$i++;
+		$name = $filename . ' (' . $i . ').' . $extension;
+		$title = $filename . ' (' . $i . ')';
+	}
+
+	Log::warning($name);
+
 	if (!Resource::isResource($extension))
 		API::set('upload_error', 'Wrong extension');
-	else if (is_file($dir . $name))
-		API::set('upload_error', 'Already exists');
+	else if (!is_writable($dir))
+		API::set('upload_error', 'Directory not writable');
 	else if (!move_uploaded_file($_FILES['upload']['tmp_name'], $dir . $name))
 		API::set('upload_error', 'Unknown error');
 	else
@@ -79,7 +91,7 @@ else if (API::action('create_directory'))
 		API::set('error', 'May only contain alphanumeric characters');
 	else if (is_dir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
-	else if (!mkdir($dir . API::get('name') . '/', 0755))
+	else if (!mkdir($dir . API::get('name') . '/', 2775))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
 	else
 		API::set('directory', array(

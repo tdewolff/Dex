@@ -14,7 +14,7 @@ $(function () {
 				});
 			});
 
-			if (author && last_save) {
+			if (typeof author !== 'undefined' && typeof last_save !== 'undefined') {
 				apiStatusSuccess(author + ' (' + padZero(last_save.getDate()) + '-' + padZero(last_save.getMonth() + 1) + ' ' + last_save.getHours() + ':' + padZero(last_save.getMinutes()) + ')');
 			}
 		}

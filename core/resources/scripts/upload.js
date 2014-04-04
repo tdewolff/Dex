@@ -60,7 +60,7 @@ function initUpload(upload, append, progress, done, error) {
 			done_n++;
 		},
 		done: function (e, data) {
-			done(data.i, data.response().result);
+			done(data.i, data.files[0].name, data.response().result);
 		},
 		fail: function (e, data) {
 			error(data.i, data.response().jqXHR['responseText']);
@@ -102,12 +102,15 @@ function initAdminUpload(_upload, success) {
 	}, function (totalProgress, progress) {
 		upload.find('#big-knob input').val(totalProgress).change();
 		upload.find('#small-knob input').val(progress).change();
-	}, function (i, result) {
+	}, function (i, name, result) {
 		if (typeof result['upload_error'] !== 'undefined') {
 			upload.find('#upload_' + i).addClass('fail').append(' (' + result['upload_error'] + ')').find('i').attr('class', 'fa fa-fw fa-times');
 			upload.find('#knob').stop().hide();
 		} else {
 			upload.find('#upload_' + i).addClass('done').find('i').attr('class', 'fa fa-fw fa-check');
+			if (name !== result['file']['title']) {
+				$('#upload_' + i).append('&emsp;&#8658;&emsp;' + result['file']['title']);
+			}
 			success(result);
 		}
 	}, function (i, response) {

@@ -662,6 +662,21 @@ DexEdit.Text = function (root) {
 			}
 		}
 	});
+
+	this.root[0].addEventListener('paste', function (e) {
+    	e.preventDefault();
+		self.hideMenu();
+
+    	var content = '';
+    	if (e.clipboardData) {
+	        content = e.clipboardData.getData('text/plain');
+	    } else if (e.originalEvent.clipboardData) {
+				content = e.originalEvent.clipboardData.getData('text');
+		} else if (window.clipboardData) {
+	        content = window.clipboardData.getData('Text');
+	    }
+	    document.execCommand('insertHTML', false, content);
+    });
 };
 
 DexEdit.Image = function (root, img) {
