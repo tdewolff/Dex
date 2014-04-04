@@ -60,7 +60,7 @@ else if (API::action('get_logs'))
 }
 else if (API::action('diskspace_usage'))
 {
-	$total = Common::getDirectorySize('./');
+	$total = Common::getDirectorySize('');
 	$rest = $total;
 
 	$diskspace = array(null);

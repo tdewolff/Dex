@@ -128,19 +128,18 @@ class Common
 
 	public static function getDirectorySize($dir)
 	{
-		$size = 0;
-		if (!($handle = opendir($dir)))
+		if (!is_readable($dir) || !($handle = @opendir($dir)))
 			return false;
 
+		$size = 0;
 		while ($name = readdir($handle))
 		{
-			if (is_file($dir . $name))
+			if (is_file($dir . $name) && is_readable($dir))
 				$size += filesize($dir . $name);
 
-			if (is_dir($dir . $name) && $name != '.' && $name != '..')
+			if (is_dir($dir . $name) && is_readable($dir) && $name != '.' && $name != '..')
 				$size += self::getDirectorySize($dir . $name . '/');
 		}
-
 		closedir($handle);
 		return $size;
 	}
