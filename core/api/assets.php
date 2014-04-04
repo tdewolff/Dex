@@ -91,7 +91,7 @@ else if (API::action('create_directory'))
 		API::set('error', 'May only contain alphanumeric or (_-) characters');
 	else if (is_dir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
-	else if (!Common::ensureWritableDir($dir . API::get('name') . '/'))
+	else if (!Common::ensureWritableDirectory($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
 	else
 		API::set('directory', array(
