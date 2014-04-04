@@ -55,8 +55,6 @@ if (isset($_FILES['upload']))
 		$title = $filename . ' (' . $i . ')';
 	}
 
-	Log::warning($name);
-
 	if (!Resource::isResource($extension))
 		API::set('upload_error', 'Wrong extension');
 	else if (!is_writable($dir))

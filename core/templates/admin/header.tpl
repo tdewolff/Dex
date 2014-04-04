@@ -10,18 +10,24 @@
 		<?php foreach ($_['header_external_styles'] as $external_style): ?><link rel="stylesheet" href="<?php echo $external_style; ?>"><?php endforeach; ?>
 		<?php if (isset($_['header_style'])): ?><link rel="stylesheet" href="/<?php echo $_['base_url'] . $_['header_style']; ?>"><?php endif; ?>
 		<link rel="shortcut icon" type="image/x-icon" href="/<?php echo $_['base_url']; ?>favicon.ico">
+
+		<!--[if gt IE 8]><!-->
 		<?php foreach ($_['header_external_scripts'] as $external_script): ?><script src="<?php echo $external_script; ?>"></script><?php endforeach; ?>
 		<?php if (isset($_['header_script'])): ?><script src="/<?php echo $_['base_url'] . $_['header_script']; ?>"></script><?php endif; ?>
 		<script>
 			var base_url = '<?php echo $_['base_url']; ?>';
 			var session_time = '<?php echo $_['session_time']; ?>';
 		</script>
+		<!--<![endif]-->
 	</head>
 
 	<?php ob_flush(); flush(); ?>
 <?php endif; ?>
 
 	<body>
+		<!--[if lt IE 9]><div id="main" style="padding-left:3em;">Your browser is too old for Dex, consider upgrading your browser!</div><![endif]-->
+		<!--[if gt IE 8]><!-->
+
 		<?php include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/include/site-admin.tpl'); // absolute path needed for register_shutdown_function() ?>
 
 		<?php if (isset($_['admin_links'])): ?>
