@@ -47,10 +47,10 @@ $(function () {
 
 	// logging out
 	function adminBarLogOut() {
-		$('.dex-api').fadeOut().remove();
-		$('.dex-admin-bar .logged-in').fadeOut(function () {
+		$('.dex-api').fadeOut('fast').remove();
+		$('.dex-admin-bar .logged-in').fadeOut('fast', function () {
 			$('.dex-admin-bar .logged-out').fadeIn('fast');
-		}, 'fast');
+		});
 
 		if (typeof DexEdit !== 'undefined') {
 			DexEdit.destroy();
@@ -58,9 +58,9 @@ $(function () {
 	}
 
 	function adminBarForget() {
-		$('.dex-admin-bar').slideUp(function () {
+		$('.dex-admin-bar').slideUp('fast', function () {
 			$(this).remove();
-		}, 'fast');
+		});
 
 		$('body').animate({
 			'padding-top': '0'
