@@ -60,9 +60,11 @@ else if (API::action('get_logs'))
 }
 else if (API::action('diskspace_usage'))
 {
-	$total = Common::getDirectorySize('');
-	$rest = $total;
+	$total = Common::getDirectorySize('./');
+	if (!$total)
+		user_error('Dex uses no diskspace but I don\'t believe it', WARNING);
 
+	$rest = $total;
 	$diskspace = array(null);
 	$directories = array('modules/', 'templates/', 'themes/', 'assets/', 'cache/');
 	foreach ($directories as $directory)

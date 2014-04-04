@@ -55,8 +55,6 @@ if (isset($_FILES['upload']))
 		$title = $filename . ' (' . $i . ')';
 	}
 
-	Common::ensureWritableDirectory($dir);
-
 	if (!Resource::isResource($extension))
 		API::set('upload_error', 'Wrong extension');
 	else if (!is_writable($dir))
@@ -93,7 +91,7 @@ else if (API::action('create_directory'))
 		API::set('error', 'May only contain alphanumeric or (_-) characters');
 	else if (is_dir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
-	else if (!mkdir($dir . API::get('name') . '/'))
+	else if (!Common::ensureWritableDir($dir . API::get('name') . '/'))
 		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
 	else
 		API::set('directory', array(

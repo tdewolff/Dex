@@ -56,10 +56,14 @@ class Common
 
 	public static function ensureWritableDirectory($directory)
 	{
+		$r = false;
+		$old = umask(0);
 		if (!is_dir($directory))
-			mkdir($directory, 2775);
+			$r = mkdir($directory, 2775);
 		else if (substr(sprintf('%o', fileperms($directory)), -4) !== '2775')
-			chmod($directory, 2775);
+			$r = chmod($directory, 2775);
+		umask($old);
+		return $r;
 	}
 
 	public static function validUrl($input) // unused
