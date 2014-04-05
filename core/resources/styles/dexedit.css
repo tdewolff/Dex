@@ -76,6 +76,9 @@
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  -webkit-box-shadow: 0 0 3px 0 #ffffff;
+  -moz-box-shadow: 0 0 3px 0 #ffffff;
+  box-shadow: 0 0 3px 0 #ffffff;
   height: 24px;
   font-size: 80%;
 }

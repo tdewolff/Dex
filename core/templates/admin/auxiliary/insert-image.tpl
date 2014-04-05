@@ -46,6 +46,7 @@
 			<h2>Properties</h2>
 			<form>
 				<input id="insert_url" type="hidden">
+				<input id="insert_width" type="hidden" value="50">
 				<p><label>Description</label><input id="insert_title" type="text" data-tooltip="Shown when hovering"></p>
 				<p><label>Alternative text</label><input id="insert_alt" type="text" data-tooltip="Shown when image is unavailable"></p>
 				<p><label>Caption</label><textarea id="insert_caption"></textarea></p>
@@ -65,10 +66,10 @@
 </script>
 
 <script id="image_item" type="text/x-dot-template">
-	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}">
+	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}" data-width="{{=it.width}}">
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 100}}
-		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/100/"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w=100/t={{=it.mtime}}/"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}>
@@ -172,16 +173,24 @@
 	images.on('click', 'li', function () {
 		$('#insert_title').val($(this).attr('data-title'));
 		$('#insert_url').val($(this).attr('data-url'));
+		$('#insert_width').val($(this).attr('data-width'));
 		switchPopupFrame(popup);
 	});
 
 	popup.on('click', '#external-link a', function () {
 		$('#insert_url').val($('#external-link input').val());
+		$('<img src="' + $('#external-link input').val() + '">').one('load', function() {
+			$('#insert_width').val(this.width);
+		});
 		switchPopupFrame(popup);
 	});
 
 	popup.on('click', 'a.insert', function () {
 		$('#insert_submit').val('1');
+		var width = $('#insert_width').val();
+		if (width > 500) {
+			$('#insert_url').val($('#insert_url').val() + '/w=500/');
+		}
 		parent.$.fancybox.close();
 	});
 

@@ -180,3 +180,9 @@ body {
   padding-left: 1em;
   border-left: 3px solid #477725;
 }
+.page-wrapper article figure {
+  margin: 10px;
+}
+.page-wrapper article figure figcaption {
+  text-align: center;
+}

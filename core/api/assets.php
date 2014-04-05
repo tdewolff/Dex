@@ -244,7 +244,8 @@ else if (API::action('get_images'))
 					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
 					'size' => Common::formatBytes(filesize($dir . $name), 2),
 					'width' => $width,
-					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name), $max_width)
+					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name), $max_width),
+					'mtime' => filemtime($dir . $name)
 				);
 			}
 		}

@@ -11,7 +11,7 @@
 	<li id="theme_{{=it.name}}" data-theme-name="{{=it.name}}"{{?it.current}} class="current"{{?}}>
 		<h4>{{=it.title}}</h4>
 		<div>({{=it.author}})</div>
-		<img src="/<?php echo $_['base_url']; ?>res/theme/{{=it.name}}/preview.png" alt="{{=it.name}}" width="256" height="256">
+		<img src="/<?php echo $_['base_url']; ?>res/theme/{{=it.name}}/preview.png/t={{=it.mtime}}/" alt="{{=it.name}}" width="256" height="256">
 	</li>
 </script>
 

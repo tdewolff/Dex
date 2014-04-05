@@ -7,7 +7,12 @@ $extension = ($extension_position === false ? '' : strtolower(substr($filename, 
 $parameters_position = strpos($extension, '/');
 if ($parameters_position !== false)
 {
-	$parameters = explode('/', substr($extension, $parameters_position + 1));
+	$url_parameters = explode('/', substr($extension, $parameters_position + 1));
+	$parameters = array();
+	foreach ($url_parameters as $parameter)
+		if (($value_position = strpos($parameter, '=')))
+			$parameters[substr($parameter, 0, $value_position)] = substr($parameter, $value_position + 1);
+
 	$filename = substr($filename, 0, $extension_position + 1 + $parameters_position);
 	$extension = substr($extension, 0, $parameters_position);
 }
@@ -25,8 +30,8 @@ else
 
 		if (isset($parameters))
 		{
-			$w = Common::tryOrZero($parameters, 0);
-			$h = Common::tryOrZero($parameters, 1);
+			$w = Common::tryOrZero($parameters, 'w');
+			$h = Common::tryOrZero($parameters, 'h');
 			$filename = Resource::imageResize($filename, $w, $h);
 		}
 	}

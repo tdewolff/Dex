@@ -28,7 +28,8 @@ else if (API::action('get_themes'))
 					'name' => $theme_name,
 					'title' => isset($ini['title']) ? $ini['title'] : '',
 					'author' => isset($ini['author']) ? $ini['author'] : '',
-					'current' => ($theme_name == $current_theme)
+					'current' => ($theme_name == $current_theme),
+					'mtime' => filemtime('themes/' . $theme_name . '/resources/preview.png')
 				);
 		}
 	Common::sortOn($themes, 'name');

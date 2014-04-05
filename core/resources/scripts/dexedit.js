@@ -404,18 +404,9 @@ DexEdit.Text = function (root) {
 						caption = '<figcaption>' + caption + '</figcaption>';
 					}
 
-					function afterLoad() {
+					$('<img src="' + url + '" title="' + title + '" alt="' + alt + '">').one('load', function () {
 						var img = $(this);
-
-						var width = img[0].width;
-						var height = img[0].height;
-						if (width > 500) {
-							img.attr('width', 500).attr('height', 500 / width * height);
-						} else if (width === 0) {
-							img.attr('width', 50).attr('height', 50);
-						} else {
-							img.attr('width', width).attr('height', height);
-						}
+						img.attr('width', this.width).attr('height', this.height);
 
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
 						figure.insertAfter(DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer));
@@ -424,9 +415,7 @@ DexEdit.Text = function (root) {
 						DexEdit.Selection.removeAllRanges();
 						self.menu.stop().fadeOut('fast');
 						self.root.trigger('input');
-						$(this).off('load', afterLoad);
-					}
-					$('<img src="' + url + '" title="' + title + '" alt="' + alt + '">').on('load', afterLoad);
+					});
 				}
 			},
 			helpers:  {
@@ -792,11 +781,11 @@ DexEdit.Image = function (root, img) {
 		var scrollY = window.scrollY || document.documentElement.scrollTop;
 
 		var x = self.drag_offset_x + (e.pageX - self.drag_start_x);
-		var y = self.drag_offset_y + (e.pageY - scrollY - self.drag_start_y);
+		var y = self.drag_offset_y + (e.pageY - self.drag_start_y);
 
 		var previous = DexEdit.DOM.getPreviousBlock(self.placeholder[0]);
-		if (previous === self.figure[0]) {
-			previous = DexEdit.DOM.getPreviousBlock(self.figure[0]);
+		while (previous && (previous === self.figure[0] || $(previous).hasClass('dexedit-img-placeholder'))) {
+			previous = DexEdit.DOM.getPreviousBlock(previous);
 		}
 		if (previous) {
 			var rect = previous.getBoundingClientRect();
@@ -806,8 +795,8 @@ DexEdit.Image = function (root, img) {
 		}
 
 		var next = DexEdit.DOM.getNextBlock(self.placeholder[0]);
-		if (next === self.figure[0]) {
-			next = DexEdit.DOM.getNextBlock(self.figure[0]);
+		while (next && (next === self.figure[0] || $(next).hasClass('dexedit-img-placeholder'))) {
+			next = DexEdit.DOM.getNextBlock(next);
 		}
 		if (next) {
 			var rect = next.getBoundingClientRect();
@@ -825,9 +814,12 @@ DexEdit.Image = function (root, img) {
 	this.showMenu = function () {
 		var rect = self.img[0].getBoundingClientRect();
 
-		var top = 10 - self.img_menu.height() - 5;
-		if (rect.top - self.img_menu.height() - 10 < 38) { // include admin-bar
-			top = 10 + rect.height + 5;
+		var top = 10 + 5; // within image
+		if (rect.height < self.img_menu.height() + 10 || rect.width < self.img_menu.width() + 10) {
+			top = 10 - self.img_menu.height() - 5; // above image
+			if (rect.top - self.img_menu.height() - 10 < 38) { // include admin-bar
+				top = 10 + rect.height + 5; // under image
+			}
 		}
 
 		var left = 10 + (rect.width - self.img_menu.width()) / 2;
@@ -972,7 +964,7 @@ DexEdit.Image = function (root, img) {
 				self.drag_start_x = e.pageX;
 				self.drag_start_y = e.pageY - scrollY;
 				self.drag_offset_x = self.figure[0].offsetLeft;
-				self.drag_offset_y = self.wrapper[0].offsetTop + 10;
+				self.drag_offset_y = self.wrapper[0].offsetTop + 10 - scrollY;
 
 				self.figure.css({
 					position: 'absolute',
@@ -1023,7 +1015,7 @@ DexEdit.Image = function (root, img) {
 			if (len === -1) {
 				len = src.length;
 			}
-			self.img.attr('src', src.substr(0, len) + '/' + self.img[0].width + '/');
+			self.img.attr('src', src.substr(0, len) + '/w=' + self.img[0].width + '/');
 
 			self.root.trigger('input');
 			self.resizing = false;
