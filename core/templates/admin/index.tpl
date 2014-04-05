@@ -23,7 +23,7 @@
 <a href="/<?php echo $_['base_url']; ?>admin/logs/" class="button indent view-logs"><i class="fa fa-list-alt"></i>&ensp;View <?php echo $_['log_name']; ?></a>
 
 <script id="log_item" type="text/x-dot-template">
-	<li data-html="{{=it.html}}">
+	<li data-html="{{=it.html}}" class="{{=it.type.toLowerCase()}}">
 		<div>{{=it.datetime}}</div>
 		<div>{{=it.message}}</div>
 	</li>
@@ -60,14 +60,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_logs'));
+			var items = '';
 			$.each(data['logs'], function () {
-				var item = $(log_item(this));
-				if (this['type'] == 'ERROR')
-					item = item.addClass('error');
-				else if (this['type'] == 'WARNING')
-					item = item.addClass('warning');
-				logs.append(item);
+				items += log_item(this);
 			});
+			logs.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_logs'));
 		});

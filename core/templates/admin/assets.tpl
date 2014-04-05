@@ -128,9 +128,11 @@
 					dir: dir
 				}, function (data) {
 					breadcrumbs.find('*:not(a:first)').remove();
+					var items = '';
 					$.each(data['breadcrumbs'], function (i) {
-						breadcrumbs.append('<span>&gt;</span><a href="#!dir=' + this.dir + '">' + this.name + '</a>');
+						items += '<span>&gt;</span><a href="#!dir=' + this.dir + '">' + this.name + '</a>';
 					});
+					breadcrumbs.append(items);
 				});
 
 				apiLoadStatusWorking($('#load_status_directories_assets'));
@@ -145,13 +147,15 @@
 					}
 					$('#load_status_directories_assets').hide();
 
+					var items = '';
 					$.each(data['directories'], function () {
-						$(directory_item(this)).hide().appendTo(directories_assets).slideDown(100);
+						items += directory_item(this);
 					});
-
 					$.each(data['assets'], function () {
-						$(asset_item(this)).hide().appendTo(directories_assets).slideDown(100);
+						items += asset_item(this);
 					});
+					$(items).hide().appendTo(directories_assets).slideDown(100);
+
 				}, function () {
 					apiLoadStatusError($('#load_status_directories_assets'));
 				});
@@ -169,9 +173,11 @@
 					}
 					$('#load_status_images').hide();
 
+					var items = '';
 					$.each(data['images'], function () {
-						$(image_item(this)).hide().appendTo(images).slideDown(100);
+						items += image_item(this);
 					});
+					$(items).hide().appendTo(images).slideDown(100);
 				}, function () {
 					apiLoadStatusError($('#load_status_images'));
 				});
@@ -333,5 +339,19 @@
 				}
 			}
 		});
+
+        $('.fancybox').fancybox({
+            closeClick: true,
+            autoScale: false,
+            openEffect : 'elastic',
+            openSpeed  : 150,
+            closeEffect : 'elastic',
+            closeSpeed  : 150,
+            helpers:  {
+                overlay: {
+                    locked: false
+                }
+            }
+        });
 	});
 </script>

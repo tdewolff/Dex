@@ -98,8 +98,8 @@
 		$('#upload').find('#knob').stop().fadeOut();
 		$('#upload').find('ul li').remove();
 
-		directories_assets.find('li:not(:first):not(.load-status)').slideUp('fast', function () { $(this).remove(); });
-		images.find('li:not(.load-status)').slideUp('fast', function () { $(this).remove(); });
+		directories_assets.find('li:not(:first):not(.load-status)').slideUp(100, function () { $(this).remove(); });
+		images.find('li:not(.load-status)').slideUp(100, function () { $(this).remove(); });
 
 		setTimeout(function () {
 			api('/' + base_url + 'api/core/assets/', {
@@ -107,9 +107,11 @@
 				dir: dir
 			}, function (data) {
 				breadcrumbs.find('*:not(a:first)').remove();
+				var items = '';
 				$.each(data['breadcrumbs'], function (i) {
-					breadcrumbs.append('<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+					items += '<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>';
 				});
+				breadcrumbs.append(items);
 			});
 
 			apiLoadStatusWorking($('#load_status_directories'));
@@ -124,8 +126,12 @@
 				}
 				$('#load_status_directories').hide();
 
+				var items = '';
 				$.each(data['directories'], function () {
-					$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+					items += directory_item(this);
+				});
+				$(items).hide().appendTo(directories_assets).slideDown(100, function () {
+					parent.$.fancybox.update();
 				});
 			}, function () {
 				apiLoadStatusError($('#load_status_directories'));
@@ -144,8 +150,12 @@
 				}
 				$('#load_status_images').hide();
 
+				var items +=  = '';
 				$.each(data['images'], function () {
-					$(image_item(this)).hide().appendTo(images).slideDown('fast');
+					items += image_item(this);
+				});
+				$(items).hide().appendTo(images).slideDown(100, function () {
+					parent.$.fancybox.update();
 				});
 			}, function () {
 				apiLoadStatusError($('#load_status_images'));

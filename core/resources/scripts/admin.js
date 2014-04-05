@@ -1,24 +1,3 @@
-$(function () {
-	// for images like in assets
-    if ($.fn.fancybox) {
-        $('.fancybox').fancybox({
-            closeClick: true,
-
-            openEffect : 'elastic',
-            openSpeed  : 150,
-
-            closeEffect : 'elastic',
-            closeSpeed  : 150,
-
-            helpers:  {
-                overlay: {
-                    locked: false
-                }
-            }
-        });
-    }
-});
-
 $('html').on('click', 'a[href="#"]', function (e) {
 	e.preventDefault();
 });

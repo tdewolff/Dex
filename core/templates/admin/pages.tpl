@@ -61,9 +61,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['pages'], function () {
-				pages.append(page_item(this));
+				items += page_item(this);
 			});
+			pages.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});

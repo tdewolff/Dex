@@ -41,9 +41,12 @@
 	api('/' + base_url + 'api/core/pages/', {
 		action: 'get_pages'
 	}, function (data) {
+		var items = '';
 		$.each(data['pages'], function () {
-			links.append(link_item(this));
+			items += link_item(this);
 		});
+		links.append(items);
+		parent.$.fancybox.update();
 	});
 
 	var popup = $('.popup');

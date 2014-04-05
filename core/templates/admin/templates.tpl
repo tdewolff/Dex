@@ -36,9 +36,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['templates'], function () {
-				templates.append(template_item(this));
+				items += template_item(this);
 			});
+			templates.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});

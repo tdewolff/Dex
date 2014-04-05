@@ -178,14 +178,18 @@ $('form input[data-type="array"]').each(function (i, array) {
 	} catch (e) {}
 
 	if (!values.length && placeholders.length) {
+		var items = '';
 		$.each(placeholders, function (i, placeholder) {
-			ul.append(template({placeholder: placeholder, value: ''}));
+			items += template({placeholder: placeholder, value: ''});
 		});
+		ul.append(items);
 	} else {
 		values.push('');
+		var items = '';
 		$.each(values, function (i, value) {
-			ul.append(template({placeholder: '', value: value}));
+			items += template({placeholder: '', value: value});
 		});
+		ul.append(items);
 	}
 
 	ul.on('input', 'input,textarea', function (e) {
@@ -218,9 +222,11 @@ $('form input[data-type="parameters"]').each(function (i, array) {
 	} catch (e) {}
 	values.push('');
 
+	var items = '';
 	$.each(values, function (key, value) {
-		ul.append(template({key: key, value: value}));
+		items += template({key: key, value: value});
 	});
+	ul.append(items);
 
 	ul.on('input', 'input,textarea', function (e) {
 		var input = $(this),

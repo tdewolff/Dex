@@ -89,6 +89,21 @@ DexEdit.DOM = {
 		return false;
 	},
 
+	isEditable: function (node) {
+		while (node.parentNode) {
+			console.log(node);
+			console.log(node.attributes);
+			if (node.hasAttribute('contenteditable')) {
+				if (node.getAttribute['contenteditable'] === 'false') {
+					return false;
+				}
+				return true;
+			}
+			node = node.parentNode;
+		}
+		return false;
+	},
+
 	getTextProperty: function (node) {
 		if (node.nodeType === Node.TEXT_NODE) {
 			return 'data';
@@ -361,8 +376,9 @@ DexEdit.Text = function (root) {
 
 	this.fancyboxLink = function (selection) {
 		$.fancybox.open({
-			'type': 'ajax',
-			'href': '/' + base_url + 'admin/auxiliary/insert-link/',
+			type: 'ajax',
+			href: '/' + base_url + 'admin/auxiliary/insert-link/',
+            autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_text').val(selection);
@@ -388,8 +404,9 @@ DexEdit.Text = function (root) {
 
 	this.fancyboxImage = function (selection) {
 		$.fancybox.open({
-			'type': 'ajax',
-			'href': '/' + base_url + 'admin/auxiliary/insert-image/',
+			type: 'ajax',
+			href: '/' + base_url + 'admin/auxiliary/insert-image/',
+            autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_caption').val(selection);
@@ -428,8 +445,9 @@ DexEdit.Text = function (root) {
 
 	this.fancyboxAsset = function (selection) {
 		$.fancybox.open({
-			'type': 'ajax',
-			'href': '/' + base_url + 'admin/auxiliary/insert-asset/',
+			type: 'ajax',
+			href: '/' + base_url + 'admin/auxiliary/insert-asset/',
+            autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_text').val(selection);
@@ -454,7 +472,7 @@ DexEdit.Text = function (root) {
 	};
 
 	this.selection = function () {
-		if (!DexEdit.Selection.isCollapsed) {
+		if (!DexEdit.Selection.isCollapsed && DexEdit.Selection.anchorNode !== self.root[0]) { // not root for selecting figure in FF
 			var range = DexEdit.Range.getTrimmed();
 			self.select(range);
 		}
@@ -523,7 +541,13 @@ DexEdit.Text = function (root) {
 
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
-			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0])) {
+
+			var block = self.range.commonAncestorContainer;
+			if (!DexEdit.DOM.isBlock(block)) {
+				block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+			}
+
+			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0]) || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
 				var last = self.root.find('*:last');
 				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
 					last = $('<p></p>').appendTo(self.root);
@@ -541,18 +565,22 @@ DexEdit.Text = function (root) {
 					self.removeLink();
 				}
 
-				var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
 				var tag = DexEdit.DOM.getTag(block);
 				if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
-					var figure = DexEdit.DOM.getParentTag(block, 'figure');
+					var figure = DexEdit.DOM.getClosestTag(block, 'figure');
 					if (!!figure) {
 						block = figure;
 					}
 
 					var p = $('<p></p>').after($(block));
 					while (p[0].firstChild) {
-					    p[0].removeChild(p[0].childNodes[0]);
+					   p[0].removeChild(p[0].childNodes[0]);
 					}
+
+					var range = document.createRange();
+			        range.selectNodeContents(p[0]);
+			        range.collapse(false);
+			        self.select(range);
 				}
 		    }
 

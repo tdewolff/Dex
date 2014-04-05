@@ -55,6 +55,7 @@ function apiFatal(message) {
 	if (!$('div.fancybox-wrap').length) {
 		$.fancybox.open({
 			content: '<h2 class="error">Error</h2>' + message,
+            autoScale: false,
 			beforeShow: function () {
 				this.skin.addClass('dex-api-error');
 			},

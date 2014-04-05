@@ -14,7 +14,7 @@
 </ul>
 
 <script id="log_item" type="text/x-dot-template">
-	<li data-html="{{=it.html}}">
+	<li data-html="{{=it.html}}" class="{{=it.type.toLowerCase()}}">
 		<div>{{=it.datetime}}</div>
 		<div>{{=it.ipaddress}}</div>
 		<div>{{=it.message}}</div>
@@ -36,22 +36,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['logs'], function () {
-				var item = $(log_item(this));
-				if (this['type'] == 'ERROR')
-					item = item.addClass('error');
-				else if (this['type'] == 'WARNING')
-					item = item.addClass('warning');
-				else if (this['type'] == 'NOTICE')
-					item = item.addClass('notice');
-				else if (this['type'] == 'REQUEST')
-					item = item.addClass('request');
-				else if (this['type'] == 'CACHING')
-					item = item.addClass('caching');
-				else
-					item = item.addClass('empty');
-				logs.append(item);
+				items += log_item(this);
 			});
+			logs.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});

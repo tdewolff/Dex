@@ -124,11 +124,8 @@ body {
 }
 .dex-admin-bar .dexedit-insert {
   display: inline-block;
-  margin-left: 60px;
+  margin-left: 100px;
   line-height: 28px;
-}
-.dex-admin-bar .dexedit-insert a {
-  padding-left: 10px;
 }
 .dex-popup-wrapper {
   /*! normalize.css v2.1.3 | MIT License | git.io/normalize */

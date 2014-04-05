@@ -25,9 +25,7 @@ else
 {
 	if (Resource::isImage($extension))
 	{
-		if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
-			$filename = Common::insertMinExtension($filename);
-
+		$filename = Resource::getMinified($filename);
 		if (isset($parameters))
 		{
 			$w = Common::tryOrZero($parameters, 'w');

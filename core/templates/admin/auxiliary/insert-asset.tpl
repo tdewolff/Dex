@@ -63,9 +63,11 @@
 				dir: dir
 			}, function (data) {
 				breadcrumbs.find('*:not(a:first)').remove();
+				var items = '';
 				$.each(data['breadcrumbs'], function (i) {
-					breadcrumbs.append('<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+					items += '<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>';
 				});
+				breadcrumbs.append(items);
 			});
 
 			apiLoadStatusWorking($('#load_status_directories_assets'));
@@ -80,12 +82,15 @@
 				}
 				$('#load_status_directories_assets').hide();
 
+				var items = '';
 				$.each(data['directories'], function () {
-					$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+					items += directory_item(this);
 				});
-
 				$.each(data['assets'], function () {
-					$(asset_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+					items += asset_item(this);
+				});
+				$(items).hide().appendTo(directories_assets).slideDown(100, function () {
+					parent.$.fancybox.update();
 				});
 			}, function () {
 				apiLoadStatusError($('#load_status_directories_assets'));

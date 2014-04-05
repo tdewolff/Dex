@@ -1295,7 +1295,7 @@ body {
   width: 58%;
   text-overflow: ellipsis;
 }
-#modules li.disabled {
+#modules li.disabled div:not(:first-of-type) {
   font-style: italic;
   color: #C0C0C0;
 }

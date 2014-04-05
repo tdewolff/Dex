@@ -51,9 +51,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['users'], function () {
-				users.append(user_item(this));
+				items += user_item(this);
 			});
+			users.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});

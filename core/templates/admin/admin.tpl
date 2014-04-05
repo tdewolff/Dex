@@ -27,16 +27,16 @@
 
 <h3>Warnings</h3>
 <ul id="warnings">
-<?php foreach ($_['warnings'] as $warning) {
-	echo '<li>' . $warning . '</li>';
-} if (!count($_['warnings'])) {
-	echo '<li class="empty">none</li>';
-} ?>
 	<li id="load_warnings" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
 	</li>
+	<?php foreach ($_['warnings'] as $warning) {
+		echo '<li>' . $warning . '</li>';
+	} if (!count($_['warnings'])) {
+		echo '<li class="empty">none</li>';
+	} ?>
 </ul>
 
 <script type="text/javascript">
@@ -58,17 +58,21 @@
 
 				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
+				var items = '';
 				$.each(data['diskspace'], function () {
 					this.width = this.percentage;
-					$(diskspace_item(this)).hide().appendTo(diskspace).slideDown(100);
+					items += diskspace_item(this);
 				});
+				$(items).hide().appendTo(diskspace).slideDown(100);
 
 				var percentage = 100.0 / data['diskspace'].length;
+				var items = '';
 				$.each(data['diskspace'], function () {
 					this.width = percentage;
 					this.percentage = parseFloat(this.percentage.toFixed(0));
-					$(diskspace_legend_item(this)).hide().appendTo(diskspace_legend).slideDown(100);
+					items += diskspace_legend_item(this);
 				});
+				$(items).hide().appendTo(diskspace_legend).slideDown(100);
 			}, function () {
 				apiLoadStatusError($('#load_diskspace'));
 			});

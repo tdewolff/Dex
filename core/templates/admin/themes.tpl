@@ -29,9 +29,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['themes'], function () {
-				themes.append(theme_item(this));
+				items += theme_item(this);
 			});
+			themes.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});

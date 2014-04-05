@@ -18,6 +18,8 @@ if (!$config['minifying'])
 	$warnings[] = 'Minifying is disabled in config.ini';
 if (!$config['caching'])
 	$warnings[] = 'Caching is disabled in config.ini';
+if (!$config['ssl'])
+	$warnings[] = 'SSL login is disabled in config.ini';
 if ($config['verbose_logging'])
 	$warnings[] = 'Verbose logging is enabled in config.ini';
 if ($config['display_errors'])

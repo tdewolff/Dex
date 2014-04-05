@@ -132,10 +132,9 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 {
 	$image_name = str_replace('\\', '/', $image_name);
 	$image_min_name = Common::insertMinExtension($image_name);
+	$extension = substr($image_name, strrpos($image_name, '.') + 1);
 	if ($info->isFile() && $info->getSize() && !Common::hasMinExtension($image_name) &&
-		Resource::isImage(substr($image_name, strrpos($image_name, '.') + 1)) && (
-		!is_file($image_min_name) ||
-		$info->getMTime() > filemtime($image_min_name)))
+		Resource::isImage($extension) && (!is_file($image_min_name) || $info->getMTime() > filemtime($image_min_name)))
 	{
 		Console::append('Compressing \'' . $image_name . '\'...');
 
@@ -169,6 +168,11 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 			Console::appendLine('failed: ' . lcfirst($smushit->error));
 			continue;
 		}
+
+		// gif -> png case
+		$new_extension = substr($smushit->dest, strrpos($smushit->dest, '.') + 1);
+		if ($extension != $new_extension)
+			$image_min_name .= '.' . $new_extension;
 
 		if (file_exists($image_min_name))
 			unlink($image_min_name);

@@ -1,5 +1,11 @@
 <?php
 
+if (Common::tryOrDefault($config, 'ssl', true) &&  $_SERVER['HTTPS'] != 'on')
+{
+    header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+    exit();
+}
+
 $form = new Form('login');
 
 $form->addSection('Login', 'You must login before you can continue to the admin panel.');

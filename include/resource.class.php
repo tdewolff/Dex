@@ -66,6 +66,22 @@ class Resource
 		return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg'); // only types that can be resized
 	}
 
+	public static function getMinified($filename)
+	{
+		$min = Common::insertMinExtension($filename);
+		if (is_file($min) && filemtime($filename) < filemtime($min))
+			return $min;
+
+		// SmushIt gif -> png case
+		if (substr($filename, strrpos($filename, '.') + 1) == 'gif')
+		{
+			$min .= '.png';
+			if (is_file($min) && filemtime($filename) < filemtime($min))
+				$filename = $min;
+		}
+		return $filename;
+	}
+
 	private static function cacheFilename($filenames, $cache_formatted_filename)
 	{
 		$latest_modify_time = 0;

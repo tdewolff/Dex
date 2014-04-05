@@ -13,13 +13,13 @@
 <div class="dex-admin-bar">
 	<?php if (Db::isValid()) { if (User::getTimeLeft() > 0) { ?>
 	<div class="logged-in">
-		<div class="navigate">Go<?php if (Common::requestAdmin() && isset($_SESSION['last_site_request']) || !Common::requestAdmin()) { echo ' back'; } ?> to <?php if (Common::requestAdmin()) {
+		<div class="navigate">Go<?php if (Common::requestAdmin() && isset($_SESSION['last_site_request']) || !Common::requestAdmin()) { echo ' back'; } ?> to&ensp;<?php if (Common::requestAdmin()) {
 			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_site_request']) ? $_SESSION['last_site_request'] : '') . '">Site</a>';
 		} else {
 			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_admin_request']) ? $_SESSION['last_admin_request'] : 'admin/') . '">Admin panel</a>';
 		} ?></div>
 		<?php if (!Common::requestAdmin()) { ?>
-		<div class="dexedit-insert"><span>Insert:</span> <a class="dexedit-menu-link" href="#"><i class="fa fa-fw fa-link"></i></a><a class="dexedit-menu-image" href="#"><i class="fa fa-fw fa-picture-o"></i></a><a class="dexedit-menu-asset" href="#"><i class="fa fa-fw fa fa-download"></i></a></div>
+		<div class="dexedit-insert"><span>Insert:</span>&ensp;<a class="dexedit-menu-link" href="#"><i class="fa fa-fw fa-link"></i></a>&ensp;<a class="dexedit-menu-image" href="#"><i class="fa fa-fw fa-picture-o"></i></a>&ensp;<a class="dexedit-menu-asset" href="#"><i class="fa fa-fw fa fa-download"></i></a></div>
 		<?php } ?>
 		<div class="current-user"><?php echo $_['username'] . ' (' . ucfirst($_['role']) . ')'; ?> <a href="#" data-admin="<?php echo (Common::requestAdmin() ? '1' : '0'); ?>" data-tooltip="Logout"><i class="fa fa-fw fa-sign-out"></i></a></div>
 	</div>
