@@ -27,26 +27,52 @@ body {
 }
 
 .page-wrapper {
-	article, nav, h1, h2 {
+	header, nav, article {
 		width: 1000px;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	h1 {
-		padding-left: 1em;
-		text-align: left;
-		margin: 0 auto;
-		margin-top: 0.5em;
+	header {
+		position: relative;
+
+		h1 {
+			padding-left: 1em;
+			text-align: left;
+			margin-top: 0.5em;
+		}
+
+		h2 {
+			padding: 0;
+			padding-left: 5em;
+			text-align: left;
+			text-shadow: none;
+		}
+
+		.contact {
+			position: absolute;
+			top: 1em;
+			right: 4em;
+
+			text-align: right;
+	        font-size:90%;
+	        line-height:150%;
+	        color:#d0d0d0;
+
+	        a {
+	        	text-decoration: none;
+	        	color:#d0d0d0;
+	        }
+
+	        .org {
+		        font-variant: small-caps;
+		    }
+	    }
 	}
 
-	h2 {
-		padding: 0;
-		padding-left: 5em;
-		margin: 0 auto;
-		text-align: left;
-		text-shadow: none;
-	}
+    footer .contact {
+    	display: none;
+    }
 
 	nav {
 		background: darken(@light, 5%);

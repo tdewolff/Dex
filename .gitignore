@@ -1,8 +1,10 @@
 non-server/images/
-non-server/less/groningenbijles/
 non-server/dex.sublime-project
 non-server/dex.sublime-workspace
+non-server/less/groningenbijles/
+non-server/less/schotsdeuntje/
 themes/groningenbijles/
+themes/schotsdeuntje/
 
 assets/
 cache/

@@ -84,6 +84,14 @@
 			transition: @what @time @transition;
 }
 
+.transform(@val) {
+    -webkit-transform: @val;
+    -moz-transform: @val;
+    -ms-transform: @val;
+    -o-transform: @val;
+    transform: @val;
+}
+
 .css-gradient(@from: #dfdfdf, @to: #f8f8f8) {
 	background-color: @to;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));

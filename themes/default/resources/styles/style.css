@@ -87,26 +87,45 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-align: justify;
 }
-.page-wrapper article,
+.page-wrapper header,
 .page-wrapper nav,
-.page-wrapper h1,
-.page-wrapper h2 {
+.page-wrapper article {
   width: 1000px;
   margin-left: auto;
   margin-right: auto;
 }
-.page-wrapper h1 {
+.page-wrapper header {
+  position: relative;
+}
+.page-wrapper header h1 {
   padding-left: 1em;
   text-align: left;
-  margin: 0 auto;
   margin-top: 0.5em;
 }
-.page-wrapper h2 {
+.page-wrapper header h2 {
   padding: 0;
   padding-left: 5em;
-  margin: 0 auto;
   text-align: left;
   text-shadow: none;
+}
+.page-wrapper header .contact {
+  position: absolute;
+  top: 1em;
+  right: 4em;
+  text-align: right;
+  font-size: 90%;
+  line-height: 150%;
+  color: #d0d0d0;
+}
+.page-wrapper header .contact a {
+  text-decoration: none;
+  color: #d0d0d0;
+}
+.page-wrapper header .contact .org {
+  font-variant: small-caps;
+}
+.page-wrapper footer .contact {
+  display: none;
 }
 .page-wrapper nav {
   background: #f2f2f2;

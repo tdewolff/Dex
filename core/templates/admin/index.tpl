@@ -38,7 +38,7 @@
 					action: 'get_visits'
 				}, function (data) {
 					apiLoadStatusSuccess($('#load_stats'));
-					$('.stats-frame').slideDown();
+					$('.stats-frame').slideDown(100);
 					$('.stats-frame')[0].contentWindow.drawStats(data['visits']);
 				}, function () {
 					apiLoadStatusError($('#load_stats'));

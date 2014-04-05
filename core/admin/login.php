@@ -25,7 +25,7 @@ if ($form->submitted())
 			$form->appendError('Too many login attempts within short time, please wait 15 minutes');
 		else
 		{
-			$user = Db::singleQuery("SELECT password FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
+			$user = Db::singleQuery("SELECT user_id, password FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
 			if ($user && Bcrypt::verify($form->get('password'), $user['password']))
 			{
 				User::logIn($user['user_id']);
