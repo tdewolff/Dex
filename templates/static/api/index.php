@@ -11,15 +11,16 @@ if (API::action('save'))
     $content = API::get('content');
     $content = preg_replace('/([src|href]=")\/' . preg_quote(Common::$base_url, '/') . '/', '\1[base_url]', $content);
 
-    Db::exec("
-    DELETE FROM content WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'content';
-    INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
-        '" . Db::escape(API::get('link_id')) . "',
-        '" . Db::escape(User::getUserId()) . "',
-        'content',
-        '" . Db::escape($content) . "',
-        '" . Db::escape(time()) . "'
-    );");
+    Db::exec("BEGIN;
+        DELETE FROM content WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'content';
+        INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
+            '" . Db::escape(API::get('link_id')) . "',
+            '" . Db::escape(User::getUserId()) . "',
+            'content',
+            '" . Db::escape($content) . "',
+            '" . Db::escape(time()) . "'
+        );
+    COMMIT;");
 
     API::finish();
 }

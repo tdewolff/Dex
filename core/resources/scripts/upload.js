@@ -11,14 +11,14 @@ function addAlphabetically(list, item, name) {
 	var added = false;
 	list.each(function () {
 		if ($(this).attr('data-name') > name) {
-			item.insertBefore(this).slideDown('fast');
+			item.insertBefore(this).slideDown(100);
 			added = true;
 			return false;
 		}
 	});
 
 	if (!added) {
-		item.insertAfter(list.last()).slideDown('fast');
+		item.insertAfter(list.last()).slideDown(100);
 	}
 }
 

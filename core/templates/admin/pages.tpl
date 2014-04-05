@@ -78,7 +78,7 @@
 				link_id: $(this).attr('data-link-id')
 			}, function () {
 				apiStatusSuccess('Deleted page');
-				$('.dropdown-menu').fadeOut('fast');
+				$('.dropdown-menu').fadeOut(100);
 				$('#page_' + item.attr('data-link-id')).remove();
 
 				if (pages.find('li').length == 2) {

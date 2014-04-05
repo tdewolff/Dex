@@ -26,7 +26,6 @@
         api('/' + base_url + 'api/module/menu/index/', {
             action: 'get_menu'
         }, function (data) {
-            var items = '';
             $.each(data['menu'], function () {
                 var item = $(menu_item(this));
                 item.find('.fa-long-arrow-right').hide();
@@ -35,9 +34,8 @@
                 for (var i = 0; i < level; i++) {
                     item.find('.fa-long-arrow-right').eq(i).show().css('display', 'inline-block');
                 }
-                items += item;
+                menu.append(item);
             });
-            menu.append(items);
         });
     });
 </script>

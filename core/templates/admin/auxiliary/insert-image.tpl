@@ -211,14 +211,14 @@
 				if (directories_assets.find('li.asset').length) {
 					addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
 				} else {
-					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown(100);
 				}
 			} else {
 				var item = image_item(data['file']);
 				if (images.find('li').length) {
 					addAlphabetically(images.find('li'), item, data['file']['name']);
 				} else {
-					$(item).hide().appendTo(images).slideDown('fast');
+					$(item).hide().appendTo(images).slideDown(100);
 				}
 			}
 		});

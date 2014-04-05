@@ -9,12 +9,11 @@ Hooks::attach('main', 0, function () {
     	$content['content'] = preg_replace('/([src|href]=")\[base_url\]/', '\1/' . Common::$base_url, $content['content']);
         Template::set('content', $content['content']);
 
-        $user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($content['user_id']) . "' LIMIT 1;");
-        if ($user)
-        {
+        if ($content['user_id'] == User::getUserId())
+            Template::set('author', User::getUsername());
+        else if ($user = Db::singleQuery("SELECT username FROM user WHERE user_id = '" . Db::escape($content['user_id']) . "' LIMIT 1;"))
             Template::set('author', $user['username']);
-            Template::set('last_save', $content['modify_time']);
-        }
+        Template::set('last_save', $content['modify_time']);
     }
     else
         Template::set('content', 'Edit this&#x2026;');

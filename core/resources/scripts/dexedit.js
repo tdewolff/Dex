@@ -304,7 +304,7 @@ DexEdit.Text = function (root) {
 		self.menu.css({
 			top: top,
 			left: left
-		}).stop().fadeIn('fast');
+		}).stop().fadeIn(100);
 	};
 
 	this.hideMenu = function () {
@@ -430,7 +430,7 @@ DexEdit.Text = function (root) {
 						new DexEdit.Image(self.root, img);
 
 						DexEdit.Selection.removeAllRanges();
-						self.menu.stop().fadeOut('fast');
+						self.menu.stop().fadeOut(100);
 						self.root.trigger('input');
 					});
 				}
@@ -490,7 +490,7 @@ DexEdit.Text = function (root) {
 	// mouse
 	$('html').on('mousedown', function (e) {
 		if (!DexEdit.DOM.hasParentClass(e.target, 'fancybox-wrap', self.root[0]) && !DexEdit.DOM.hasParentClass(e.target, 'dexedit-menu', self.root[0])) {
-			self.menu.stop().fadeOut('fast');
+			self.menu.stop().fadeOut(100);
 		}
 	});
 
@@ -498,7 +498,7 @@ DexEdit.Text = function (root) {
 		var tag = DexEdit.DOM.getTag(e.target);
 		if (!((tag === 'i' || tag === 'span') && DexEdit.DOM.hasParentClass(e.target, 'dexedit-menu', self.root[0])) && self.range) {
 			e.stopPropagation();
-			self.menu.stop().fadeOut('fast');
+			self.menu.stop().fadeOut(100);
 		}
 	});
 
@@ -860,7 +860,7 @@ DexEdit.Image = function (root, img) {
 		self.img_menu.stop().css({
 			top: top,
 			left: left
-		}).fadeIn('fast');
+		}).fadeIn(100);
 	};
 
 	this.img.on({
@@ -879,15 +879,15 @@ DexEdit.Image = function (root, img) {
 				if (!self.resizing) {
 					self.showMenu();
 				}
-				self.img_resize.stop().fadeIn('fast');
+				self.img_resize.stop().fadeIn(100);
 			}
 		},
 		mouseleave: function (e) {
 			self.hovering = false;
 			if (!self.dragging) {
-				self.img_menu.stop().fadeOut('fast');
+				self.img_menu.stop().fadeOut(100);
 				if (!self.resizing) {
-					self.img_resize.stop().fadeOut('fast');
+					self.img_resize.stop().fadeOut(100);
 				}
 			}
 		}
@@ -984,8 +984,8 @@ DexEdit.Image = function (root, img) {
 				return;
 			} else if (DexEdit.DOM.getTag(target[0]) === 'img') {
 				if (self.hovering) {
-					self.img_menu.stop().fadeOut('fast');
-					self.img_resize.stop().fadeOut('fast');
+					self.img_menu.stop().fadeOut(100);
+					self.img_resize.stop().fadeOut(100);
 				}
 
 				self.dragging = true;
@@ -1009,7 +1009,7 @@ DexEdit.Image = function (root, img) {
 			}
 
 			if (self.hovering) {
-				self.img_menu.stop().fadeOut('fast');
+				self.img_menu.stop().fadeOut(100);
 			}
 
 			self.resizing = true;
@@ -1035,7 +1035,7 @@ DexEdit.Image = function (root, img) {
 			if (self.hovering) {
 				self.showMenu();
 			} else {
-				self.img_resize.stop().fadeOut('fast');
+				self.img_resize.stop().fadeOut(100);
 			}
 
 			var src = self.img.attr('src');
@@ -1053,7 +1053,7 @@ DexEdit.Image = function (root, img) {
 
 			if (self.hovering) {
 				self.showMenu();
-				self.img_resize.stop().fadeIn('fast');
+				self.img_resize.stop().fadeIn(100);
 			}
 
 			self.figure.insertAfter(self.placeholder);

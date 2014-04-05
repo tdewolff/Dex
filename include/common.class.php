@@ -230,7 +230,7 @@ class Common
 		header('Content-Type: text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>' .
 			 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-		$table = Db::query("SELECT * FROM link;");
+		$table = Db::query("SELECT url, modify_time FROM link;");
 		while ($row = $table->fetch())
 		{
 			$slashes = preg_match_all('/\//', $row['url'], $matches); // $matches not used but required for old PHP versions

@@ -216,7 +216,7 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted directory');
-				item.closest('li').slideUp('fast', function () {
+				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
 					if (directories_assets.find('li').length == 2) {
@@ -238,7 +238,7 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted asset');
-				item.closest('li').slideUp('fast', function () {
+				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
 					if (directories_assets.find('li').length == 2) {
@@ -260,7 +260,7 @@
 				dir: dir
 			}, function () {
 				apiStatusSuccess('Deleted image');
-				item.closest('li').slideUp('fast', function () {
+				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
 					if (images.find('li').length == 2) {
@@ -309,7 +309,7 @@
 				if (directories_assets.find('li.directory').length) {
 					addAlphabetically(directories_assets.find('li.directory'), item, data['directory']['name']);
 				} else {
-					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown(100);
 				}
 			}, function () {
 				apiStatusError('Creating directory failed');
@@ -324,9 +324,9 @@
 				if (directories_assets.find('li.asset').length) {
 					addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
 				} else if (directories_assets.find('.directory').length) {
-					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown(100);
 				} else {
-					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown(100);
 				}
 			} else {
 				$('#load_status_images').hide();
@@ -335,7 +335,7 @@
 				if (images.find('li').length) {
 					addAlphabetically(images.find('li'), item, data['file']['name']);
 				} else {
-					$(item).hide().appendTo(images).slideDown('fast');
+					$(item).hide().appendTo(images).slideDown(100);
 				}
 			}
 		});

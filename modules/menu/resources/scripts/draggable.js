@@ -135,7 +135,7 @@ var Draggable = function (ul) {
 
             self.draggee.insertAfter(self.placeholder).animate({
                 'top': (self.placeholder.offset().top + 1) + 'px'
-            }, 'fast', function () {
+            }, 100, function () {
                 self.placeholder.remove();
                 $(this).removeClass('draggee').css({
                     'top': '',

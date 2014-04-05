@@ -16,10 +16,12 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('title')) . "' WHERE key = 'title';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';");
+		Db::exec("BEGIN;
+			UPDATE setting SET value = '" . Db::escape($form->get('title')) . "' WHERE key = 'title';
+			UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';
+			UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';
+			UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';
+		COMMIT;");
 	}
 	$form->finish();
 }

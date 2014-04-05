@@ -14,7 +14,7 @@ if (API::action('change_theme'))
 else if (API::action('get_themes'))
 {
 	$current_theme = '';
-	if ($theme = Db::singleQuery("SELECT * FROM setting WHERE key = 'theme';"))
+	if ($theme = Db::singleQuery("SELECT value FROM setting WHERE key = 'theme';"))
 		$current_theme = $theme['value'];
 
 	$themes = array();

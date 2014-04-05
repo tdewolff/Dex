@@ -47,8 +47,8 @@
 		var diskspace_legend_item = doT.template($('#diskspace-legend-item').text());
 
 		function loadDiskusage() {
-			diskspace.find('> div').slideUp('fast', function () { $(this).remove(); });
-			diskspace_legend.find('> div').slideUp('fast', function () { $(this).remove(); });
+			diskspace.find('> div').slideUp(100, function () { $(this).remove(); });
+			diskspace_legend.find('> div').slideUp(100, function () { $(this).remove(); });
 
 			apiLoadStatusWorking($('#load_diskspace'));
 			api('/' + base_url + 'api/core/admin/', {

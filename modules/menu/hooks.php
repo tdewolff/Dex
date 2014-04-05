@@ -11,7 +11,7 @@ Hooks::attach('navigation', 0, function () {
     while ($row = $table->fetch())
     {
         $row['url'] = '/' . Common::$base_url . $row['url'];
-        $row['selected'] = ($link_id == $row['link_id'] ? '1' : '0');
+        $row['selected'] = (Core::getLinkId() == $row['link_id'] ? '1' : '0');
 
         if (!isset($row['module_menu_id']))
         {

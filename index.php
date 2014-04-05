@@ -101,11 +101,12 @@ require_once('include/security.php');
 require_once('include/db.class.php');
 require_once('include/user.class.php');
 
-Bcrypt::setRounds(8);
-Db::open('dex.db');
-
 if (!session_start())
 	user_error('Could not start session', ERROR);
+
+Bcrypt::setRounds(8);
+Db::open('dex.db');
+User::validate();
 
 register_shutdown_function(function() {
 	global $starttime;
@@ -217,7 +218,7 @@ if (User::getTimeLeft() !== false)
 
 
 // load in module hooks
-$table = Db::query("SELECT * FROM link_module
+$table = Db::query("SELECT link_module.module_name FROM link_module
 	JOIN module ON link_module.module_name = module.module_name
 	WHERE (link_id = '0'" . (isset($link['link_id']) ? " OR link_id = '" . Db::escape($link['link_id']) . "'" : "") . ") AND module.enabled = 1;");
 while ($row = $table->fetch())

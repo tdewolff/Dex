@@ -55,7 +55,7 @@
 
 	// loading initial data
 	function loadDir(dir) {
-		directories_assets.find('li:not(:first):not(.load-status)').slideUp('fast', function () { $(this).remove(); });
+		directories_assets.find('li:not(:first):not(.load-status)').slideUp(100, function () { $(this).remove(); });
 
 		setTimeout(function () {
 			api('/' + base_url + 'api/core/assets/', {

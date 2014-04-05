@@ -72,12 +72,12 @@ function apiStatusClear() {
 }
 
 function apiStatusFade() {
-	$('.dex-api .status div').stop(true).fadeOut('fast');
+	$('.dex-api .status div').stop(true).fadeOut(100);
 }
 
 function apiStatusWorking(message) {
 	apiStatusClear();
-	$('.dex-api .status div.working').delay(800).fadeIn('fast');
+	$('.dex-api .status div.working').delay(800).fadeIn(100);
 	if (typeof message !== 'undefined') {
 		$('.dex-api .status div.working span').delay(800).show().html(message);
 	} else {
@@ -87,7 +87,7 @@ function apiStatusWorking(message) {
 
 function apiStatusSuccess(message) {
 	apiStatusClear();
-	$('.dex-api .status div.success').fadeIn('fast');
+	$('.dex-api .status div.success').fadeIn(100);
 	if (typeof message !== 'undefined') {
 		$('.dex-api .status div.success span').show().html(message);
 		//setTimeout(apiStatusFade, 5000);
@@ -98,7 +98,7 @@ function apiStatusSuccess(message) {
 
 function apiStatusError(message) {
 	apiStatusClear();
-	$('.dex-api .status div.error').fadeIn('fast');
+	$('.dex-api .status div.error').fadeIn(100);
 	if (typeof message !== 'undefined') {
 		$('.dex-api .status div.error span').show().html(message);
 	} else {
@@ -112,7 +112,7 @@ function apiLoadStatusClear(load) {
 
 function apiLoadStatusWorking(load) {
 	apiLoadStatusClear(load);
-	load.find('div.working').fadeIn('fast');
+	load.find('div.working').fadeIn(100);
 }
 
 function apiLoadStatusSuccess(load) {
@@ -121,12 +121,12 @@ function apiLoadStatusSuccess(load) {
 
 function apiLoadStatusEmpty(load) {
 	apiLoadStatusClear(load);
-	load.find('div.empty').fadeIn('fast');
+	load.find('div.empty').fadeIn(100);
 }
 
 function apiLoadStatusError(load) {
 	apiLoadStatusClear(load);
-	load.find('div.error').fadeIn('fast');
+	load.find('div.error').fadeIn(100);
 }
 
 var apiUpdateConsoleTimeout;
@@ -142,7 +142,7 @@ function apiUpdateConsole(dest) {
 			}
 			apiUpdateConsole(dest);
 		});
-	}, 200);
+	}, 100);
 }
 
 function apiStopConsole() {

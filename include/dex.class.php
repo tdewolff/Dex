@@ -170,7 +170,7 @@ class Core extends Dex
 
 		// check with database
 		$remove_modules = array();
-		$db_modules = Db::query("SELECT * FROM module;");
+		$db_modules = Db::query("SELECT module_name FROM module;");
 		while ($db_module = $db_modules->fetch())
 			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
 				unset($fs_modules[$db_module['module_name']]);
@@ -182,10 +182,11 @@ class Core extends Dex
 		{
 			user_error('Module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database', NOTICE);
 
-			Db::exec("
-			DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
-			DELETE FROM link_module WHERE module_name = '" . Db::escape($module_name) . "';
-			DELETE FROM module WHERE module_name = '" . Db::escape($module_name) . "';");
+			Db::exec("BEGIN;
+				DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
+				DELETE FROM link_module WHERE module_name = '" . Db::escape($module_name) . "';
+				DELETE FROM module WHERE module_name = '" . Db::escape($module_name) . "';
+			COMMIT;");
 		}
 
 		foreach ($fs_modules as $module_name => $enabled) // file exists but db entry does not

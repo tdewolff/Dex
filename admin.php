@@ -61,7 +61,7 @@ $admin_links[] = array('name' => 'assets', 'regex' => 'admin/assets/',          
 $admin_links[] = array();
 
 $modules = array();
-$table = Db::query("SELECT * FROM module ORDER BY module_name ASC;");
+$table = Db::query("SELECT module_name, enabled FROM module ORDER BY module_name ASC;");
 while ($row = $table->fetch())
 {
 	$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';

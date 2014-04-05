@@ -105,13 +105,14 @@ else
 			if ($user)
 			{
 				$token = random(24);
-				Db::exec("
-				DELETE FROM recover WHERE user_id = '" . Db::escape($user['user_id']) . "';
-				INSERT INTO recover (user_id, token, expiry_time) VALUES (
-					'" . Db::escape($user['user_id']) . "',
-					'" . Db::escape(Bcrypt::hash($token)) . "',
-					'" . Db::escape(time() + (60 * 30)) . "'
-				);");
+				Db::exec("BEGIN;
+					DELETE FROM recover WHERE user_id = '" . Db::escape($user['user_id']) . "';
+					INSERT INTO recover (user_id, token, expiry_time) VALUES (
+						'" . Db::escape($user['user_id']) . "',
+						'" . Db::escape(Bcrypt::hash($token)) . "',
+						'" . Db::escape(time() + (60 * 30)) . "'
+					);
+				COMMIT;");
 
 				$link = Common::fullBaseUrl() . Common::$base_url . 'admin/recover/reset/' . Db::lastId() . '/' . rawurlencode($token) . '/';
 

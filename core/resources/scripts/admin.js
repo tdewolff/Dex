@@ -4,7 +4,7 @@ $('html').on('click', 'a[href="#"]', function (e) {
 
 // dropdown
 $('html').click(function () {
-	$('.dropdown-menu').fadeOut('fast');
+	$('.dropdown-menu').fadeOut(100);
 });
 
 $('html').on('click', '.dropdown-menu', function (e) {
@@ -34,8 +34,8 @@ $('html').on('click', 'a.halt', function (e) {
 
 $('html').on('mouseleave', 'a.sure', function (e) {
 	e.preventDefault();
-	$(this).fadeOut('fast', function() {
-		$(this).parent().find('a.halt').fadeIn('fast');
+	$(this).fadeOut(100, function() {
+		$(this).parent().find('a.halt').fadeIn(100);
 	});
 });
 

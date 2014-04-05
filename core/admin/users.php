@@ -61,6 +61,8 @@ else
 		{
             if (Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
                 $form->setError('username', 'Already used');
+            else if (Db::singleQuery("SELECT * FROM user WHERE email = '" . Db::escape($form->get('email')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
+                $form->setError('email', 'Already used');
             else if ($url[2] != 'new' && !Bcrypt::verify($form->get('current_password'), $current_user['password']))
                 $form->setError('current_password', 'Wrong password');
             else if ($url[2] != 'new' && User::getUserId() == $url[2] && $current_user['role'] != $form->get('role'))

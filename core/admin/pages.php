@@ -44,8 +44,7 @@ else if ($url[2] == 'new')
 			else
 			{
 				$link_id = 0;
-				$link = Db::singleQuery("
-					SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
+				$link = Db::singleQuery("SELECT link_id, title FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
 				if ($link)
 				{
 					if ($form->get('title') != $link['title'])

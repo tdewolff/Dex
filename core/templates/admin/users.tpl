@@ -68,7 +68,7 @@
 				user_id: item.attr('data-user-id')
 			}, function () {
 				apiStatusSuccess('Deleted user');
-				$('.dropdown-menu').fadeOut('fast');
+				$('.dropdown-menu').fadeOut(100);
 				$('#user_' + item.attr('data-user-id')).remove();
 			}, function () {
 				apiStatusError('Deleting user failed');
