@@ -25,6 +25,18 @@ if ($config['display_errors'])
 if ($config['display_notices'])
 	$warnings[] = 'Displaying notices is enabled in config.ini';
 
+if (!is_writable('assets/'))
+	$warnings[] = 'Directory "assets/" is not writable';
+if (!is_writable('cache/'))
+	$warnings[] = 'Directory "cache/" is not writable';
+if (!is_writable('logs/'))
+	$warnings[] = 'Directory "logs/" is not writable';
+
+$handle = opendir('assets/');
+while (($name = readdir($handle)) !== false)
+	if (is_dir('assets/' . $name) && $name != '.' && $name != '..' && !is_writable('assets/' . $name))
+		$warnings[] = 'Directory "assets/' . $name . '" is not writable';
+
 Hooks::emit('admin-header');
 
 Core::set('warnings', $warnings);

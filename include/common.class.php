@@ -54,16 +54,11 @@ class Common
 
 	////////////////
 
-	public static function ensureWritableDirectory($directory)
+	public static function makeDirectory($directory)
 	{
-		$r = false;
-		$old = umask(0);
 		if (!is_dir($directory))
-			$r = mkdir($directory, 2775);
-		else if (substr(sprintf('%o', fileperms($directory)), -4) !== '2775')
-			$r = chmod($directory, 2775);
-		umask($old);
-		return $r;
+			if (!mkdir($directory))
+				user_error('Could not make directory "' . $directory . '"', WARNING);
 	}
 
 	public static function validUrl($input) // unused

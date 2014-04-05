@@ -20,9 +20,9 @@ $config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', fal
 $config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
 
 Common::setMinifying($config['minifying']);
-Common::ensureWritableDirectory('assets/');
-Common::ensureWritableDirectory('cache/');
-Common::ensureWritableDirectory('logs/');
+Common::makeDirectory('assets/');
+Common::makeDirectory('cache/');
+Common::makeDirectory('logs/');
 
 Log::initialize();
 Log::setVerbose($config['verbose_logging']);
