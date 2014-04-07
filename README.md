@@ -1,7 +1,9 @@
 Dex
 =========
 
-[Developers Guide](DEVELOPERS-GUIDE.md)
+[Developers Guide](non-server/DEVELOPERS-GUIDE.md)
+[Style](non-server/STYLE.md)
+[Repository Guide](non-server/REPO-GUIDE.md)
 
 Dex is a small and simple CMS designed for small- to medium-sized websites. It aims for high usability and intuitivity for users, while remaining robust and modular for webmasters.
 

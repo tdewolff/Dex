@@ -680,6 +680,10 @@ DexEdit.Text = function (root) {
 		}
 	});
 
+	this.root[0].addEventListener('cut', function (e) {
+		self.hideMenu();
+	});
+
 	this.root[0].addEventListener('paste', function (e) {
     	e.preventDefault();
 		self.hideMenu();
