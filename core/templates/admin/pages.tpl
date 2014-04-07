@@ -26,7 +26,7 @@
         <div><i class="fa fa-home"></i></div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
-			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url==''}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
+			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
 			<div class="input-error-right">
 				<div class="box">
 					<div class="arrow"></div>
@@ -115,6 +115,8 @@
 				}
 			});
 
+			console.log(data);
+
 			api('/' + base_url + 'api/core/pages/', {
 				action: 'edit_pages',
 				pages: data
@@ -124,14 +126,16 @@
 
 					for (var i = 0; i < data['errors'].length; i++) {
 						var li = $('#page_' + data['errors'][i]['link_id']);
-						li.find('input[name="url"]').addClass('invalid');
+						if (!li.hasClass('home')) {
+							li.find('input[name="url"]').addClass('invalid');
 
-						var error_box = li.find('div.input-error-right');
-						if (error_box.find('span').text() != data['errors'][i]['error']) {
-							error_box.hide();
-							error_box.find('span').text(data['errors'][i]['error']);
+							var error_box = li.find('div.input-error-right');
+							if (error_box.find('span').text() != data['errors'][i]['error']) {
+								error_box.hide();
+								error_box.find('span').text(data['errors'][i]['error']);
+							}
+							error_box.fadeIn();
 						}
-						error_box.fadeIn();
 					}
 				} else {
 					apiStatusSuccess('Saved pages');
@@ -141,19 +145,21 @@
 			});
 		}
 
-	    pages.on('mousedown', '.fa-home', function (e) {
+	    pages.on('mousedown', 'li > div:nth-child(2)', function (e) {
         	e.preventDefault();
 
-	        var li = $(this).closest('li');
-	        if (!li.hasClass('home')) {
-		    	var old_li = pages.find('li.home').removeClass('home');
-		    	if (old_li.length) {
-		    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
-		    	}
+        	if (e.which === 1) {
+		        var li = $(this).closest('li');
+		        if (!li.hasClass('home')) {
+			    	var old_li = pages.find('li.home').removeClass('home');
+			    	if (old_li.length) {
+			    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
+			    	}
 
-		        li.addClass('home');
-		        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
-	        }
+			        li.addClass('home');
+			        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
+		        }
+		    }
 	    });
 
 		pages.on('keyup', 'input[name="title"]', function () {

@@ -7,7 +7,7 @@
 		<?php $_['reset']->render(); ?>
 	<?php elseif (isset($_['sent'])): ?>
 		<h3>Email sent</h3>
-		<p>The password recovery email has been sent containing information on how to reset your password. You can go back to the <a href="/<?php echo $_['base_url']; ?>admin/">login</a> page.</p>
+		<p>A password recovery email has been sent to your emailaddress containing information on how to reset your password.</p>
 	<?php elseif (isset($_['success'])): ?>
 		<h3>Password reset</h3>
 		<p>Your password has successfully been reset, you can now <a href="/<?php echo $_['base_url']; ?>admin/">login</a> with your new password.</p>

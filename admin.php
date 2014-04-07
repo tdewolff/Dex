@@ -78,8 +78,7 @@ while ($row = $table->fetch())
 		);
 }
 
-if (!empty($admin_links[count($admin_links) - 1]))
-	$admin_links[] = array();
+$admin_links[] = array();
 
 $admin_links[] = array('name' => 'settings',  'regex' => 'admin/settings/',             'file' => 'core/admin/settings.php',  'url' => 'admin/settings/',  'icon' => 'fa-wrench',   'title' => 'Settings',       'admin_only' => 0);
 $admin_links[] = array('name' => 'users',     'regex' => 'admin/users/([0-9]+/|new/)?', 'file' => 'core/admin/users.php',     'url' => 'admin/users/',     'icon' => 'fa-user',     'title' => 'Users',          'admin_only' => 1);

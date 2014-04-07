@@ -40,18 +40,26 @@ else if (API::action('edit_pages'))
 				break;
 
 			if ($page2['url'] == $page['url'])
-				$errors[] = array('link_id' => $page['link_id'], 'error' => 'Already used');
+			{
+				$errors[] = array('link_id' => $page['link_id'], 'error' => 'Duplicate');
+				$errors[] = array('link_id' => $page2['link_id'], 'error' => 'Duplicate');
+			}
 		}
 	}
 
 	if (!count($errors))
+	{
+		$query = "BEGIN; DELETE FROM link;";
 		foreach ($pages as $page)
-			Db::exec("
-			UPDATE link SET
-				title = '" . Db::escape($page['title']) . "',
-				url = '" . Db::escape($page['url']) . "',
-				modify_time = '" . Db::escape(time()) . "'
-			WHERE link_id = '" . Db::escape($page['link_id']) . "';");
+			$query .= "
+			INSERT INTO link (link_id, title, url, modify_time) VALUES (
+				'" . Db::escape($page['link_id']) . "',
+				'" . Db::escape($page['title']) . "',
+				'" . Db::escape($page['url']) . "',
+				'" . Db::escape(time()) . "'
+			);";
+		Db::exec($query . "COMMIT;");
+	}
 
 	API::set('errors', $errors);
 	API::finish();

@@ -40,7 +40,7 @@ $('html').on('mouseleave', 'a.sure', function (e) {
 });
 
 function titleToUrl(title) {
-	var url = title.toLowerCase().replace(/\s/g, '-').replace(/[^a-z0-9\-_]+/g, '');
+	var url = title.toLowerCase().replace(/[^a-z0-9\-_\s]+/g, '').trim().replace(/\s/g, '-');
 	if (url.length) {
 		url += '/';
 	}

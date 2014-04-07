@@ -67,7 +67,7 @@
 
 <script id="asset_item" type="text/x-dot-template">
 	<li data-name="{{=it.name}}" class="asset">
-		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16">{{=it.title}}</div>
+		<div><img src="/<?php echo $_['base_url']; ?>res/core/images/icons/{{=it.icon}}" width="16" height="16"><a href="/<?php echo $_['base_url']; ?>res/{{=it.url}}">{{=it.title}}</a></div>
 		<div>{{=it.size}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>

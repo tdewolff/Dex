@@ -124,12 +124,12 @@ else
 					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
 					->setTo(array($user['email']))
 					->setBody('A password recovery request has been made for \'' . $user['username'] . '\' at ' . $_SERVER['HTTP_HOST'] . "\n" .
-						      'Click the link below to change your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
+						      'Click the link below to reset your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
 						      $link . "\n\n" .
 						      'Dex');
 
 				if (!$mailer->send($message))
-					user_error('Email to \'' . $user['email'] . '\' failed to send', WARNING);
+					user_error('Email to \'' . $user['email'] . '\' failed to send', ERROR);
 			}
 
 			// even if user doesn't exist, redirect to sent page so hackers never know whether they're right or wrong
