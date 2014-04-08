@@ -40,5 +40,3 @@ else if (API::action('get_modules'))
 	API::set('modules', $modules);
 	API::finish();
 }
-
-?>

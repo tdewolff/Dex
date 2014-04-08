@@ -2,8 +2,8 @@
 
 if (Common::tryOrDefault($config, 'ssl', true) &&  $_SERVER['HTTPS'] != 'on')
 {
-    header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-    exit();
+	header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+	exit();
 }
 
 $form = new Form('login');
@@ -56,5 +56,3 @@ Core::render('admin/login.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

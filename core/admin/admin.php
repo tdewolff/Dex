@@ -46,5 +46,3 @@ Core::render('admin/admin.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

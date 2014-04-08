@@ -31,5 +31,3 @@ class Hooks
 			self::$hooks[$event] = array();
 	}
 }
-
-?>

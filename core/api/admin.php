@@ -86,5 +86,3 @@ else if (API::action('diskspace_usage'))
 	API::set('diskspace_total', $total);
 	API::finish();
 }
-
-?>

@@ -119,5 +119,3 @@ class Result
 		return ($ret && isset($ret[$key]) ? $ret[$key] : false);
 	}
 }
-
-?>

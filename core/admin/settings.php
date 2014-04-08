@@ -37,5 +37,3 @@ Core::render('admin/settings.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

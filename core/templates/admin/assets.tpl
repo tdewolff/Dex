@@ -274,9 +274,9 @@
 		});
 
 		$('#create-directory').on('keyup', 'input', function (e) {
-		    if (e.keyCode == 13) {
-		        $("#create-directory a").click();
-		    }
+			if (e.keyCode == 13) {
+				$("#create-directory a").click();
+			}
 		});
 
 		$('#create-directory').on('click', 'a', function () {
@@ -340,18 +340,18 @@
 			}
 		});
 
-        $('.fancybox').fancybox({
-            closeClick: true,
-            autoScale: false,
-            openEffect : 'elastic',
-            openSpeed  : 150,
-            closeEffect : 'elastic',
-            closeSpeed  : 150,
-            helpers:  {
-                overlay: {
-                    locked: false
-                }
-            }
-        });
+		$('.fancybox').fancybox({
+			closeClick: true,
+			autoScale: false,
+			openEffect : 'elastic',
+			openSpeed  : 150,
+			closeEffect : 'elastic',
+			closeSpeed  : 150,
+			helpers:  {
+				overlay: {
+					locked: false
+				}
+			}
+		});
 	});
 </script>

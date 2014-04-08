@@ -25,21 +25,21 @@ $form->optionalTogether(array('adr_street-address', 'adr_locality', 'adr_region'
 $contact = array();
 $table = Db::query("SELECT * FROM module_contact;");
 while ($row = $table->fetch())
-    $contact[$row['key']] = $row['value'];
+	$contact[$row['key']] = $row['value'];
 
 if ($form->submitted())
 {
-    if ($form->validate())
-        foreach ($contact as $key => $value)
-            Db::exec("
-            UPDATE module_contact SET
-                value = '" . Db::escape($form->get($key)) . "'
-            WHERE key = '" . Db::escape($key) . "';");
-    $form->finish();
+	if ($form->validate())
+		foreach ($contact as $key => $value)
+			Db::exec("
+			UPDATE module_contact SET
+				value = '" . Db::escape($form->get($key)) . "'
+			WHERE key = '" . Db::escape($key) . "';");
+	$form->finish();
 }
 
 foreach ($contact as $key => $value)
-    $form->set($key, $value);
+	$form->set($key, $value);
 
 Hooks::emit('admin-header');
 
@@ -48,5 +48,3 @@ Module::render('admin/contact.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

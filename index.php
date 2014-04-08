@@ -29,7 +29,7 @@ Log::setVerbose($config['verbose_logging']);
 Error::setDisplay($config['display_errors'], $config['display_notices']);
 
 // from here on all PHP errors are caught and handled correctly
-register_shutdown_function(function() {
+register_shutdown_function(function () {
 	$error = error_get_last();
 	if (is_array($error))
 		Error::report($error['type'], $error['message'], $error['file'], $error['line']);
@@ -201,7 +201,7 @@ if (User::getTimeLeft() !== false)
 	Core::addStyle('vendor/jquery-ui.css');
 	Core::addStyle('vendor/fancybox.css');
 	Core::addStyle('site-admin.css');
-    Core::addStyle('dexedit.css');
+	Core::addStyle('dexedit.css');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
 	Core::addDeferredScript('vendor/jquery.fancybox.min.js');
@@ -213,7 +213,7 @@ if (User::getTimeLeft() !== false)
 	Core::addDeferredScript('upload.js');
 	Core::addDeferredScript('tooltips.js');
 	Core::addDeferredScript('site-admin.js');
-    Core::addDeferredScript('dexedit.js');
+	Core::addDeferredScript('dexedit.js');
 }
 
 
@@ -241,5 +241,3 @@ if ($link)
 }
 else
 	user_error('Page not found "/' . Common::$request_url . '"', ERROR);
-
-?>

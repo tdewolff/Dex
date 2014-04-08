@@ -84,5 +84,3 @@ class API
 		exit;
 	}
 }
-
-?>

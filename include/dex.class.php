@@ -350,5 +350,3 @@ class Template extends Dex
 			user_error('Deferred script "' . $script . '" already added', NOTICE);
 	}
 }
-
-?>

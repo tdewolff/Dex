@@ -10,5 +10,3 @@ if (API::action('get_visits'))
 	API::set('visits', Stats::pageVisitChart());
 	API::finish();
 }
-
-?>

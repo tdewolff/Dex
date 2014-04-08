@@ -155,7 +155,7 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 		{
 			if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.')
 			{
-  				$empty = true;
+				$empty = true;
 				$url = $dir . $name . '/';
 				if ($name == '..')
 				{
@@ -172,7 +172,7 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 					while (($name_sub = readdir($handle_sub)) !== false)
 						if ($name_sub != '.' && $name_sub != '..')
 						{
-  							$empty = false;
+							$empty = false;
 							break;
 						}
 				}
@@ -255,5 +255,3 @@ else if (API::action('get_images'))
 	API::set('images', $images);
 	API::finish();
 }
-
-?>

@@ -110,5 +110,3 @@ class User
 			Db::exec("UPDATE bruteforce SET n = n + 1, time = '" . Db::escape(time()) . "' WHERE bruteforce_id = '" . Db::escape($bruteforce['bruteforce_id']) . "';");
 	}
 }
-
-?>

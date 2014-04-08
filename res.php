@@ -37,15 +37,13 @@ else
 	header('Cache-Control: public');
 	header('Content-Type: ' . Resource::getMime($extension) . '; charset: UTF-8');
 	$headers = apache_request_headers();
-    if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename)))
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 304);
-    else
-    {
-        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 200);
-        header('Content-Length: ' . filesize($filename));
+	if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename)))
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 304);
+	else
+	{
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 200);
+		header('Content-Length: ' . filesize($filename));
 		print file_get_contents($filename);
-    }
+	}
 }
 exit;
-
-?>

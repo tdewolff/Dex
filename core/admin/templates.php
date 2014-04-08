@@ -7,5 +7,3 @@ Hooks::emit('admin-header');
 Core::render('admin/templates.tpl');
 Hooks::emit('admin-footer');
 exit;
-
-?>

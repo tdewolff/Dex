@@ -63,7 +63,7 @@ class Error
 	public static function report($type, $message, $file, $line)
 	{
 		if (error_reporting() === 0) // ignore error when prepended with @
-		    return true;
+			return true;
 
 		$location = ($file && $line ? $file . ':' . $line : '');
 		$backtrace = self::stripBacktrace(debug_backtrace());
@@ -134,5 +134,3 @@ class Error
 		return true;
 	}
 }
-
-?>

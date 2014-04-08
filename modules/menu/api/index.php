@@ -63,5 +63,3 @@ else if (API::action('get_menu'))
 	API::set('menu', $menu);
 	API::finish();
 }
-
-?>

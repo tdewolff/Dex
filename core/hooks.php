@@ -48,9 +48,9 @@ Hooks::attach('error', 0, function () {
 	Hooks::emit('navigation');
 	echo '</nav>';
 
-	echo '<article class="main" role="main">';
+	//echo '<article class="main" role="main">';
 	Core::render('error.tpl');
-	echo '</article>';
+	//echo '</article>';
 
 	echo '<footer>';
 	Hooks::emit('footer');
@@ -127,5 +127,3 @@ function site_footer() {
 }
 
 ////////////////////////////////////////////////////////////////
-
-?>

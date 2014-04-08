@@ -381,7 +381,7 @@ class Form
 	public function get($name)
 	{
 		return (isset($this->data[$this->name . '_' . $name])
-		            ? $this->data[$this->name . '_' . $name]
+					? $this->data[$this->name . '_' . $name]
 						: false);
 	}
 
@@ -407,5 +407,3 @@ class Form
 		$this->errors[] = $error;
 	}
 }
-
-?>

@@ -37,5 +37,3 @@ else if (API::action('get_themes'))
 	API::set('themes', $themes);
 	API::finish();
 }
-
-?>

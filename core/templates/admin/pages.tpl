@@ -23,7 +23,7 @@
 				<i class="fa fa-pencil"></i>&ensp;Edit
 			</a>
 		</div>
-        <div><i class="fa fa-home"></i></div>
+		<div><i class="fa fa-home"></i></div>
 		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
 		<div>
 			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
@@ -145,22 +145,22 @@
 			});
 		}
 
-	    pages.on('mousedown', 'li > div:nth-child(2)', function (e) {
-        	e.preventDefault();
+		pages.on('mousedown', 'li > div:nth-child(2)', function (e) {
+			e.preventDefault();
 
-        	if (e.which === 1) {
-		        var li = $(this).closest('li');
-		        if (!li.hasClass('home')) {
-			    	var old_li = pages.find('li.home').removeClass('home');
-			    	if (old_li.length) {
-			    		old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
-			    	}
+			if (e.which === 1) {
+				var li = $(this).closest('li');
+				if (!li.hasClass('home')) {
+					var old_li = pages.find('li.home').removeClass('home');
+					if (old_li.length) {
+						old_li.find('input[name="url"]').val(titleToUrl(old_li.find('input[name="title"]').val())).prop('disabled', false).attr('data-use-feed', 'true');
+					}
 
-			        li.addClass('home');
-			        li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
-		        }
-		    }
-	    });
+					li.addClass('home');
+					li.find('input[name="url"]').val('').prop('disabled', true).attr('data-use-feed', 'false').trigger('input');
+				}
+			}
+		});
 
 		pages.on('keyup', 'input[name="title"]', function () {
 			var link_id = $(this).attr('data-link-id');

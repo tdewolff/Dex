@@ -2,10 +2,10 @@
 
 if (!function_exists('http_response_code'))
 {
-    function http_response_code($code)
-    {
-        header('X-PHP-Response-Code: ' . $code, true, $code);
-    }
+	function http_response_code($code)
+	{
+		header('X-PHP-Response-Code: ' . $code, true, $code);
+	}
 }
 
 class Common
@@ -166,36 +166,36 @@ class Common
 	{
 		$contents = null;
 		$allow_url_fopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
-        if ($allow_url_fopen)
-        {
-        	try
-        	{
-	            $contents = file_get_contents($url, false, stream_context_create(array(
-	                'http' => array(
-	                    'method' => 'GET',
-	                    'max_redirects' => 0,
-	                    'timeout' => 5,
-	                )
-	            )));
-	        }
-	        catch (Exception $e)
-	        {
-            	user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
-	        }
-        }
-        elseif (extension_loaded('curl'))
-        {
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-            $contents = curl_exec($ch);
-            curl_close($ch);
+		if ($allow_url_fopen)
+		{
+			try
+			{
+				$contents = file_get_contents($url, false, stream_context_create(array(
+					'http' => array(
+						'method' => 'GET',
+						'max_redirects' => 0,
+						'timeout' => 5,
+					)
+				)));
+			}
+			catch (Exception $e)
+			{
+				user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
+			}
+		}
+		elseif (extension_loaded('curl'))
+		{
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			$contents = curl_exec($ch);
+			curl_close($ch);
 
-            if ($contents === null)
-            	user_error('cURL error: "' . curl_error($ch) . '"', WARNING);
-        }
-        return $contents;
+			if ($contents === null)
+				user_error('cURL error: "' . curl_error($ch) . '"', WARNING);
+		}
+		return $contents;
 	}
 
 	////////////////
@@ -290,5 +290,3 @@ function minifyHtml($text)
 
 	return $text;
 }
-
-?>

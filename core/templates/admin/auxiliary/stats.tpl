@@ -68,7 +68,7 @@ circle {
 				.scale(x)
 				.orient('bottom')
 				.tickSize(-height)
-	    		.ticks(d3.time.days(x_domain[0], x_domain[1]).length)
+				.ticks(d3.time.days(x_domain[0], x_domain[1]).length)
 				.tickFormat(d3.time.format('%b %e'));
 
 			var yAxis = d3.svg.axis()
@@ -77,17 +77,17 @@ circle {
 				.tickSize(-width);
 
 			var line = d3.svg.line()
-	    		.interpolate('monotone')
+				.interpolate('monotone')
 				.x(function (d) { return x(d.date); })
 				.y(function (d) { return y(d.visits); });
 
 			var line_unique = d3.svg.line()
-	    		.interpolate('monotone')
+				.interpolate('monotone')
 				.x(function (d) { return x(d.date); })
 				.y(function (d) { return y(d.unique_visits); });
 
 			var area = d3.svg.area()
-	    		.interpolate('monotone')
+				.interpolate('monotone')
 				.x(function (d) { return x(d.date); })
 				.y0(height)
 				.y1(function (d) { return y(d.unique_visits); });
@@ -103,16 +103,16 @@ circle {
 			svg.append('path')
 				.attr('class', 'area')
 				.attr('d', area(visits))
-  				.style('fill', function(d) { return color(1); });
+				.style('fill', function(d) { return color(1); });
 
 			svg.append('g')
 				.attr('class', 'x axis')
 				.attr('transform', 'translate(0,' + height + ')')
 				.call(xAxis)
-    		.selectAll('text')
-    			.attr('y', '1em');
+			.selectAll('text')
+				.attr('y', '1em');
 
-  			// axis text
+			// axis text
 			svg.append('g')
 				.attr('class', 'y axis')
 				.call(yAxis)
@@ -125,11 +125,11 @@ circle {
 				.text('Visits');
 
 			if (visits.length > 1) {
-	    		// paths and points
+				// paths and points
 				svg.append('path')
 					.attr('class', 'line')
 					.attr('d', line(visits))
-	  				.style('stroke', function(d) { return color(0); });
+					.style('stroke', function(d) { return color(0); });
 
 				svg.selectAll('dot')
 					.data(visits)
@@ -137,12 +137,12 @@ circle {
 					.attr('r', 2.5)
 					.attr('cx', function(d) { return x(d.date); })
 					.attr('cy', function(d) { return y(d.visits); })
-	  				.style('stroke', function(d) { return color(0); });
+					.style('stroke', function(d) { return color(0); });
 
 				svg.append('path')
 					.attr('class', 'line unique')
 					.attr('d', line_unique(visits))
-	  				.style('stroke', function(d) { return color(1); });
+					.style('stroke', function(d) { return color(1); });
 
 				svg.selectAll('dot')
 					.data(visits)
@@ -150,15 +150,15 @@ circle {
 					.attr('r', 2.5)
 					.attr('cx', function(d) { return x(d.date); })
 					.attr('cy', function(d) { return y(d.unique_visits); })
-	  				.style('stroke', function(d) { return color(1); });
-	  		}
+					.style('stroke', function(d) { return color(1); });
+			}
 
-  			// legend
+			// legend
 			svg.append('circle')
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 10)
-  				.style('stroke', function(d) { return color(0); });
+				.style('stroke', function(d) { return color(0); });
 
 			svg.append('text')
 				.attr('transform', 'translate(' + width + ',10)')
@@ -170,7 +170,7 @@ circle {
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 30)
-  				.style('stroke', function(d) { return color(1); });
+				.style('stroke', function(d) { return color(1); });
 
 			svg.append('text')
 				.attr('transform', 'translate(' + width + ',30)')

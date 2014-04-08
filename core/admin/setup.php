@@ -171,5 +171,3 @@ Core::render('admin/setup.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

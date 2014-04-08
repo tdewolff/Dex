@@ -6,5 +6,3 @@ Hooks::emit('admin-header');
 Core::render('admin/themes.tpl');
 Hooks::emit('admin-footer');
 exit;
-
-?>

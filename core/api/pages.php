@@ -89,5 +89,3 @@ else if (API::action('get_pages'))
 	API::set('pages', $pages);
 	API::finish();
 }
-
-?>

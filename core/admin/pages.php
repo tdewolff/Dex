@@ -80,5 +80,3 @@ else if ($url[2] == 'new')
 	Hooks::emit('admin-footer');
 	exit;
 }
-
-?>

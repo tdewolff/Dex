@@ -70,5 +70,3 @@ class Stats
 		return $visits;
 	}
 }
-
-?>

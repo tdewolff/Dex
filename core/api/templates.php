@@ -24,5 +24,3 @@ if (API::action('get_templates'))
 	API::set('templates', $templates);
 	API::finish();
 }
-
-?>

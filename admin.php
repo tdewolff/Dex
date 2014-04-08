@@ -25,7 +25,7 @@ Core::addDeferredScript('site-admin.js');
 
 // setup
 if (!Db::isValid())
-    require_once('core/admin/setup.php'); // until site is setup, this will exit!
+	require_once('core/admin/setup.php'); // until site is setup, this will exit!
 
 // logout
 if (User::loggedIn() && Common::$request_url == 'admin/logout/')
@@ -104,5 +104,3 @@ foreach ($admin_links as $i => $admin_link)
 		}
 
 user_error('Could not find page at "' . Common::$request_url . '"', ERROR);
-
-?>

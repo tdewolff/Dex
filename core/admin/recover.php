@@ -124,9 +124,9 @@ else
 					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
 					->setTo(array($user['email']))
 					->setBody('A password recovery request has been made for \'' . $user['username'] . '\' at ' . $_SERVER['HTTP_HOST'] . "\n" .
-						      'Click the link below to reset your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
-						      $link . "\n\n" .
-						      'Dex');
+							  'Click the link below to reset your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
+							  $link . "\n\n" .
+							  'Dex');
 
 				if (!$mailer->send($message))
 					user_error('Email to \'' . $user['email'] . '\' failed to send', ERROR);
@@ -146,5 +146,3 @@ else
 	Hooks::emit('admin-footer');
 	exit;
 }
-
-?>

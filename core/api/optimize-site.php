@@ -158,7 +158,7 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 		}
 
 		$smushit = json_decode(trim($contents));
-        if (empty($smushit))
+		if (empty($smushit))
 		{
 			Console::appendLine('failed: no response from SmushIt');
 			continue;
@@ -192,5 +192,3 @@ else
 
 Console::finish();
 API::finish();
-
-?>

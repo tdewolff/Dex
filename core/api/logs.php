@@ -43,5 +43,3 @@ if (API::action('get'))
 	API::set('logs', $logs);
 	API::finish();
 }
-
-?>

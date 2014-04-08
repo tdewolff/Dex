@@ -236,5 +236,3 @@ class Resource
 		return $cache_filename;
 	}
 }
-
-?>

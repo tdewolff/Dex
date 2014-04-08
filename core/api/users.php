@@ -44,5 +44,3 @@ else if (API::action('get_users'))
 	API::set('users', $users);
 	API::finish();
 }
-
-?>
