@@ -20,7 +20,7 @@
 
 
 	<?php else: // input elements with a label ?>
-	<p>
+	<div>
 		<label><?php echo $item['title']; ?></label>
 
 
@@ -112,12 +112,13 @@
 		<input type="hidden"
 			name="<?php echo $item['name']; ?>"
 			value='<?php echo $item['value']; ?>'
-			placeholder='<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>'
 			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 			<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
 			data-type="array"
 			data-template="template_<?php echo $item['name']; ?>"
-			data-ul="ul_<?php echo $item['name']; ?>">
+			data-ul="ul_<?php echo $item['name']; ?>"
+			data-placeholder='<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>'>
+
 		<ul
 			id="ul_<?php echo $item['name']; ?>"
 			<?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>></ul>
@@ -168,7 +169,7 @@
 
 
 		<?php endif; ?>
-	</p>
+	</div>
 
 	<div class="input-error-below" data-for-name="<?php echo $item['name']; ?>">
 		<div class="box">

@@ -5,7 +5,7 @@
 	<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 	<div class="error"><i class="fa fa-times"></i></div>
 </div>
-<iframe class="stats-frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<iframe class="stats-frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/"></iframe>
 
 <h3>Latest errors</h3>
 <ul id="latest-logs" class="table">

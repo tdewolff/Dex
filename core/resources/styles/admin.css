@@ -532,17 +532,17 @@ form {
 form > h3 {
   padding-top: 10px;
 }
-form > p {
+form > div {
   margin: 0;
   padding: 0;
   zoom: 1;
 }
-form > p:before,
-form > p:after {
+form > div:before,
+form > div:after {
   content: "";
   display: table;
 }
-form > p:after {
+form > div:after {
   clear: both;
 }
 form .separator {
@@ -1306,26 +1306,26 @@ body {
 #diskspace {
   overflow: hidden;
 }
-#diskspace > div {
+#diskspace > div:not(:first-of-type) {
   float: left;
   height: 10px;
 }
-#diskspace > div:nth-child(1) {
+#diskspace > div:not(:first-of-type):nth-child(2) {
   background-color: #0e90d2;
 }
-#diskspace > div:nth-child(2) {
+#diskspace > div:not(:first-of-type):nth-child(3) {
   background-color: #8058a5;
 }
-#diskspace > div:nth-child(3) {
+#diskspace > div:not(:first-of-type):nth-child(4) {
   background-color: #5eb95e;
 }
-#diskspace > div:nth-child(4) {
+#diskspace > div:not(:first-of-type):nth-child(5) {
   background-color: #dd514c;
 }
-#diskspace > div:nth-child(5) {
+#diskspace > div:not(:first-of-type):nth-child(6) {
   background-color: #f37b1d;
 }
-#diskspace > div:nth-child(6) {
+#diskspace > div:not(:first-of-type):nth-child(7) {
   background-color: #fad232;
 }
 #diskspace-legend {

@@ -173,7 +173,7 @@ $('form input[data-type="array"]').each(function (i, array) {
 		values = [];
 
 	try {
-		placeholders = JSON.parse(array.attr('placeholder'));
+		placeholders = JSON.parse(array.attr('data-placeholder'));
 		values = JSON.parse(array.val());
 	} catch (e) {}
 

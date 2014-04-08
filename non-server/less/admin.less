@@ -7,11 +7,11 @@
 @import "_tables.less";
 
 @font-face {
-    .fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
+	.fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
 }
 
 @font-face {
-    .fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
+	.fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
 }
 
 * {
@@ -406,31 +406,31 @@ body {
 #diskspace {
 	overflow: hidden;
 
-	>div {
+	>div:not(:first-of-type) {
 		float: left;
 		height: 10px;
 
-		&:nth-child(1) {
+		&:nth-child(2) {
 			background-color: #0e90d2;
 		}
 
-		&:nth-child(2) {
+		&:nth-child(3) {
 			background-color: rgb(128, 88, 165);
 		}
 
-		&:nth-child(3) {
+		&:nth-child(4) {
 			background-color: #5eb95e;
 		}
 
-		&:nth-child(4) {
+		&:nth-child(5) {
 			background-color: #dd514c;
 		}
 
-		&:nth-child(5) {
+		&:nth-child(6) {
 			background-color: rgb(243, 123, 29);
 		}
 
-		&:nth-child(6) {
+		&:nth-child(7) {
 			background-color: rgb(250, 210, 50);
 		}
 	}

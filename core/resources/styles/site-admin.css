@@ -917,17 +917,17 @@ body {
 .dex-popup-wrapper form > h3 {
   padding-top: 10px;
 }
-.dex-popup-wrapper form > p {
+.dex-popup-wrapper form > div {
   margin: 0;
   padding: 0;
   zoom: 1;
 }
-.dex-popup-wrapper form > p:before,
-.dex-popup-wrapper form > p:after {
+.dex-popup-wrapper form > div:before,
+.dex-popup-wrapper form > div:after {
   content: "";
   display: table;
 }
-.dex-popup-wrapper form > p:after {
+.dex-popup-wrapper form > div:after {
   clear: both;
 }
 .dex-popup-wrapper form .separator {

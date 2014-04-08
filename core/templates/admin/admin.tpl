@@ -2,11 +2,11 @@
 <h3>Diskspace</h3>
 <div id="diskspace-total"></div>
 <div id="diskspace">
-	<span id="load_diskspace" class="dex-api load-status">
+	<div id="load_diskspace" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
 		<div class="empty">empty</div>
-	</span>
+	</div>
 </div>
 <div id="diskspace-legend"></div>
 
@@ -47,14 +47,14 @@
 		var diskspace_legend_item = doT.template($('#diskspace-legend-item').text());
 
 		function loadDiskusage() {
-			diskspace.find('> div').slideUp(100, function () { $(this).remove(); });
+			diskspace.find('> div:not(:first)').slideUp(100, function () { $(this).remove(); });
 			diskspace_legend.find('> div').slideUp(100, function () { $(this).remove(); });
 
 			apiLoadStatusWorking($('#load_diskspace'));
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'diskspace_usage'
 			}, function (data) {
-				apiLoadStatusSuccess($('#load_diskspace'));
+				$('#load_diskspace').hide();
 
 				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
