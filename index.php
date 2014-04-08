@@ -19,7 +19,7 @@ $config['verbose_logging'] 	= Common::tryOrDefault($config, 'verbose_logging', f
 $config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', false);
 $config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
 
-if (!is_writable('.'))
+if (!is_writable('./'))
 	user_error('Root directory is not writable', WARNING);
 
 Common::setMinifying($config['minifying']);
