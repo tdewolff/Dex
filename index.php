@@ -19,7 +19,14 @@ $config['verbose_logging'] 	= Common::tryOrDefault($config, 'verbose_logging', f
 $config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', false);
 $config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
 
+if (!is_writable('.'))
+	exit('Root directory is not writable');
+
 Common::setMinifying($config['minifying']);
+Common::makeDirectory('assets/');
+Common::makeDirectory('cache/');
+Common::makeDirectory('logs/');
+
 Error::setDisplay($config['display_errors'], $config['display_notices']);
 Log::initialize();
 Log::setVerbose($config['verbose_logging']);
