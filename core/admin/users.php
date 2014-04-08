@@ -2,7 +2,7 @@
 
 if (!User::isAdmin())
 {
-	http_response_code(403);
+	Common::responseCode(403);
 	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
 }
 
@@ -22,7 +22,7 @@ else
 		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . Db::escape($url[2]) . "' LIMIT 1;");
 		if (!$user)
 		{
-			http_response_code(404);
+			Common::responseCode(404);
 			user_error('User ID "' . $url[2] . '" doesn\'t exist', ERROR);
 		}
 		$current_user = $user;

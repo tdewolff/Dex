@@ -33,7 +33,7 @@ class API
 
 		if (empty($filename))
 		{
-			http_response_code(404);
+			Common::responseCode(404);
 			user_error('Could not expand URL "' . implode('/', $url) . '" to API', ERROR);
 		}
 

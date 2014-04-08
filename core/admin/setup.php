@@ -93,11 +93,10 @@ if ($form->submitted())
 				FOREIGN KEY(module_name) REFERENCES module(module_name)
 			);
 
-			INSERT INTO link (url, title, template_name, modify_time) VALUES (
+			INSERT INTO link (url, title, template_name) VALUES (
 				'',
 				'Home',
-				'static',
-				'" . Db::escape(time()) . "'
+				'static'
 			);
 
 			INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (

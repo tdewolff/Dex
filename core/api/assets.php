@@ -2,7 +2,7 @@
 
 if (!User::loggedIn())
 {
-	http_response_code(403);
+	Common::responseCode(403);
 	user_error('Forbidden access', ERROR);
 }
 
@@ -19,7 +19,7 @@ $dir = preg_replace('/\\\\/', '/', realpath($dir));
 $root = dirname($_SERVER['SCRIPT_FILENAME']) . '/assets';
 if (strlen($dir) < strlen($root) || substr($dir, 0, strlen($root)) !== $root)
 {
-	http_response_code(403);
+	Common::responseCode(403);
 	user_error('Directory "' . $request_dir . '" doesn\'t exist or is outside assets directory', ERROR);
 }
 
@@ -31,7 +31,7 @@ else
 
 if (!is_readable($dir) || !is_dir($dir))
 {
-	http_response_code(403);
+	Common::responseCode(403);
 	user_error('Directory "' . $request_dir . '" doesn\'t exist or is not readable', ERROR);
 }
 

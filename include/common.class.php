@@ -1,17 +1,5 @@
 <?php
 
-if (!function_exists('http_response_code'))
-{
-	function http_response_code($new_code)
-	{
-		static $code = 200;
-		header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
-		if (!headers_sent())
-			$code = $new_code;
-		return $code;
-	}
-}
-
 class Common
 {
 	public static $request_url = '';
@@ -208,6 +196,15 @@ class Common
 	{
 		$s = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
 		return 'http' . $s . '://' . $_SERVER['HTTP_HOST'] . '/';
+	}
+
+	public static function responseCode($new_code)
+	{
+		static $code = 200;
+		header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
+		if (!headers_sent())
+			$code = $new_code;
+		return $code;
 	}
 
 	public static function outputFaviconIco()

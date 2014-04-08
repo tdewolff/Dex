@@ -135,7 +135,7 @@ if (Common::requestApi())
 	$filename = API::expandUrl($url);
 	if (!is_file($filename))
 	{
-		http_response_code(404);
+		Common::responseCode(404);
 		user_error('Could not find API file "' . $filename . '"', ERROR);
 	}
 
@@ -240,7 +240,7 @@ if ($link)
 }
 else
 {
-	http_response_code(404);
+	Common::responseCode(404);
 	user_error('Page not found "/' . Common::$request_url . '"', ERROR);
 	exit;
 }

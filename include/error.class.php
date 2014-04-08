@@ -114,8 +114,8 @@ class Error
 			case E_USER_ERROR:
 			default:
 				Log::error($message, $location, $backtrace);
-				if (http_response_code() == 200)
-					http_response_code(500);
+				if (Common::responseCode() == 200)
+					Common::responseCode(500);
 
 				if (Common::requestResource())
 					header('Content-Type: text/html; charset: UTF-8');
