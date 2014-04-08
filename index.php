@@ -20,7 +20,7 @@ $config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', fal
 $config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
 
 if (!is_writable('.'))
-	exit('Root directory is not writable');
+	user_error('Root directory is not writable', WARNING);
 
 Common::setMinifying($config['minifying']);
 Common::makeDirectory('assets/');

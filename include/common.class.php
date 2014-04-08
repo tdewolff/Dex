@@ -58,6 +58,13 @@ class Common
 
 	////////////////
 
+	public static function makeDirectory($directory)
+	{
+		if (!is_dir($directory))
+			if (!mkdir($directory))
+				user_error('Could not make directory "' . $directory . '"', WARNING);
+	}
+
 	public static function validUrl($input) // unused
 	{
 		// first part are all allowed characters
