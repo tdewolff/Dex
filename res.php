@@ -18,9 +18,15 @@ if ($parameters_position !== false)
 }
 
 if (!Resource::isResource($extension))
+{
+	http_response_code(403);
 	user_error('Resource file extension "' . $extension . '" invalid of "' . Common::$request_url . '"', ERROR);
+}
 else if (!is_file($filename))
+{
+	http_response_code(404);
 	user_error('Could not find resource file "' . $filename . '"', ERROR);
+}
 else
 {
 	if (Resource::isImage($extension))

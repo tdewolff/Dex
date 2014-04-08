@@ -3,7 +3,10 @@
 require_once('include/console.class.php');
 
 if (!User::isAdmin())
+{
+	http_response_code(403);
 	user_error('Forbidden access', ERROR);
+}
 
 
 Console::append('Optimizing database...');

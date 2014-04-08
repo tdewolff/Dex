@@ -12,9 +12,9 @@ Hooks::attach('site', 0, function () {
 	Hooks::emit('navigation');
 	echo '</nav>';
 
-	//echo '<article class="main" role="main">';
+	echo '<article class="main" role="main">';
 	Hooks::emit('main');
-	//echo '</article>';
+	echo '</article>';
 
 	echo '<footer>';
 	Hooks::emit('footer');
@@ -26,7 +26,7 @@ Hooks::attach('site', 0, function () {
 
 $error_loop = false;
 
-Hooks::attach('error', 0, function () {
+Hooks::attach('site-error', 0, function () {
 	ob_clean();
 
 	global $error_loop;
@@ -48,9 +48,9 @@ Hooks::attach('error', 0, function () {
 	Hooks::emit('navigation');
 	echo '</nav>';
 
-	//echo '<article class="main" role="main">';
-	Core::render('error.tpl');
-	//echo '</article>';
+	echo '<article class="main error" role="main">';
+	Core::render('admin/error.tpl');
+	echo '</article>';
 
 	echo '<footer>';
 	Hooks::emit('footer');

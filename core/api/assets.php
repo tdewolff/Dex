@@ -1,7 +1,10 @@
 <?php
 
 if (!User::loggedIn())
+{
+	http_response_code(403);
 	user_error('Forbidden access', ERROR);
+}
 
 // set current directory
 $dir = 'assets/';
@@ -15,7 +18,10 @@ $request_dir = substr($dir, 7);
 $dir = preg_replace('/\\\\/', '/', realpath($dir));
 $root = dirname($_SERVER['SCRIPT_FILENAME']) . '/assets';
 if (strlen($dir) < strlen($root) || substr($dir, 0, strlen($root)) !== $root)
+{
+	http_response_code(403);
 	user_error('Directory "' . $request_dir . '" doesn\'t exist or is outside assets directory', ERROR);
+}
 
 $dir = substr($dir, strlen($root));
 if (!empty($dir))
@@ -24,7 +30,10 @@ else
 	$dir = 'assets/' . $dir;
 
 if (!is_readable($dir) || !is_dir($dir))
+{
+	http_response_code(403);
 	user_error('Directory "' . $request_dir . '" doesn\'t exist or is not readable', ERROR);
+}
 
 
 // upload file

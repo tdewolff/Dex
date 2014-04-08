@@ -21,7 +21,10 @@ else if (API::action('logout'))
 }
 
 if (!User::isAdmin())
+{
+	http_response_code(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('delete_user'))
 {

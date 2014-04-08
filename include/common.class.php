@@ -2,9 +2,13 @@
 
 if (!function_exists('http_response_code'))
 {
-	function http_response_code($code)
+	function http_response_code($new_code)
 	{
-		header('X-PHP-Response-Code: ' . $code, true, $code);
+		static $code = 200;
+		header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
+		if (!headers_sent())
+			$code = $new_code;
+		return $code;
 	}
 }
 

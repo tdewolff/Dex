@@ -1,6 +1,6 @@
-<article role="main" class="main" data-dexeditable>
+<div data-dexeditable>
 	<?php echo (isset($_['content']) ? $_['content'] : ''); ?>
-</article>
+</div>
 
 <?php if (User::loggedIn()) { ?>
 <script>
@@ -9,7 +9,7 @@
 			api('/' + base_url + 'api/template/static/index/', {
 				action: 'save',
 				link_id: link_id,
-				content: DexEdit.getContent('article.main')
+				content: DexEdit.getContent('div[data-dexeditable]')
 			});
 		}
 	});

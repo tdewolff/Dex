@@ -1,7 +1,10 @@
 <?php
 
 if (!User::loggedIn())
+{
+	http_response_code(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('get'))
 {

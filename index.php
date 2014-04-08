@@ -33,6 +33,8 @@ register_shutdown_function(function () {
 	$error = error_get_last();
 	if (is_array($error))
 		Error::report($error['type'], $error['message'], $error['file'], $error['line']);
+
+	ob_flush(); flush();
 });
 
 if (!in_array('mod_rewrite', apache_get_modules()))
@@ -131,7 +133,10 @@ if (Common::requestApi())
 {
 	$filename = API::expandUrl($url);
 	if (!is_file($filename))
+	{
+		http_response_code(404);
 		user_error('Could not find API file "' . $filename . '"', ERROR);
+	}
 
 	require_once($filename); // exits
 	user_error('API not handled in "' . $filename . '"', ERROR);
@@ -182,18 +187,6 @@ while ($row = $table->fetch())
 Core::addTitle($settings['title']);
 Core::setThemeName($settings['theme']);
 
-
-// load page
-$link = Db::singleQuery("SELECT * FROM link WHERE '" . Db::escape(Common::$request_url) . "' REGEXP url or '/" . Db::escape(Common::$request_url) . "' = url LIMIT 1;");
-if ($link)
-{
-	Core::addTitle($link['title']);
-	Core::setLinkId($link['link_id']);
-	Core::setTemplateName($link['template_name']);
-	Core::set('link_id', $link['link_id']);
-}
-
-
 // load in admin bar
 if (User::getTimeLeft() !== false)
 {
@@ -217,6 +210,16 @@ if (User::getTimeLeft() !== false)
 }
 
 
+// load page
+$link = Db::singleQuery("SELECT * FROM link WHERE '" . Db::escape(Common::$request_url) . "' REGEXP url or '/" . Db::escape(Common::$request_url) . "' = url LIMIT 1;");
+if ($link)
+{
+	Core::addTitle($link['title']);
+	Core::setLinkId($link['link_id']);
+	Core::setTemplateName($link['template_name']);
+	Core::set('link_id', $link['link_id']);
+}
+
 // load in module hooks
 $table = Db::query("SELECT link_module.module_name FROM link_module
 	JOIN module ON link_module.module_name = module.module_name
@@ -224,20 +227,19 @@ $table = Db::query("SELECT link_module.module_name FROM link_module
 while ($row = $table->fetch())
 	include_once('modules/' . $row['module_name'] . '/hooks.php');
 
-
-// load in theme
 if (is_file('themes/' . Core::getThemeName() . '/hooks.php') !== false)
 	include_once('themes/' . Core::getThemeName() . '/hooks.php');
 
-
-// show page
 if ($link)
 {
-	// load in template
 	if (is_file('templates/' . Core::getTemplateName() . '/hooks.php') !== false)
 		include_once('templates/' . Core::getTemplateName() . '/hooks.php');
 
 	Hooks::emit('site');
 }
 else
+{
+	http_response_code(404);
 	user_error('Page not found "/' . Common::$request_url . '"', ERROR);
+	exit;
+}

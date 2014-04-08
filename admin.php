@@ -103,4 +103,5 @@ foreach ($admin_links as $i => $admin_link)
 			break;
 		}
 
+http_response_code(404);
 user_error('Could not find page at "' . Common::$request_url . '"', ERROR);

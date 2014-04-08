@@ -1,7 +1,10 @@
 <?php
 
 if (!User::isAdmin())
+{
+	http_response_code(403);
 	user_error('Forbidden access (' . $_SERVER['REQUEST_URI'] . ')', ERROR);
+}
 
 Hooks::emit('admin-header');
 Core::render('admin/templates.tpl');

@@ -26,7 +26,7 @@ class Error
 	public static function getErrors()
 	{
 		if (!self::$display_errors)
-			return '<p class="error">An error occurred, check the logs for additional information</p>';
+			return '<p class="error">A server error occurred</p>';
 		return implode('', self::$messages);
 	}
 
@@ -69,7 +69,7 @@ class Error
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
 
-		$display_message = self::$display_errors ? $formatted_message : '<p class="error">An error occurred, check the logs for additional information</p>';
+		$display_message = self::$display_errors ? $formatted_message : '<p class="error">A server error occurred</p>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))
@@ -114,7 +114,9 @@ class Error
 			case E_USER_ERROR:
 			default:
 				Log::error($message, $location, $backtrace);
-				http_response_code(500);
+				if (http_response_code() == 200)
+					http_response_code(500);
+
 				if (Common::requestResource())
 					header('Content-Type: text/html; charset: UTF-8');
 
@@ -125,7 +127,7 @@ class Error
 					if (Common::requestAdmin())
 						Hooks::emit('admin-error');
 					else
-						Hooks::emit('error');
+						Hooks::emit('site-error');
 				}
 				else
 					echo $display_message;

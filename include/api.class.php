@@ -32,7 +32,10 @@ class API
 				$filename = 'templates/' . $url[2] . '/api/' . implode('/', array_splice($url, 3)) . '.php';
 
 		if (empty($filename))
+		{
+			http_response_code(404);
 			user_error('Could not expand URL "' . implode('/', $url) . '" to API', ERROR);
+		}
 
 		return $filename;
 	}

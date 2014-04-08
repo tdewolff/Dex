@@ -205,3 +205,6 @@ body {
 .page-wrapper article figure figcaption {
   text-align: center;
 }
+.page-wrapper article.error {
+  text-align: center;
+}
