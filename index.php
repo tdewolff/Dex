@@ -20,13 +20,9 @@ $config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', fal
 $config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
 
 Common::setMinifying($config['minifying']);
-Common::makeDirectory('assets/');
-Common::makeDirectory('cache/');
-Common::makeDirectory('logs/');
-
+Error::setDisplay($config['display_errors'], $config['display_notices']);
 Log::initialize();
 Log::setVerbose($config['verbose_logging']);
-Error::setDisplay($config['display_errors'], $config['display_notices']);
 
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function () {

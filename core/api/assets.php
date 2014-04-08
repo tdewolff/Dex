@@ -204,7 +204,7 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 		$handle = opendir($dir);
 		while (($name = readdir($handle)) !== false)
 		{
-			if (is_file($dir . $name) && !Common::hasMinExtension($name))
+			if (is_file($dir . $name) && $name[0] !== '.' && !Common::hasMinExtension($name))
 			{
 				$last_slash = strrpos($name, '/');
 				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
@@ -237,7 +237,7 @@ else if (API::action('get_images'))
 	$handle = opendir($dir);
 	while (($name = readdir($handle)) !== false)
 	{
-		if (is_file($dir . $name) && !Common::hasMinExtension($name))
+		if (is_file($dir . $name) && $name[0] !== '.' && !Common::hasMinExtension($name))
 		{
 			$last_slash = strrpos($name, '/');
 			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));

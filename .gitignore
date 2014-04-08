@@ -6,10 +6,6 @@ non-server/less/schotsdeuntje/
 themes/groningenbijles/
 themes/schotsdeuntje/
 
-assets/
-cache/
-logs/
-
 *.min.js
 *.min.css
 

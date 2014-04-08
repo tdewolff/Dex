@@ -12,7 +12,7 @@ if (API::action('clear_logs'))
 
 	$handle = opendir('logs/');
 	while (($log_name = readdir($handle)) !== false)
-		if (is_file('logs/' . $log_name))
+		if (is_file('logs/' . $log_name) && $log_name[0] !== '.')
 			unlink('logs/' . $log_name);
 
 	Log::open();
@@ -22,7 +22,7 @@ else if (API::action('clear_cache'))
 {
 	$handle = opendir('cache/');
 	while (($cache_name = readdir($handle)) !== false)
-		if (is_file('cache/' . $cache_name))
+		if (is_file('cache/' . $cache_name) && $cache_name[0] !== '.')
 			unlink('cache/' . $cache_name);
 	API::finish();
 }
