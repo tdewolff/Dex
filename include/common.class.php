@@ -234,23 +234,27 @@ class Common
 		header('Content-Type: text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>' .
 			 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-		$table = Db::query("SELECT url, modify_time FROM link;");
+		$table = Db::query("SELECT link_id, url FROM link;");
 		while ($row = $table->fetch())
 		{
-			$slashes = preg_match_all('/\//', $row['url'], $matches); // $matches not used but required for old PHP versions
-			$priority = '0.5';
-			if ($row['url'] == '')
-				$priority = '1';
-			else if ($slashes == 1)
-				$priority = '0.8';
-			else if ($slashes == 2)
-				$priority = '0.6';
+			$content = Db::singleQuery("SELECT modify_time FROM content WHERE link_id = '" . $row['link_id'] . "' ORDER BY modify_time DESC LIMIT 1;");
+			if ($content)
+			{
+				$slashes = preg_match_all('/\//', $row['url'], $matches); // $matches not used but required for old PHP versions
+				$priority = '0.5';
+				if ($row['url'] == '')
+					$priority = '1';
+				else if ($slashes == 1)
+					$priority = '0.8';
+				else if ($slashes == 2)
+					$priority = '0.6';
 
-			echo '<url>' .
-					 '<loc>' . self::fullBaseUrl() . self::$base_url . $row['url'] . '</loc>' .
-					 '<lastmod>' . date('Y-m-d', $row['modify_time']) . '</lastmod>' .
-					 '<priority>' . $priority . '</priority>' .
-				 '</url>';
+				echo '<url>' .
+						 '<loc>' . self::fullBaseUrl() . self::$base_url . $row['url'] . '</loc>' .
+						 '<lastmod>' . date('Y-m-d', $content['modify_time']) . '</lastmod>' .
+						 '<priority>' . $priority . '</priority>' .
+					 '</url>';
+			}
 		}
 		echo '</urlset>';
 		exit;

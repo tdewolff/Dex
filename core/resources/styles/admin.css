@@ -454,7 +454,7 @@ label {
   display: block;
   float: left;
   margin-top: 8px;
-  padding-top: 5px;
+  padding-top: 6px;
   width: 200px;
   font-size: 15px;
   font-weight: bold;
@@ -1094,9 +1094,10 @@ body {
   cursor: pointer;
 }
 #assets #directories-assets li img {
-  display: inline;
+  display: inline-block;
+  position: relative;
   margin-right: 10px;
-  vertical-align: middle;
+  top: 3px;
 }
 #assets #directories-assets li a {
   text-decoration: none;
@@ -1427,7 +1428,7 @@ a.inline-rounded {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  padding: 0 2px;
+  padding: 2px;
 }
 .input-error-right,
 .input-error-below {

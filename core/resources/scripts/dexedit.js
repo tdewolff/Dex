@@ -91,8 +91,6 @@ DexEdit.DOM = {
 
 	isEditable: function (node) {
 		while (node.parentNode) {
-			console.log(node);
-			console.log(node.attributes);
 			if (node.hasAttribute('contenteditable')) {
 				if (node.getAttribute['contenteditable'] === 'false') {
 					return false;
@@ -378,7 +376,7 @@ DexEdit.Text = function (root) {
 		$.fancybox.open({
 			type: 'ajax',
 			href: '/' + base_url + 'admin/auxiliary/insert-link/',
-            autoScale: false,
+			autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_text').val(selection);
@@ -406,7 +404,7 @@ DexEdit.Text = function (root) {
 		$.fancybox.open({
 			type: 'ajax',
 			href: '/' + base_url + 'admin/auxiliary/insert-image/',
-            autoScale: false,
+			autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_caption').val(selection);
@@ -447,7 +445,7 @@ DexEdit.Text = function (root) {
 		$.fancybox.open({
 			type: 'ajax',
 			href: '/' + base_url + 'admin/auxiliary/insert-asset/',
-            autoScale: false,
+			autoScale: false,
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_text').val(selection);
@@ -552,15 +550,15 @@ DexEdit.Text = function (root) {
 				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
 					last = $('<p></p>').appendTo(self.root);
 					while (last[0].firstChild) {
-					    last[0].removeChild(last[0].childNodes[0]);
+						last[0].removeChild(last[0].childNodes[0]);
 					}
 				}
 
 				var range = document.createRange();
-		        range.selectNodeContents(last[0]);
-		        range.collapse(false);
-		        self.select(range);
-		    } else {
+				range.selectNodeContents(last[0]);
+				range.collapse(false);
+				self.select(range);
+			} else {
 				if (self.isLink()) {
 					self.removeLink();
 				}
@@ -578,11 +576,11 @@ DexEdit.Text = function (root) {
 					}
 
 					var range = document.createRange();
-			        range.selectNodeContents(p[0]);
-			        range.collapse(false);
-			        self.select(range);
+					range.selectNodeContents(p[0]);
+					range.collapse(false);
+					self.select(range);
 				}
-		    }
+			}
 
 			var target = $(this);
 			if (target.hasClass('dexedit-menu-link')) {
@@ -685,46 +683,46 @@ DexEdit.Text = function (root) {
 	});
 
 	this.root[0].addEventListener('paste', function (e) {
-    	e.preventDefault();
+		e.preventDefault();
 		self.hideMenu();
 
-    	var content = '';
-    	if (/text\/html/.test(e.clipboardData.types)) {
-            content = e.clipboardData.getData('text/html');
-        } else if (/text\/plain/.test(e.clipboardData.types)) {
-            content = e.clipboardData.getData('text/plain');
-        }
+		var content = '';
+		if (/text\/html/.test(e.clipboardData.types)) {
+			content = e.clipboardData.getData('text/html');
+		} else if (/text\/plain/.test(e.clipboardData.types)) {
+			content = e.clipboardData.getData('text/plain');
+		}
 
-        content = $('<div>').html(content).html();
+		content = $('<div>').html(content).html();
 
-	    // remove Word or other formatting
-	    content = content.replace(/(<!--[^]*?-->|\s{2,}|\r|\n)/gi, '');
-	    content = content.replace(/<(style|script|applet|embed|noframes|noscript|w:[a-z]+)[^]*?\/$1>/gi, '');
-	    content = content.replace(/<(\/)*(meta|link|span|\\?xml:|st1:|o:|font)([^]*?)>/gi, '');
+		// remove Word or other formatting
+		content = content.replace(/(<!--[^]*?-->|\s{2,}|\r|\n)/gi, '');
+		content = content.replace(/<(style|script|applet|embed|noframes|noscript|w:[a-z]+)[^]*?\/$1>/gi, '');
+		content = content.replace(/<(\/)*(meta|link|span|\\?xml:|st1:|o:|font)([^]*?)>/gi, '');
 
-	    // only certain tags are allowed
-	    content = content.replace(/<(\/?)([^>\s]+)[^>]*>/gi, function (all, close, tag) {
-	    	tag = tag.toLowerCase();
-	    	if (tag === 'p' || tag === 'ul' || tag === 'ol' || tag === 'li' || tag === 'blockquote' || tag === 'strong' || tag === 'i' || tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4') {
-	    		if (tag === 'h1') {
-	    			tag = 'h3';
-	    		} else if (tag === 'h2') {
-	    			tag = 'h4';
-	    		}
+		// only certain tags are allowed
+		content = content.replace(/<(\/?)([^>\s]+)[^>]*>/gi, function (all, close, tag) {
+			tag = tag.toLowerCase();
+			if (tag === 'p' || tag === 'ul' || tag === 'ol' || tag === 'li' || tag === 'blockquote' || tag === 'strong' || tag === 'i' || tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4') {
+				if (tag === 'h1') {
+					tag = 'h3';
+				} else if (tag === 'h2') {
+					tag = 'h4';
+				}
 
-	    		return '<' + close + tag + '>';
-	    	}
-	    	return '';
-	    });
+				return '<' + close + tag + '>';
+			}
+			return '';
+		});
 
-	    // no redundant whitespaces
-	    content = content.replace(/<p>(&nbsp;)?<\/p>/gi, '');
-	    content = content.trim();
+		// no redundant whitespaces
+		content = content.replace(/<p>(&nbsp;)?<\/p>/gi, '');
+		content = content.trim();
 
-	    // TODO: Word copy; a garbage line remains at the end
+		// TODO: Word copy; a garbage line remains at the end
 
-	    document.execCommand('insertHTML', false, content);
-    });
+		document.execCommand('insertHTML', false, content);
+	});
 };
 
 DexEdit.Image = function (root, img) {

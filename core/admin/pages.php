@@ -51,19 +51,17 @@ else if ($url[2] == 'new')
 						Db::exec("
 							UPDATE link SET
 								title = '" . Db::escape($form->get('title')) . "',
-								template_name = '" . Db::escape($form->get('template_name')) . "',
-								modify_time = '" . Db::escape(time()) . "'
+								template_name = '" . Db::escape($form->get('template_name')) . "'
 							WHERE link_id = '" . Db::escape($link['link_id']) . "';");
 					$link_id = $link['link_id'];
 				}
 				else
 				{
 					Db::exec("
-						INSERT INTO link (url, title, template_name, modify_time) VALUES (
+						INSERT INTO link (url, title, template_name) VALUES (
 							'" . Db::escape($form->get('url')) . "',
 							'" . Db::escape($form->get('title')) . "',
-							'" . Db::escape($form->get('template_name')) . "',
-							'" . Db::escape(time()) . "'
+							'" . Db::escape($form->get('template_name')) . "'
 						);");
 					$link_id = Db::lastId();
 				}

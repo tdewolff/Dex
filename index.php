@@ -33,8 +33,6 @@ register_shutdown_function(function () {
 	$error = error_get_last();
 	if (is_array($error))
 		Error::report($error['type'], $error['message'], $error['file'], $error['line']);
-
-	ob_flush(); flush();
 });
 
 if (!in_array('mod_rewrite', apache_get_modules()))

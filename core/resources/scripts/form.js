@@ -192,12 +192,23 @@ $('form input[data-type="array"]').each(function (i, array) {
 		ul.append(items);
 	}
 
-	ul.on('input', 'input,textarea', function (e) {
+	ul.on('keydown', 'input' , function (e) {
+		if (e.keyCode === 188) {
+			var input = $(this),
+				li = input.closest('li');
+			li.next().find('input').focus();
+			e.preventDefault();
+		}
+	});
+
+	ul.on('input', 'input', function (e) {
 		var input = $(this),
-			li = input.closest('li');
+			li = input.closest('li'),
+			ul = li.closest('ul');
 
 		if (li.next().length == 0 && input.val().length > 0) {
 			$(template({placeholder: '', value: ''})).appendTo(ul).hide().fadeIn();
+			ul.tooltip('close').tooltip('open');
 		} else if (li.next().length > 0 && li.next().next().length == 0 && input.val().length == 0) { // remove empties
 			var prev = li;
 			li = li.next();
@@ -206,6 +217,7 @@ $('form input[data-type="array"]').each(function (i, array) {
 				li = prev;
 				prev = prev.prev();
 			}
+			ul.tooltip('close').tooltip('open');
 		}
 	});
 });

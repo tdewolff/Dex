@@ -52,14 +52,19 @@ else if (API::action('edit_pages'))
 
 	if (!count($errors))
 	{
+		$template_names = array();
+		$table = Db::query("SELECT * FROM link;");
+		while ($row = $table->fetch())
+			$template_names[$row['link_id']] = $row['template_name'];
+
 		$query = "BEGIN; DELETE FROM link;";
 		foreach ($pages as $page)
 			$query .= "
-			INSERT INTO link (link_id, title, url, modify_time) VALUES (
+			INSERT INTO link (link_id, url, title, template_name) VALUES (
 				'" . Db::escape($page['link_id']) . "',
-				'" . Db::escape($page['title']) . "',
 				'" . Db::escape($page['url']) . "',
-				'" . Db::escape(time()) . "'
+				'" . Db::escape($page['title']) . "',
+				'" . Db::escape($template_names[$page['link_id']]) . "'
 			);";
 		Db::exec($query . "COMMIT;");
 	}

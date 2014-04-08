@@ -66,8 +66,7 @@ if ($form->submitted())
 				link_id INTEGER PRIMARY KEY,
 				url TEXT UNIQUE,
 				title TEXT,
-				template_name TEXT,
-				modify_time INTEGER
+				template_name TEXT
 			);
 
 			CREATE TABLE content (

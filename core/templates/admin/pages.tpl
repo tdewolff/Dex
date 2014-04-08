@@ -60,7 +60,7 @@
 				return;
 			}
 
-			apiLoadStatusSuccess($('#load_status'));
+			$('#load_status').hide();
 			var items = '';
 			$.each(data['pages'], function () {
 				items += page_item(this);
@@ -114,8 +114,6 @@
 					});
 				}
 			});
-
-			console.log(data);
 
 			api('/' + base_url + 'api/core/pages/', {
 				action: 'edit_pages',

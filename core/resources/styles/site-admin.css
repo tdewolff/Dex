@@ -839,7 +839,7 @@ body {
   display: block;
   float: left;
   margin-top: 8px;
-  padding-top: 5px;
+  padding-top: 6px;
   width: 200px;
   font-size: 15px;
   font-weight: bold;
@@ -1275,9 +1275,10 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   cursor: pointer;
 }
 .dex-popup-wrapper #assets #directories-assets li img {
-  display: inline;
+  display: inline-block;
+  position: relative;
   margin-right: 10px;
-  vertical-align: middle;
+  top: 3px;
 }
 .dex-popup-wrapper #assets #directories-assets li a {
   text-decoration: none;

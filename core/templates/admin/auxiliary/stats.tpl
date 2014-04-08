@@ -2,6 +2,7 @@
 html, body {
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:85%;
+	margin: 0;
 }
 
 .axis path,
@@ -77,17 +78,17 @@ circle {
 				.tickSize(-width);
 
 			var line = d3.svg.line()
-				.interpolate('monotone')
+				.interpolate('cardinal')
 				.x(function (d) { return x(d.date); })
 				.y(function (d) { return y(d.visits); });
 
 			var line_unique = d3.svg.line()
-				.interpolate('monotone')
+				.interpolate('cardinal')
 				.x(function (d) { return x(d.date); })
 				.y(function (d) { return y(d.unique_visits); });
 
 			var area = d3.svg.area()
-				.interpolate('monotone')
+				.interpolate('cardinal')
 				.x(function (d) { return x(d.date); })
 				.y0(height)
 				.y1(function (d) { return y(d.unique_visits); });
