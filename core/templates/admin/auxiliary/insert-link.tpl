@@ -4,7 +4,8 @@
 			<h2><?php echo _('Insert link'); ?></h2>
 			<h3><?php echo _('Website link'); ?></h3>
 			<div id="external-link">
-				<input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button"><i class="fa fa-arrow-right"></i>&ensp;<?php echo _('Properties'); ?></a>
+				<a href="#" class="properties inline-button"><i class="fa fa-arrow-right"></i>&ensp;<?php echo _('Properties'); ?></a>
+				<div class="external-link-input"><input type="text" placeholder="http://www.domain.com/"></div>
 			</div>
 
 			<h3><?php echo _('Page links'); ?></h3>
@@ -31,7 +32,7 @@
 <script id="link_item" type="text/x-dot-template">
 	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>{{=it.url}}">
 		<div style="width:120px;">{{=it.title}}</div>
-		<div style="width:380px;"><a href="#">/{{=it.url}}</a></div>
+		<div style="width:380px;">/{{=it.url}}</div>
 	</li>
 </script>
 

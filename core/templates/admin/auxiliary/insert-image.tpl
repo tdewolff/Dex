@@ -3,7 +3,8 @@
 		<div id="assets">
 			<h2><?php echo _('Images'); ?></h2>
 			<div id="external-link">
-				<input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button"><?php echo _('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
+				<a href="#" class="properties inline-button"><?php echo _('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
+				<div class="external-link-input"><input type="text" placeholder="http://www.domain.com/"></div>
 			</div>
 
 			<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
@@ -150,7 +151,7 @@
 				}
 				$('#load_status_images').hide();
 
-				var items +=  = '';
+				var items = '';
 				$.each(data['images'], function () {
 					items += image_item(this);
 				});

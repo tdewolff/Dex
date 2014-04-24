@@ -387,7 +387,7 @@ button.list-button,
 a.list-button:visited,
 button.list-button:visited {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border: 1px solid #dedede;
   border-top-color: #ededed;
   border-left-color: #ededed;
@@ -1076,17 +1076,17 @@ body {
   overflow: hidden;
 }
 #assets #create-directory input {
+  width: 100%;
   margin: 0;
   float: none;
-  width: 100%;
 }
 #assets #create-directory a {
+  height: 27px;
   margin-left: 10px;
   margin-right: 0;
   margin-top: 1px;
-  float: right;
   line-height: 19px;
-  height: 27px;
+  float: right;
 }
 #assets #breadcrumbs {
   margin: 0 auto;
@@ -1234,7 +1234,13 @@ body {
   text-overflow: ellipsis;
 }
 #pages li > div:nth-child(1) {
-  width: 10%;
+  width: 14%;
+  padding: 4px 15px;
+  overflow: visible;
+  text-align: center;
+}
+#pages li > div:nth-child(1) > div {
+  display: inline-block;
 }
 #pages li > div:nth-child(2) {
   width: 3%;
@@ -1246,7 +1252,7 @@ body {
   width: 22%;
 }
 #pages li > div:nth-child(5) {
-  width: 38%;
+  width: 34%;
   text-overflow: ellipsis;
 }
 #pages li > div:nth-child(6) {
@@ -1284,7 +1290,12 @@ body {
 }
 #users li > div:nth-child(1) {
   width: 14%;
+  padding: 4px 15px;
   overflow: visible;
+  text-align: center;
+}
+#users li > div:nth-child(1) > div {
+  display: inline-block;
 }
 #users li > div:nth-child(2) {
   width: 22%;
@@ -1297,8 +1308,14 @@ body {
 }
 #modules li > div:nth-child(1),
 #templates li > div:nth-child(1) {
-  width: 14%;
+  width: 17%;
+  padding: 4px 15px;
   overflow: visible;
+  text-align: center;
+}
+#modules li > div:nth-child(1) > div,
+#templates li > div:nth-child(1) > div {
+  display: inline-block;
 }
 #modules li > div:nth-child(2),
 #templates li > div:nth-child(2) {
@@ -1310,7 +1327,7 @@ body {
 }
 #modules li > div:nth-child(4),
 #templates li > div:nth-child(4) {
-  width: 58%;
+  width: 55%;
   text-overflow: ellipsis;
 }
 #modules li.disabled div:not(:first-of-type) {

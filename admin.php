@@ -71,7 +71,7 @@ while ($row = $table->fetch())
 		'file' => 'modules/' . $row['module_name'] . '/admin/' . $config->get('file'),
 		'url' => $config->get('url'),
 		'icon' => $config->get('icon'),
-		'title' => $config->get('title'),
+		'title' => _($config->get('title')),
 		'admin_only' => $config->get('admin_only'),
 		'enabled' => $row['enabled']
 	);

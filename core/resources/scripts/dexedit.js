@@ -540,11 +540,6 @@ DexEdit.Text = function (root) {
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
 
-			var block = self.range.commonAncestorContainer;
-			if (!DexEdit.DOM.isBlock(block)) {
-				block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
-			}
-
 			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0]) || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
 				var last = self.root.find('*:last');
 				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
@@ -561,6 +556,11 @@ DexEdit.Text = function (root) {
 			} else {
 				if (self.isLink()) {
 					self.removeLink();
+				}
+
+				var block = self.range.commonAncestorContainer;
+				if (!DexEdit.DOM.isBlock(block)) {
+					block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
 				}
 
 				var tag = DexEdit.DOM.getTag(block);

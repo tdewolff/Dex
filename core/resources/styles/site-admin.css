@@ -772,7 +772,7 @@ body {
 .dex-popup-wrapper a.list-button:visited,
 .dex-popup-wrapper button.list-button:visited {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border: 1px solid #dedede;
   border-top-color: #ededed;
   border-left-color: #ededed;
@@ -1257,17 +1257,17 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   overflow: hidden;
 }
 .dex-popup-wrapper #assets #create-directory input {
+  width: 100%;
   margin: 0;
   float: none;
-  width: 100%;
 }
 .dex-popup-wrapper #assets #create-directory a {
+  height: 27px;
   margin-left: 10px;
   margin-right: 0;
   margin-top: 1px;
-  float: right;
   line-height: 19px;
-  height: 27px;
+  float: right;
 }
 .dex-popup-wrapper #assets #breadcrumbs {
   margin: 0 auto;
@@ -1394,17 +1394,21 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   width: 500px;
   margin-bottom: 30px;
 }
+.dex-popup-wrapper .popup #external-link div.external-link-input {
+  overflow: hidden;
+}
 .dex-popup-wrapper .popup #external-link input {
-  width: 370px;
   margin: 0;
+  width: 100%;
   float: none;
 }
 .dex-popup-wrapper .popup #external-link a {
-  width: 120px;
+  height: 27px;
   margin-left: 10px;
   margin-right: 0;
-  text-align: center;
-  white-space: nowrap;
+  margin-top: 1px;
+  line-height: 19px;
+  float: right;
 }
 .dex-popup-wrapper .popup #links li:not(:first-of-type):hover {
   cursor: pointer;
@@ -1414,9 +1418,6 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
 }
 .dex-popup-wrapper .popup #assets #upload {
   width: 500px;
-}
-.dex-popup-wrapper .popup #assets #upload #drop {
-  height: 50px;
 }
 .dex-popup-wrapper .popup #assets #breadcrumbs {
   width: 500px;
