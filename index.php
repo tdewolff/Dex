@@ -10,25 +10,25 @@ require_once('include/error.class.php');
 require_once('include/log.class.php');
 require_once('include/config.class.php');
 
-$config = new Config('dex.conf');
-$config->setDefault('minifying', true);
-$config->setDefault('caching', true);
-$config->setDefault('ssl', true);
-$config->setDefault('verbose_logging', false);
-$config->setDefault('display_errors', false);
-$config->setDefault('display_notices', false);
+$dex_conf = new Config('dex.conf');
+$dex_conf->setDefault('minifying', '1');
+$dex_conf->setDefault('caching', '1');
+$dex_conf->setDefault('ssl', '1');
+$dex_conf->setDefault('verbose_logging', '0');
+$dex_conf->setDefault('display_errors', '0');
+$dex_conf->setDefault('display_notices', '0');
 
 if (!is_writable('./'))
 	user_error('Root directory is not writable', WARNING);
 
-Common::setMinifying($config->get('minifying'));
+Common::setMinifying($dex_conf->get('minifying'));
 Common::makeDirectory('assets/');
 Common::makeDirectory('cache/');
 Common::makeDirectory('logs/');
 
-Error::setDisplay($config->get('display_errors'), $config->get('display_notices'));
+Error::setDisplay($dex_conf->get('display_errors'), $dex_conf->get('display_notices'));
 Log::initialize();
-Log::setVerbose($config->get('verbose_logging'));
+Log::setVerbose($dex_conf->get('verbose_logging'));
 
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function () {
@@ -73,7 +73,7 @@ else if (Common::$request_url == 'favicon.ico')
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
 
-Resource::setCaching($config->get('caching'));
+Resource::setCaching($dex_conf->get('caching'));
 
 
 ///////////////

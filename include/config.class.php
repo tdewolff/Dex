@@ -2,10 +2,16 @@
 
 class Config
 {
+	private $filename = '';
+	private $lines = array();
+	private $key_lines = array();
+
 	private $pairs = array();
+	private $defaults = array();
 
 	public function __construct($filename)
 	{
+		$this->filename = $filename;
 		if (!is_file($filename))
 		{
 			user_error('Could not find config file "' . $filename . '"', WARNING);
@@ -16,8 +22,8 @@ class Config
 		if (!$file)
 			return; // empty
 
-		$lines = explode("\n", $file);
-		foreach ($lines as $i => $line)
+		$this->lines = explode("\n", $file);
+		foreach ($this->lines as $i => $line)
 		{
 			$line = trim($line);
 			$is_position = strpos($line, '=');
@@ -27,13 +33,24 @@ class Config
 			$key = trim(substr($line, 0, $is_position));
 			$value = trim(substr($line, $is_position + 1));
 			$this->pairs[$key] = $value;
+			$this->key_lines[$key] = $i;
 		}
 	}
 
-	public function setDefault($key, $default)
+	public function save()
 	{
-		if (!isset($this->pairs[$key]))
-			$this->pairs[$key] = $default;
+		if (!file_put_contents($this->filename, implode("\n", $this->lines)))
+			user_error('Could not save config file "' . $this->filename . '"', ERROR);
+	}
+
+	public function getDefault($key)
+	{
+		return isset($this->defaults[$key]) ? $this->defaults[$key] : '';
+	}
+
+	public function setDefault($key, $value)
+	{
+		$this->defaults[$key] = $value;
 	}
 
 	public function has($key)
@@ -43,6 +60,20 @@ class Config
 
 	public function get($key)
 	{
-		return isset($this->pairs[$key]) ? $this->pairs[$key] : '';
+		return isset($this->pairs[$key]) ? $this->pairs[$key] : (isset($this->defaults[$key]) ? $this->defaults[$key] : '');
+	}
+
+	public function set($key, $value)
+	{
+		$this->pairs[$key] = $value;
+		if (isset($this->key_lines[$key]))
+		{
+			$this->lines[$this->key_lines[$key]] = $key . ' = ' . $value;
+		}
+		else
+		{
+			$this->lines[] = $key . ' = ' . $value;
+			$this->key_lines[$key] = count($this->lines) - 1;
+		}
 	}
 }

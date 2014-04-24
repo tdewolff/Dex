@@ -86,7 +86,7 @@ class Error
 				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::warning($message);
+						API::warning($formatted_message);
 					else if (Common::requestAdmin())
 						echo $formatted_message;
 				}
@@ -101,7 +101,7 @@ class Error
 				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::notice($message);
+						API::notice($formatted_message);
 					else if (Common::requestAdmin())
 						echo $formatted_message;
 				}

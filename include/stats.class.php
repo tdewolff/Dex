@@ -31,7 +31,7 @@ class Stats
 		while ($row = $table->fetch())
 		{
 			$time = floor($row['time'] / 86400) * 86400;
-			while ($oldTime)
+			while (isset($oldTime))
 			{
 				$oldTime += 86400;
 				if ($oldTime >= $time)

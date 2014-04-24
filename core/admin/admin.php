@@ -17,18 +17,19 @@ foreach ($apache_modules_needed as $module)
 if (!extension_loaded('curl') && !preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen')))
 	$warnings[] = _('Neither PHP module cURL is enabled nor PHP setting allow_url_fopen is true');
 
-if (!$config->get('minifying'))
-	$warnings[] = _('%s is disabled in %s', 'Minifying', 'dex.conf');
-if (!$config->get('caching'))
-	$warnings[] = _('%s is disabled in %s', 'Caching', 'dex.conf');
-if (!$config->get('ssl'))
-	$warnings[] = _('%s is disabled in %s', 'SSL login', 'dex.conf');
-if ($config->get('verbose_logging'))
-	$warnings[] = _('%s is disabled in %s', 'Verbose logging', 'dex.conf');
-if ($config->get('display_errors'))
-	$warnings[] = _('%s is disabled in %s', 'Displaying errors', 'dex.conf');
-if ($config->get('display_notices'))
-	$warnings[] = _('%s is disabled in %s', 'Displaying notices', 'dex.conf');
+Log::notice($dex_conf->get('minifying'));
+if (!$dex_conf->get('minifying'))
+	$warnings[] = _('%s is disabled in %s, %ssolve%s', 'Minifying', 'dex.conf', '<a href="#" data-warning="minifying">', '</a>');
+if (!$dex_conf->get('caching'))
+	$warnings[] = _('%s is disabled in %s, %ssolve%s', 'Caching', 'dex.conf', '<a href="#" data-warning="caching">', '</a>');
+if (!$dex_conf->get('ssl'))
+	$warnings[] = _('%s is disabled in %s, only solve if SSL is available', 'SSL login', 'dex.conf', '<a href="#" data-warning="ssl">', '</a>');
+if ($dex_conf->get('verbose_logging'))
+	$warnings[] = _('%s is disabled in %s, %ssolve%s', 'Verbose logging', 'dex.conf', '<a href="#" data-warning="verbose_logging">', '</a>');
+if ($dex_conf->get('display_errors'))
+	$warnings[] = _('%s is disabled in %s, %ssolve%s', 'Displaying errors', 'dex.conf', '<a href="#" data-warning="display_errors">', '</a>');
+if ($dex_conf->get('display_notices'))
+	$warnings[] = _('%s is disabled in %s, %ssolve%s', 'Displaying notices', 'dex.conf', '<a href="#" data-warning="display_notices">', '</a>');
 
 if (!is_writable('assets/'))
 	$warnings[] = _('Directory %s is not writable', '"assets/"');

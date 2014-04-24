@@ -26,6 +26,15 @@ else if (API::action('clear_cache'))
 			unlink('cache/' . $cache_name);
 	API::finish();
 }
+else if (API::action('solve_warning'))
+{
+	if (!API::has('warning'))
+		user_error('No warning set', ERROR);
+
+	$dex_conf->set(API::get('warning'), $dex_conf->getDefault(API::get('warning')));
+	$dex_conf->save();
+	API::finish();
+}
 else if (API::action('get_logs'))
 {
 	$lines = API::has('lines') ? API::get('lines') : 100;

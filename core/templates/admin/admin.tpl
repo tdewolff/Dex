@@ -123,5 +123,27 @@
 				});
 			}
 		});
+
+		$('a[data-warning]').click(function () {
+			var li = $(this).closest('li');
+			var warning = $(this).attr('data-warning');
+
+			apiStatusWorking('<?php echo _('Solving warning...'); ?>');
+			api('/' + base_url + 'api/core/admin/', {
+				action: 'solve_warning',
+				warning: warning
+			}, function (data) {
+				apiStatusSuccess('<?php echo _('Solved warning'); ?>');
+				li.slideUp(100, function () {
+					$(this).remove();
+
+					if ($('#warnings').find('li').length == 1) {
+						$('<li class="empty"><?php echo _('none'); ?></li>').hide().appendTo($('#warnings')).slideDown(100);
+					}
+				});
+			}, function () {
+				apiStatusError('<?php echo _('Solving warning failed'); ?>');
+			});
+		});
 	});
 </script>
