@@ -147,11 +147,6 @@ class Common
 		return isset($array[$index]) ? $array[$index] : 0;
 	}
 
-	public static function tryOrDefault($array, $index, $default)
-	{
-		return isset($array[$index]) ? $array[$index] : $default;
-	}
-
 	////////////////
 
 	public static function getUrlContents($url)
@@ -198,12 +193,14 @@ class Common
 		return 'http' . $s . '://' . $_SERVER['HTTP_HOST'] . '/';
 	}
 
-	public static function responseCode($new_code)
+	public static function responseCode($new_code = null)
 	{
 		static $code = 200;
-		header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
-		if (!headers_sent())
+		if ($new_code != null && !headers_sent())
+		{
+			header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
 			$code = $new_code;
+		}
 		return $code;
 	}
 

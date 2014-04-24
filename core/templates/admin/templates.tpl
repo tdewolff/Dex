@@ -1,15 +1,15 @@
-<h2>Templates</h2>
+<h2><?php echo _('Templates'); ?></h2>
 <ul id="templates" class="table">
 	<li>
 		<div></div>
-		<div>Name</div>
-		<div>Author</div>
-		<div>Description</div>
+		<div><?php echo _('Name'); ?></div>
+		<div><?php echo _('Author'); ?></div>
+		<div><?php echo _('Description'); ?></div>
 	</li>
 	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo _('empty'); ?></div>
 	</li>
 </ul>
 

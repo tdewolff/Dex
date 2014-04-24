@@ -1,17 +1,17 @@
 <div class="dex-popup-wrapper">
 	<div class="popup">
 		<div id="assets">
-			<h2>Images</h2>
+			<h2><?php echo _('Images'); ?></h2>
 			<div id="external-link">
-				<input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
+				<input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button"><?php echo _('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
 			</div>
 
 			<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
 				<input type="hidden" name="dir" value="">
 				<input type="hidden" name="max_width" value="100">
 				<div id="drop">
-					<span>Drop Here</span><br>
-					<a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
+					<span><?php echo _('Drop here'); ?></span><br>
+					<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo _('Browse'); ?></a>
 					<input type="file" name="upload" multiple>
 					<div id="knob">
 						<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
@@ -21,37 +21,37 @@
 				<ul></ul>
 			</form>
 
-			<div id="breadcrumbs"><a href="#" data-dir="">Assets</a></div>
+			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo _('Assets'); ?></a></div>
 			<ul id="directories-assets" class="small-table">
 				<li>
-					<div>Filename</div>
-					<div>Size</div>
+					<div><?php echo _('File name'); ?></div>
+					<div><?php echo _('Size'); ?></div>
 					<div></div>
 				</li>
 				<li id="load_status_directories" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty">empty</div>
+					<div class="empty"><?php echo _('empty'); ?></div>
 				</li>
 			</ul>
 			<ul id="images" class="grid">
 				<li id="load_status_images" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty">empty</div>
+					<div class="empty"><?php echo _('empty'); ?></div>
 				</li>
 			</ul>
 		</div>
 		<div>
-			<h2>Properties</h2>
+			<h2><?php echo _('Image properties'); ?></h2>
 			<form>
 				<input id="insert_url" type="hidden">
 				<input id="insert_width" type="hidden" value="50">
-				<p><label>Description</label><input id="insert_title" type="text" data-tooltip="Shown when hovering"></p>
-				<p><label>Alternative text</label><input id="insert_alt" type="text" data-tooltip="Shown when image is unavailable"></p>
-				<p><label>Caption</label><textarea id="insert_caption"></textarea></p>
+				<p><label><?php echo _('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo _('Shown when hovering'); ?>"></p>
+				<p><label><?php echo _('Alternative text'); ?></label><input id="insert_alt" type="text" data-tooltip="<?php echo _('Shown when image is unavailable'); ?>"></p>
+				<p><label><?php echo _('Caption'); ?></label><textarea id="insert_caption"></textarea></p>
 				<input id="insert_submit" type="hidden">
-				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;Done</a>
+				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo _('Done'); ?></a>
 			</form>
 		</div>
 	</div>

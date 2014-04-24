@@ -1,22 +1,22 @@
 <?php
 $form = new Form('setup');
 
-$form->addSection('Settings', 'General site settings');
-$form->addText('title', 'Title', 'Displayed in the titlebar and site header', 'CubicMelonFirm', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
-$form->addMultilineText('subtitle', 'Slogan', 'Displayed below the title in the site header', 'Regain vacant space now!', array('(.|\n)*', 0, 200, 'Unknown error'));
-$form->addMultilineText('description', 'Description', 'Only visible for search engines<br>Describe your site concisely', 'Using cubic melons stacking and transport will be more efficient and economical', array('.*', 0, 80, 'Unknown error'));
-$form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Enter keywords defining your site', array('cubic', 'melons', 'efficient', 'stacking'), array('.*', 0, 80, 'Unknown error'));
+$form->addSection(_('Settings'), _('General site settings'));
+$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 25, _('Unknown error')));
+$form->addMultilineText('subtitle', _('Slogan', _('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, _('Unknown error')));
+$form->addMultilineText('description', _('Description', _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
+$form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
 
-$form->addSection('Admin account', 'Admin account gives full access to the admin panel, meant for site owners.');
-$form->addText('username', 'Username', '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, 'Only alphanumeric and (-_) characters allowed'));
-$form->addEmail('email', 'Email address', 'Used for notifications and password recovery');
-$form->addPassword('password', 'Password', '');
-$form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
+$form->addSection(_('Admin account'), _('Admin account gives full access to the admin panel, meant for site owners.'));
+$form->addText('username', _('Username'), '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, _('Only alphanumeric and (-_) characters allowed')));
+$form->addEmail('email', _('Email address'), _('Used for notifications and password recovery'));
+$form->addPassword('password', _('Password'), '');
+$form->addPasswordConfirm('password2', 'password', _('Confirm password'), '');
 
 $form->addSeparator();
 
-$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Setup');
-$form->setResponse('', 'Not setup');
+$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . _('Set up'));
+$form->setResponse('', _('Not set up'));
 
 if ($form->submitted())
 {
@@ -116,6 +116,16 @@ if ($form->submitted())
 			);
 
 			INSERT INTO setting (key, value) VALUES (
+				'language',
+				'en.English'
+			);
+
+			INSERT INTO setting (key, value) VALUES (
+				'theme',
+				'default'
+			);
+
+			INSERT INTO setting (key, value) VALUES (
 				'title',
 				'" . Db::escape($form->get('title')) . "'
 			);
@@ -133,11 +143,6 @@ if ($form->submitted())
 			INSERT INTO setting (key, value) VALUES (
 				'keywords',
 				'" . Db::escape($form->get('keywords')) . "'
-			);
-
-			INSERT INTO setting (key, value) VALUES (
-				'theme',
-				'default'
 			);
 
 			INSERT INTO user (username, email, password, role) VALUES (
@@ -160,7 +165,7 @@ if ($form->submitted())
 	$form->finish();
 }
 
-Core::addTitle('Setup Dex');
+Core::addTitle(_('Dex setup'));
 
 Hooks::emit('admin-header');
 

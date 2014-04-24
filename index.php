@@ -8,28 +8,27 @@ $starttime = explode(' ', microtime());
 require_once('include/common.class.php');
 require_once('include/error.class.php');
 require_once('include/log.class.php');
+require_once('include/config.class.php');
 
-$config = is_file('config.ini') ? parse_ini_file('config.ini') : array();
-if ($config === false) // for if parse_ini_file fails
-	$config = array();
-
-$config['minifying'] 		= Common::tryOrDefault($config, 'minifying', true);
-$config['caching'] 			= Common::tryOrDefault($config, 'caching', true);
-$config['verbose_logging'] 	= Common::tryOrDefault($config, 'verbose_logging', false);
-$config['display_errors'] 	= Common::tryOrDefault($config, 'display_errors', false);
-$config['display_notices']	= Common::tryOrDefault($config, 'display_notices', false);
+$config = new Config('dex.conf');
+$config->setDefault('minifying', true);
+$config->setDefault('caching', true);
+$config->setDefault('ssl', true);
+$config->setDefault('verbose_logging', false);
+$config->setDefault('display_errors', false);
+$config->setDefault('display_notices', false);
 
 if (!is_writable('./'))
 	user_error('Root directory is not writable', WARNING);
 
-Common::setMinifying($config['minifying']);
+Common::setMinifying($config->get('minifying'));
 Common::makeDirectory('assets/');
 Common::makeDirectory('cache/');
 Common::makeDirectory('logs/');
 
-Error::setDisplay($config['display_errors'], $config['display_notices']);
+Error::setDisplay($config->get('display_errors'), $config->get('display_notices'));
 Log::initialize();
-Log::setVerbose($config['verbose_logging']);
+Log::setVerbose($config->get('verbose_logging'));
 
 // from here on all PHP errors are caught and handled correctly
 register_shutdown_function(function () {
@@ -74,7 +73,7 @@ else if (Common::$request_url == 'favicon.ico')
 
 require_once('include/resource.class.php'); // also needed for header.tpl (concatenateFiles())
 
-Resource::setCaching($config['caching']);
+Resource::setCaching($config->get('caching'));
 
 
 ///////////////
@@ -151,8 +150,24 @@ ob_start('minifyHtml');
 
 require_once('include/dex.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
+require_once('include/language.class.php');
 require_once('include/stats.class.php');
 require_once('core/hooks.php');
+
+// load all site settings
+if (Db::isValid())
+{
+	$settings = array();
+	$table = Db::query("SELECT * FROM setting;");
+	while ($row = $table->fetch())
+	{
+		$settings[$row['key']] = $row['value'];
+		if (!empty($row['value']))
+		   Core::set('setting_' . $row['key'], $row['value']);
+	}
+}
+
+Language::load(Common::tryOrEmpty($settings, 'language'));
 
 if (User::loggedIn())
 {
@@ -174,19 +189,8 @@ if (Common::requestAdmin())
 if (User::loggedIn())
 	$_SESSION['last_site_request'] = Common::$request_url;
 
-
-// load all site ettings
-$settings = array();
-$table = Db::query("SELECT * FROM setting;");
-while ($row = $table->fetch())
-{
-	$settings[$row['key']] = $row['value'];
-	if (!empty($row['value']))
-	   Core::set('setting_' . $row['key'], $row['value']);
-}
-
-Core::addTitle($settings['title']);
-Core::setThemeName($settings['theme']);
+Core::addTitle(Common::tryOrEmpty($settings, 'title'));
+Core::setThemeName(Common::tryOrEmpty($settings, 'theme'));
 
 // load in admin bar
 if (User::getTimeLeft() !== false)

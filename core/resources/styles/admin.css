@@ -1009,7 +1009,6 @@ body {
 }
 #assets #upload ul {
   margin: 0 20px;
-  margin-bottom: 20px;
   font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   font-size: 12px;
@@ -1026,6 +1025,9 @@ body {
   vertical-align: middle;
   height: 16px;
   line-height: 16px;
+}
+#assets #upload ul li:last-of-type {
+  margin-bottom: 20px;
 }
 #assets #upload ul li.done {
   color: #477725;
@@ -1056,20 +1058,35 @@ body {
   left: 8px;
 }
 #assets #create-directory {
+  zoom: 1;
   margin: 0 auto;
   margin-bottom: 20px;
   width: 600px;
+  overflow: hidden;
+}
+#assets #create-directory:before,
+#assets #create-directory:after {
+  content: "";
+  display: table;
+}
+#assets #create-directory:after {
+  clear: both;
+}
+#assets #create-directory div.create-directory-input {
+  overflow: hidden;
 }
 #assets #create-directory input {
-  float: none;
   margin: 0;
-  width: 440px;
+  float: none;
+  width: 100%;
 }
 #assets #create-directory a {
   margin-left: 10px;
   margin-right: 0;
-  width: 150px;
-  white-space: nowrap;
+  margin-top: 1px;
+  float: right;
+  line-height: 19px;
+  height: 27px;
 }
 #assets #breadcrumbs {
   margin: 0 auto;

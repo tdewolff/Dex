@@ -1,7 +1,8 @@
-<h2>Assets</h2>
+<h2><?php echo _('Assets'); ?></h2>
 <div id="assets">
 	<div id="create-directory">
-		<input type="text"><a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;Create directory</a>
+		<a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;<?php echo _('Create directory'); ?></a>
+		<div class="create-directory-input"><input type="text"></div>
 		<div class="input-error-below">
 			<div class="box">
 				<div class="arrow"></div>
@@ -18,8 +19,8 @@
 		<input type="hidden" name="dir" value="">
 		<input type="hidden" name="max_width" value="200">
 		<div id="drop">
-			<span>Drop Here</span><br>
-			<a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
+			<span><?php echo _('Drop here'); ?></span><br>
+			<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo _('Browse'); ?></a>
 			<input type="file" name="upload" multiple>
 			<div id="knob">
 				<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
@@ -29,17 +30,17 @@
 		<ul></ul>
 	</form>
 
-	<div id="breadcrumbs"><a href="#!dir=" data-dir="">Assets</a></div>
+	<div id="breadcrumbs"><a href="#!dir=" data-dir=""><?php echo _('Assets'); ?></a></div>
 	<ul id="directories-assets" class="table">
 		<li>
-			<div>Filename</div>
-			<div>Size</div>
+			<div><?php echo _('File name'); ?></div>
+			<div><?php echo _('Size'); ?></div>
 			<div></div>
 		</li>
 		<li id="load_status_directories_assets" class="dex-api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
-			<div class="empty">empty</div>
+			<div class="empty"><?php echo _('empty'); ?></div>
 		</li>
 	</ul>
 
@@ -47,7 +48,7 @@
 		<li id="load_status_images" class="dex-api load-status">
 			<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 			<div class="error"><i class="fa fa-times"></i></div>
-			<div class="empty">empty</div>
+			<div class="empty"><?php echo _('empty'); ?></div>
 		</li>
 	</ul>
 </div>
@@ -59,7 +60,7 @@
 		<div>
 			{{?it.is_deletable}}
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
+			<a href="#" class="sure inline-rounded" data-tooltip="<?php echo _('Click to confirm'); ?>" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 			{{?}}
 		</div>
 	</li>
@@ -71,7 +72,7 @@
 		<div>{{=it.size}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
+			<a href="#" class="sure inline-rounded" data-tooltip="<?php echo _('Click to confirm'); ?>" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 		</div>
 	</li>
 </script>
@@ -80,7 +81,7 @@
 	<li data-name="{{=it.name}}">
 		<div class="delete">
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
+			<a href="#" class="sure inline-rounded" data-tooltip="<?php echo _('Click to confirm'); ?>" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 		</div>
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 200}}
@@ -208,14 +209,14 @@
 
 		// deleting directories, assets or images
 		directories_assets.on('click', 'li.directory a.sure', function () {
-			apiStatusWorking('Deleting directory...');
+			apiStatusWorking('<?php echo _('Deleting directory...'); ?>');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_directory',
 				name: item.attr('data-name'),
 				dir: dir
 			}, function () {
-				apiStatusSuccess('Deleted directory');
+				apiStatusSuccess('<?php echo _('Deleted directory'); ?>');
 				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
@@ -225,19 +226,19 @@
 					}
 				});
 			}, function () {
-				apiStatusError('Deleting directory failed');
+				apiStatusError('<?php echo _('Deleting directory failed'); ?>');
 			});
 		});
 
 		directories_assets.on('click', 'li.asset a.sure', function () {
-			apiStatusWorking('Deleting asset...');
+			apiStatusWorking('<?php echo _('Deleting asset...'); ?>');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_file',
 				name: item.attr('data-name'),
 				dir: dir
 			}, function () {
-				apiStatusSuccess('Deleted asset');
+				apiStatusSuccess('<?php echo _('Deleted asset'); ?>');
 				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
@@ -247,19 +248,19 @@
 					}
 				});
 			}, function () {
-				apiStatusError('Deleting asset failed');
+				apiStatusError('<?php echo _('Deleting asset failed'); ?>');
 			});
 		});
 
 		images.on('click', 'a.sure', function () {
-			apiStatusWorking('Deleting image...');
+			apiStatusWorking('<?php echo _('Deleting image...'); ?>');
 			var item = $(this);
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'delete_file',
 				name: item.attr('data-name'),
 				dir: dir
 			}, function () {
-				apiStatusSuccess('Deleted image');
+				apiStatusSuccess('<?php echo _('Deleted image'); ?>');
 				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
@@ -269,7 +270,7 @@
 					}
 				});
 			}, function () {
-				apiStatusError('Deleting image failed');
+				apiStatusError('<?php echo _('Deleting image failed'); ?>');
 			});
 		});
 
@@ -280,7 +281,7 @@
 		});
 
 		$('#create-directory').on('click', 'a', function () {
-			apiStatusWorking('Creating directory...');
+			apiStatusWorking('<?php echo _('Creating directory...'); ?>');
 
 			$('#create-directory').find('div.input-error-below').hide();
 
@@ -290,7 +291,7 @@
 				dir: dir
 			}, function (data) {
 				if (typeof data['error'] !== 'undefined') {
-					apiStatusError('Creating directory failed');
+					apiStatusError('<?php echo _('Creating directory failed'); ?>');
 
 					var error_box = $('#create-directory').find('div.input-error-below');
 					if (error_box.find('span').text() != data['error']) {
@@ -301,7 +302,7 @@
 					return;
 				}
 
-				apiStatusSuccess('Created directory');
+				apiStatusSuccess('<?php echo _('Created directory'); ?>');
 				$('#load_status_directories_assets').hide();
 
 				$('#create-directory input').val('');
@@ -312,7 +313,7 @@
 					$(item).hide().insertAfter(directories_assets.find('li').eq(1)).slideDown(100);
 				}
 			}, function () {
-				apiStatusError('Creating directory failed');
+				apiStatusError('<?php echo _('Creating directory failed'); ?>');
 			});
 		});
 

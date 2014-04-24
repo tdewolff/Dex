@@ -63,7 +63,9 @@ circle {
 
 			var x_domain = d3.extent(visits, function (d) { return d.date; });
 			x.domain(x_domain);
-			y.domain([0, d3.max(visits, function (d) { return d.visits; }) * 1.10]);
+			if (visits.length > 1) {
+				y.domain([0, d3.max(visits, function (d) { return d.visits; }) * 1.10]);
+			}
 
 			var xAxis = d3.svg.axis()
 				.scale(x)
@@ -76,6 +78,10 @@ circle {
 				.scale(y)
 				.orient('left')
 				.tickSize(-width);
+
+			if (visits.length < 2) {
+				yAxis.ticks(1);
+			}
 
 			var line = d3.svg.line()
 				.interpolate('cardinal')
@@ -123,7 +129,7 @@ circle {
 				.attr('y', 6)
 				.attr('dy', '.71em')
 				.style('text-anchor', 'end')
-				.text('Visits');
+				.text('<?php echo _('Visits'); ?>');
 
 			if (visits.length > 1) {
 				// paths and points
@@ -165,7 +171,7 @@ circle {
 				.attr('transform', 'translate(' + width + ',10)')
 				.attr('x', 25)
 				.attr('dy', '.35em')
-				.text('Total');
+				.text('<?php echo _('Total'); ?>');
 
 			svg.append('circle')
 				.attr('r', 2.5)
@@ -177,14 +183,14 @@ circle {
 				.attr('transform', 'translate(' + width + ',30)')
 				.attr('x', 25)
 				.attr('dy', '.35em')
-				.text('Unique');
+				.text('<?php echo _('Unique'); ?>');
 
 			if (visits.length < 2) {
 				svg.append('text')
 					.attr('x', width / 2)
 					.attr('y', height / 2)
 					.attr('class', 'empty')
-					.text('No visitor data yet');
+					.text('<?php echo _('empty'); ?>');
 			}
 		}
 	}

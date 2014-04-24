@@ -2,15 +2,17 @@
 
 $form = new Form('settings');
 
-$form->addSection('Settings', 'General site settings');
-$form->addText('title', 'Title', 'Displayed in the titlebar and site header', '', array('.*', 1, 25, 'Unknown error'));
-$form->addMultilineText('subtitle', 'Slogan', 'Displayed below the title in the site header', '', array('(.|\n)*', 0, 200, 'Unknown error'));
-$form->addMultilineText('description', 'Description', 'Only visible for search engines<br>Describe your site concisely', '', array('.*', 0, 80, 'Unknown error'));
-$form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Enter keywords defining your site', array(), array('.*', 0, 80, 'Unknown error'));
-
+$form->addSection(_('Settings'), _('General site settings')));
+$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 25, _('Unknown error')));
+$form->addMultilineText('subtitle', _('Slogan'), _('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, _('Unknown error')));
+$form->addMultilineText('description', _('Description'), _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
+$form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
 $form->addSeparator();
 
-$form->setResponse('Saved', 'Not saved');
+$form->addDropdown('language', _('Language'), '', Language::getAll());
+$form->addSeparator();
+
+$form->setResponse(_('Saved'), _('Not saved'));
 
 if ($form->submitted())
 {
@@ -21,6 +23,7 @@ if ($form->submitted())
 			UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';
 			UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';
 			UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';
+			UPDATE setting SET value = '" . Db::escape($form->get('language')) . "' WHERE key = 'language';
 		COMMIT;");
 	}
 	$form->finish();

@@ -48,7 +48,7 @@ class Form
 
 	public function addText($name, $title, $subtitle, $placeholder, $preg)
 	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
+		$preg[3] = isset($preg[3]) ? $preg[3] : _('Unknown error');
 		$this->items[] = array(
 			'type' => 'text',
 			'name' => $this->name . '_' . $name,
@@ -62,7 +62,7 @@ class Form
 
 	public function addMultilineText($name, $title, $subtitle, $placeholder, $preg)
 	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
+		$preg[3] = isset($preg[3]) ? $preg[3] : _('Unknown error');
 		$this->items[] = array(
 			'type' => 'multiline_text',
 			'name' => $this->name . '_' . $name,
@@ -82,7 +82,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => 'user@domain.com',
-			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => 'Invalid emailaddress'),
+			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => _('Invalid email address')),
 			'value' => ''
 		);
 	}
@@ -95,7 +95,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => '+99 (9) 9999-9999',
-			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => 'Invalid telephone number'),
+			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => _('Invalid telephone number')),
 			'value' => ''
 		);
 	}
@@ -108,7 +108,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => 'password',
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => _('Unknown error')),
 			'value' => ''
 		);
 	}
@@ -122,7 +122,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => 'password',
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => _('Unknown error')),
 			'value' => ''
 		);
 	}
@@ -135,7 +135,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => '',
-			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => 'Must be a valid local URL without special characters'),
+			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => _('Must be a valid local URL without special characters')),
 			'value' => ''
 		);
 	}
@@ -147,7 +147,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid radiobutton'),
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => _('Unknown error')),
 			'value' => '',
 			'options' => $options
 		);
@@ -160,7 +160,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid dropdown item'),
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => _('Unknown error')),
 			'value' => '',
 			'options' => $options
 		);
@@ -270,7 +270,7 @@ class Form
 	{
 		if (!isset($this->data['nonce']) || !isset($_SESSION['form_nonce_' . $this->name]) || $this->data['nonce'] != $_SESSION['form_nonce_' . $this->name])
 		{
-			$this->errors[] = 'Form submission from external source is forbidden';
+			$this->errors[] = _('Form submission from external source is forbidden');
 			return false;
 		}
 
@@ -305,15 +305,15 @@ class Form
 							$error = 'Does not confirm';
 					}
 					else if ($item['preg']['min'] > 0 && strlen($value) == 0)
-						$error = 'Cannot be empty';
+						$error = _('Cannot be empty');
 					else if ($item['type'] == 'password' && $value == 'tooshort')
-						$error = 'Too short, must be atleast 8 characters long';
+						$error = _('Too short, must be atleast 8 characters long');
 					else if ($item['type'] == 'password' && $value == 'incomplex')
-						$error = 'Needs at least one lowercase, one uppercase and one numeric character';
+						$error = _('Needs at least one lowercase, one uppercase and one numeric character');
 					else if (strlen($value) < $item['preg']['min'])
-						$error = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
+						$error = _('Too short, must be atleast %s characters long', $item['preg']['min']);
 					else if (strlen($value) > $item['preg']['max'])
-						$error = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
+						$error = _('Too long, must be atmost %s characters long', $item['preg']['max']);
 					else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
 						$error = $item['preg']['error'];
 

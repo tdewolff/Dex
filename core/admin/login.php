@@ -1,6 +1,6 @@
 <?php
 
-if (Common::tryOrDefault($config, 'ssl', true) &&  $_SERVER['HTTPS'] != 'on')
+if ($config->get('ssl') &&  $_SERVER['HTTPS'] != 'on')
 {
 	header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 	exit();
@@ -8,21 +8,21 @@ if (Common::tryOrDefault($config, 'ssl', true) &&  $_SERVER['HTTPS'] != 'on')
 
 $form = new Form('login');
 
-$form->addSection('Login', 'You must login before you can continue to the admin panel.');
-$form->addText('username', 'Username', '', '', array('[a-zA-Z0-9-_]*', 3, 16, 'Must be a valid username'));
-$form->addPassword('password', 'Password', '');
+$form->addSection(_('Log in'), _('You must log in before you can continue to the admin panel.'));
+$form->addText('username', _('Username'), '', '', array('[a-zA-Z0-9-_]*', 3, 16, _('Must be a valid username')));
+$form->addPassword('password', _('Password'), '');
 
 $form->addSeparator();
 
-$form->setSubmit('<i class="fa fa-sign-in"></i>&ensp;Login');
-$form->setResponse('', 'Not logged in');
+$form->setSubmit('<i class="fa fa-sign-in"></i>&ensp;' . _('Log in'));
+$form->setResponse('', _('Not logged in'));
 
 if ($form->submitted())
 {
 	if ($form->validate())
 	{
 		if (User::isBlocked($form->get('username')))
-			$form->appendError('Too many login attempts within short time, please wait 15 minutes');
+			$form->appendError(_('Too many login attempts within short time, please wait 15 minutes'));
 		else
 		{
 			$user = Db::singleQuery("SELECT user_id, password FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
@@ -40,7 +40,7 @@ if ($form->submitted())
 			else
 			{
 				User::addAttempt($form->get('username'));
-				$form->appendError('Username and password combination is incorrect');
+				$form->appendError(_('Username and password combination is incorrect'));
 			}
 		}
 	}

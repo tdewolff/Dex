@@ -1,16 +1,16 @@
-<h2>Users</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;New user</a>
+<h2><?php echo _('Users'); ?></h2>
+<a href="/<?php echo $_['base_url']; ?>admin/users/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;<?php echo _('New user'); ?></a>
 <ul id="users" class="table">
 	<li>
 		<div></div>
-		<div>Username</div>
-		<div>Email address</div>
-		<div>Role</div>
+		<div><?php echo _('Username'); ?></div>
+		<div><?php echo _('Email address'); ?></div>
+		<div><?php echo _('Role'); ?></div>
 	</li>
 	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo _('empty'); ?></div>
 	</li>
 </ul>
 
@@ -19,16 +19,16 @@
 		<div>
 			{{?!it.current}}
 			<div class="dropdown">
-				<a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="dropdown-select list-button"><i class="fa fa-pencil"></i>&ensp;Edit</a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i></a>
+				<a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="dropdown-select list-button"><i class="fa fa-pencil"></i>&ensp;<?php echo _('Edit'); ?></a><a href="#" class="dropdown-toggle list-button"><i class="fa fa-caret-down"></i></a>
 				<ul class="dropdown-menu" role="menu">
 					<li>
-						<a href="#" class="halt"><i class="fa fa-fw fa-trash-o"></i>&ensp;Delete</a>
-						<a href="#" class="sure" data-user-id="{{=it.user_id}}" title="Click to confirm"><i class="fa fa-fw fa-trash-o"></i>&ensp;Really?</a>
+						<a href="#" class="halt"><i class="fa fa-fw fa-trash-o"></i>&ensp;<?php echo _('Delete'); ?></a>
+						<a href="#" class="sure" data-user-id="{{=it.user_id}}" title="Click to confirm"><i class="fa fa-fw fa-trash-o"></i>&ensp;<?php echo _('Really?'); ?></a>
 					</li>
 				</ul>
 			</div>
 			{{??}}
-			<a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="list-button"><i class="fa fa-pencil"></i>&ensp;Edit</a></a>
+			<a href="/<?php echo $_['base_url']; ?>admin/users/{{=it.user_id}}/" class="list-button"><i class="fa fa-pencil"></i>&ensp;<?php echo _('Edit'); ?></a></a>
 			{{?}}
 		</div>
 		<div>{{=it.username}}</div>
@@ -61,17 +61,17 @@
 		});
 
 		users.on('click', 'a.sure', function () {
-			apiStatusWorking('Deleting user...');
+			apiStatusWorking('<?php echo _('Deleting user...'); ?>');
 			var item = $(this);
 			api('/' + base_url + 'api/core/users/', {
 				action: 'delete_user',
 				user_id: item.attr('data-user-id')
 			}, function () {
-				apiStatusSuccess('Deleted user');
+				apiStatusSuccess('<?php echo _('Deleted user'); ?>');
 				$('.dropdown-menu').fadeOut(100);
 				$('#user_' + item.attr('data-user-id')).remove();
 			}, function () {
-				apiStatusError('Deleting user failed');
+				apiStatusError('<?php echo _('Deleting user failed'); ?>');
 			});
 		});
 	});

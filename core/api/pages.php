@@ -78,9 +78,8 @@ else if (API::action('get_pages'))
 	$table = Db::query("SELECT * FROM link;");
 	while ($row = $table->fetch())
 	{
-		$ini_filename = 'templates/' . $row['template_name'] . '/config.ini';
-		if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-			$row['template_name'] = Common::tryOrEmpty($ini, 'title');
+		$config = new Config('templates/' . $row['template_name'] . '/template.conf');
+		$row['template_name'] = $config->get('title');
 
 		$row['title'] = htmlspecialchars($row['title']);
 

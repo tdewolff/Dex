@@ -1,18 +1,18 @@
-<h2>Pages</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;New page</a>
+<h2><?php echo _('Pages'); ?></h2>
+<a href="/<?php echo $_['base_url']; ?>admin/pages/new/" class="button indent"><i class="fa fa-plus"></i>&ensp;<?php echo _('New page'); ?></a>
 <ul id="pages" class="table">
 	<li>
 		<div></div>
 		<div></div>
-		<div>Title</div>
-		<div>Link</div>
-		<div>Content</div>
+		<div><?php echo _('Title'); ?></div>
+		<div><?php echo _('Link'); ?></div>
+		<div><?php echo _('Content'); ?></div>
 		<div></div>
 	</li>
 	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo _('empty'); ?></div>
 	</li>
 </ul>
 
@@ -20,7 +20,7 @@
 	<li id="page_{{=it.link_id}}" {{?it.url==''}}class="home"{{?}}>
 		<div>
 			<a href="/<?php echo $_['base_url']; ?>{{=it.url}}" class="list-button">
-				<i class="fa fa-pencil"></i>&ensp;Edit
+				<i class="fa fa-pencil"></i>&ensp;<?php echo _('Edit'); ?>
 			</a>
 		</div>
 		<div><i class="fa fa-home"></i></div>
@@ -40,7 +40,7 @@
 		<div>{{=it.content}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
-			<a href="#" class="sure inline-rounded" data-tooltip="Click to confirm" data-link-id="{{=it.link_id}}"><i class="fa fa-trash-o"></i></a>
+			<a href="#" class="sure inline-rounded" data-tooltip="<?php echo _('Click to confirm'); ?>" data-link-id="{{=it.link_id}}"><i class="fa fa-trash-o"></i></a>
 		</div>
 	</li>
 </script>
@@ -71,13 +71,13 @@
 		});
 
 		pages.on('click', 'a.sure', function () {
-			apiStatusWorking('Deleting page...');
+			apiStatusWorking('<?php echo _('Deleting page...'); ?>');
 			var item = $(this);
 			api('/' + base_url + 'api/core/pages/', {
 				action: 'delete_page',
 				link_id: $(this).attr('data-link-id')
 			}, function () {
-				apiStatusSuccess('Deleted page');
+				apiStatusSuccess('<?php echo _('Deleted page'); ?>');
 				$('.dropdown-menu').fadeOut(100);
 				$('#page_' + item.attr('data-link-id')).remove();
 
@@ -86,7 +86,7 @@
 					$('#load_status').show();
 				}
 			}, function () {
-				apiStatusError('Deleting page failed');
+				apiStatusError('<?php echo _('Deleting page failed'); ?>');
 			});
 		});
 
@@ -98,7 +98,7 @@
 		});
 
 		var savePages = function savePages(element) {
-			apiStatusWorking('Saving pages...');
+			apiStatusWorking('<?php echo _('Saving pages...'); ?>');
 			savePagesTimeout = null;
 
 			pages.find('div.input-error-right').hide();
@@ -120,7 +120,7 @@
 				pages: data
 			}, function (data) {
 				if (data['errors'].length) {
-					apiStatusError('Saving pages failed');
+					apiStatusError('<?php echo _('Saving pages failed'); ?>');
 
 					for (var i = 0; i < data['errors'].length; i++) {
 						var li = $('#page_' + data['errors'][i]['link_id']);
@@ -136,10 +136,10 @@
 						}
 					}
 				} else {
-					apiStatusSuccess('Saved pages');
+					apiStatusSuccess('<?php echo _('Saved pages'); ?>');
 				}
 			}, function (error) {
-				apiStatusError('Saving pages failed');
+				apiStatusError('<?php echo _('Saving pages failed'); ?>');
 			});
 		}
 

@@ -50,12 +50,18 @@ var Form = function (form) {
 		}
 	});
 
-	this.form.on('change', 'input, textarea, select', function (e) {
+	this.form.on('change', 'input, textarea', function (e) {
 		if (self.hasChange)	{
 			clearTimeout(self.saveTimeout);
 			self.save();
 			self.hasChange = false;
 		}
+	});
+
+	this.form.on('change', 'select', function (e) {
+		clearTimeout(self.saveTimeout);
+		self.save();
+		self.hasChange = false;
 	});
 
 	this.needsSave = function () {

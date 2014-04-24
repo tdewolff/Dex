@@ -13,9 +13,9 @@ else if ($url[2] == 'new')
 {
 	$form = new Form('page');
 
-	$form->addSection('New page', '');
-	$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('.*', 1, 20, 'Unknown error'));
-	$form->addLinkUrl('url', 'Link', 'Leave empty for homepage');
+	$form->addSection(_('New page'), '');
+	$form->addText('title', _('Title'), _('As displayed in the titlebar'), '', array('.*', 1, 20, _('Unknown error')));
+	$form->addLinkUrl('url', _('Link'), _('Leave empty for homepage'));
 
 	$form->setId('title', 'url-feed');
 	$form->setId('url', 'url');
@@ -25,16 +25,15 @@ else if ($url[2] == 'new')
 	while (($template_name = readdir($handle)) !== false)
 		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
 		{
-			$ini_filename = 'templates/' . $template_name . '/config.ini';
-			if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-				$templates[$template_name] = Common::tryOrEmpty($ini, 'title');
+			$config = new Config('templates/' . $template_name . '/template.conf');
+			$templates[$template_name] = $config->get('title');
 		}
-	$form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
+	$form->addDropdown('template_name', _('Template'), _('Determine page type'), $templates);
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
-	$form->setResponse('Created page', 'Not created');
+	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . _('Create'));
+	$form->setResponse('', _('Not created'));
 
 	if ($form->submitted())
 	{

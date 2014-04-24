@@ -1190,7 +1190,6 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
 }
 .dex-popup-wrapper #assets #upload ul {
   margin: 0 20px;
-  margin-bottom: 20px;
   font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   font-size: 12px;
@@ -1207,6 +1206,9 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   vertical-align: middle;
   height: 16px;
   line-height: 16px;
+}
+.dex-popup-wrapper #assets #upload ul li:last-of-type {
+  margin-bottom: 20px;
 }
 .dex-popup-wrapper #assets #upload ul li.done {
   color: #477725;
@@ -1237,20 +1239,35 @@ input.parameter_val + .dex-popup-wrapper form input.parameter-key {
   left: 8px;
 }
 .dex-popup-wrapper #assets #create-directory {
+  zoom: 1;
   margin: 0 auto;
   margin-bottom: 20px;
   width: 600px;
+  overflow: hidden;
+}
+.dex-popup-wrapper #assets #create-directory:before,
+.dex-popup-wrapper #assets #create-directory:after {
+  content: "";
+  display: table;
+}
+.dex-popup-wrapper #assets #create-directory:after {
+  clear: both;
+}
+.dex-popup-wrapper #assets #create-directory div.create-directory-input {
+  overflow: hidden;
 }
 .dex-popup-wrapper #assets #create-directory input {
-  float: none;
   margin: 0;
-  width: 440px;
+  float: none;
+  width: 100%;
 }
 .dex-popup-wrapper #assets #create-directory a {
   margin-left: 10px;
   margin-right: 0;
-  width: 150px;
-  white-space: nowrap;
+  margin-top: 1px;
+  float: right;
+  line-height: 19px;
+  height: 27px;
 }
 .dex-popup-wrapper #assets #breadcrumbs {
   margin: 0 auto;

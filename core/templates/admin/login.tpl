@@ -1,6 +1,6 @@
-<h2>Login to admin panel</h2>
+<h2><?php echo _('Log in'); ?></h2>
 <div id="content">
-	<a href="/<?php echo $_['base_url']; ?>admin/recover/" class="recover">Recover password</a>
+	<a href="/<?php echo $_['base_url']; ?>admin/recover/" class="recover"><?php echo _('Recover password'); ?></a>
 	<?php $_['login']->render(); ?>
 </div>
 

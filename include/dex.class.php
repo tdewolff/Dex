@@ -163,7 +163,7 @@ class Core extends Dex
 		while (($module_name = readdir($handle)) !== false)
 			if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
 			{
-				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/config.ini';
+				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/module.conf';
 				if (is_file($module_file))
 					$fs_modules[$module_name] = 1;
 			}
@@ -206,14 +206,14 @@ class Core extends Dex
 	public static function verifyLinkUrl($url, $link_id = 0)
 	{
 		if (!Common::validUrl($url))
-			return 'Must be valid URL';
+			return _('Must be valid URL');
 
 		if (Db::singleQuery("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
-			return 'Already used';
+			return _('Already used');
 
 		$url_base = substr($url, 0, strpos($url, '/') + 1);
 		if ($url_base == 'admin/' || $url_base == 'res/' || $url_base == 'api/')
-			return 'Cannot start with "' . $url_base . '"';
+			return _('Cannot start with %s', '"' . $url_base . '"');
 
 		return true;
 	}

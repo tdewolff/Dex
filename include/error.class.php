@@ -26,7 +26,7 @@ class Error
 	public static function getErrors()
 	{
 		if (!self::$display_errors)
-			return '<p class="error">A server error occurred</p>';
+			return '<p class="error">' . _('A server error occurred') . '</p>';
 		return implode('', self::$messages);
 	}
 
@@ -69,7 +69,7 @@ class Error
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
 
-		$display_message = self::$display_errors ? $formatted_message : '<p class="error">A server error occurred</p>';
+		$display_message = self::$display_errors ? $formatted_message : '<p class="error">' . _('A server error occurred') . '</p>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))

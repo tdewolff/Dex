@@ -1,11 +1,11 @@
-<h2>Administration</h2>
-<h3>Diskspace</h3>
+<h2><?php echo _('Administration'); ?></h2>
+<h3><?php echo _('Diskspace'); ?></h3>
 <div id="diskspace-total"></div>
 <div id="diskspace">
 	<div id="load_diskspace" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo _('empty'); ?></div>
 	</div>
 </div>
 <div id="diskspace-legend"></div>
@@ -18,24 +18,24 @@
 	<div style="width:{{=it.width}}%;"><div></div>&ensp;{{=it.name}}&ensp;<span>{{=it.percentage}}%</span></div>
 </script>
 
-<h3>Maintenance</h3>
+<h3><?php echo _('Maintenance'); ?></h3>
 <div>
-	<a href="#" class="button" data-tooltip="Optimize images and scripts of the site" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;Optimize site</a>&nbsp;
-	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;Clear cache</a>&nbsp;
-	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;Clear logs</a>
+	<a href="#" class="button" data-tooltip="<?php echo _('Optimize images and scripts'); ?>" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;<?php echo _('Optimize site'); ?></a>&nbsp;
+	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;<?php echo _('Clear cache'); ?></a>&nbsp;
+	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;<?php echo _('Clear logs'); ?></a>
 </div>
 
-<h3>Warnings</h3>
+<h3><?php echo _('Warnings'); ?></h3>
 <ul id="warnings">
 	<li id="load_warnings" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo _('empty'); ?></div>
 	</li>
 	<?php foreach ($_['warnings'] as $warning) {
 		echo '<li>' . $warning . '</li>';
 	} if (!count($_['warnings'])) {
-		echo '<li class="empty">none</li>';
+		echo '<li class="empty">' . _('none') . '</li>';
 	} ?>
 </ul>
 
@@ -56,7 +56,7 @@
 			}, function (data) {
 				$('#load_diskspace').hide();
 
-				$('#diskspace-total').html('Total disk usage: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
+				$('#diskspace-total').html('<?php echo _('Total disk usage'); ?>: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
 				var items = '';
 				$.each(data['diskspace'], function () {
@@ -91,35 +91,35 @@
 					}
 				});
 
-				apiStatusWorking('Publishing site...');
+				apiStatusWorking('<?php echo _('Optimizing site...'); ?>');
 				apiUpdateConsole($('.dex-api.console'));
 				api('/' + base_url + 'api/core/optimize-site/', {
 				}, function (data) {
 					apiStopConsole();
-					apiStatusSuccess('Published site');
+					apiStatusSuccess('<?php echo _('Optimized site'); ?>');
 				}, function () {
 					apiStopConsole();
-					apiStatusError('Publishing site failed');
+					apiStatusError('<?php echo _('Optimizing site failed'); ?>');
 					return false;
 				});
-			} else if (action == 'clear_logs') {
-				apiStatusWorking('Clearing logs...');
-				api('/' + base_url + 'api/core/admin/', {
-					action: action
-				}, function (data) {
-					apiStatusSuccess('Cleared logs');
-				}, function () {
-					apiStatusError('Clearing log failed');
-				});
 			} else if (action == 'clear_cache') {
-				apiStatusWorking('Clearing cache...');
+				apiStatusWorking('<?php echo _('Clearing cache...'); ?>');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action
 				}, function (data) {
-					apiStatusSuccess('Cleared cache');
+					apiStatusSuccess('<?php echo _('Cleared cache'); ?>');
 					loadDiskusage();
 				}, function () {
-					apiStatusError('Clearing cache failed');
+					apiStatusError('<?php echo _('Clearing cache failed'); ?>');
+				});
+			} else if (action == 'clear_logs') {
+				apiStatusWorking('<?php echo _('Clearing logs...'); ?>');
+				api('/' + base_url + 'api/core/admin/', {
+					action: action
+				}, function (data) {
+					apiStatusSuccess('<?php echo _('Cleared logs'); ?>');
+				}, function () {
+					apiStatusError('<?php echo _('Clearing logs failed'); ?>');
 				});
 			}
 		});

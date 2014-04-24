@@ -12,35 +12,35 @@ $apache_modules = apache_get_modules();
 $apache_modules_needed = array('mod_deflate', 'mod_expires', 'mod_filter', 'mod_headers', 'mod_setenvif');
 foreach ($apache_modules_needed as $module)
 	if (!in_array($module, $apache_modules))
-		$warnings[] = 'Apache module ' . $module . ' is not enabled';
+		$warnings[] = _('Apache module %s is not enabled', $module);
 
 if (!extension_loaded('curl') && !preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen')))
-	$warnings[] = 'Neither PHP module cURL is enabled nor PHP setting allow_url_fopen is true';
+	$warnings[] = _('Neither PHP module cURL is enabled nor PHP setting allow_url_fopen is true');
 
-if (!$config['minifying'])
-	$warnings[] = 'Minifying is disabled in config.ini';
-if (!$config['caching'])
-	$warnings[] = 'Caching is disabled in config.ini';
-if (!$config['ssl'])
-	$warnings[] = 'SSL login is disabled in config.ini';
-if ($config['verbose_logging'])
-	$warnings[] = 'Verbose logging is enabled in config.ini';
-if ($config['display_errors'])
-	$warnings[] = 'Displaying errors is enabled in config.ini';
-if ($config['display_notices'])
-	$warnings[] = 'Displaying notices is enabled in config.ini';
+if (!$config->get('minifying'))
+	$warnings[] = _('%s is disabled in %s', 'Minifying', 'dex.conf');
+if (!$config->get('caching'))
+	$warnings[] = _('%s is disabled in %s', 'Caching', 'dex.conf');
+if (!$config->get('ssl'))
+	$warnings[] = _('%s is disabled in %s', 'SSL login', 'dex.conf');
+if ($config->get('verbose_logging'))
+	$warnings[] = _('%s is disabled in %s', 'Verbose logging', 'dex.conf');
+if ($config->get('display_errors'))
+	$warnings[] = _('%s is disabled in %s', 'Displaying errors', 'dex.conf');
+if ($config->get('display_notices'))
+	$warnings[] = _('%s is disabled in %s', 'Displaying notices', 'dex.conf');
 
 if (!is_writable('assets/'))
-	$warnings[] = 'Directory "assets/" is not writable';
+	$warnings[] = _('Directory %s is not writable', '"assets/"');
 if (!is_writable('cache/'))
-	$warnings[] = 'Directory "cache/" is not writable';
+	$warnings[] = _('Directory %s is not writable', '"cache/"');
 if (!is_writable('logs/'))
-	$warnings[] = 'Directory "logs/" is not writable';
+	$warnings[] = _('Directory %s is not writable', '"logs/"');
 
 $handle = opendir('assets/');
 while (($name = readdir($handle)) !== false)
 	if (is_dir('assets/' . $name) && $name != '.' && $name != '..' && !is_writable('assets/' . $name))
-		$warnings[] = 'Directory "assets/' . $name . '" is not writable';
+		$warnings[] = _('Directory %s is not writable', '"assets/' . $name . '"');
 
 Hooks::emit('admin-header');
 
