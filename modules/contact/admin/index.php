@@ -3,21 +3,21 @@ Module::setModuleName('contact');
 
 $form = new Form('contact');
 
-$form->addSection('Contact details', '');
-$form->addText('fn', 'Name', 'Your full name', '', array('.*', 0, 20));
-$form->addText('org', 'Organization', '', '', array('.*', 0, 20));
-$form->addText('url', 'URL', 'URL to organization', 'http://www.domain.com', array('((https?):\/\/[^\s]*)?', 0, 50, 'Bad URL'));
-$form->addEmail('email', 'Email address', '');
-$form->addTel('tel', 'Telephone', '');
-$form->addText('adr_street-address', 'Street address', '', '123 Main st.', array('.*', 0, 20));
-$form->addText('adr_locality', 'City', '', 'Los Angeles', array('.*', 0, 20));
-$form->addText('adr_region', 'Region', 'State or province', 'CA', array('.*', 0, 20));
-$form->addText('adr_postal-code', 'Postal code', '', '91316', array('.*', 0, 20));
-$form->addText('adr_country-name', 'Country', '', 'U.S.A', array('.*', 0, 20));
+$form->addSection(_('Contact details'), '');
+$form->addText('fn', _('Name'), _('Your full name'), '', array('.*', 0, 20));
+$form->addText('org', _('Organization'), '', '', array('.*', 0, 20));
+$form->addText('url', _('URL'), _('URL to organization'), _('http://www.domain.com'), array('((https?):\/\/[^\s]*)?', 0, 50, _('Bad URL')));
+$form->addEmail('email', _('Email address'), '');
+$form->addTel('tel', _('Telephone'), '');
+$form->addText('adr_street-address', _('Street address'), '', _('123 Main st.'), array('.*', 0, 20));
+$form->addText('adr_locality', _('City'), '', _('Los Angeles'), array('.*', 0, 20));
+$form->addText('adr_region', _('Region'), _('State or province'), _('CA'), array('.*', 0, 20));
+$form->addText('adr_postal-code', _('Postal code'), '', _('91316'), array('.*', 0, 20));
+$form->addText('adr_country-name', _('Country'), '', _('U.S.A'), array('.*', 0, 20));
 
 $form->addSeparator();
 
-$form->setResponse('Saved', 'Not saved');
+$form->setResponse(_('Saved'), _('Not saved'));
 
 $form->optional(array('org', 'url', 'email', 'tel'));
 $form->optionalTogether(array('adr_street-address', 'adr_locality', 'adr_region', 'adr_postal-code', 'adr_country-name'));

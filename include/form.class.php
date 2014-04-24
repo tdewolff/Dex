@@ -81,7 +81,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'placeholder' => 'user@domain.com',
+			'placeholder' => _('user@domain.com'),
 			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => _('Invalid email address')),
 			'value' => ''
 		);
