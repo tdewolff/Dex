@@ -2,6 +2,16 @@ $('html').on('click', 'a[href="#"]', function (e) {
 	e.preventDefault();
 });
 
+$('html').on('click', '#links a.admin-links-expand', function () {
+	$('#links li').slideDown(100);
+	$(this).removeClass('admin-links-expand').addClass('admin-links-collapse');
+});
+
+$('html').on('click', '#links a.admin-links-collapse', function () {
+	$('#links li:not(.selected)').slideUp(100);
+	$(this).removeClass('admin-links-collapse').addClass('admin-links-expand');
+});
+
 // dropdown
 $('html').click(function () {
 	$('.dropdown-menu').fadeOut(100);

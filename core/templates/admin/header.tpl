@@ -33,13 +33,13 @@
 		<?php if (isset($_['admin_links'])): ?>
 		<section class="page-wrapper">
 			<h1>Dex</h1>
-			<div id="left-column">
+			<div id="links">
 				<ul>
 					<?php foreach ($_['admin_links'] as $i => $link): ?>
 					<?php if (empty($link)): ?>
 					<li class="separator"></li>
 					<?php elseif ($link['admin_only'] == 0 || $_['role'] == 'admin'): ?>
-					<li id="admin_link_<?php echo $link['name']; ?>"<?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo ' class="hidden"'; } ?>>
+					<li id="admin_link_<?php echo $link['name']; ?>" class="<?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'hidden'; } ?> <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'selected'; } ?>">
 						<a href="/<?php echo $_['base_url'] . $link['url']; ?>"<?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo ' class="selected"'; } ?>>
 							<i class="fa fa-fw<?php echo (strlen($link['icon']) ? ' ' . $link['icon'] : ' fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
 						</a>
@@ -47,8 +47,9 @@
 					<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
+				<a href="#" class="admin-links-expand"><i class="fa fa-fw fa-caret-down"></i></a>
 			</div>
-			<div id="right-column">
+			<div id="main">
 		<?php else: ?>
 		<section class="page-wrapper-slim">
 			<h1>Dex</h1>

@@ -57,7 +57,7 @@ body {
 	.navigate {
 		display: inline-block;
 		float: left;
-		margin-left: 20px;
+		margin-left: 1em;
 		line-height: 28px;
 
 		a {
@@ -68,7 +68,7 @@ body {
 	.current-user {
 		display: inline-block;
 		float: right;
-		margin-right: 20px;
+		margin-right: 1em;
 		line-height: 28px;
 
 		a {
@@ -78,7 +78,7 @@ body {
 
 	.dexedit-insert {
 		display: inline-block;
-		margin-left: 100px;
+		margin-left: 3em;
 		line-height: 28px;
 	}
 }
@@ -198,6 +198,25 @@ body {
 			#images li:hover {
 				cursor: pointer;
 			}
+		}
+	}
+}
+
+@media only screen and (max-device-width: 1205px) {
+	body {
+		padding-top: 23px;
+	}
+
+	.dex-admin-bar {
+		font-size: 70%;
+		height: 23px;
+
+		>div {
+			height: 18px;
+		}
+
+		.navigate, .current-user, .dexedit-insert {
+			line-height: 18px;
 		}
 	}
 }

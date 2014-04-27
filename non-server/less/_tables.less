@@ -7,7 +7,7 @@ ul.table, ul.small-table {
 	margin: 0 auto;
 	border: 1px solid darken(@light, 10%);
 	.border-radius(5px);
-	width: 902px;
+	width: 100%;
 
 	>li {
 		border-top: 1px solid darken(@light, 10%);
@@ -17,12 +17,12 @@ ul.table, ul.small-table {
 	}
 
 	>li:after {
-	    display: block;
-	    content: " ";
-	    visibility: hidden;
-	    clear: both;
-	    height: 0;
-	    font-size: 0;
+		display: block;
+		content: " ";
+		visibility: hidden;
+		clear: both;
+		height: 0;
+		font-size: 0;
 	}
 
 	>li:nth-child(odd) {
@@ -98,10 +98,10 @@ ul.grid {
 	li {
 		display: inline-block;
 		padding: 25px 15px;
-	    border: darken(@light, 2%) 1px solid;
+		border: darken(@light, 2%) 1px solid;
 
-	    &:hover {
+		&:hover {
 			background-color: darken(@light, 5%);
-	    }
+		}
 	}
 }

@@ -29,9 +29,8 @@ if ($form->submitted())
 	$form->finish();
 }
 
-$settings = Db::query("SELECT * FROM setting;");
-while ($setting = $settings->fetch())
-	$form->set($setting['key'], $setting['value']);
+foreach ($settings as $key => $value)
+	$form->set($key, $value);
 
 Hooks::emit('admin-header');
 
