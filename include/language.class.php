@@ -1,5 +1,8 @@
 <?php
 
+if (function_exists('_'))
+	runkit_function_remove('_');
+
 function _($string)
 {
 	$parameters = array();
