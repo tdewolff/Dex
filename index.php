@@ -165,9 +165,9 @@ if (Db::isValid())
 		if (!empty($row['value']))
 		   Core::set('setting_' . $row['key'], $row['value']);
 	}
-}
 
-Language::load(Common::tryOrEmpty($settings, 'language'));
+	Language::load(Common::tryOrEmpty($settings, 'language'));
+}
 
 if (User::loggedIn())
 {

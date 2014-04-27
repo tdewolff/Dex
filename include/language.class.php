@@ -51,7 +51,6 @@ class Language
 			else
 				$translation = self::$language->get($string);
 		}
-		$translation = htmlentities($translation, ENT_QUOTES, 'UTF-8');
 		return vsprintf($translation, $parameters);
 	}
 }

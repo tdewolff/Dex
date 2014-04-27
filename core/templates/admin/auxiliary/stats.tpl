@@ -63,8 +63,11 @@ circle {
 
 			var x_domain = d3.extent(visits, function (d) { return d.date; });
 			x.domain(x_domain);
-			if (visits.length > 1) {
-				y.domain([0, d3.max(visits, function (d) { return d.visits; }) * 1.10]);
+			var h = d3.max(visits, function (d) { return d.visits; });
+			if (h > 10) {
+				y.domain([0, d3.round(h * 1.10)]);
+			} else {
+				y.domain([0, h]);
 			}
 
 			var xAxis = d3.svg.axis()

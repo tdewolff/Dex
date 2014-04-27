@@ -7,6 +7,10 @@ $form->addMultilineText('subtitle', _('Slogan'), _('Displayed below the title in
 $form->addMultilineText('description', _('Description'), _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
 $form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
 
+$form->addSeparator();
+
+$form->addDropdown('language', _('Language'), '', Language::getAll());
+
 $form->addSection(_('Admin account'), _('Admin account gives full access to the admin panel, meant for site owners.'));
 $form->addText('username', _('Username'), '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, _('Only alphanumeric and (-_) characters allowed')));
 $form->addEmail('email', _('Email address'), _('Used for notifications and password recovery'));
@@ -22,6 +26,8 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
+		Language::load($form->get('language'));
+
 		$valid = Db::exec("BEGIN;
 			CREATE TABLE setting (
 				setting_id INTEGER PRIMARY KEY,
@@ -103,21 +109,21 @@ if ($form->submitted())
 				'1',
 				'1',
 				'content',
-				'" . Db::escape('<h3>Sample content</h3>
-				 <p>When logged in you can start editing by clicking this text. Try it!</p>
-				 <p>Select text to make it <b>bold</b> or <i>italic</i>, or to insert links, images or quotes like below:</p>
-				 <blockquote>In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.</blockquote>
+				'" . Db::escape('<h3>' . _('Sample content') . '</h3>
+				 <p>' . _('When logged in you can start editing by clicking this text. Try it!') . '</p>
+				 <p>' . _('Select text to make it <b>bold</b> or <i>italic</i>, or to insert links or quotes like below') . ':</p>
+				 <blockquote>' . _('In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.') . '</blockquote>
 				 <hr contenteditable="false">
-				 <p>Two enters create a divider and you can create lists too:</p>
-				 <ul><li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li></ul>
-				 <ol><li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li></ol>
+				 <p>' . _('Two enters create a divider and you can create lists too') . ':</p>
+				 <ul>' . _('<li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li>') . '</ul>
+				 <ol>' . _('<li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li>') . '</ol>
 				') . "',
 				'" . Db::escape(time()) . "'
 			);
 
 			INSERT INTO setting (key, value) VALUES (
 				'language',
-				'en.English'
+				'" . Db::escape($form->get('language')) . "'
 			);
 
 			INSERT INTO setting (key, value) VALUES (

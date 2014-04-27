@@ -59,9 +59,11 @@ var Form = function (form) {
 	});
 
 	this.form.on('change', 'select', function (e) {
-		clearTimeout(self.saveTimeout);
-		self.save();
-		self.hasChange = false;
+		if (!self.form.find('button[type="submit"]').length) {
+			clearTimeout(self.saveTimeout);
+			self.save();
+			self.hasChange = false;
+		}
 	});
 
 	this.needsSave = function () {
