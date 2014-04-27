@@ -1,9 +1,9 @@
-<h2><?php echo _('Themes'); ?></h2>
+<h2><?php echo __('Themes'); ?></h2>
 <ul id="themes" class="grid">
 	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty"><?php echo _('empty'); ?></div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 </ul>
 
@@ -41,16 +41,16 @@
 		themes.on('click', 'li', function () {
 			var item = $(this);
 			if (!item.hasClass('current')) {
-				apiStatusWorking('<?php echo _('Switching theme...'); ?>');
+				apiStatusWorking('<?php echo __('Switching theme...'); ?>');
 				api('/' + base_url + 'api/core/themes/', {
 					action: 'change_theme',
 					theme_name: item.attr('data-theme-name')
 				}, function () {
-					apiStatusSuccess('<?php echo _('Switched theme'); ?>');
+					apiStatusSuccess('<?php echo __('Switched theme'); ?>');
 					themes.find('li.current').removeClass('current');
 					item.addClass('current');
 				}, function () {
-					apiStatusError('<?php echo _('Switching theme failed'); ?>');
+					apiStatusError('<?php echo __('Switching theme failed'); ?>');
 				});
 			}
 		});

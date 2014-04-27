@@ -1,9 +1,9 @@
 <div class="dex-popup-wrapper">
 	<div class="popup">
 		<div id="assets">
-			<h2><?php echo _('Images'); ?></h2>
+			<h2><?php echo __('Images'); ?></h2>
 			<div id="external-link">
-				<a href="#" class="properties inline-button"><?php echo _('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
+				<a href="#" class="properties inline-button"><?php echo __('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
 				<div class="external-link-input"><input type="text" placeholder="http://www.domain.com/"></div>
 			</div>
 
@@ -11,8 +11,8 @@
 				<input type="hidden" name="dir" value="">
 				<input type="hidden" name="max_width" value="100">
 				<div id="drop">
-					<span><?php echo _('Drop here'); ?></span><br>
-					<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo _('Browse'); ?></a>
+					<span><?php echo __('Drop here'); ?></span><br>
+					<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo __('Browse'); ?></a>
 					<input type="file" name="upload" multiple>
 					<div id="knob">
 						<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
@@ -22,37 +22,37 @@
 				<ul></ul>
 			</form>
 
-			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo _('Assets'); ?></a></div>
+			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo __('Assets'); ?></a></div>
 			<ul id="directories-assets" class="small-table">
 				<li>
-					<div><?php echo _('File name'); ?></div>
-					<div><?php echo _('Size'); ?></div>
+					<div><?php echo __('File name'); ?></div>
+					<div><?php echo __('Size'); ?></div>
 					<div></div>
 				</li>
 				<li id="load_status_directories" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty"><?php echo _('empty'); ?></div>
+					<div class="empty"><?php echo __('empty'); ?></div>
 				</li>
 			</ul>
 			<ul id="images" class="grid">
 				<li id="load_status_images" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty"><?php echo _('empty'); ?></div>
+					<div class="empty"><?php echo __('empty'); ?></div>
 				</li>
 			</ul>
 		</div>
 		<div>
-			<h2><?php echo _('Image properties'); ?></h2>
+			<h2><?php echo __('Image properties'); ?></h2>
 			<form>
 				<input id="insert_url" type="hidden">
 				<input id="insert_width" type="hidden" value="50">
-				<p><label><?php echo _('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo _('Shown when hovering'); ?>"></p>
-				<p><label><?php echo _('Alternative text'); ?></label><input id="insert_alt" type="text" data-tooltip="<?php echo _('Shown when image is unavailable'); ?>"></p>
-				<p><label><?php echo _('Caption'); ?></label><textarea id="insert_caption"></textarea></p>
+				<p><label><?php echo __('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo __('Shown when hovering'); ?>"></p>
+				<p><label><?php echo __('Alternative text'); ?></label><input id="insert_alt" type="text" data-tooltip="<?php echo __('Shown when image is unavailable'); ?>"></p>
+				<p><label><?php echo __('Caption'); ?></label><textarea id="insert_caption"></textarea></p>
 				<input id="insert_submit" type="hidden">
-				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo _('Done'); ?></a>
+				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo __('Done'); ?></a>
 			</form>
 		</div>
 	</div>

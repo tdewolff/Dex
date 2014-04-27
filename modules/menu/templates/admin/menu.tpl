@@ -1,11 +1,11 @@
-<h2><?php echo _('Menu'); ?></h2>
+<h2><?php echo __('Menu'); ?></h2>
 <ul id="menu" class="table draggable">
 	<li>
 		<div></div>
 		<div></div>
-		<div><?php echo _('Name'); ?></div>
-		<div><?php echo _('Page title'); ?></div>
-		<div><?php echo _('Link'); ?></div>
+		<div><?php echo __('Name'); ?></div>
+		<div><?php echo __('Page title'); ?></div>
+		<div><?php echo __('Link'); ?></div>
 	</li>
 </ul>
 
@@ -15,7 +15,7 @@
 		<div><i class="fa fa-long-arrow-right"></i><i class="fa fa-long-arrow-right"></i><i class="fa fa-bars"></i></div>
 		<div><input type="text" value="{{=it.name}}" maxlength="25" data-error-position="right"{{?!it.enabled}} class="unused"{{?}}></div>
 		<div>{{=it.title}}</div>
-		<div><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}{{=it.url}}{{??}}<em>(<?php echo _('home'); ?>)</em>{{?}}</a></div>
+		<div><a href="/<?php echo $_['base_url']; ?>{{=it.url}}">{{?it.url != ''}}{{=it.url}}{{??}}<em>(<?php echo __('home'); ?>)</em>{{?}}</a></div>
 	</li>
 </script>
 
@@ -39,7 +39,7 @@
 		});
 
 		menu.on('save', function () {
-			apiStatusWorking('<?php echo _('Saving...'); ?>');
+			apiStatusWorking('<?php echo __('Saving...'); ?>');
 
 			hideInlineFormErrors(menu);
 
@@ -63,7 +63,7 @@
 				menu: data
 			}, function (data) {
 				if (data['errors'].length) {
-					apiStatusError('<?php echo _('Saving failed'); ?>');
+					apiStatusError('<?php echo __('Saving failed'); ?>');
 
 					for (var i = 0; i < data['errors'].length; i++) {
 						console.log(data['errors'][i]);
@@ -71,10 +71,10 @@
 						inlineFormError(li.find('input'), data['errors'][i]['error']);
 					}
 				} else {
-					apiStatusSuccess('<?php echo _('Saved'); ?>');
+					apiStatusSuccess('<?php echo __('Saved'); ?>');
 				}
 			}, function () {
-				apiStatusError('<?php echo _('Saving failed'); ?>');
+				apiStatusError('<?php echo __('Saving failed'); ?>');
 			});
 		});
 	});

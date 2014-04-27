@@ -1,9 +1,6 @@
 <?php
 
-if (function_exists('_'))
-	runkit_function_remove('_');
-
-function _($string)
+function __($string)
 {
 	$parameters = array();
 	if (func_num_args() > 1)

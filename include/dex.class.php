@@ -206,14 +206,14 @@ class Core extends Dex
 	public static function verifyLinkUrl($url, $link_id = 0)
 	{
 		if (!Common::validUrl($url))
-			return _('Must be valid URL');
+			return __('Must be valid URL');
 
 		if (Db::singleQuery("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
-			return _('Already used');
+			return __('Already used');
 
 		$url_base = substr($url, 0, strpos($url, '/') + 1);
 		if ($url_base == 'admin/' || $url_base == 'res/' || $url_base == 'api/')
-			return _('Cannot start with %s', '"' . $url_base . '"');
+			return __('Cannot start with %s', '"' . $url_base . '"');
 
 		return true;
 	}

@@ -1,26 +1,26 @@
 <?php
 $form = new Form('setup');
 
-$form->addSection(_('Settings'), _('General site settings'));
-$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 30, _('Unknown error')));
-$form->addMultilineText('subtitle', _('Slogan'), _('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, _('Unknown error')));
-$form->addMultilineText('description', _('Description'), _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
-$form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
+$form->addSection(__('Settings'), __('General site settings'));
+$form->addText('title', __('Title'), __('Displayed in the titlebar and site header'), '', array('.*', 1, 30, __('Unknown error')));
+$form->addMultilineText('subtitle', __('Slogan'), __('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, __('Unknown error')));
+$form->addMultilineText('description', __('Description'), __('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, __('Unknown error')));
+$form->addArray('keywords', __('Keywords'), __('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, __('Unknown error')));
 
 $form->addSeparator();
 
-$form->addDropdown('language', _('Language'), '', Language::getAll());
+$form->addDropdown('language', __('Language'), '', Language::getAll());
 
-$form->addSection(_('Admin account'), _('Admin account gives full access to the admin panel, meant for site owners.'));
-$form->addText('username', _('Username'), '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, _('Only alphanumeric and (-_) characters allowed')));
-$form->addEmail('email', _('Email address'), _('Used for notifications and password recovery'));
-$form->addPassword('password', _('Password'), '');
-$form->addPasswordConfirm('password2', 'password', _('Confirm password'), '');
+$form->addSection(__('Admin account'), __('Admin account gives full access to the admin panel, meant for site owners.'));
+$form->addText('username', __('Username'), '', 'admin', array('[a-zA-Z0-9-_]*', 3, 16, __('Only alphanumeric and (-_) characters allowed')));
+$form->addEmail('email', __('Email address'), __('Used for notifications and password recovery'));
+$form->addPassword('password', __('Password'), '');
+$form->addPasswordConfirm('password2', 'password', __('Confirm password'), '');
 
 $form->addSeparator();
 
-$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . _('Set up'));
-$form->setResponse('', _('Not set up'));
+$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . __('Set up'));
+$form->setResponse('', __('Not set up'));
 
 if ($form->submitted())
 {
@@ -101,7 +101,7 @@ if ($form->submitted())
 
 			INSERT INTO link (url, title, template_name) VALUES (
 				'',
-				'" . Db::escape(_('Home')) . "',
+				'" . Db::escape(__('Home')) . "',
 				'static'
 			);
 
@@ -109,14 +109,14 @@ if ($form->submitted())
 				'1',
 				'1',
 				'content',
-				'" . Db::escape('<h3>' . _('Sample content') . '</h3>
-				 <p>' . _('When logged in you can start editing by clicking this text. Try it!') . '</p>
-				 <p>' . _('Select text to make it <b>bold</b> or <i>italic</i>, or to insert links or quotes like below') . ':</p>
-				 <blockquote>' . _('In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.') . '</blockquote>
+				'" . Db::escape('<h3>' . __('Sample content') . '</h3>
+				 <p>' . __('When logged in you can start editing by clicking this text. Try it!') . '</p>
+				 <p>' . __('Select text to make it <b>bold</b> or <i>italic</i>, or to insert links or quotes like below') . ':</p>
+				 <blockquote>' . __('In 1972 a crack commando unit was sent to prison by a military court for a crime they didn&#x2019;t commit. These men promptly escaped from a maximum security stockade to the Los Angeles underground. Today, still wanted by the government, they survive as soldiers of fortune. If you have a problem, if no one else can help, and if you can find them, maybe you can hire the A-Team.') . '</blockquote>
 				 <hr contenteditable="false">
-				 <p>' . _('Two enters create a divider and you can create lists too') . ':</p>
-				 <ul>' . _('<li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li>') . '</ul>
-				 <ol>' . _('<li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li>') . '</ol>
+				 <p>' . __('Two enters create a divider and you can create lists too') . ':</p>
+				 <ul>' . __('<li>Typing &#x2018;- &#x2019; creates a list</li><li>And so does &#x2018;* &#x2019; too</li>') . '</ul>
+				 <ol>' . __('<li>An ordered list is created by typing &#x2018;1. &#x2019;</li><li>And so forth&#x2026;</li>') . '</ol>
 				') . "',
 				'" . Db::escape(time()) . "'
 			);
@@ -171,7 +171,7 @@ if ($form->submitted())
 	$form->finish();
 }
 
-Core::addTitle(_('Dex setup'));
+Core::addTitle(__('Dex setup'));
 
 Hooks::emit('admin-header');
 

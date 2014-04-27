@@ -25,7 +25,7 @@
 <?php endif; ?>
 
 	<body>
-		<!--[if lt IE 9]><div id="main" style="padding-left:3em;"><?php echo _('Your browser is too old for Dex, consider upgrading your browser!'); ?></div><![endif]-->
+		<!--[if lt IE 9]><div id="main" style="padding-left:3em;"><?php echo __('Your browser is too old for Dex, consider upgrading your browser!'); ?></div><![endif]-->
 		<!--[if gt IE 8]><!-->
 
 		<?php include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/include/site-admin.tpl'); // absolute path needed for register_shutdown_function() ?>

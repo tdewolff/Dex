@@ -1,29 +1,29 @@
 <div class="dex-popup-wrapper">
 	<div class="popup">
 		<div id="assets">
-			<h2><?php echo _('Assets'); ?></h2>
-			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo _('Assets'); ?></a></div>
+			<h2><?php echo __('Assets'); ?></h2>
+			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo __('Assets'); ?></a></div>
 			<ul id="directories-assets" class="small-table">
 				<li>
-					<div><?php echo _('File name'); ?></div>
-					<div><?php echo _('Size'); ?></div>
+					<div><?php echo __('File name'); ?></div>
+					<div><?php echo __('Size'); ?></div>
 					<div></div>
 				</li>
 				<li id="load_status_directories_assets" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty"><?php echo _('empty'); ?></div>
+					<div class="empty"><?php echo __('empty'); ?></div>
 				</li>
 			</ul>
 		</div>
 		<div>
-			<h2><?php echo _('Asset properties'); ?></h2>
+			<h2><?php echo __('Asset properties'); ?></h2>
 			<form>
 				<input id="insert_url" type="hidden">
-				<p><label><?php echo _('Text'); ?></label><input id="insert_text" type="text" data-tooltip="<?php echo _('Clickable text'); ?>"></p>
-				<p><label><?php echo _('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo _('Shown when hovering'); ?>"></p>
+				<p><label><?php echo __('Text'); ?></label><input id="insert_text" type="text" data-tooltip="<?php echo __('Clickable text'); ?>"></p>
+				<p><label><?php echo __('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo __('Shown when hovering'); ?>"></p>
 				<input id="insert_submit" type="hidden">
-				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo _('Insert'); ?></a>
+				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo __('Insert'); ?></a>
 			</form>
 		</div>
 	</div>

@@ -38,7 +38,7 @@ else if (API::action('edit_pages'))
 			$errors[] = array('link_id' => $page['link_id'], 'name' => 'title', 'error' => $error);
 
 		$error = Core::verifyLinkUrl($page['url'], $page['link_id']);
-		if ($error !== true && $error != _('Already used'))
+		if ($error !== true && $error != __('Already used'))
 			$errors[] = array('link_id' => $page['link_id'], 'name' => 'url', 'error' => $error);
 
 		foreach (API::get('pages') as $page2)
@@ -48,8 +48,8 @@ else if (API::action('edit_pages'))
 
 			if ($page2['url'] == $page['url'])
 			{
-				$errors[] = array('link_id' => $page['link_id'], 'name' => 'url', 'error' => _('Duplicate'));
-				$errors[] = array('link_id' => $page2['link_id'], 'name' => 'url', 'error' => _('Duplicate'));
+				$errors[] = array('link_id' => $page['link_id'], 'name' => 'url', 'error' => __('Duplicate'));
+				$errors[] = array('link_id' => $page2['link_id'], 'name' => 'url', 'error' => __('Duplicate'));
 			}
 		}
 	}

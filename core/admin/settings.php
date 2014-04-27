@@ -2,17 +2,17 @@
 
 $form = new Form('settings');
 
-$form->addSection(_('Settings'), _('General site settings'));
-$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 30, _('Unknown error')));
-$form->addMultilineText('subtitle', _('Slogan'), _('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, _('Unknown error')));
-$form->addMultilineText('description', _('Description'), _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
-$form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
+$form->addSection(__('Settings'), __('General site settings'));
+$form->addText('title', __('Title'), __('Displayed in the titlebar and site header'), '', array('.*', 1, 30, __('Unknown error')));
+$form->addMultilineText('subtitle', __('Slogan'), __('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, __('Unknown error')));
+$form->addMultilineText('description', __('Description'), __('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, __('Unknown error')));
+$form->addArray('keywords', __('Keywords'), __('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, __('Unknown error')));
 $form->addSeparator();
 
-$form->addDropdown('language', _('Language'), '', Language::getAll());
+$form->addDropdown('language', __('Language'), '', Language::getAll());
 $form->addSeparator();
 
-$form->setResponse(_('Saved'), _('Not saved'));
+$form->setResponse(__('Saved'), __('Not saved'));
 
 if ($form->submitted())
 {

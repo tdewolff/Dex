@@ -37,42 +37,42 @@ else
 
 	$form = new Form('user');
 
-	$form->addSection(_('User'), _('These users can access the admin area. Admins have access to everything while editors have access only to a few admin pages related to editing content.'));
-	$form->addText('username', _('Username'), '', '', array('[a-zA-Z0-9-_]*', 3, 16, _('Only alphanumeric and (-_) characters allowed')));
-	$form->addEmail('email', _('Email address'), _('Used for notifications and password recovery'));
-	$form->addPassword('password', _('Password'), ($url[2] != 'new' ? _('Leave empty to keep current') : ''));
-	$form->addPasswordConfirm('password2', 'password', _('Confirm password'), '');
+	$form->addSection(__('User'), __('These users can access the admin area. Admins have access to everything while editors have access only to a few admin pages related to editing content.'));
+	$form->addText('username', __('Username'), '', '', array('[a-zA-Z0-9-_]*', 3, 16, __('Only alphanumeric and (-_) characters allowed')));
+	$form->addEmail('email', __('Email address'), __('Used for notifications and password recovery'));
+	$form->addPassword('password', __('Password'), ($url[2] != 'new' ? __('Leave empty to keep current') : ''));
+	$form->addPasswordConfirm('password2', 'password', __('Confirm password'), '');
 
 	if (User::getUserId() == $url[2])
-		$form->addRadios('role', _('Role'), '', array($current_user['role'] => ucfirst($current_user['role'])));
+		$form->addRadios('role', __('Role'), '', array($current_user['role'] => ucfirst($current_user['role'])));
 	else
 	{
-		$form->addRadios('role', _('Role'), '', array('admin' => _('Admin'), 'editor' => _('Editor')));
+		$form->addRadios('role', __('Role'), '', array('admin' => __('Admin'), 'editor' => __('Editor')));
 		$form->set('role', 'editor');
 	}
 	$form->addSeparator();
 
 	if ($url[2] != 'new')
 	{
-		$form->addPassword('current_password', _('Admin password'), _('Confirm with your password'));
+		$form->addPassword('current_password', __('Admin password'), __('Confirm with your password'));
 		$form->optional(array('password', 'password2'));
 	}
 
-	$form->setSubmit('<i class="fa fa-save"></i>&ensp;' . _('Save'));
-	$form->setResponse('', _('Not saved'));
+	$form->setSubmit('<i class="fa fa-save"></i>&ensp;' . __('Save'));
+	$form->setResponse('', __('Not saved'));
 
 	if ($form->submitted())
 	{
 		if ($form->validate())
 		{
 			if (Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($form->get('username')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
-				$form->setError('username', _('Already used'));
+				$form->setError('username', __('Already used'));
 			else if (Db::singleQuery("SELECT * FROM user WHERE email = '" . Db::escape($form->get('email')) . "' AND user_id != '" . Db::escape($url[2]) . "' LIMIT 1;"))
-				$form->setError('email', _('Already used'));
+				$form->setError('email', __('Already used'));
 			else if ($url[2] != 'new' && !Bcrypt::verify($form->get('current_password'), $current_user['password']))
-				$form->setError('current_password', _('Wrong password'));
+				$form->setError('current_password', __('Wrong password'));
 			else if ($url[2] != 'new' && User::getUserId() == $url[2] && $current_user['role'] != $form->get('role'))
-				$form->setError('role', _('Can\'t change your own role'));
+				$form->setError('role', __('Can\'t change your own role'));
 			else
 			{
 				if ($url[2] != 'new')

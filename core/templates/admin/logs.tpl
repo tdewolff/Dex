@@ -1,15 +1,15 @@
-<a href="/<?php echo $_['base_url']; ?>admin/" class="button left"><i class="fa fa-chevron-left"></i> <?php echo _('Back'); ?></a>
-<h2><?php echo _('Logs'); ?></h2>
+<a href="/<?php echo $_['base_url']; ?>admin/" class="button left"><i class="fa fa-chevron-left"></i> <?php echo __('Back'); ?></a>
+<h2><?php echo __('Logs'); ?></h2>
 <ul id="logs" class="table">
 	<li>
-		<div><?php echo _('Date time'); ?></div>
-		<div><?php echo _('IP address'); ?></div>
-		<div><?php echo _('Message'); ?></div>
+		<div><?php echo __('Date time'); ?></div>
+		<div><?php echo __('IP address'); ?></div>
+		<div><?php echo __('Message'); ?></div>
 	</li>
 	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty"><?php echo _('empty'); ?></div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 </ul>
 

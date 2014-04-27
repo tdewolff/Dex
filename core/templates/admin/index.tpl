@@ -1,26 +1,26 @@
-<h2><?php echo _('Admin panel'); ?></h2>
+<h2><?php echo __('Admin panel'); ?></h2>
 
-<h3><?php echo _('Visitors'); ?></h3>
+<h3><?php echo __('Visitors'); ?></h3>
 <div id="load_stats" class="dex-api load-status">
 	<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 	<div class="error"><i class="fa fa-times"></i></div>
 </div>
 <iframe class="stats-frame" src="/<?php echo $_['base_url']; ?>admin/auxiliary/stats/"></iframe>
 
-<h3><?php echo _('Latest errors'); ?></h3>
+<h3><?php echo __('Latest errors'); ?></h3>
 <ul id="latest-logs" class="table">
 	<li>
-		<div><?php echo _('Date time'); ?></div>
-		<div><?php echo _('Message'); ?></div>
+		<div><?php echo __('Date time'); ?></div>
+		<div><?php echo __('Message'); ?></div>
 	</li>
 	<li id="load_logs" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty"><?php echo _('empty'); ?></div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 </ul>
 
-<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="button indent view-logs"><i class="fa fa-list-alt"></i>&ensp;<?php echo _('View') . ' ' . $_['log_name']; ?></a>
+<a href="/<?php echo $_['base_url']; ?>admin/logs/" class="button indent view-logs"><i class="fa fa-list-alt"></i>&ensp;<?php echo __('View') . ' ' . $_['log_name']; ?></a>
 
 <script id="log_item" type="text/x-dot-template">
 	<li data-html="{{=it.html}}" class="{{=it.type.toLowerCase()}}">

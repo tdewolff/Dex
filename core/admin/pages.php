@@ -13,9 +13,9 @@ else if ($url[2] == 'new')
 {
 	$form = new Form('page');
 
-	$form->addSection(_('New page'), '');
-	$form->addText('title', _('Title'), _('As displayed in the titlebar'), '', array('.*', 1, 25, _('Unknown error')));
-	$form->addLinkUrl('url', _('Link'), _('Leave empty for homepage'));
+	$form->addSection(__('New page'), '');
+	$form->addText('title', __('Title'), __('As displayed in the titlebar'), '', array('.*', 1, 25, __('Unknown error')));
+	$form->addLinkUrl('url', __('Link'), __('Leave empty for homepage'));
 
 	$form->setId('title', 'url-feed');
 	$form->setId('url', 'url');
@@ -28,12 +28,12 @@ else if ($url[2] == 'new')
 			$config = new Config('templates/' . $template_name . '/template.conf');
 			$templates[$template_name] = $config->get('title');
 		}
-	$form->addDropdown('template_name', _('Template'), _('Determine page type'), $templates);
+	$form->addDropdown('template_name', __('Template'), __('Determine page type'), $templates);
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . _('Create'));
-	$form->setResponse('', _('Not created'));
+	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . __('Create'));
+	$form->setResponse('', __('Not created'));
 
 	if ($form->submitted())
 	{

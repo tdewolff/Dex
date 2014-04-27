@@ -132,7 +132,7 @@ circle {
 				.attr('y', 6)
 				.attr('dy', '.71em')
 				.style('text-anchor', 'end')
-				.text('<?php echo _('Visits'); ?>');
+				.text('<?php echo __('Visits'); ?>');
 
 			if (visits.length > 1) {
 				// paths and points
@@ -174,7 +174,7 @@ circle {
 				.attr('transform', 'translate(' + width + ',10)')
 				.attr('x', 25)
 				.attr('dy', '.35em')
-				.text('<?php echo _('Total'); ?>');
+				.text('<?php echo __('Total'); ?>');
 
 			svg.append('circle')
 				.attr('r', 2.5)
@@ -186,14 +186,14 @@ circle {
 				.attr('transform', 'translate(' + width + ',30)')
 				.attr('x', 25)
 				.attr('dy', '.35em')
-				.text('<?php echo _('Unique'); ?>');
+				.text('<?php echo __('Unique'); ?>');
 
 			if (visits.length < 2) {
 				svg.append('text')
 					.attr('x', width / 2)
 					.attr('y', height / 2)
 					.attr('class', 'empty')
-					.text('<?php echo _('empty'); ?>');
+					.text('<?php echo __('empty'); ?>');
 			}
 		}
 	}

@@ -1,11 +1,11 @@
-<h2><?php echo _('Administration'); ?></h2>
-<h3><?php echo _('Diskspace'); ?></h3>
+<h2><?php echo __('Administration'); ?></h2>
+<h3><?php echo __('Diskspace'); ?></h3>
 <div id="diskspace-total"></div>
 <div id="diskspace">
 	<div id="load_diskspace" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty"><?php echo _('empty'); ?></div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</div>
 </div>
 <div id="diskspace-legend"></div>
@@ -18,24 +18,24 @@
 	<div style="width:{{=it.width}}%;"><div></div>&ensp;{{=it.name}}&ensp;<span>{{=it.percentage}}%</span></div>
 </script>
 
-<h3><?php echo _('Maintenance'); ?></h3>
+<h3><?php echo __('Maintenance'); ?></h3>
 <div>
-	<a href="#" class="button" data-tooltip="<?php echo _('Optimize images and scripts'); ?>" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;<?php echo _('Optimize site'); ?></a>&nbsp;
-	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;<?php echo _('Clear cache'); ?></a>&nbsp;
-	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;<?php echo _('Clear logs'); ?></a>
+	<a href="#" class="button" data-tooltip="<?php echo __('Optimize images and scripts'); ?>" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;<?php echo __('Optimize site'); ?></a>&nbsp;
+	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;<?php echo __('Clear cache'); ?></a>&nbsp;
+	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;<?php echo __('Clear logs'); ?></a>
 </div>
 
-<h3><?php echo _('Warnings'); ?></h3>
+<h3><?php echo __('Warnings'); ?></h3>
 <ul id="warnings">
 	<li id="load_warnings" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty"><?php echo _('empty'); ?></div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 	<?php foreach ($_['warnings'] as $warning) {
 		echo '<li>' . $warning . '</li>';
 	} if (!count($_['warnings'])) {
-		echo '<li class="empty">' . _('none') . '</li>';
+		echo '<li class="empty">' . __('none') . '</li>';
 	} ?>
 </ul>
 
@@ -56,7 +56,7 @@
 			}, function (data) {
 				$('#load_diskspace').hide();
 
-				$('#diskspace-total').html('<?php echo _('Total disk usage'); ?>: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
+				$('#diskspace-total').html('<?php echo __('Total disk usage'); ?>: ' + parseFloat((data['diskspace_total'] / 1024 / 1024).toFixed(0)) + 'MB');
 
 				var items = '';
 				$.each(data['diskspace'], function () {
@@ -91,35 +91,35 @@
 					}
 				});
 
-				apiStatusWorking('<?php echo _('Optimizing site...'); ?>');
+				apiStatusWorking('<?php echo __('Optimizing site...'); ?>');
 				apiUpdateConsole($('.dex-api.console'));
 				api('/' + base_url + 'api/core/optimize-site/', {
 				}, function (data) {
 					apiStopConsole();
-					apiStatusSuccess('<?php echo _('Optimized site'); ?>');
+					apiStatusSuccess('<?php echo __('Optimized site'); ?>');
 				}, function () {
 					apiStopConsole();
-					apiStatusError('<?php echo _('Optimizing site failed'); ?>');
+					apiStatusError('<?php echo __('Optimizing site failed'); ?>');
 					return false;
 				});
 			} else if (action == 'clear_cache') {
-				apiStatusWorking('<?php echo _('Clearing cache...'); ?>');
+				apiStatusWorking('<?php echo __('Clearing cache...'); ?>');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action
 				}, function (data) {
-					apiStatusSuccess('<?php echo _('Cleared cache'); ?>');
+					apiStatusSuccess('<?php echo __('Cleared cache'); ?>');
 					loadDiskusage();
 				}, function () {
-					apiStatusError('<?php echo _('Clearing cache failed'); ?>');
+					apiStatusError('<?php echo __('Clearing cache failed'); ?>');
 				});
 			} else if (action == 'clear_logs') {
-				apiStatusWorking('<?php echo _('Clearing logs...'); ?>');
+				apiStatusWorking('<?php echo __('Clearing logs...'); ?>');
 				api('/' + base_url + 'api/core/admin/', {
 					action: action
 				}, function (data) {
-					apiStatusSuccess('<?php echo _('Cleared logs'); ?>');
+					apiStatusSuccess('<?php echo __('Cleared logs'); ?>');
 				}, function () {
-					apiStatusError('<?php echo _('Clearing logs failed'); ?>');
+					apiStatusError('<?php echo __('Clearing logs failed'); ?>');
 				});
 			}
 		});
@@ -128,21 +128,21 @@
 			var li = $(this).closest('li');
 			var warning = $(this).attr('data-warning');
 
-			apiStatusWorking('<?php echo _('Solving warning...'); ?>');
+			apiStatusWorking('<?php echo __('Solving warning...'); ?>');
 			api('/' + base_url + 'api/core/admin/', {
 				action: 'solve_warning',
 				warning: warning
 			}, function (data) {
-				apiStatusSuccess('<?php echo _('Solved warning'); ?>');
+				apiStatusSuccess('<?php echo __('Solved warning'); ?>');
 				li.slideUp(100, function () {
 					$(this).remove();
 
 					if ($('#warnings').find('li').length == 1) {
-						$('<li class="empty"><?php echo _('none'); ?></li>').hide().appendTo($('#warnings')).slideDown(100);
+						$('<li class="empty"><?php echo __('none'); ?></li>').hide().appendTo($('#warnings')).slideDown(100);
 					}
 				});
 			}, function () {
-				apiStatusError('<?php echo _('Solving warning failed'); ?>');
+				apiStatusError('<?php echo __('Solving warning failed'); ?>');
 			});
 		});
 	});

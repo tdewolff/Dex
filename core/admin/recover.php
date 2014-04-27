@@ -1,7 +1,7 @@
 <?php
 
-Core::addTitle(_('Admin panel'));
-Core::addTitle(_('Password recovery'));
+Core::addTitle(__('Admin panel'));
+Core::addTitle(__('Password recovery'));
 
 // information pages
 if (isset($url[2]) && ($url[2] == 'sent' || $url[2] == 'success'))
@@ -29,14 +29,14 @@ else if (isset($url[2]) && $url[2] == 'reset')
 
 	$form = new Form('reset');
 
-	$form->addSection(_('Reset'), _('Fill out your new password to reset it.'));
-	$form->addPassword('password', _('Password'), '');
-	$form->addPasswordConfirm('password2', 'password', _('Confirm password'), '');
+	$form->addSection(__('Reset'), __('Fill out your new password to reset it.'));
+	$form->addPassword('password', __('Password'), '');
+	$form->addPasswordConfirm('password2', 'password', __('Confirm password'), '');
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-refresh"></i>&ensp;' . _('Reset'));
-	$form->setResponse('', _('Not reset'));
+	$form->setSubmit('<i class="fa fa-refresh"></i>&ensp;' . __('Reset'));
+	$form->setResponse('', __('Not reset'));
 
 	if ($form->submitted())
 	{
@@ -50,7 +50,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 				WHERE user_id = '" . Db::escape($recover['user_id']) . "';");
 			}
 			else if ($recover)
-				$form->appendError(_('Token has expired, request a new one at the %spassword recovery%s.', '<a href="/' . $_['base_url'] . 'admin/recover/">', '</a>'));
+				$form->appendError(__('Token has expired, request a new one at the %spassword recovery%s.', '<a href="/' . $_['base_url'] . 'admin/recover/">', '</a>'));
 
 			$form->setRedirect('/' . Common::$base_url . 'admin/recover/success/');
 		}
@@ -89,13 +89,13 @@ else
 
 	$form = new Form('recover');
 
-	$form->addSection(_('Recover'), _('Fill out your email address to receive an email containing information on how to recover your password.'));
-	$form->addEmail('email', _('Email address'), '');
+	$form->addSection(__('Recover'), __('Fill out your email address to receive an email containing information on how to recover your password.'));
+	$form->addEmail('email', __('Email address'), '');
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-reply"></i>&ensp;' . _('Recover'));
-	$form->setResponse('', _('Not sent'));
+	$form->setSubmit('<i class="fa fa-reply"></i>&ensp;' . __('Recover'));
+	$form->setResponse('', __('Not sent'));
 
 	if ($form->submitted())
 	{
@@ -120,11 +120,11 @@ else
 
 				$transport = Swift_SmtpTransport::newInstance('localhost', 25);
 				$mailer = Swift_Mailer::newInstance($transport);
-				$message = Swift_Message::newInstance(_('Dex password recovery'))
+				$message = Swift_Message::newInstance(__('Dex password recovery'))
 					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
 					->setTo(array($user['email']))
-					->setBody(_('A password recovery request has been made for \'%s\' at %s', $user['username'], $_SERVER['HTTP_HOST']) . "\n" .
-							  _('Click the link below to reset your password. If you did not request a password recovery you can ignore this email.') . "\n\n" .
+					->setBody(__('A password recovery request has been made for \'%s\' at %s', $user['username'], $_SERVER['HTTP_HOST']) . "\n" .
+							  __('Click the link below to reset your password. If you did not request a password recovery you can ignore this email.') . "\n\n" .
 							  $link . "\n\n" .
 							  'Dex');
 

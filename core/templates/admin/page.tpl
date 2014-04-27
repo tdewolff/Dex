@@ -1,6 +1,6 @@
-<a href="/<?php echo $_['base_url']; ?>admin/pages/" class="button left"><i class="fa fa-chevron-left"></i>&ensp;<?php echo _('Back'); ?></a>
-<?php if (isset($_['view'])): ?><a href="/<?php echo $_['base_url'] . $_['view']; ?>" class="button right"><i class="fa fa-eye"></i>&ensp;<?php echo _('View page'); ?></a><?php endif; ?>
-<h2><?php echo _('Page'); ?></h2>
+<a href="/<?php echo $_['base_url']; ?>admin/pages/" class="button left"><i class="fa fa-chevron-left"></i>&ensp;<?php echo __('Back'); ?></a>
+<?php if (isset($_['view'])): ?><a href="/<?php echo $_['base_url'] . $_['view']; ?>" class="button right"><i class="fa fa-eye"></i>&ensp;<?php echo __('View page'); ?></a><?php endif; ?>
+<h2><?php echo __('Page'); ?></h2>
 <?php $_['page']->render(); ?>
 
 <script type="text/javascript">
