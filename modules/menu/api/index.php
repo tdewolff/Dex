@@ -24,8 +24,6 @@ if (API::action('modify_menu'))
 	{
 		Db::exec("DELETE FROM module_menu;");
 		foreach ($menu as $i => $item)
-		{
-			// TODO: error handling for too long names
 			Db::exec("INSERT INTO module_menu (link_id, position, level, name, enabled) VALUES (
 				'" . Db::escape($item['link_id']) . "',
 				'" . Db::escape($i) . "',
@@ -33,7 +31,6 @@ if (API::action('modify_menu'))
 				'" . Db::escape($item['name']) . "',
 				'" . Db::escape($item['enabled']) . "'
 			);");
-		}
 	}
 
 	API::set('errors', $errors);

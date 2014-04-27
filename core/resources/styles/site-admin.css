@@ -957,20 +957,13 @@ body {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   color: #B94A48;
 }
-.dex-popup-wrapper form .input-error-below {
+.dex-popup-wrapper form .inline-error-below {
   margin-bottom: 8px;
   margin-left: 210px;
 }
-.dex-popup-wrapper form .input-error-below .box {
+.dex-popup-wrapper form .inline-error-below .box {
   top: -2px;
   left: 0;
-}
-.dex-popup-wrapper form span.equal {
-  float: left;
-  padding-top: 13px;
-  width: 3em;
-  color: #666666;
-  text-align: center;
 }
 .dex-popup-wrapper form span.comma {
   float: left;
@@ -1006,25 +999,6 @@ body {
 }
 .dex-popup-wrapper form input.array-item + span + .dex-popup-wrapper form input.array-item {
   margin-left: 210px;
-}
-.dex-popup-wrapper form input.parameter-key {
-  width: 75px;
-  /* all but first key */
-}
-input.parameter_val + .dex-popup-wrapper form input.parameter-key {
-  margin-top: -10px;
-  margin-left: 210px;
-}
-.dex-popup-wrapper form input.parameter-val + input.parameter-key + span {
-  margin-top: -5px;
-}
-.dex-popup-wrapper form input.parameter-val {
-  margin-left: 0;
-  width: 150px;
-  /* all but first value */
-}
-.dex-popup-wrapper form input.parameter-val + input.parameter-key + span + .dex-popup-wrapper form input.parameter-val {
-  margin-top: -10px;
 }
 .dex-popup-wrapper form .button {
   float: left;

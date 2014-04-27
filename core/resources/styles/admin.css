@@ -572,20 +572,13 @@ form .errors {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   color: #B94A48;
 }
-form .input-error-below {
+form .inline-error-below {
   margin-bottom: 8px;
   margin-left: 210px;
 }
-form .input-error-below .box {
+form .inline-error-below .box {
   top: -2px;
   left: 0;
-}
-form span.equal {
-  float: left;
-  padding-top: 13px;
-  width: 3em;
-  color: #666666;
-  text-align: center;
 }
 form span.comma {
   float: left;
@@ -621,25 +614,6 @@ form input.array-item {
 }
 form input.array-item + span + form input.array-item {
   margin-left: 210px;
-}
-form input.parameter-key {
-  width: 75px;
-  /* all but first key */
-}
-input.parameter_val + form input.parameter-key {
-  margin-top: -10px;
-  margin-left: 210px;
-}
-form input.parameter-val + input.parameter-key + span {
-  margin-top: -5px;
-}
-form input.parameter-val {
-  margin-left: 0;
-  width: 150px;
-  /* all but first value */
-}
-form input.parameter-val + input.parameter-key + span + form input.parameter-val {
-  margin-top: -10px;
 }
 form .button {
   float: left;

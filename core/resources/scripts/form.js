@@ -208,33 +208,3 @@ $('form input[data-type="array"]').each(function (i, array) {
 		}
 	});
 });
-
-// form parameters
-$('form input[data-type="parameters"]').each(function (i, array) {
-	array = $(array);
-	var template = doT.template($('#' + array.attr('data-template')).text()),
-		ul = $('#' + array.attr('data-ul')),
-		values = [];
-
-	try {
-		values = JSON.parse(array.val());
-	} catch (e) {}
-	values.push('');
-
-	var items = '';
-	$.each(values, function (key, value) {
-		items += template({key: key, value: value});
-	});
-	ul.append(items);
-
-	ul.on('input', 'input,textarea', function (e) {
-		var input = $(this),
-			li = input.closest('li');
-
-		if (li.next().length == 0 && input.val().length > 0) {
-			$(template({key: '', value: ''})).appendTo(ul).hide().fadeIn();
-		}
-
-		// TODO: remove empty pairs at the end (like array above)
-	});
-});

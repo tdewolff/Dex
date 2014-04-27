@@ -109,7 +109,7 @@ form {
 		color: #B94A48;
 	}
 
-	.input-error-below {
+	.inline-error-below {
 		margin-bottom: 8px;
 		margin-left: 210px;
 
@@ -117,14 +117,6 @@ form {
 			top: -2px;
 			left: 0;
 		}
-	}
-
-	span.equal {
-		float: left;
-		padding-top: 13px;
-		width: 3em;
-		color: #666666;
-		text-align: center;
 	}
 
 	span.comma {
@@ -158,30 +150,6 @@ form {
 		/* all but first item */
 		& + span + & {
 			margin-left: 210px;
-		}
-	}
-
-	input.parameter-key {
-		width: 75px;
-
-		/* all but first key */
-		input.parameter_val + & {
-			margin-top: -10px;
-			margin-left: 210px;
-		}
-	}
-
-	input.parameter-val + input.parameter-key + span {
-		margin-top: -5px;
-	}
-
-	input.parameter-val {
-		margin-left: 0;
-		width: 150px;
-
-		/* all but first value */
-		& + input.parameter-key + span + & {
-			margin-top: -10px;
 		}
 	}
 

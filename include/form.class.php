@@ -180,19 +180,6 @@ class Form
 		);
 	}
 
-	public function addParameters($name, $title, $subtitle, $preg)
-	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
-		$this->items[] = array(
-			'type' => 'parameters',
-			'name' => $this->name . '_' . $name,
-			'title' => $title,
-			'subtitle' => $subtitle,
-			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
-			'value' => ''
-		);
-	}
-
 	////////////////////////////////////////////////////////////////
 
 	public function setSubmit($title)
