@@ -31,6 +31,15 @@
 		<div class="current-user"><a href="#" data-tooltip="<?php echo __('Hide'); ?>"><i class="fa fa-fw fa-chevron-up"></i></a></div>
 		<?php } ?>
 	</div>
+	<?php } else { ?>
+	<div class="logged-out">
+		<div class="navigate"><span class="mobile-hide"><?php if (Common::requestAdmin() && isset($_SESSION['last_site_request']) || !Common::requestAdmin()) { echo __('Go back to'); } else { echo __('Go to'); } ?>&ensp;</span><?php if (Common::requestAdmin()) {
+			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_site_request']) ? $_SESSION['last_site_request'] : '') . '">' . __('Site') . '</a>';
+		} else {
+			echo '<a href="/' . $_['base_url'] . (isset($_SESSION['last_admin_request']) ? $_SESSION['last_admin_request'] : 'admin/') . '">' . __('Admin panel') . '
+			</a>';
+		} ?></div>
+	</div>
 	<?php } } ?>
 </div>
 <?php } ?>
