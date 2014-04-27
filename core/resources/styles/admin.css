@@ -573,12 +573,10 @@ form .errors {
   color: #B94A48;
 }
 form .inline-error-below {
-  margin-bottom: 8px;
   margin-left: 210px;
 }
 form .inline-error-below .box {
   top: -2px;
-  left: 0;
 }
 form span.comma {
   float: left;

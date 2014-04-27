@@ -958,12 +958,10 @@ body {
   color: #B94A48;
 }
 .dex-popup-wrapper form .inline-error-below {
-  margin-bottom: 8px;
   margin-left: 210px;
 }
 .dex-popup-wrapper form .inline-error-below .box {
   top: -2px;
-  left: 0;
 }
 .dex-popup-wrapper form span.comma {
   float: left;
