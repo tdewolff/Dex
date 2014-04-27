@@ -1475,6 +1475,9 @@ body {
   body {
     padding-top: 23px;
   }
+  .mobile-hide {
+    display: none;
+  }
   .dex-admin-bar {
     font-size: 70%;
     height: 23px;
@@ -1487,7 +1490,21 @@ body {
   .dex-admin-bar .dexedit-insert {
     line-height: 18px;
   }
-  .mobile-hide {
-    display: none;
+  .dex-popup-wrapper {
+    width: 100%;
+  }
+  .dex-popup-wrapper .popup > div {
+    width: 100%;
+  }
+  .dex-popup-wrapper .popup #external-link {
+    width: 100%;
+  }
+  .dex-popup-wrapper .popup #assets {
+    width: 100%;
+  }
+  .dex-popup-wrapper .popup #assets #upload,
+  .dex-popup-wrapper .popup #assets #breadcrumbs,
+  .dex-popup-wrapper .popup #assets #directories-assets {
+    width: 100%;
   }
 }
