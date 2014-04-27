@@ -3,8 +3,10 @@ var Form = function (form) {
 
 	this.form = $(form);
 	this.optionals = JSON.parse(this.form.attr('data-optionals'));
-	this.hasChange = false;
-	this.saveTimeout = null;
+
+	if (!this.form.find('button[type="submit"]').length) {
+		new Save(this.form);
+	}
 
 	this.updateUnused = function (name) {
 		$.each(self.optionals, function(i, optional) {
@@ -33,48 +35,8 @@ var Form = function (form) {
 	};
 	this.updateUnused();
 
-	this.form.on('input', 'input, textarea', function (e) {
-		apiStatusClear();
-
-		var input = $(e.currentTarget),
-			name = input.attr('name');
-
-		if (typeof name === 'undefined') {
-			name = input.attr('data-name');
-		} else {
-			self.updateUnused(name);
-		}
-
-		if (!self.form.find('button[type="submit"]').length) {
-			self.needsSave();
-		}
-	});
-
-	this.form.on('change', 'input, textarea', function (e) {
-		if (self.hasChange)	{
-			clearTimeout(self.saveTimeout);
-			self.save();
-			self.hasChange = false;
-		}
-	});
-
-	this.form.on('change', 'select', function (e) {
-		if (!self.form.find('button[type="submit"]').length) {
-			clearTimeout(self.saveTimeout);
-			self.save();
-			self.hasChange = false;
-		}
-	});
-
-	this.needsSave = function () {
-		self.hasChange = true;
-		clearTimeout(self.saveTimeout);
-		self.saveTimeout = setTimeout(self.save, 2000);
-	};
-
 	this.save = function () {
 		apiStatusWorking();
-		self.hasChange = false;
 
 		// put data of multi-input fields into single hidden input
 		self.form.find('input[type="hidden"]').each(function (i, hidden) {
@@ -148,6 +110,19 @@ var Form = function (form) {
 		apiStatusError();
 	};
 
+	this.form.on('input', 'input, textarea', function (e) {
+		apiStatusClear();
+
+		var input = $(e.currentTarget),
+			name = input.attr('name');
+
+		if (typeof name === 'undefined') {
+			name = input.attr('data-name');
+		} else {
+			self.updateUnused(name);
+		}
+	});
+
 	this.form.on('submit', function (e) {
 		e.preventDefault();
 		if (self.form.find('button[type="submit"]').length) { // make sure you can't double click the submit button
@@ -156,6 +131,10 @@ var Form = function (form) {
 				self.form.find('button[type="submit"]').removeAttr('disabled');
 			}, 1000);
 		}
+		self.save();
+	});
+
+	this.form.on('save', function () {
 		self.save();
 	});
 };

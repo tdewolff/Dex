@@ -21,28 +21,15 @@ $(function () {
 	}
 
 	// saving
-	var saveTimeout = null;
+	new Save($('[data-dexeditable]')[0]);
+
 	$('[data-dexeditable]').on('input', function (e) {
 		apiStatusClear();
-		clearTimeout(saveTimeout);
-		saveTimeout = setTimeout(save, 1000);
 	});
 
-	function save() {
-		$.event.trigger({
-			type: 'save'
-		});
-
+	$('[data-dexeditable]').on('save', function (e) {
 		var time = new Date();
 		apiStatusSuccess(time.getHours() + ':' + padZero(time.getMinutes()));
-	}
-
-	$(document).on('keydown', function (e) {
-	    if (e.ctrlKey && e.which === 83) {
-	        e.preventDefault();
-	        save();
-	        return false;
-	    }
 	});
 
 	// logging out

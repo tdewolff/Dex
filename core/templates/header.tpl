@@ -4,8 +4,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<?php if (isset($_['setting_description'])): ?><meta name="description" content="<?php echo htmlspecialchars($_['setting_description']); ?>"><?php endif; ?>
-		<?php if (isset($_['setting_keywords'])): ?><meta name="keywords" content="<?php echo htmlspecialchars(implode(',', json_decode($_['setting_keywords']))); ?>"><?php endif; ?>
+		<?php if (isset($_['header_description'])): ?><meta name="description" content="<?php echo htmlspecialchars($_['header_description']); ?>"><?php endif; ?>
+		<?php if (isset($_['header_keywords'])): ?><meta name="keywords" content="<?php echo htmlspecialchars($_['header_keywords']); ?>"><?php endif; ?>
 
 		<title><?php if (isset($_['header_title'])) { echo htmlspecialchars($_['header_title']); } ?></title>
 

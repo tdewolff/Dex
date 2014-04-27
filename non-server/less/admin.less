@@ -351,6 +351,7 @@ body {
 
 	>div:nth-child(3) {
 		padding: 4px 15px;
+		overflow: visible;
 	}
 
 	>div:nth-child(4) {
@@ -579,19 +580,20 @@ a.inline-rounded {
 	padding: 2px;
 }
 
-.input-error-right, .input-error-below {
+.inline-error-left,
+.inline-error-right,
+.inline-error-above,
+.inline-error-below {
 	display: none;
 
 	.box {
 		display: inline-block;
 		padding: 5px 10px;
-		border: solid 1px #EED3D7;
+		border: solid 1px #E6CBCE;
 		.border-radius(5px);
 
 		background: #F2DEDE;
 		position: relative;
-		top: -25px;
-		left: 175px;
 		z-index: 999;
 
 		p {
@@ -616,58 +618,116 @@ a.inline-rounded {
 		}
 
 		.arrow {
-			border-bottom: 6px solid transparent;
-			border-top: 6px solid transparent;
-			border-right: 6px solid #F2DEDE;
+			border: 6px solid transparent;
 
 			width: 0;
 			height: 0;
 
 			position: absolute;
-			top: 5px;
-			left: -5px;
 			z-index: 1001;
 		}
 
 		.arrow-border {
-			border-bottom: 6px solid transparent;
-			border-top: 6px solid transparent;
-			border-right: 6px solid #EED3D7;
+			border: 6px solid transparent;
 
 			width: 0;
 			height: 0;
 
 			position: absolute;
-			top: 5px;
-			left: -7px;
 			z-index: 1000;
 		}
 	}
 }
 
-.input-error-below {
+.inline-error-left {
 	.box {
-		top: 6px;
+		top: -25px;
+		right: 100%;
+		float: right;
+		margin-right: 6px;
+
+		.arrow {
+			border-right: 0;
+			border-left: 6px solid #F2DEDE;
+			top: 6px;
+			right: -5px;
+		}
+
+		.arrow-border {
+			border-right: 0;
+			border-left: 6px solid #E6CBCE;
+			top: 6px;
+			right: -7px;
+		}
+	}
+}
+
+.inline-error-right {
+	.box {
+		top: -25px;
+		left: 100%;
+		margin-left: 6px;
+
+		.arrow {
+			border-left: 0;
+			border-right: 6px solid #F2DEDE;
+			top: 6px;
+			left: -5px;
+		}
+
+		.arrow-border {
+			border-left: 0;
+			border-right: 6px solid #E6CBCE;
+			top: 6px;
+			left: -7px;
+		}
+	}
+}
+
+.inline-error-above {
+	.box {
+		bottom: 57px;
 		left: 0;
 
 		.arrow {
-			border: 0;
-			border-left: 6px solid transparent;
-			border-right: 6px solid transparent;
-			border-bottom: 6px solid #F2DEDE;
+			border-bottom: 0;
+			border-top: 6px solid #F2DEDE;
+			bottom: -5px;
+			left: 5px;
+		}
 
+		.arrow-border {
+			border-bottom: 0;
+			border-top: 6px solid #E6CBCE;
+			bottom: -7px;
+			left: 5px;
+		}
+	}
+}
+
+.inline-error-below {
+	.box {
+		top: 6px;
+		left: 0;
+		margin-bottom: 6px;
+
+		.arrow {
+			border-top: 0;
+			border-bottom: 6px solid #F2DEDE;
 			top: -5px;
 			left: 5px;
 		}
 
 		.arrow-border {
-			border: 0;
-			border-left: 6px solid transparent;
-			border-right: 6px solid transparent;
-			border-bottom: 6px solid #EED3D7;
-
+			border-top: 0;
+			border-bottom: 6px solid #E6CBCE;
 			top: -7px;
 			left: 5px;
 		}
 	}
+}
+
+input.invalid {
+	border-color: lighten(#B94A48, 10%);
+	background: lighten(#F2DEDE, 5%);
 }

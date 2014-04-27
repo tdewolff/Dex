@@ -101,11 +101,17 @@ Hooks::attach('admin-footer', 0, function () {
 ////////////////////////////////////////////////////////////////
 
 function site_header() {
+	global $settings;
+
 	$titles = Core::getTitles();
 	$externalStyles = Core::getExternalStyles();
 	$styles = Core::getStyles();
 	$externalScripts = Core::getExternalScripts('header');
 	$scripts = Core::getScripts('header');
+
+	Core::set('header_description', Common::tryOrEmpty($settings, 'description'));
+	if (strlen($settings['keywords']))
+		Core::set('header_keywords', implode(',', json_decode($settings['keywords'])));
 
 	if (count($titles))
 		Core::set('header_title', implode(' - ', array_reverse($titles)));

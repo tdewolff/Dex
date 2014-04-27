@@ -4,7 +4,7 @@
 
 <?php if (User::loggedIn()) { ?>
 <script>
-	$(document).on('save', function () {
+	$('[data-dexeditable]').on('save', function () {
 		if (typeof DexEdit.getContent !== 'undefined') {
 			api('/' + base_url + 'api/template/static/index/', {
 				action: 'save',

@@ -8,6 +8,8 @@ if (!User::loggedIn())
 
 if (API::action('modify_menu'))
 {
+	require_once('include/form.class.php');
+
 	if (!API::has('menu'))
 		user_error('No menu set', ERROR);
 
@@ -15,8 +17,8 @@ if (API::action('modify_menu'))
 
 	$errors = array();
 	foreach ($menu as $item)
-		if (strlen($menu_item) > 20)
-			$errors[] = array('link_id' => $item['link_id'], 'error' => 'Too long'); // TODO: implement at .tpl, inline form errors need refactoring first
+		if (($error = Form::validateItem($item['name'], array('regex' => '.*', 'min' => 1, 'max' => 25))) !== false)
+			$errors[] = array('link_id' => $item['link_id'], 'error' => $error);
 
 	if (!count($errors))
 	{

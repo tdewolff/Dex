@@ -2,7 +2,7 @@
 $form = new Form('setup');
 
 $form->addSection(_('Settings'), _('General site settings'));
-$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 25, _('Unknown error')));
+$form->addText('title', _('Title'), _('Displayed in the titlebar and site header'), '', array('.*', 1, 30, _('Unknown error')));
 $form->addMultilineText('subtitle', _('Slogan'), _('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, _('Unknown error')));
 $form->addMultilineText('description', _('Description'), _('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, _('Unknown error')));
 $form->addArray('keywords', _('Keywords'), _('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, _('Unknown error')));
@@ -101,7 +101,7 @@ if ($form->submitted())
 
 			INSERT INTO link (url, title, template_name) VALUES (
 				'',
-				'Home',
+				'" . Db::escape(_('Home')) . "',
 				'static'
 			);
 

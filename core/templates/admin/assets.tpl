@@ -2,16 +2,7 @@
 <div id="assets">
 	<div id="create-directory">
 		<a href="#" class="inline-button"><i class="fa fa-asterisk"></i>&ensp;<?php echo _('Create directory'); ?></a>
-		<div class="create-directory-input"><input type="text"></div>
-		<div class="input-error-below">
-			<div class="box">
-				<div class="arrow"></div>
-				<div class="arrow-border"></div>
-				<p>
-					<i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
-				</p>
-			</div>
-		</div>
+		<div class="create-directory-input"><input type="text" data-error-position="below"></div>
 	</div>
 
 	<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
@@ -283,22 +274,19 @@
 		$('#create-directory').on('click', 'a', function () {
 			apiStatusWorking('<?php echo _('Creating directory...'); ?>');
 
-			$('#create-directory').find('div.input-error-below').hide();
+			hideInlineFormErrors($('#create-directory'));
+
+			console.log($('#create-directory input').val());
 
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'create_directory',
-				name: $(this).prev('input').val(),
+				name: $('#create-directory input').val(),
 				dir: dir
 			}, function (data) {
 				if (typeof data['error'] !== 'undefined') {
 					apiStatusError('<?php echo _('Creating directory failed'); ?>');
 
-					var error_box = $('#create-directory').find('div.input-error-below');
-					if (error_box.find('span').text() != data['error']) {
-						error_box.hide();
-						error_box.find('span').text(data['error']);
-					}
-					error_box.fadeIn();
+					inlineFormError($('#create-directory').find('input'), data['error']);
 					return;
 				}
 

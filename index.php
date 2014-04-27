@@ -102,6 +102,7 @@ if (Common::requestApi())
 require_once('include/security.php');
 require_once('include/db.class.php');
 require_once('include/user.class.php');
+require_once('include/language.class.php');
 
 if (!session_start())
 	user_error('Could not start session', ERROR);
@@ -128,6 +129,17 @@ register_shutdown_function(function() {
 if (Common::$request_url == 'sitemap.xml')
 	Common::outputSitemapXml(); // always exits
 
+// load all site settings
+if (Db::isValid())
+{
+	$settings = array();
+	$table = Db::query("SELECT * FROM setting;");
+	while ($row = $table->fetch())
+		$settings[$row['key']] = $row['value'];
+
+	Language::load(Common::tryOrEmpty($settings, 'language'));
+}
+
 // API; continued
 if (Common::requestApi())
 {
@@ -150,24 +162,8 @@ ob_start('minifyHtml');
 
 require_once('include/dex.class.php');
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
-require_once('include/language.class.php');
 require_once('include/stats.class.php');
 require_once('core/hooks.php');
-
-// load all site settings
-if (Db::isValid())
-{
-	$settings = array();
-	$table = Db::query("SELECT * FROM setting;");
-	while ($row = $table->fetch())
-	{
-		$settings[$row['key']] = $row['value'];
-		if (!empty($row['value']))
-		   Core::set('setting_' . $row['key'], $row['value']);
-	}
-
-	Language::load(Common::tryOrEmpty($settings, 'language'));
-}
 
 if (User::loggedIn())
 {
@@ -210,6 +206,7 @@ if (User::getTimeLeft() !== false)
 	Core::addDeferredScript('api.js');
 	Core::addDeferredScript('upload.js');
 	Core::addDeferredScript('tooltips.js');
+	Core::addDeferredScript('save.js');
 	Core::addDeferredScript('site-admin.js');
 	Core::addDeferredScript('dexedit.js');
 }

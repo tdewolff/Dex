@@ -65,11 +65,11 @@ if (isset($_FILES['upload']))
 	}
 
 	if (!Resource::isResource($extension))
-		API::set('upload_error', 'Wrong extension');
+		API::set('upload_error', _('Wrong extension'));
 	else if (!is_writable($dir))
-		API::set('upload_error', 'Directory not writable');
+		API::set('upload_error', _('Directory is not writable'));
 	else if (!move_uploaded_file($_FILES['upload']['tmp_name'], $dir . $name))
-		API::set('upload_error', 'Unknown error');
+		API::set('upload_error', _('Unknown error'));
 	else
 	{
 		$width = 0;
@@ -97,11 +97,11 @@ else if (API::action('create_directory'))
 		user_error('No name set', ERROR);
 
 	if (!preg_match('/^[a-zA-Z0-9_\-\s]+$/', API::get('name')))
-		API::set('error', 'May only contain alphanumeric or (_-) characters');
+		API::set('error', _('Only alphanumeric and (-_) characters allowed'));
 	else if (is_dir($dir . API::get('name') . '/'))
-		API::set('error', 'Directory "' . $dir . API::get('name') . '" already exists');
+		API::set('error', _('Directory "%s" already exists', $dir . API::get('name')));
 	else if (!mkdir($dir . API::get('name') . '/'))
-		API::set('error', 'Directory "' . $dir . API::get('name') . '" could not be created');
+		API::set('error', _('Directory "%s" could not be created', $dir . API::get('name')));
 	else
 		API::set('directory', array(
 			'dir' => substr($dir, strlen('assets/')) . API::get('name') . '/',

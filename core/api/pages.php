@@ -21,6 +21,7 @@ if (API::action('delete_page'))
 else if (API::action('edit_pages'))
 {
 	require_once('include/dex.class.php');
+	require_once('include/form.class.php');
 
 	if (!API::has('pages'))
 		user_error('No pages set', ERROR);
@@ -33,9 +34,12 @@ else if (API::action('edit_pages'))
 		if (strlen($pages[$i]['url']) && $pages[$i]['url'][strlen($pages[$i]['url']) - 1] != '/')
 			$pages[$i]['url'] .= '/';
 
+		if (($error = Form::validateItem($page['title'], array('regex' => '.*', 'min' => 1, 'max' => 25))) !== false)
+			$errors[] = array('link_id' => $page['link_id'], 'name' => 'title', 'error' => $error);
+
 		$error = Core::verifyLinkUrl($page['url'], $page['link_id']);
-		if ($error !== true && $error != 'Already used')
-			$errors[] = array('link_id' => $page['link_id'], 'error' => $error);
+		if ($error !== true && $error != _('Already used'))
+			$errors[] = array('link_id' => $page['link_id'], 'name' => 'url', 'error' => $error);
 
 		foreach (API::get('pages') as $page2)
 		{
@@ -44,8 +48,8 @@ else if (API::action('edit_pages'))
 
 			if ($page2['url'] == $page['url'])
 			{
-				$errors[] = array('link_id' => $page['link_id'], 'error' => 'Duplicate');
-				$errors[] = array('link_id' => $page2['link_id'], 'error' => 'Duplicate');
+				$errors[] = array('link_id' => $page['link_id'], 'name' => 'url', 'error' => _('Duplicate'));
+				$errors[] = array('link_id' => $page2['link_id'], 'name' => 'url', 'error' => _('Duplicate'));
 			}
 		}
 	}
@@ -83,11 +87,12 @@ else if (API::action('get_pages'))
 
 		$row['title'] = htmlspecialchars($row['title']);
 
-		$row['content'] = array();
+		$row['content'] = '';
 		$table2 = Db::query("SELECT content FROM content WHERE link_id = '" . $row['link_id'] . "';");
 		while ($row2 = $table2->fetch())
-			$row['content'][] = $row2['content'];
-		$row['content'] = strip_tags(implode(' ', $row['content']));
+			$row['content'] .= ' ' . $row2['content'];
+		$row['content'] = preg_replace('/<[^>]+>/', ' ', $row['content']);
+		$row['content'] = trim(preg_replace('/\s{2,}/', ' ', $row['content']));
 		$row['content'] = strlen($row['content']) > 100 ? substr($row['content'], 0, 100) . '...' : $row['content'];
 
 		$row['length'] = Common::formatBytes(strlen($row['content']));

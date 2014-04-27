@@ -24,19 +24,8 @@
 			</a>
 		</div>
 		<div><i class="fa fa-home"></i></div>
-		<div><input name="title" type="text" value="{{=it.title}}" data-link-id="{{=it.link_id}}"></div>
-		<div>
-			<input name="url" type="text" value="{{=it.url}}" placeholder="(home)" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}"{{?it.url==''}} disabled{{?}}>
-			<div class="input-error-right">
-				<div class="box">
-					<div class="arrow"></div>
-					<div class="arrow-border"></div>
-					<p>
-						<i class="fa fa-exclamation-circle"></i>&ensp;<span></span>
-					</p>
-				</div>
-			</div>
-		</div>
+		<div><input name="title" type="text" value="{{=it.title}}" maxlength="25" data-link-id="{{=it.link_id}}" data-error-position="left"></div>
+		<div><input name="url" type="text" value="{{=it.url}}" placeholder="(home)" maxlength="50" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}" data-error-position="right"{{?it.url==''}} disabled{{?}}></div>
 		<div>{{=it.content}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>
@@ -90,18 +79,11 @@
 			});
 		});
 
-		// TODO: refactor to reuse
-		var savePagesTimeout = null;
-		pages.on('input', 'input', function (e) {
-			clearTimeout(savePagesTimeout);
-			savePagesTimeout = setTimeout(savePages, 1000, $(this));
-		});
+		new Save(pages[0]);
+		pages.on('save', function () {
+			apiStatusWorking('<?php echo _('Saving...'); ?>');
 
-		var savePages = function savePages(element) {
-			apiStatusWorking('<?php echo _('Saving pages...'); ?>');
-			savePagesTimeout = null;
-
-			pages.find('div.input-error-right').hide();
+			hideInlineFormErrors(pages);
 
 			var data = [];
 			pages.find('li').each(function (i) {
@@ -120,28 +102,21 @@
 				pages: data
 			}, function (data) {
 				if (data['errors'].length) {
-					apiStatusError('<?php echo _('Saving pages failed'); ?>');
+					apiStatusError('<?php echo _('Saving failed'); ?>');
 
 					for (var i = 0; i < data['errors'].length; i++) {
 						var li = $('#page_' + data['errors'][i]['link_id']);
-						if (!li.hasClass('home')) {
-							li.find('input[name="url"]').addClass('invalid');
-
-							var error_box = li.find('div.input-error-right');
-							if (error_box.find('span').text() != data['errors'][i]['error']) {
-								error_box.hide();
-								error_box.find('span').text(data['errors'][i]['error']);
-							}
-							error_box.fadeIn();
+						if (data['errors'][i]['name'] != 'url' || !li.hasClass('home')) {
+							inlineFormError(li.find('input[name="' + data['errors'][i]['name'] + '"]'), data['errors'][i]['error']);
 						}
 					}
 				} else {
-					apiStatusSuccess('<?php echo _('Saved pages'); ?>');
+					apiStatusSuccess('<?php echo _('Saved'); ?>');
 				}
 			}, function (error) {
-				apiStatusError('<?php echo _('Saving pages failed'); ?>');
+				apiStatusError('<?php echo _('Saving failed'); ?>');
 			});
-		}
+		});
 
 		pages.on('mousedown', 'li > div:nth-child(2)', function (e) {
 			e.preventDefault();
