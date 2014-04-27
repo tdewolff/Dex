@@ -744,7 +744,7 @@ DexEdit.Image = function (root, img) {
 		<div class="dexedit-img-resize-tl"></div><div class="dexedit-img-resize-tr"></div><div class="dexedit-img-resize-bl"></div><div class="dexedit-img-resize-br"></div>\
 	</div>').prependTo(this.wrapper);
 	this.img_menu = $('<div class="dexedit-img-menu">\
-		<span class="dexedit-img-menu-left"><i class="fa fa-fw fa-chevron-left"></i></span><span class="dexedit-img-menu-edit"><i class="fa fa-fw fa-edit"></i></span><span class="dexedit-img-menu-center"><i class="fa fa-fw fa-square"></i></span><span class="dexedit-img-menu-trash"><i class="fa fa-fw fa-trash-o"></i></span><span class="dexedit-img-menu-right"><i class="fa fa-fw fa-chevron-right"></i></span>\
+		<span class="dexedit-img-menu-left"><i class="fa fa-fw fa-chevron-left"></i></span><span class="dexedit-img-menu-center"><i class="fa fa-fw fa-square"></i></span><span class="dexedit-img-menu-right"><i class="fa fa-fw fa-chevron-right"></i></span><span class="dexedit-img-menu-edit"><i class="fa fa-fw fa-edit"></i></span><span class="dexedit-img-menu-trash"><i class="fa fa-fw fa-trash-o"></i></span>\
 	</div>').prependTo(this.wrapper);
 
 	this.img_ratio = this.img[0].height / this.img[0].width;
