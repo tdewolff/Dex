@@ -159,3 +159,51 @@ form {
 		padding-right: 20px;
 	}
 }
+
+@media only screen and (max-device-width: 1205px) {
+	form {
+		width: 100%;
+
+		.section-text {
+			margin-top: 0;
+			margin-bottom: 10px;
+		}
+
+		.separator {
+			margin: 10px 0;
+		}
+
+		ul {
+			margin: 0;
+
+			>li {
+				float: none;
+
+				input {
+					margin: 0;
+					margin-top: 8px;
+				}
+
+				span.comma {
+					display: none;
+				}
+			}
+		}
+
+		.button {
+			margin-left: 0px;
+		}
+	}
+
+	label {
+		float: none;
+		text-align: left;
+		width: 100%;
+	}
+
+	input, select, textarea {
+		float: none;
+		margin-left: 0;
+		width: 100%;
+	}
+}

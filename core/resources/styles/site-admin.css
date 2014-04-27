@@ -131,7 +131,7 @@ body {
 }
 .dex-admin-bar .dexedit-insert {
   display: inline-block;
-  margin-left: 3em;
+  margin-left: 4em;
   line-height: 28px;
 }
 .dex-popup-wrapper {
@@ -1012,6 +1012,46 @@ body {
   padding-left: 20px;
   padding-right: 20px;
 }
+@media only screen and (max-device-width: 1205px) {
+  .dex-popup-wrapper form {
+    width: 100%;
+  }
+  .dex-popup-wrapper form .section-text {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  .dex-popup-wrapper form .separator {
+    margin: 10px 0;
+  }
+  .dex-popup-wrapper form ul {
+    margin: 0;
+  }
+  .dex-popup-wrapper form ul > li {
+    float: none;
+  }
+  .dex-popup-wrapper form ul > li input {
+    margin: 0;
+    margin-top: 8px;
+  }
+  .dex-popup-wrapper form ul > li span.comma {
+    display: none;
+  }
+  .dex-popup-wrapper form .button {
+    margin-left: 0px;
+  }
+  .dex-popup-wrapper label {
+    float: none;
+    text-align: left;
+    width: 100%;
+  }
+  .dex-popup-wrapper input,
+  .dex-popup-wrapper select,
+  .dex-popup-wrapper textarea {
+    float: none;
+    margin-left: 0;
+    width: 100%;
+  }
+}
 .dex-popup-wrapper ul {
   padding: 0;
   list-style-type: none;
@@ -1134,6 +1174,15 @@ body {
 }
 .dex-popup-wrapper ul.grid li:hover {
   background-color: #f2f2f2;
+}
+@media only screen and (max-device-width: 1205px) {
+  .dex-popup-wrapper ul.table > li > div,
+  .dex-popup-wrapper ul.small-table > li > div {
+    padding: 5px 5px;
+  }
+  .dex-popup-wrapper ul.grid li {
+    padding: 15px 5px;
+  }
 }
 .dex-popup-wrapper #assets #upload {
   margin: 0 auto;
@@ -1329,6 +1378,18 @@ body {
   -moz-border-radius: 0;
   border-radius: 0;
 }
+@media only screen and (max-device-width: 1205px) {
+  .dex-popup-wrapper #assets #upload,
+  .dex-popup-wrapper #assets #create-directory,
+  .dex-popup-wrapper #assets #breadcrumbs,
+  .dex-popup-wrapper #assets #directories-assets {
+    width: 100%;
+  }
+  .dex-popup-wrapper #assets #images li img {
+    width: 100px;
+    height: 50%;
+  }
+}
 .dex-popup-wrapper * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1425,5 +1486,8 @@ body {
   .dex-admin-bar .current-user,
   .dex-admin-bar .dexedit-insert {
     line-height: 18px;
+  }
+  .mobile-hide {
+    display: none;
   }
 }

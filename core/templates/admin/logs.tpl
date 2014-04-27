@@ -1,5 +1,5 @@
+<a href="/<?php echo $_['base_url']; ?>admin/" class="button left"><i class="fa fa-chevron-left"></i> <?php echo _('Back'); ?></a>
 <h2><?php echo _('Logs'); ?></h2>
-<a href="/<?php echo $_['base_url']; ?>admin/" class="button indent"><i class="fa fa-chevron-left"></i> <?php echo _('Back'); ?></a>
 <ul id="logs" class="table">
 	<li>
 		<div><?php echo _('Date time'); ?></div>

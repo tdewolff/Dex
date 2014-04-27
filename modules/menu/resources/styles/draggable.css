@@ -3,7 +3,8 @@ ul.draggable {
 }
 
 ul.draggable > li:not(:first-of-type) > div:first-of-type + div + div {
-	padding: 4px 15px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
 
 ul.draggable > li.placeholder {
@@ -76,4 +77,27 @@ ul.draggable > li.unused input {
 
 #menu li > div:nth-child(5) {
 	width: 31%;
+}
+
+@media only screen and (max-device-width: 1205px) {
+	#menu li > div:nth-child(2) {
+		display: none;
+	}
+
+	#menu li > div:nth-child(1) {
+		width: 7%;
+	}
+
+	#menu li > div:nth-child(3) {
+		width: 31%;
+		overflow: visible;
+	}
+
+	#menu li > div:nth-child(4) {
+		width: 31%;
+	}
+
+	#menu li > div:nth-child(5) {
+		width: 31%;
+	}
 }

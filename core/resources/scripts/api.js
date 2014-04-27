@@ -1,6 +1,6 @@
 $(function () {
 	if ($('.dex-admin-bar').length)
-		$('.dex-api .status').css('top', '+=' + ($('.dex-admin-bar').height() + 1) + 'px');
+		$('.dex-api .status').css('top', '+=' + ($('.dex-admin-bar').height() + 3) + 'px');
 });
 
 function api(url, data, success, error) {
