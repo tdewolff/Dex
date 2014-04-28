@@ -1,6 +1,6 @@
 .dex-api .status {
   position: fixed;
-  top: 15px;
+  top: 36px;
   right: 15px;
   z-index: 7999;
 }
@@ -57,13 +57,6 @@
   width: 800px;
   height: 250px;
   font-size: 12px;
-}
-@media (max-width: 767px), (max-device-width: 1205px) {
-  .dex-api .status {
-    position: fixed;
-    top: 5px;
-    right: 5px;
-  }
 }
 @font-face {
   font-family: "SourceSansRegular";
@@ -1453,22 +1446,7 @@ body {
   cursor: pointer;
 }
 @media (max-width: 767px), (max-device-width: 1205px) {
-  body {
-    padding-top: 23px;
-  }
   .mobile-hide {
     display: none;
-  }
-  .dex-admin-bar {
-    font-size: 70%;
-    height: 23px;
-  }
-  .dex-admin-bar > div {
-    height: 18px;
-  }
-  .dex-admin-bar .navigate,
-  .dex-admin-bar .current-user,
-  .dex-admin-bar .dexedit-insert {
-    line-height: 18px;
   }
 }

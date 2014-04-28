@@ -36,7 +36,7 @@ span.amp {
 }
 .dex-api .status {
   position: fixed;
-  top: 15px;
+  top: 36px;
   right: 15px;
   z-index: 7999;
 }
@@ -93,13 +93,6 @@ span.amp {
   width: 800px;
   height: 250px;
   font-size: 12px;
-}
-@media (max-width: 767px), (max-device-width: 1205px) {
-  .dex-api .status {
-    position: fixed;
-    top: 5px;
-    right: 5px;
-  }
 }
 h1 {
   margin: 0.4em 0;
@@ -1743,7 +1736,7 @@ input.invalid {
     margin-left: 0;
   }
   .page-wrapper #links {
-    position: relative;
+    position: fixed;
     width: 100%;
     border-right: 0;
   }
@@ -1775,6 +1768,7 @@ input.invalid {
   .page-wrapper #main {
     margin-left: 0;
     margin-bottom: 0;
+    margin-top: 32px;
     padding: 10px;
   }
   .page-wrapper-slim {
@@ -1836,5 +1830,8 @@ input.invalid {
   a.recover {
     margin-top: -10px;
     margin-right: -20px;
+  }
+  .mobile-hide {
+    display: none;
   }
 }

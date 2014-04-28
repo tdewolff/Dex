@@ -1,8 +1,3 @@
-$(function () {
-	if ($('.dex-admin-bar').length)
-		$('.dex-api .status').css('top', '+=' + ($('.dex-admin-bar').height() + 3) + 'px');
-});
-
 function api(url, data, success, error) {
 	if (typeof sessionTimeout !== 'undefined') {
 		clearTimeout(sessionTimeout);

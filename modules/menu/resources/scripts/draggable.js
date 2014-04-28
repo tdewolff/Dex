@@ -117,10 +117,12 @@ var Draggable = function (ul) {
 			self.draggee_x_start = e.pageX - $('.fa-long-arrow-right:visible', self.draggee).length * 40.0;
 			self.draggee_y_offset = e.pageY - (self.draggee.offset().top + 1);
 
+			var width = self.draggee.width();
 			self.placeholder = $('<li>').addClass('placeholder').insertAfter(self.draggee);
 			self.draggee.addClass('draggee').css({
 				'top': (self.draggee.offset().top + 1) + 'px',
-				'left': self.draggee.offset().left + 'px'
+				'left': self.draggee.offset().left + 'px',
+				'width': width + 'px'
 			});
 
 			$(document).bind('mousemove', self.drag);
@@ -138,7 +140,8 @@ var Draggable = function (ul) {
 				self.placeholder.remove();
 				$(this).removeClass('draggee').css({
 					'top': '',
-					'left': ''
+					'left': '',
+					'width': ''
 				});
 			});
 

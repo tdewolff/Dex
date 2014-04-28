@@ -39,7 +39,9 @@
 					<?php if (empty($link)): ?>
 					<li class="separator"></li>
 					<?php elseif ($link['admin_only'] == 0 || $_['role'] == 'admin'): ?>
-					<li id="admin_link_<?php echo $link['name']; ?>" class="<?php if (isset($link['enabled']) && $link['enabled'] == 0) { echo 'hidden'; } ?> <?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo 'selected'; } ?>">
+					<?php $class = (isset($link['enabled']) && $link['enabled'] == 0 ? 'hidden' : '');
+						  $class .= (isset($_['current_admin_i']) && $i == $_['current_admin_i'] ? ' selected' : ''); ?>
+					<li id="admin_link_<?php echo $link['name']; ?>"<?php echo (strlen($class) ? ' class="' . trim($class) . '"' : ''); ?>>
 						<a href="/<?php echo $_['base_url'] . $link['url']; ?>"<?php if (isset($_['current_admin_i']) && $i == $_['current_admin_i']) { echo ' class="selected"'; } ?>>
 							<i class="fa fa-fw<?php echo (strlen($link['icon']) ? ' ' . $link['icon'] : ' fa-sign-blank'); ?>"></i>&ensp;<?php echo $link['title']; ?>
 						</a>
