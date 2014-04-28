@@ -1751,6 +1751,9 @@ input.invalid {
   }
   .page-wrapper #links a.admin-links-expand,
   .page-wrapper #links a.admin-links-collapse {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     display: block;
     position: absolute;
     top: 0;
