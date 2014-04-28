@@ -45,6 +45,11 @@
 		font-size: 12px;
 		font-family: @sans-serif;
 
+		i {
+			height: 17px;
+			line-height: 17px;
+		}
+
 		&.empty {
 			color: #D0D0D0;
 			font-style: italic;
@@ -65,7 +70,7 @@
 	}
 }
 
-@media only screen and (max-device-width: 1205px) {
+@media (max-width: 767px), (max-device-width: 1205px) {
 	.dex-api {
 		.status {
 			position: fixed;

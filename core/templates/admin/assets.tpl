@@ -75,9 +75,9 @@
 			<a href="#" class="sure inline-rounded" data-tooltip="<?php echo __('Click to confirm'); ?>" data-name="{{=it.name}}"><i class="fa fa-trash-o"></i></a>
 		</div>
 		<div class="caption"><strong>{{=it.title}}</strong></div>
-		{{? it.width > 200}}
+		{{? it.width > max_width}}
 		<a href="/<?php echo $_['base_url']; ?>res/{{=it.url}}" rel="gallery" class="fancybox">
-			<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w=200/t={{=it.mtime}}/"
+			<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w={{=max_width}}/t={{=it.mtime}}/"
 				 alt="{{=it.name}}"
 				 title="{{=it.title}}"
 				 {{=it.attr}}>
@@ -93,6 +93,7 @@
 </script>
 
 <script type="text/javascript">
+	var max_width = (document.documentElement.clientWidth < 1206 ? 100 : 200);
 	$(function () {
 		// preliminaries
 		var breadcrumbs = $('#breadcrumbs');
@@ -157,7 +158,7 @@
 				api('/' + base_url + 'api/core/assets/', {
 					action: 'get_images',
 					dir: dir,
-					max_width: 200
+					max_width: max_width
 				}, function (data) {
 					if (!data['images'].length) {
 						apiLoadStatusEmpty($('#load_status_images'));
@@ -266,8 +267,8 @@
 		});
 
 		$('#create-directory').on('keyup', 'input', function (e) {
-			if (e.keyCode == 13) {
-				$("#create-directory a").click();
+			if (e.keyCode === 13) {
+				$('#create-directory a').click();
 			}
 		});
 
@@ -275,8 +276,6 @@
 			apiStatusWorking('<?php echo __('Creating directory...'); ?>');
 
 			hideInlineFormErrors($('#create-directory'));
-
-			console.log($('#create-directory input').val());
 
 			api('/' + base_url + 'api/core/assets/', {
 				action: 'create_directory',

@@ -86,7 +86,6 @@ body {
 .dex-popup-wrapper {
 	@import "normalize.less";
 
-	width: 600px;
 	overflow: hidden;
 	white-space: nowrap;
 	font-family: @sans-serif;
@@ -108,18 +107,13 @@ body {
 		padding-bottom: 0;
 	}
 
-	h3 {
-		margin-left: 50px;
-		margin-right: -50px;
-	}
-
 	.popup {
 		>div {
-			width: 600px;
+			min-width: 500px;
 			vertical-align: middle;
 			display: inline-block;
 			white-space: normal;
-			margin: 30px 0;
+			margin: 30px;
 		}
 
 		>div:not(:first-of-type) {
@@ -147,7 +141,6 @@ body {
 
 		#external-link {
 			margin: 0 auto;
-			width: 500px;
 			margin-bottom: 30px;
 
 			div.external-link-input {
@@ -177,19 +170,7 @@ body {
 		}
 
 		#assets {
-			width: 600px;
-
-			#upload {
-				width: 500px;
-			}
-
-			#breadcrumbs {
-				width: 500px;
-			}
-
 			#directories-assets {
-				width: 502px;
-
 				li.asset:hover {
 					cursor: pointer;
 				}
@@ -202,7 +183,10 @@ body {
 	}
 }
 
-@media only screen and (max-device-width: 1205px) {
+@media (max-width: 1205px) {
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
 	body {
 		padding-top: 23px;
 	}
@@ -221,28 +205,6 @@ body {
 
 		.navigate, .current-user, .dexedit-insert {
 			line-height: 18px;
-		}
-	}
-
-	.dex-popup-wrapper {
-		width: 100%;
-
-		.popup {
-			>div {
-				width: 100%;
-			}
-
-			#external-link {
-				width: 100%;
-			}
-
-			#assets {
-				width: 100%;
-
-				#upload, #breadcrumbs, #directories-assets {
-					width: 100%;
-				}
-			}
 		}
 	}
 }

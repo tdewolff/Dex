@@ -97,11 +97,12 @@ $('html').on('click', 'a[href="#"]', function (e) {
 	e.preventDefault();
 });
 
+var currentPopupFrame = 0;
 function switchPopupFrame(popup) {
 	$('.fancybox-inner').animate({'scrollTop': 0});
 
 	var frames = popup.find('> div');
-	frames.eq(1).css('display', 'inline-block');
+	frames.eq(1).css({'display': 'inline-block', 'width': frames.eq(0).width() + 'px'});
 	popup.animate({'margin-left': '-' + frames.eq(0).width() + 'px'}, function () {
 		popup.css({
 			'margin-left': '0'
@@ -109,6 +110,19 @@ function switchPopupFrame(popup) {
 		frames.eq(0).css('display', 'none');
 		parent.$.fancybox.update();
 	});
+	currentPopupFrame++;
+}
+
+function switchBackPopupFrame(popup) {
+	$('.fancybox-inner').animate({'scrollTop': 0});
+
+	var frames = popup.find('> div');
+	frames.eq(0).css('display', 'inline-block');
+	popup.css('margin-left', '-' + frames.eq(1).width() + 'px').animate({'margin-left': '0px'}, function () {
+		frames.eq(1).css('display', 'none');
+		parent.$.fancybox.update();
+	});
+	currentPopupFrame--;
 }
 
 function preSwitchPopupFrame(popup) {

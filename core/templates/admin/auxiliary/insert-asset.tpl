@@ -2,8 +2,23 @@
 	<div class="popup">
 		<div id="assets">
 			<h2><?php echo __('Assets'); ?></h2>
+			<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
+				<input type="hidden" name="dir" value="">
+				<input type="hidden" name="max_width" value="100">
+				<div id="drop">
+					<span><?php echo __('Drop here'); ?></span><br>
+					<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo __('Browse'); ?></a>
+					<input type="file" name="upload" multiple>
+					<div id="knob">
+						<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
+						<div id="small-knob"><input type="text" value="0" data-width="48" data-height="48" data-thickness=".25" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#F0F0F0"></div>
+					</div>
+				</div>
+				<ul></ul>
+			</form>
+
 			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo __('Assets'); ?></a></div>
-			<ul id="directories-assets" class="small-table">
+			<ul id="directories-assets" class="table">
 				<li>
 					<div><?php echo __('File name'); ?></div>
 					<div><?php echo __('Size'); ?></div>
@@ -17,6 +32,7 @@
 			</ul>
 		</div>
 		<div>
+			<a href="#" class="back button left"><i class="fa fa-chevron-left"></i>&ensp;<?php echo __('Back'); ?></a>
 			<h2><?php echo __('Asset properties'); ?></h2>
 			<form>
 				<input id="insert_url" type="hidden">
@@ -115,6 +131,10 @@
 	});
 
 	var popup = $('.popup');
+	$('a.back').on('click', function () {
+		switchBackPopupFrame(popup);
+	});
+
 	directories_assets.on('click', '.asset', function () {
 		$('#insert_title').val($(this).attr('data-title'));
 		$('#insert_url').val($(this).attr('data-url'));
@@ -122,6 +142,12 @@
 			$('#insert_text').val($(this).attr('data-title'));
 		}
 		switchPopupFrame(popup);
+	});
+
+	$('html').on('keyup', function (e) {
+		if (e.keyCode === 13 && currentPopupFrame === 1) {
+			popup.find('a.insert').click();
+		}
 	});
 
 	popup.on('click', 'a.insert', function () {

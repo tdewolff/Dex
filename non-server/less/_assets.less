@@ -1,12 +1,12 @@
 #assets {
 	#upload {
-		margin: 0 auto;
+		width: 100%;
+		max-width: 600px;
 		margin-bottom: 20px;
 		border: 1px dashed @base;
 		.border-radius(3px);
 
 		background-color: @auxiliary;
-		width: 600px;
 
 		&.drag {
 			background-color: lighten(@auxiliary, 10%);
@@ -98,9 +98,9 @@
 	#create-directory {
 		.clearfix();
 
+		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 20px;
-		width: 600px;
 		overflow: hidden;
 
 		div.create-directory-input {
@@ -124,9 +124,9 @@
 	}
 
 	#breadcrumbs {
+		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 5px;
-		width: 600px;
 		font-size: 90%;
 
 		a {
@@ -135,8 +135,8 @@
 	}
 
 	#directories-assets {
+		max-width: 600px;
 		margin-bottom: 20px;
-		width: 602px;
 
 		li {
 			background-color: darken(@light, 2%);
@@ -206,6 +206,12 @@
 			}
 
 			img {
+				display: block;
+				max-width:200px;
+				max-height:400px;
+				width: auto;
+				height: auto;
+
 				margin: 10px 0;
 				.border-radius(3px);
 				.box-shadow(0, 1px, 1px);
@@ -219,15 +225,14 @@
 	}
 }
 
-@media only screen and (max-device-width: 1205px) {
+@media (max-width: 1205px) {
 	#assets {
-		#upload, #create-directory, #breadcrumbs, #directories-assets {
-			width: 100%;
-		}
-
 		#images li img {
-			width: 100px;
-			height: 50%;
+			max-width:100px;
+			max-height:200px;
 		}
 	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
 }

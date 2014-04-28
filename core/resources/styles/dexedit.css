@@ -2,7 +2,10 @@
   outline: 0;
 }
 [contenteditable="true"] img {
-  display: block;
+  vertical-align: middle;
+}
+[contenteditable="true"] blockquote {
+  overflow: hidden;
 }
 .dexedit-img-resize-nwse {
   cursor: nwse-resize;

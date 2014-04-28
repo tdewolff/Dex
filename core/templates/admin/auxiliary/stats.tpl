@@ -109,20 +109,13 @@ circle {
 				.append('g')
 					.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-			// axis
+			// fill
 			svg.append('path')
 				.attr('class', 'area')
 				.attr('d', area(visits))
 				.style('fill', function(d) { return color(1); });
 
-			svg.append('g')
-				.attr('class', 'x axis')
-				.attr('transform', 'translate(0,' + height + ')')
-				.call(xAxis)
-			.selectAll('text')
-				.attr('y', '1em');
-
-			// axis text
+			// y axis + text
 			svg.append('g')
 				.attr('class', 'y axis')
 				.call(yAxis)
@@ -133,6 +126,14 @@ circle {
 				.attr('dy', '.71em')
 				.style('text-anchor', 'end')
 				.text('<?php echo __('Visits'); ?>');
+
+			// x axis
+			svg.append('g')
+				.attr('class', 'x axis')
+				.attr('transform', 'translate(0,' + height + ')')
+				.call(xAxis)
+			.selectAll('text')
+				.attr('y', '1em');
 
 			if (visits.length > 1) {
 				// paths and points

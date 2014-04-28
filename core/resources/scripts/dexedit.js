@@ -192,19 +192,26 @@ DexEdit.Range = {
 		return backwards;
 	},
 
-	isSurroundedBy: function (range, tag) {
-		if (DexEdit.DOM.hasParentTag(range.commonAncestorContainer, tag)) {
-			return true;
+	getSurroundedBy: function (range, tag, limit) {
+		var parent = DexEdit.DOM.getClosestTag(range.commonAncestorContainer, tag, limit);
+		if (!!parent) {
+			return parent;
 		}
 
-		var start = DexEdit.DOM.hasParentTag(range.startContainer, tag);
-		var end = DexEdit.DOM.hasParentTag(range.endContainer, tag);
-		if ((start && end)
-		 || (   end && range.startContainer.nextSibling		&& DexEdit.DOM.getTag(range.startContainer.nextSibling) === tag)
-		 || ( start && range.endContainer.previousSibling	&& DexEdit.DOM.getTag(range.endContainer.previousSibling) === tag)) {
-			return true;
+		var start = DexEdit.DOM.getClosestTag(range.startContainer, tag, limit);
+		var end = DexEdit.DOM.getClosestTag(range.endContainer, tag, limit);
+		if (!!start && !!end) {
+			return start;
+		} else if (!!end   && range.startContainer.nextSibling		&& DexEdit.DOM.getTag(range.startContainer.nextSibling) === tag) {
+			return end;
+		} else if (!!start && range.endContainer.previousSibling	&& DexEdit.DOM.getTag(range.endContainer.previousSibling) === tag) {
+			return start;
 		}
 		return false;
+	},
+
+	isSurroundedBy: function (range, tag, limit) {
+		return !!DexEdit.Range.getSurroundedBy(range, tag, limit);
 	}
 };
 
@@ -236,6 +243,7 @@ DexEdit.Text = function (root) {
 <span class="dexedit-menu-i"><i class="fa fa-fw fa-italic"></i></span>\
 <span class="dexedit-menu-h3">H3</span><span class="dexedit-menu-h4">H4</span>\
 <span class="dexedit-menu-blockquote"><i class="fa fa-fw fa-quote-right"></i></span>\
+<span class="dexedit-menu-edit-link"><i class="fa fa-fw fa-edit"></i></span>\
 <span class="dexedit-menu-link"><i class="fa fa-fw fa-link"></i></span>\
 	</div>').prependTo(this.root);
 
@@ -287,14 +295,16 @@ DexEdit.Text = function (root) {
 
 		self.menu.find('.dexedit-menu-b').toggleClass('enabled', document.queryCommandState('bold'));
 		self.menu.find('.dexedit-menu-i').toggleClass('enabled', document.queryCommandState('italic'));
-		self.menu.find('.dexedit-menu-h3').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h3'));
-		self.menu.find('.dexedit-menu-h4').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h4'));
-		self.menu.find('.dexedit-menu-blockquote').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'blockquote'));
+		self.menu.find('.dexedit-menu-h3').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h3', self.root[0]));
+		self.menu.find('.dexedit-menu-h4').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h4', self.root[0]));
+		self.menu.find('.dexedit-menu-blockquote').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'blockquote', self.root[0]));
 
 		if (self.isLink()) {
+			self.menu.find('.dexedit-menu-edit-link').show();
 			self.menu.find('.dexedit-menu-link').addClass('enabled');
 			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-unlink');
 		} else {
+			self.menu.find('.dexedit-menu-edit-link').hide();
 			self.menu.find('.dexedit-menu-link').removeClass('enabled');
 			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-link');
 		}
@@ -366,13 +376,23 @@ DexEdit.Text = function (root) {
 				var range = document.createRange();
 				range.setStart(self.range.startContainer.childNodes[self.range.startOffset], 0);
 				range.setEnd(self.range.endContainer.childNodes[self.range.endOffset], 0);
-				return DexEdit.Range.isSurroundedBy(range, 'a');
+				return DexEdit.Range.isSurroundedBy(range, 'a', self.root[0]);
 			}
 		}
-		return DexEdit.Range.isSurroundedBy(self.range, 'a');
+		return DexEdit.Range.isSurroundedBy(self.range, 'a', self.root[0]);
 	};
 
 	this.fancyboxLink = function (selection) {
+		var link = DexEdit.Range.getSurroundedBy(self.range, 'a', self.root[0]);
+		if (!!link) {
+			var range = document.createRange();
+			range.selectNodeContents(link);
+			self.select(range);
+
+			selection = DexEdit.Selection.toString();
+			self.removeLink();
+		}
+
 		$.fancybox.open({
 			type: 'ajax',
 			href: '/' + base_url + 'admin/auxiliary/insert-link/',
@@ -380,6 +400,12 @@ DexEdit.Text = function (root) {
 			beforeShow: function () {
 				$('.fancybox-skin').css('background', 'white');
 				$('#insert_text').val(selection);
+
+				if (!!link) {
+					$('#insert_title').val(link.getAttribute('title'));
+					$('#insert_url').val(link.getAttribute('href'));
+					preSwitchPopupFrame($('.popup'));
+				}
 				applyTooltips();
 			},
 			beforeClose: function () {
@@ -523,6 +549,8 @@ DexEdit.Text = function (root) {
 				self.toggleFormatBlock('h4');
 			} else if (target.hasClass('dexedit-menu-blockquote')) {
 				self.toggleFormatBlock('blockquote');
+			} else if (target.hasClass('dexedit-menu-edit-link')) {
+				self.fancyboxLink(DexEdit.Selection.toString());
 			} else if (target.hasClass('dexedit-menu-link')) {
 				if (self.isLink()) {
 					self.removeLink();
@@ -744,7 +772,11 @@ DexEdit.Image = function (root, img) {
 		<div class="dexedit-img-resize-tl"></div><div class="dexedit-img-resize-tr"></div><div class="dexedit-img-resize-bl"></div><div class="dexedit-img-resize-br"></div>\
 	</div>').prependTo(this.wrapper);
 	this.img_menu = $('<div class="dexedit-img-menu">\
-		<span class="dexedit-img-menu-left"><i class="fa fa-fw fa-chevron-left"></i></span><span class="dexedit-img-menu-center"><i class="fa fa-fw fa-square"></i></span><span class="dexedit-img-menu-right"><i class="fa fa-fw fa-chevron-right"></i></span><span class="dexedit-img-menu-edit"><i class="fa fa-fw fa-edit"></i></span><span class="dexedit-img-menu-trash"><i class="fa fa-fw fa-trash-o"></i></span>\
+<span class="dexedit-img-menu-left"><i class="fa fa-fw fa-chevron-left"></i></span>\
+<span class="dexedit-img-menu-center"><i class="fa fa-fw fa-square"></i></span>\
+<span class="dexedit-img-menu-right"><i class="fa fa-fw fa-chevron-right"></i></span>\
+<span class="dexedit-img-menu-edit"><i class="fa fa-fw fa-edit"></i></span>\
+<span class="dexedit-img-menu-trash"><i class="fa fa-fw fa-trash-o"></i></span>\
 	</div>').prependTo(this.wrapper);
 
 	this.img_ratio = this.img[0].height / this.img[0].width;
@@ -936,6 +968,10 @@ DexEdit.Image = function (root, img) {
 
 				if (buttonTarget.hasClass('dexedit-img-menu-left')) {
 					self.figure.css('float', 'left');
+				} else if (buttonTarget.hasClass('dexedit-img-menu-center')) {
+					self.figure.css('float', '');
+				} else if (buttonTarget.hasClass('dexedit-img-menu-right')) {
+					self.figure.css('float', 'right');
 				} else if (buttonTarget.hasClass('dexedit-img-menu-edit')) {
 					$.fancybox.open({
 						'type': 'ajax',
@@ -972,13 +1008,9 @@ DexEdit.Image = function (root, img) {
 							}
 						}
 					});
-				} else if (buttonTarget.hasClass('dexedit-img-menu-center')) {
-					self.figure.css('float', '');
 				} else if (buttonTarget.hasClass('dexedit-img-menu-trash')) {
 					self.figure.remove();
 					self.placeholder.remove();
-				} else if (buttonTarget.hasClass('dexedit-img-menu-right')) {
-					self.figure.css('float', 'right');
 				} else {
 					return;
 				}
@@ -999,7 +1031,7 @@ DexEdit.Image = function (root, img) {
 				self.figure.css({
 					position: 'absolute',
 					margin: '0',
-					top: self.drag_offset_y,
+					top: self.drag_offset_y + scrollY,
 					left: self.drag_offset_x
 				});
 				self.placeholder.show();

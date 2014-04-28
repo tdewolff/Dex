@@ -3,7 +3,7 @@ ul {
 	list-style-type: none;
 }
 
-ul.table, ul.small-table {
+ul.table {
 	margin: 0 auto;
 	border: 1px solid darken(@light, 10%);
 	.border-radius(5px);
@@ -86,10 +86,6 @@ ul.table, ul.small-table {
 	}
 }
 
-ul.small-table {
-	width: 502px;
-}
-
 ul.grid {
 	margin: 0 auto;
 	overflow: hidden;
@@ -106,8 +102,8 @@ ul.grid {
 	}
 }
 
-@media only screen and (max-device-width: 1205px) {
-	ul.table, ul.small-table {
+@media (max-width: 767px), (max-device-width: 1205px) {
+	ul.table {
 		>li > div {
 			padding: 5px 5px;
 		}

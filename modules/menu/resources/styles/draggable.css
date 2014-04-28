@@ -79,25 +79,44 @@ ul.draggable > li.unused input {
 	width: 31%;
 }
 
-@media only screen and (max-device-width: 1205px) {
-	#menu li > div:nth-child(2) {
-		display: none;
-	}
-
+@media (max-width: 1205px) {
 	#menu li > div:nth-child(1) {
 		width: 7%;
 	}
 
+	#menu li > div:nth-child(2) {
+		width: 20%;
+	}
+
 	#menu li > div:nth-child(3) {
-		width: 31%;
+		width: 33%;
 		overflow: visible;
 	}
 
 	#menu li > div:nth-child(4) {
-		width: 31%;
+		display: none;
 	}
 
 	#menu li > div:nth-child(5) {
-		width: 31%;
+		width: 40%;
+	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
+	#menu li > div:nth-child(1) {
+		width: 8%;
+	}
+
+	#menu li > div:nth-child(2) {
+		width: 23%;
+	}
+
+	#menu li > div:nth-child(3) {
+		width: 33%;
+		overflow: visible;
+	}
+
+	#menu li > div:nth-child(5) {
+		width: 36%;
 	}
 }
