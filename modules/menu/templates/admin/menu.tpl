@@ -66,7 +66,6 @@
 					apiStatusError('<?php echo __('Saving failed'); ?>');
 
 					for (var i = 0; i < data['errors'].length; i++) {
-						console.log(data['errors'][i]);
 						var li = $('#menu_item_' + data['errors'][i]['link_id']);
 						inlineFormError(li.find('input'), data['errors'][i]['error']);
 					}

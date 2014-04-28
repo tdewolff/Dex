@@ -32,7 +32,7 @@
 <script type="text/javascript">
 	$(function () {
 		apiLoadStatusWorking($('#load_stats'));
-		/*$('.stats-frame').load(function () {
+		$('.stats-frame').load(function () {
 			$('.stats-frame').ready(function () {
 				api('/' + base_url + 'api/core/stats/', {
 					action: 'get_visits'
@@ -44,7 +44,7 @@
 					apiLoadStatusError($('#load_stats'));
 				});
 			});
-		});*/
+		});
 
 		var logs = $('#latest-logs');
 		var log_item = doT.template($('#log_item').text());
