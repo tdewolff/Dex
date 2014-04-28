@@ -21,6 +21,12 @@ $(window).scroll(function () {
 	$('#links').css('top', Math.max(33, h1.position().top + h1.outerHeight(true) - scrollY) + 'px');
 });
 
+$(window).resize(function () {
+	if ($('#links').css('position') !== 'fixed') {
+		$('#links').css('top', '');
+	}
+});
+
 // dropdown
 $('html').click(function () {
 	$('.dropdown-menu').fadeOut(100);
