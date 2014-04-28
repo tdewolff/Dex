@@ -886,6 +886,7 @@ input.invalid {
 				top: 0;
 				right: 0;
 				padding: 6px 20px;
+				height: 32px;
 				border-left: 1px solid rgba(255, 255, 255, 0.25);
 
 				background-color: #f0f0f0;
@@ -910,13 +911,17 @@ input.invalid {
 		margin-bottom: 0;
 		width: 100%;
 
-		#main h2 {
-			.border-radius(0);
-		}
+		#main {
+			margin-bottom: 0;
 
-		#main #content, #main #error-content {
-			padding: 20px 30px;
-			.border-radius(0);
+			h2 {
+				.border-radius(0);
+			}
+
+			#content, #error-content {
+				padding: 20px 30px;
+				.border-radius(0);
+			}
 		}
 	}
 

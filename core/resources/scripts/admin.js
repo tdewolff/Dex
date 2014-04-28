@@ -4,8 +4,17 @@ $('html').on('click', 'a[href="#"]', function (e) {
 
 // responsive
 $('html').on('click', '#links a.admin-links-expand', function () {
+	var height = 0;
+	$("#links li").each(function() {
+	   height += $(this).height();
+	});
+
 	$('#links li').removeClass('mobile-hide').slideDown(100);
 	$(this).removeClass('admin-links-expand').addClass('admin-links-collapse');
+
+	$('#main').animate({
+		'marginTop': '+' + height
+	}, 100);
 });
 
 $('html').on('click', '#links a.admin-links-collapse', function () {
@@ -13,6 +22,10 @@ $('html').on('click', '#links a.admin-links-collapse', function () {
 		$(this).addClass('mobile-hide').attr('style', '');
 	});
 	$(this).removeClass('admin-links-collapse').addClass('admin-links-expand');
+
+	$('#main').animate({
+		'marginTop': '+' + $('#links li.selected').height()
+	}, 100);
 });
 
 $(window).scroll(function () {
