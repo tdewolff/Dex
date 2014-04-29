@@ -1,15 +1,16 @@
 <style>
 html, body {
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:85%;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 85%;
 	margin: 0;
+	background-color: white;
+	height: 100%;
 }
 
 .axis path,
 .axis line {
 	fill: none;
 	stroke: #000;
-	shape-rendering: crispEdges;
 }
 
 .y.axis line {
@@ -20,7 +21,7 @@ html, body {
 	stroke: #fff;
 }
 
-path.line {
+path.visits, path.unique {
 	fill: none;
 	stroke-width: 1.5px;
 }
@@ -47,44 +48,46 @@ circle {
 <script>
 	function drawStats(visits) {
 		if (visits) {
-			var margin = {top: 10, right: 80, bottom: 30, left: 40},
-				width = 900 - margin.left - margin.right,
-				height = 200 - margin.top - margin.bottom;
-
-			var x = d3.time.scale.utc().range([0, width]);
-			var y = d3.scale.linear().range([height, 0]);
-			var color = d3.scale.category10();
-
 			visits.forEach(function (d) {
 				d.date = d.date * 1000;
 				d.visits = +d.visits;
 				d.unique_visits = +d.unique_visits;
 			});
 
-			var x_domain = d3.extent(visits, function (d) { return d.date; });
-			x.domain(x_domain);
-			var h = d3.max(visits, function (d) { return d.visits; });
-			if (h > 10) {
-				y.domain([0, d3.round(h * 1.10)]);
-			} else {
-				y.domain([0, h]);
-			}
+			var margin = {top: 10, right: 80, bottom: 30, left: 40},
+				width = parseInt(d3.select('body').style('width')) - margin.left - margin.right,
+				height = 200 - margin.top - margin.bottom;
 
+			var xDomain = d3.extent(visits, function (d) { return d.date; });
+			var x = d3.time.scale.utc().range([0, width]).domain(xDomain);
 			var xAxis = d3.svg.axis()
 				.scale(x)
 				.orient('bottom')
+				.ticks(d3.time.days(xDomain[0], xDomain[1]).length)
 				.tickSize(-height)
-				.ticks(d3.time.days(x_domain[0], x_domain[1]).length)
 				.tickFormat(d3.time.format('%b %e'));
 
+			var h = d3.max(visits, function (d) { return d.visits; });
+			var yDomain = (h > 10 ? [0, d3.round(h * 1.10)] : [0, h]);
+			var y = d3.scale.linear().range([height, 0]).domain(yDomain);
 			var yAxis = d3.svg.axis()
 				.scale(y)
 				.orient('left')
 				.tickSize(-width);
-
 			if (visits.length < 2) {
 				yAxis.ticks(1);
 			}
+
+			var svg = d3.select('body')
+				.append('svg')
+				.append('g')
+					.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+					//.attr('width', '100%')
+					//.attr('height', '100%');
+					//.attr('viewBox', '0,0,' + (width + margin.left + margin.right) + ',' + (height + margin.top + margin.bottom))
+					//.attr("preserveAspectRatio", "xMidYMid meet")
+
+			var color = d3.scale.category10();
 
 			var line = d3.svg.line()
 				.interpolate('cardinal')
@@ -101,13 +104,6 @@ circle {
 				.x(function (d) { return x(d.date); })
 				.y0(height)
 				.y1(function (d) { return y(d.unique_visits); });
-
-			var svg = d3.select('body')
-				.append('svg')
-					.attr('width', width + margin.left + margin.right)
-					.attr('height', height + margin.top + margin.bottom)
-				.append('g')
-					.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 			// fill
 			svg.append('path')
@@ -138,26 +134,28 @@ circle {
 			if (visits.length > 1) {
 				// paths and points
 				svg.append('path')
-					.attr('class', 'line')
+					.attr('class', 'visits')
 					.attr('d', line(visits))
 					.style('stroke', function(d) { return color(0); });
 
 				svg.selectAll('dot')
 					.data(visits)
 				.enter().append('circle')
+					.attr('class', 'visits')
 					.attr('r', 2.5)
 					.attr('cx', function(d) { return x(d.date); })
 					.attr('cy', function(d) { return y(d.visits); })
 					.style('stroke', function(d) { return color(0); });
 
 				svg.append('path')
-					.attr('class', 'line unique')
+					.attr('class', 'unique')
 					.attr('d', line_unique(visits))
 					.style('stroke', function(d) { return color(1); });
 
 				svg.selectAll('dot')
 					.data(visits)
 				.enter().append('circle')
+					.attr('class', 'unique')
 					.attr('r', 2.5)
 					.attr('cx', function(d) { return x(d.date); })
 					.attr('cy', function(d) { return y(d.unique_visits); })
@@ -166,36 +164,68 @@ circle {
 
 			// legend
 			svg.append('circle')
+				.attr('class', 'legend')
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 10)
 				.style('stroke', function(d) { return color(0); });
 
 			svg.append('text')
-				.attr('transform', 'translate(' + width + ',10)')
+				.attr('class', 'legend')
+				.attr('transform', 'translate(' + width + ',0)')
 				.attr('x', 25)
+				.attr('y', 10)
 				.attr('dy', '.35em')
 				.text('<?php echo __('Total'); ?>');
 
 			svg.append('circle')
+				.attr('class', 'legend')
 				.attr('r', 2.5)
 				.attr('cx', width + 15)
 				.attr('cy', 30)
 				.style('stroke', function(d) { return color(1); });
 
 			svg.append('text')
-				.attr('transform', 'translate(' + width + ',30)')
+				.attr('class', 'legend')
+				.attr('transform', 'translate(' + width + ',0)')
 				.attr('x', 25)
+				.attr('y', 30)
 				.attr('dy', '.35em')
 				.text('<?php echo __('Unique'); ?>');
 
 			if (visits.length < 2) {
 				svg.append('text')
+					.attr('class', 'empty')
 					.attr('x', width / 2)
 					.attr('y', height / 2)
 					.attr('class', 'empty')
 					.text('<?php echo __('empty'); ?>');
 			}
+
+			d3.select(window).on('resize', function () {
+				var newWidth = parseInt(d3.select('body').style('width')) - margin.left - margin.right;
+				if (newWidth !== width) {
+					width = newWidth;
+
+					x.range([0, width]);
+					svg.select('.x').call(xAxis)
+						.selectAll('text').attr('y', '1em');
+
+					yAxis.tickSize(-width);
+					svg.select('.y').call(yAxis);
+
+					svg.select('path.area').attr('d', area(visits));
+
+					svg.select('path.visits').attr('d', line(visits));
+					svg.selectAll('circle.visits').attr('cx', function(d) { return x(d.date); });
+					svg.select('path.unique').attr('d', line_unique(visits));
+					svg.selectAll('circle.unique').attr('cx', function(d) { return x(d.date); });
+
+					svg.selectAll('circle.legend').attr('cx', width + 15);
+					svg.selectAll('text.legend').attr('transform', 'translate(' + width + ',0)');
+					svg.select('text.empty').attr('x', width / 2);
+				}
+			});
 		}
 	}
 </script>

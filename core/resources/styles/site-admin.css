@@ -479,7 +479,8 @@ body {
   border-spacing: 0;
 }
 .dex-popup-wrapper h1 {
-  margin: 0.4em 0;
+  padding: 0.4em 0;
+  margin: 0 auto;
   font-family: SourceSansRegular, Helvetica, Arial, sans-serif;
   font-size: 70px;
   font-weight: normal;

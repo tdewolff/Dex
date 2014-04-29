@@ -6,11 +6,11 @@ $('html').on('click', 'a[href="#"]', function (e) {
 $('html').on('click', '#links a.admin-links-expand', function () {
 	var height = 0;
 	$("#links li").each(function() {
-	   height += $(this).height();
+	   height += $(this).outerHeight();
 	});
 
 	$('#links li').removeClass('mobile-hide').slideDown(100);
-	$(this).removeClass('admin-links-expand').addClass('admin-links-collapse');
+	$(this).removeClass('admin-links-expand').addClass('admin-links-collapse').find('i').removeClass('fa-caret-left').addClass('fa-caret-down');
 
 	$('#main').animate({
 		'marginTop': '+' + height
@@ -21,22 +21,35 @@ $('html').on('click', '#links a.admin-links-collapse', function () {
 	$('#links li:not(.selected)').slideUp(100, function () {
 		$(this).addClass('mobile-hide').attr('style', '');
 	});
-	$(this).removeClass('admin-links-collapse').addClass('admin-links-expand');
+	$(this).removeClass('admin-links-collapse').addClass('admin-links-expand').find('i').removeClass('fa-caret-down').addClass('fa-caret-left');
 
 	$('#main').animate({
-		'marginTop': '+' + $('#links li.selected').height()
+		'marginTop': '+' + $('#links li.selected').height() + 'px'
 	}, 100);
 });
 
-$(window).scroll(function () {
-	var scrollY = window.scrollY || document.documentElement.scrollTop;
+function positionMenu() {
 	var h1 = $('h1');
+	var scrollY = window.scrollY || document.documentElement.scrollTop;
 	$('#links').css('top', Math.max(33, h1.position().top + h1.outerHeight(true) - scrollY) + 'px');
+}
+
+$(window).scroll(function () {
+	if ($('#links').css('position') === 'fixed') {
+		positionMenu();
+	}
 });
 
 $(window).resize(function () {
 	if ($('#links').css('position') !== 'fixed') {
-		$('#links').css('top', '');
+		if ($('#links').css('top') !== '') {
+			$('#links').css('top', '');
+			$('#main').css('marginTop', '');
+			$('#links li:not(.selected)').addClass('mobile-hide').attr('style', '');
+			$('#links a.admin-links-collapse').removeClass('admin-links-collapse').addClass('admin-links-expand').find('i').removeClass('fa-caret-down').addClass('fa-caret-left');
+		}
+	} else {
+		positionMenu();
 	}
 });
 

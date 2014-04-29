@@ -69,7 +69,7 @@ if (isset($_FILES['upload']))
 	foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 	{
 		$image_name = str_replace('\\', '/', $image_name);
-		if (crc32(file_get_contents($image_name)) == $crc32)
+		if (is_file($image_name) && crc32(file_get_contents($image_name)) == $crc32)
 		{
 			API::set('upload_error', __('File already exists at "' . $image_name . '"'));
 			API::finish();

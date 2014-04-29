@@ -49,7 +49,7 @@
 					<?php endif; ?>
 					<?php endforeach; ?>
 				</ul>
-				<a href="#" class="admin-links-expand"><i class="fa fa-fw fa-caret-down"></i></a>
+				<a href="#" class="admin-links-expand"><i class="fa fa-fw fa-caret-left"></i></a>
 			</div>
 			<div id="main">
 		<?php else: ?>
