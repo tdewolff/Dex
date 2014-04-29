@@ -4,7 +4,9 @@
 [contenteditable="true"] img {
   vertical-align: middle;
 }
-[contenteditable="true"] blockquote {
+[contenteditable="true"] blockquote,
+[contenteditable="true"] h3,
+[contenteditable="true"] h4 {
   overflow: hidden;
 }
 .dexedit-img-resize-nwse {

@@ -1029,11 +1029,12 @@ DexEdit.Image = function (root, img) {
 				self.dragging = true;
 				self.drag_start_x = e.pageX;
 				self.drag_start_y = e.pageY - scrollY;
-				self.drag_offset_x = self.figure[0].offsetLeft;
-				self.drag_offset_y = self.wrapper[0].offsetTop + 10 - scrollY;
+				self.drag_offset_x = self.figure.offset().left;
+				self.drag_offset_y = self.wrapper.offset().top + 10 - scrollY;
 
-				self.figure.css({
+				self.figure.prependTo('body').css({
 					position: 'absolute',
+					zIndex: '1000',
 					margin: '0',
 					top: self.drag_offset_y + scrollY,
 					left: self.drag_offset_x
@@ -1099,6 +1100,7 @@ DexEdit.Image = function (root, img) {
 			self.placeholder.hide();
 			self.figure.css({
 				position: '',
+				zIndex: '',
 				margin: '',
 				left: '',
 				right: ''
