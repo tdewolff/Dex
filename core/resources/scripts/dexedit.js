@@ -237,7 +237,7 @@ DexEdit.Text = function (root) {
 	this.root = $(root).attr('contenteditable', 'true');
 	this.root.find('figure, hr').attr('contenteditable', 'false');
 
-	this.menu = $('<div class="dexedit-menu" contenteditable="false">\
+	this.menu = $('<div class="dexedit-menu">\
 		<div class="dexedit-menu-arrow"></div>\
 <span class="dexedit-menu-b"><i class="fa fa-fw fa-bold"></i></span>\
 <span class="dexedit-menu-i"><i class="fa fa-fw fa-italic"></i></span>\
@@ -245,7 +245,7 @@ DexEdit.Text = function (root) {
 <span class="dexedit-menu-blockquote"><i class="fa fa-fw fa-quote-right"></i></span>\
 <span class="dexedit-menu-edit-link"><i class="fa fa-fw fa-edit"></i></span>\
 <span class="dexedit-menu-link"><i class="fa fa-fw fa-link"></i></span>\
-	</div>').prependTo(this.root);
+	</div>').prependTo('body');
 
 	this.range = null;
 	this.select = function (range) {
@@ -265,8 +265,30 @@ DexEdit.Text = function (root) {
 			return;
 		}
 
+		// showing/hiding of buttons influences self.menu.width() and height()
+		self.menu.find('.dexedit-menu-b').toggleClass('enabled', document.queryCommandState('bold'));
+		self.menu.find('.dexedit-menu-i').toggleClass('enabled', document.queryCommandState('italic'));
+		self.menu.find('.dexedit-menu-h3').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h3', self.root[0]));
+		self.menu.find('.dexedit-menu-h4').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h4', self.root[0]));
+		self.menu.find('.dexedit-menu-blockquote').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'blockquote', self.root[0]));
+
+		if (self.isLink()) {
+			self.menu.find('.dexedit-menu-edit-link').show();
+			self.menu.find('.dexedit-menu-link').addClass('enabled');
+			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-unlink');
+		} else {
+			self.menu.find('.dexedit-menu-edit-link').hide();
+			self.menu.find('.dexedit-menu-link').removeClass('enabled');
+			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-link');
+		}
+
+		// positioning
 		var rect = DexEdit.Range.getRect(self.range);
 		var scrollY = window.scrollY || document.documentElement.scrollTop;
+
+		console.log(rect);
+		console.log(scrollY);
+		console.log(self.menu.height());
 
 		var top = scrollY + rect.top - self.menu.height() - 7;
 		if (top - scrollY < 38) { // include admin-bar
@@ -291,22 +313,6 @@ DexEdit.Text = function (root) {
 			self.menu.find('.dexedit-menu-arrow').css({
 				left: '50%'
 			});
-		}
-
-		self.menu.find('.dexedit-menu-b').toggleClass('enabled', document.queryCommandState('bold'));
-		self.menu.find('.dexedit-menu-i').toggleClass('enabled', document.queryCommandState('italic'));
-		self.menu.find('.dexedit-menu-h3').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h3', self.root[0]));
-		self.menu.find('.dexedit-menu-h4').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'h4', self.root[0]));
-		self.menu.find('.dexedit-menu-blockquote').toggleClass('enabled', DexEdit.Range.isSurroundedBy(self.range, 'blockquote', self.root[0]));
-
-		if (self.isLink()) {
-			self.menu.find('.dexedit-menu-edit-link').show();
-			self.menu.find('.dexedit-menu-link').addClass('enabled');
-			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-unlink');
-		} else {
-			self.menu.find('.dexedit-menu-edit-link').hide();
-			self.menu.find('.dexedit-menu-link').removeClass('enabled');
-			self.menu.find('.dexedit-menu-link > i').attr('class', 'fa fa-link');
 		}
 
 		self.menu.css({
@@ -823,14 +829,10 @@ DexEdit.Image = function (root, img) {
 
 		var diff_x = (e.pageX - self.drag_start_x) * self.drag_sign_x;
 		var diff_y = (e.pageY - scrollY - self.drag_start_y) * self.drag_sign_y;
+		var diff = (Math.abs(diff_x) > Math.abs(diff_y) ? diff_x : diff_y);
 
-		var width = self.drag_start_w + diff_x;
-		var height = self.drag_start_h + diff_y;
-		if (height < width * self.img_ratio) { // pick the smallest (width/height) by ratio
-			width = height / self.img_ratio;
-		} else {
-			height = width * self.img_ratio;
-		}
+		var height = self.drag_start_h + diff;
+		var width = height / self.img_ratio;
 		self.setDimensions(width, height);
 	};
 
@@ -1116,7 +1118,8 @@ DexEdit.init = function () {
 };
 
 DexEdit.destroySingle = function (root) {
-	root.find('.dexedit-menu, .dexedit-img-placeholder, .dexedit-img-resize, .dexedit-img-menu').remove();
+	$('body').find('.dexedit-menu').remove();
+	root.find('.dexedit-img-placeholder, .dexedit-img-resize, .dexedit-img-menu').remove();
 	root.find('figure, hr').attr('contenteditable', null);
 	root.find('.dexedit-img > img').unwrap();
 	root.find('figure').css('top', '');
