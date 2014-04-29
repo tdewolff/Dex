@@ -829,10 +829,12 @@ DexEdit.Image = function (root, img) {
 
 		var diff_x = (e.pageX - self.drag_start_x) * self.drag_sign_x;
 		var diff_y = (e.pageY - scrollY - self.drag_start_y) * self.drag_sign_y;
-		var diff = (Math.abs(diff_x) > Math.abs(diff_y) ? diff_x : diff_y);
 
-		var height = self.drag_start_h + diff;
-		var width = height / self.img_ratio;
+		var width = self.drag_start_w + diff_x;
+		if (width > self.figure.width()) { // not wider than the page
+			width -= width - self.figure.width();
+		}
+		var height = width * self.img_ratio;
 		self.setDimensions(width, height);
 	};
 
