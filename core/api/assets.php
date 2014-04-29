@@ -251,6 +251,10 @@ else if (API::action('get_images'))
 	{
 		if (is_file($dir . $name) && !Common::hasMinExtension($name))
 		{
+			$filename = $name;
+			if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
+				$filename = Common::insertMinExtension($filename);
+
 			$last_slash = strrpos($name, '/');
 			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 			$extension = substr($name, strrpos($name, '.') + 1);
@@ -259,14 +263,14 @@ else if (API::action('get_images'))
 			{
 				list($width, $height, $type, $attribute) = getimagesize($dir . $name);
 				$images[] = array(
-					'url' => $dir . $name,
+					'url' => $dir . $filename,
 					'name' => $name,
 					'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
 					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-					'size' => Common::formatBytes(filesize($dir . $name), 2),
+					'size' => Common::formatBytes(filesize($dir . $filename), 2),
 					'width' => $width,
-					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name), $max_width),
-					'mtime' => filemtime($dir . $name)
+					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $filename), $max_width),
+					'mtime' => filemtime($dir . $filename)
 				);
 			}
 		}

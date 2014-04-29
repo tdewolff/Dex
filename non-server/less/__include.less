@@ -35,7 +35,13 @@
 .border-box() {
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+			box-sizing: border-box;
+}
+
+.content-box() {
+	-webkit-box-sizing: content-box;
+	   -moz-box-sizing: content-box;
+			box-sizing: content-box;
 }
 
 .border-radius(@radius: 4px) {
@@ -85,11 +91,11 @@
 }
 
 .transform(@val) {
-    -webkit-transform: @val;
-    -moz-transform: @val;
-    -ms-transform: @val;
-    -o-transform: @val;
-    transform: @val;
+	-webkit-transform: @val;
+	-moz-transform: @val;
+	-ms-transform: @val;
+	-o-transform: @val;
+	transform: @val;
 }
 
 .css-gradient(@from: #dfdfdf, @to: #f8f8f8) {
