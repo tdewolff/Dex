@@ -78,7 +78,8 @@ circle {
 			var yAxis = d3.svg.axis()
 				.scale(y)
 				.orient('left')
-				.tickSize(-width);
+				.tickSize(-width)
+				.tickPadding(6);
 			if (visits.length < 2) {
 				yAxis.ticks(1);
 			}
