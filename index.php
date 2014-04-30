@@ -161,9 +161,13 @@ if (Common::requestApi())
 ob_start('minifyHtml');
 
 require_once('include/dex.class.php');
+
+Core::set('base_url', Common::$base_url);
+Core::set('session_time', SESSION_TIME);
+
 require_once('include/hooks.class.php'); // from here on all PHP errors gives an error page
-require_once('include/stats.class.php');
 require_once('core/hooks.php');
+require_once('include/stats.class.php');
 
 if (User::loggedIn())
 {
@@ -173,9 +177,6 @@ if (User::loggedIn())
 }
 else if (!Common::requestAdmin())
 	Stats::registerPageVisit();
-
-Core::set('base_url', Common::$base_url);
-Core::set('session_time', SESSION_TIME);
 
 
 // handle admin area

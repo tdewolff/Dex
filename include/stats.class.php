@@ -69,4 +69,82 @@ class Stats
 
 		return $visits;
 	}
+
+	public static function referralStats($limit = null)
+	{
+		$urls = array();
+		$keywords = array();
+		$table = Db::query("SELECT *, COUNT(referral) AS n FROM stats GROUP BY referral ORDER BY n DESC;");
+		while ($row = $table->fetch())
+		{
+			$urls[] = array(
+				'url' => $row['referral'],
+				'n' => $row['n']
+			);
+
+			if (preg_match('/^(https?):\/\/(.*)\//', $row['referral'], $matches))
+			{
+				$domain = $matches[2];
+				$levels = explode('.', $domain);
+				if (count($levels) > 1)
+					$domain = $levels[count($levels) - 2];
+
+				$query_position = strrpos($row['referral'], '?');
+				if ($query_position === false)
+					continue;
+				$query = substr($row['referral'], $query_position + 1);
+				parse_str($query, $parameters);
+
+				switch ($domain)
+				{
+				case 'google':
+				case 'ask':
+				case 'bing':
+				case 'aol':
+				case 'alltheweb':
+					$parameter_key = 'q';
+					break;
+				case 'yahoo':
+					$parameter_key = 'p';
+					break;
+				case 'baidu':
+					$parameter_key = 'wd';
+					break;
+				case 'yandex':
+					$parameter_key = 'text';
+					break;
+				default:
+					continue;
+				}
+
+				if (!isset($parameters[$parameter_key]))
+					continue;
+
+				$query_keywords = explode('+', $parameters[$parameter_key]);
+				foreach ($query_keywords as $keyword)
+				{
+					$keyword = urldecode($keyword);
+					if (isset($keywords[$keyword]))
+						$keywords[$keyword] += $row['n'];
+					else
+						$keywords[$keyword] = $row['n'];
+				}
+			}
+		}
+
+		arsort($keywords);
+
+		$oldKeywords = $keywords;
+		$keywords = array();
+		foreach ($oldKeywords as $n => $keyword)
+			$keywords[] = array(
+				'keyword' => $keyword,
+				'n' => $n
+			);
+
+		return array(
+			'urls' => array_slice($urls, 0, $limit),
+			'keywords' => array_slice($keywords, 0, $limit)
+		);
+	}
 }

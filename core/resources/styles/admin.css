@@ -966,6 +966,34 @@ body {
 .view-logs {
   margin-top: 10px;
 }
+#referrals {
+  zoom: 1;
+}
+#referrals:before,
+#referrals:after {
+  content: "";
+  display: table;
+}
+#referrals:after {
+  clear: both;
+}
+#referrals ul {
+  margin-top: 0.5em;
+  width: 49.5%;
+}
+#referrals ul:first-of-type {
+  float: left;
+}
+#referrals ul:last-of-type {
+  float: right;
+}
+#referrals ul li > div:nth-child(1) {
+  width: 80%;
+}
+#referrals ul li > div:nth-child(2) {
+  width: 20%;
+  text-align: right;
+}
 #themes li {
   cursor: pointer;
   vertical-align: top;
@@ -1808,6 +1836,10 @@ input.invalid {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+  }
+  #referrals ul {
+    width: 100%;
+    float: none;
   }
   #users li > div:nth-child(1) {
     width: 25%;

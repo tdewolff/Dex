@@ -9,7 +9,7 @@ if (!User::isAdmin())
 }
 
 
-Console::append(_('Optimizing database...'));
+Console::append(__('Optimizing database...'));
 $database_size = Db::filesize();
 
 /* TODO: Future implementation of versioning
@@ -25,7 +25,7 @@ WHERE content_id NOT IN (
 */
 
 Db::exec("VACUUM;");
-Console::appendLine(_('done') . ' (' . number_format((float) Db::filesize() / $database_size * 100.0, 1) . '%)');
+Console::appendLine(__('done') . ' (' . number_format((float) Db::filesize() / $database_size * 100.0, 1) . '%)');
 
 
 require_once('vendor/closure-compiler.php');
@@ -49,7 +49,7 @@ foreach ($extension_directories as $extension_directory)
 				if (is_writable($extension_directory . $module_name . '/resources/scripts/'))
 					$script_directories[] = $extension_directory . $module_name . '/resources/scripts/';
 				else
-					Console::appendLine(_('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/scripts/'));
+					Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/scripts/'));
 			}
 
 			if (is_dir($extension_directory . $module_name . '/resources/styles/'))
@@ -57,7 +57,7 @@ foreach ($extension_directories as $extension_directory)
 				if (is_writable($extension_directory . $module_name . '/resources/styles/'))
 					$style_directories[] = $extension_directory . $module_name . '/resources/styles/';
 				else
-					Console::appendLine(_('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/styles/'));
+					Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/styles/'));
 			}
 		}
 }
@@ -73,7 +73,7 @@ foreach ($script_directories as $script_directory)
 			!is_file($script_min_name) ||
 			$info->getMTime() > filemtime($script_min_name)))
 		{
-			Console::append(_('Compressing \'%s\'...', $script_name));
+			Console::append(__('Compressing \'%s\'...', $script_name));
 
 			if (!is_readable($script_name))
 			{
@@ -94,7 +94,7 @@ foreach ($script_directories as $script_directory)
 				continue;
 			}
 
-			Console::appendLine(_('done') . ' (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
+			Console::appendLine(__('done') . ' (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
 		}
 	}
 }
@@ -110,7 +110,7 @@ foreach ($style_directories as $style_directory)
 			!is_file($style_min_name) ||
 			$info->getMTime() > filemtime($style_min_name)))
 		{
-			Console::append(_('Compressing \'%s\'...', $style_name));
+			Console::append(__('Compressing \'%s\'...', $style_name));
 
 			if (!is_readable($style_name))
 			{
@@ -125,7 +125,7 @@ foreach ($style_directories as $style_directory)
 				unlink($style_min_name);
 			file_put_contents($style_min_name, $output);
 
-			Console::appendLine(_('done') . ' (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
+			Console::appendLine(__('done') . ' (' . ($info->getSize() ? number_format((float) strlen($output) / $info->getSize() * 100.0, 1) : 0) . '%)');
 		}
 	}
 }
@@ -139,7 +139,7 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 	if ($info->isFile() && $info->getSize() && !Common::hasMinExtension($image_name) &&
 		Resource::isImage($extension) && (!is_file($image_min_name) || $info->getMTime() > filemtime($image_min_name)))
 	{
-		Console::append(_('Compressing \'%s\'...', $image_name));
+		Console::append(__('Compressing \'%s\'...', $image_name));
 
 		if (!is_readable($image_name))
 		{
@@ -181,16 +181,16 @@ foreach (new RecursiveIteratorIterator($root) as $image_name => $info)
 			unlink($image_min_name);
 		file_put_contents($image_min_name, Common::getUrlContents(urldecode($smushit->dest)));
 
-		Console::appendLine(_('done') . ' (' . ($info->getSize() ? number_format((float) $smushit->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
+		Console::appendLine(__('done') . ' (' . ($info->getSize() ? number_format((float) $smushit->dest_size / $info->getSize() * 100.0, 1) : 0) . '%)');
 	}
 }
 
 if (!Console::hasOutput())
-	Console::appendLine(_('Nothing to do'));
+	Console::appendLine(__('Nothing to do'));
 else
 {
 	Console::appendLine('');
-	Console::appendLine(_('Finished'));
+	Console::appendLine(__('Finished'));
 }
 
 Console::finish();

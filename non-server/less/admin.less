@@ -191,6 +191,34 @@ body {
 	margin-top: 10px;
 }
 
+#referrals {
+	.clearfix();
+
+	ul {
+		margin-top: 0.5em;
+		width: 49.5%;
+
+		&:first-of-type {
+			float: left;
+		}
+
+		&:last-of-type {
+			float: right;
+		}
+
+		li {
+			>div:nth-child(1) {
+				width: 80%;
+			}
+
+			>div:nth-child(2) {
+				width: 20%;
+				text-align: right;
+			}
+		}
+	}
+}
+
 #themes {
 	li {
 		cursor: pointer;
@@ -951,6 +979,11 @@ input.invalid {
 				.border-radius(0);
 			}
 		}
+	}
+
+	#referrals ul {
+		width: 100%;
+		float: none;
 	}
 
 	#users li {
