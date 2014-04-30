@@ -57,8 +57,8 @@ a:visited {
 }
 @media (max-width: 767px), (max-device-width: 1205px) {
   h1 {
-    margin: 0.2em 0;
-    font-size: 3em;
+    padding: 0;
+    padding-top: 0.1em;
   }
   h2 {
     padding-bottom: 0;

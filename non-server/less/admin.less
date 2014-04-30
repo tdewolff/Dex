@@ -55,6 +55,10 @@ body {
 
 		a.admin-links-expand, a.admin-links-collapse {
 			display: none;
+			position: absolute;
+			top: 0;
+			right: 0;
+
 			padding: 6px 20px;
 			text-decoration: none;
 			font-family: SourceSansRegular, Arial, Helvetica, sans-serif;
@@ -62,6 +66,7 @@ body {
 			color: @text-black;
 			letter-spacing: 1px;
 			background-color: #f0f0f0;
+			border-left: 1px solid #e8e8e8;
 			border-top: 1px solid #f8f8f8;
 			border-bottom: 1px solid #e8e8e8;
 			border-right: 1px solid #f0f0f0;
@@ -526,11 +531,18 @@ body {
 	}
 }
 
+#maintenance {
+	text-align: left;
+}
+
 #warnings {
-	margin-left: 1em;
-	line-height: 150%;
+	margin: 0 1em;
 	font-size: 90%;
 	color: #B94A48;
+
+	li {
+		margin: 0.8em 0;
+	}
 
 	.empty {
 		color: #D0D0D0;
@@ -599,6 +611,20 @@ a.halt-stop {
 a.inline-rounded {
 	.border-radius(2px);
 	padding: 2px;
+}
+
+p.error {
+	margin: 10px 30px;
+	color: inherit;
+}
+
+table.backtrace {
+	margin-bottom: 10px;
+	font-size: 80%;
+
+	th, td {
+		padding: 0 2em;
+	}
 }
 
 .inline-error-left,
@@ -891,17 +917,12 @@ input.invalid {
 
 			a.admin-links-expand, a.admin-links-collapse {
 				display: block;
-				position: absolute;
-				top: 0;
-				right: 0;
-
-				background-color: #f0f0f0;
-				border-left: 1px solid rgba(255, 255, 255, 0.25);
-				border-bottom: 1px solid #e8e8e8;
 
 				&:hover {
 					background-color: @subtle;
-					border-bottom: 1px solid darken(@subtle, 5%);
+					border-top: 1px solid darken(@subtle, 2%);
+					border-bottom: 1px solid darken(@subtle, 6%);
+					border-right: 1px solid darken(@subtle, 4%);
 				}
 			}
 		}
@@ -985,6 +1006,10 @@ input.invalid {
 		>div:nth-child(2), >div:nth-child(3) {
 			width: 50%;
 		}
+	}
+
+	#warnings {
+		margin: 0;
 	}
 
 	a.recover {

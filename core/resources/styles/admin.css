@@ -20,19 +20,12 @@ span.amp {
   text-align: center;
 }
 .dex-api-error p.error {
-  margin: 10px 30px;
   color: #B94A48;
   text-align: center;
 }
 .dex-api-error table.backtrace {
-  margin-bottom: 10px;
   width: 100%;
-  font-size: 80%;
   color: #B94A48;
-}
-.dex-api-error table.backtrace th,
-.dex-api-error table.backtrace td {
-  padding: 0 2em;
 }
 .dex-api .status {
   position: fixed;
@@ -153,8 +146,8 @@ a:visited {
 }
 @media (max-width: 767px), (max-device-width: 1205px) {
   h1 {
-    margin: 0.2em 0;
-    font-size: 3em;
+    padding: 0;
+    padding-top: 0.1em;
   }
   h2 {
     padding-bottom: 0;
@@ -844,6 +837,9 @@ body {
 .page-wrapper #links a.admin-links-expand,
 .page-wrapper #links a.admin-links-collapse {
   display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
   padding: 6px 20px;
   text-decoration: none;
   font-family: SourceSansRegular, Arial, Helvetica, sans-serif;
@@ -851,6 +847,7 @@ body {
   color: #303030;
   letter-spacing: 1px;
   background-color: #f0f0f0;
+  border-left: 1px solid #e8e8e8;
   border-top: 1px solid #f8f8f8;
   border-bottom: 1px solid #e8e8e8;
   border-right: 1px solid #f0f0f0;
@@ -1452,11 +1449,16 @@ body {
   color: #808080;
   font-size: 80%;
 }
+#maintenance {
+  text-align: left;
+}
 #warnings {
-  margin-left: 1em;
-  line-height: 150%;
+  margin: 0 1em;
   font-size: 90%;
   color: #B94A48;
+}
+#warnings li {
+  margin: 0.8em 0;
 }
 #warnings .empty {
   color: #D0D0D0;
@@ -1513,6 +1515,18 @@ a.inline-rounded {
   -moz-border-radius: 2px;
   border-radius: 2px;
   padding: 2px;
+}
+p.error {
+  margin: 10px 30px;
+  color: inherit;
+}
+table.backtrace {
+  margin-bottom: 10px;
+  font-size: 80%;
+}
+table.backtrace th,
+table.backtrace td {
+  padding: 0 2em;
 }
 .inline-error-left,
 .inline-error-right,
@@ -1762,17 +1776,13 @@ input.invalid {
   .page-wrapper #links a.admin-links-expand,
   .page-wrapper #links a.admin-links-collapse {
     display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #f0f0f0;
-    border-left: 1px solid rgba(255, 255, 255, 0.25);
-    border-bottom: 1px solid #e8e8e8;
   }
   .page-wrapper #links a.admin-links-expand:hover,
   .page-wrapper #links a.admin-links-collapse:hover {
     background-color: #fde792;
-    border-bottom: 1px solid #fde179;
+    border-top: 1px solid #fde588;
+    border-bottom: 1px solid #fce074;
+    border-right: 1px solid #fde37e;
   }
   .page-wrapper #main {
     margin-left: 0;
@@ -1838,6 +1848,9 @@ input.invalid {
   #modules li > div:nth-child(3),
   #templates li > div:nth-child(3) {
     width: 50%;
+  }
+  #warnings {
+    margin: 0;
   }
   a.recover {
     margin-top: -10px;

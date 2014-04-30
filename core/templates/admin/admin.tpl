@@ -19,7 +19,7 @@
 </script>
 
 <h3><?php echo __('Maintenance'); ?></h3>
-<div>
+<div id="maintenance">
 	<a href="#" class="button" data-tooltip="<?php echo __('Optimize images and scripts'); ?>" data-action="optimize_size"><i class="fa fa-fw fa-magic"></i>&ensp;<?php echo __('Optimize site'); ?></a>&nbsp;
 	<a href="#" class="alert-button" data-action="clear_cache"><i class="fa fa-trash-o"></i>&ensp;<?php echo __('Clear cache'); ?></a>&nbsp;
 	<a href="#" class="alert-button" data-action="clear_logs"><i class="fa fa-trash-o"></i>&ensp;<?php echo __('Clear logs'); ?></a>
