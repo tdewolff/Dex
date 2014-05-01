@@ -137,14 +137,11 @@ class Stats
 			if (isset($urls[$name]))
 				$urls[$name]['n']++;
 			else
-			{
-				$href = $url['scheme'] . '://' . $url['host'] . $url['path'];
 				$urls[$name] = array(
-					'url' => $href,
-					'name' => (empty($href) ? '(' . __('direct') . ')' : $name),
+					'url' => (empty($name) ? '' : $url['scheme'] . '://' . $url['host'] . $url['path']),
+					'name' => (empty($name) ? '(' . __('direct') . ')' : $name),
 					'n' => 1
 				);
-			}
 
 			parse_str($url['query'], $query);
 			$parameter = self::organicSourceParameter($url['host']);
