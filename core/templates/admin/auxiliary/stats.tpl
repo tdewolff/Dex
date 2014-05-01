@@ -16,6 +16,7 @@ svg {
 .axis line {
 	fill: none;
 	stroke: #000;
+	shape-rendering: crispEdges;
 }
 
 .y.axis line {
@@ -26,9 +27,14 @@ svg {
 	stroke: #fff;
 }
 
-path.visits, path.unique {
+path.visits {
 	fill: none;
 	stroke-width: 1.5px;
+}
+
+path.unique {
+	fill: none;
+	stroke-width: 2.5px;
 }
 
 path.area {
@@ -39,6 +45,10 @@ path.area {
 circle {
 	fill: white;
 	stroke-width: 1.5px;
+}
+
+circle.unique {
+	stroke-width: 2.5px;
 }
 
 .empty {
@@ -69,7 +79,7 @@ circle {
 				.scale(x)
 				.orient('bottom')
 				.ticks(d3.time.days(xDomain[0], xDomain[1]).length)
-				.tickSize(-height)
+				.tickSize(-height + 1)
 				.tickFormat(d3.time.format('%b %e'));
 
 			var h = d3.max(visits, function (d) { return d.visits; });
@@ -78,7 +88,7 @@ circle {
 			var yAxis = d3.svg.axis()
 				.scale(y)
 				.orient('left')
-				.tickSize(-width)
+				.tickSize(-width - 1)
 				.tickPadding(6);
 			if (visits.length < 2) {
 				yAxis.ticks(1);
@@ -88,10 +98,6 @@ circle {
 				.append('svg')
 				.append('g')
 					.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-					//.attr('width', '100%')
-					//.attr('height', '100%');
-					//.attr('viewBox', '0,0,' + (width + margin.left + margin.right) + ',' + (height + margin.top + margin.bottom))
-					//.attr("preserveAspectRatio", "xMidYMid meet")
 
 			var color = d3.scale.category10();
 
@@ -140,9 +146,23 @@ circle {
 			if (visits.length > 1) {
 				// paths and points
 				svg.append('path')
+					.attr('class', 'unique')
+					.attr('d', line_unique(visits))
+					.style('stroke', function(d) { return color(1); });
+
+				svg.append('path')
 					.attr('class', 'visits')
 					.attr('d', line(visits))
 					.style('stroke', function(d) { return color(0); });
+
+				svg.selectAll('dot')
+					.data(visits)
+				.enter().append('circle')
+					.attr('class', 'unique')
+					.attr('r', 3)
+					.attr('cx', function(d) { return x(d.date); })
+					.attr('cy', function(d) { return y(d.unique_visits); })
+					.style('stroke', function(d) { return color(1); });
 
 				svg.selectAll('dot')
 					.data(visits)
@@ -152,20 +172,6 @@ circle {
 					.attr('cx', function(d) { return x(d.date); })
 					.attr('cy', function(d) { return y(d.visits); })
 					.style('stroke', function(d) { return color(0); });
-
-				svg.append('path')
-					.attr('class', 'unique')
-					.attr('d', line_unique(visits))
-					.style('stroke', function(d) { return color(1); });
-
-				svg.selectAll('dot')
-					.data(visits)
-				.enter().append('circle')
-					.attr('class', 'unique')
-					.attr('r', 2.5)
-					.attr('cx', function(d) { return x(d.date); })
-					.attr('cy', function(d) { return y(d.unique_visits); })
-					.style('stroke', function(d) { return color(1); });
 			}
 
 			// legend

@@ -34,7 +34,7 @@ $(function () {
 
 	// logging out
 	function adminBarLogOut() {
-		$('.dex-api').fadeOut(100).remove();
+		$('.dex-api:not(.load-status)').fadeOut(100).remove();
 		$('.dex-admin-bar .logged-in').fadeOut(100, function () {
 			$('.dex-admin-bar .logged-out').fadeIn(100);
 		});

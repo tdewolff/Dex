@@ -979,7 +979,7 @@ body {
 }
 #referrals ul {
   margin-top: 0.5em;
-  width: 49.5%;
+  width: 49%;
 }
 #referrals ul:first-of-type {
   float: left;
@@ -1781,6 +1781,12 @@ input.invalid {
   #themes li img {
     width: 128px;
     height: 128px;
+  }
+  #referrals ul li > div:nth-child(1) {
+    width: 72%;
+  }
+  #referrals ul li > div:nth-child(2) {
+    width: 28%;
   }
 }
 @media (max-width: 767px), (max-device-width: 1205px) {

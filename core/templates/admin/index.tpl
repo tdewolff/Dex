@@ -55,7 +55,7 @@
 
 <script id="referral_url_item" type="text/x-dot-template">
 	<li>
-		<div>{{=it.url}}</div>
+		<div><a href="{{=it.url}}" title="{{=it.name}}">{{=it.name}}</a></div>
 		<div>{{=it.n}}</div>
 	</li>
 </script>

@@ -70,81 +70,109 @@ class Stats
 		return $visits;
 	}
 
+	private static function organicSourceParameter($host)
+	{
+		static $organic_sources = array('www.google' => 'q',
+										'daum.net' => 'q',
+										'eniro.se' => 'search_word',
+										'naver.com' => 'query',
+										'yahoo.com' => 'p',
+										'msn.com' => 'q',
+										'bing.com' => 'q',
+										'aol.com' => 'query',
+										'lycos.com' => 'query',
+										'ask.com' => 'q',
+										'altavista.com' => 'q',
+										'search.netscape.com' => 'query',
+										'cnn.com' => 'query',
+										'about.com' => 'terms',
+										'mamma.com' => 'query',
+										'alltheweb.com' => 'q',
+										'voila.fr' => 'rdata',
+										'search.virgilio.it' => 'qs',
+										'baidu.com' => 'wd',
+										'alice.com' => 'qs',
+										'yandex.com' => 'text',
+										'najdi.org.mk' => 'q',
+										'aol.com' => 'q',
+										'mamma.com' => 'query',
+										'seznam.cz' => 'q',
+										'search.com' => 'q',
+										'wp.pl' => 'szukai',
+										'online.onetcenter.org' => 'qt',
+										'szukacz.pl' => 'q',
+										'yam.com' => 'k',
+										'pchome.com' => 'q',
+										'kvasir.no' => 'q',
+										'sesam.no' => 'q',
+										'ozu.es' => 'q',
+										'terra.com' => 'query',
+										'mynet.com' => 'q',
+										'ekolay.net' => 'q',
+										'rambler.ru' => 'words'
+		);
+
+		foreach ($organic_sources as $source => $parameter)
+			if (strpos($host, $source) !== false)
+				return $parameter;
+		return false;
+	}
+
+	public static function rsort($a, $b)
+	{
+		if ($a['n'] == $b['n'])
+			return 0;
+		return ($a['n'] < $b['n']) ? -1 : 1;
+	}
+
 	public static function referralStats($limit = null)
 	{
 		$urls = array();
 		$keywords = array();
-		$table = Db::query("SELECT *, COUNT(referral) AS n FROM stats GROUP BY referral ORDER BY n DESC;");
+		$table = Db::query("SELECT referral FROM stats;");
 		while ($row = $table->fetch())
 		{
-			$urls[] = array(
-				'url' => $row['referral'],
-				'n' => $row['n']
-			);
-
-			if (preg_match('/^(https?):\/\/(.*)\//', $row['referral'], $matches))
+			$url = parse_url($row['referral']);
+			if (isset($urls[$url['host'] . $url['path']]))
+				$urls[$url['host'] . $url['path']]['n']++;
+			else
 			{
-				$domain = $matches[2];
-				$levels = explode('.', $domain);
-				if (count($levels) > 1)
-					$domain = $levels[count($levels) - 2];
+				$name = $url['host'] . $url['path'];
+				if (empty($name))
+					$name = '(' . __('direct') . ')';
 
-				$query_position = strrpos($row['referral'], '?');
-				if ($query_position === false)
-					continue;
-				$query = substr($row['referral'], $query_position + 1);
-				parse_str($query, $parameters);
-
-				switch ($domain)
-				{
-				case 'google':
-				case 'ask':
-				case 'bing':
-				case 'aol':
-				case 'alltheweb':
-					$parameter_key = 'q';
-					break;
-				case 'yahoo':
-					$parameter_key = 'p';
-					break;
-				case 'baidu':
-					$parameter_key = 'wd';
-					break;
-				case 'yandex':
-					$parameter_key = 'text';
-					break;
-				default:
-					continue;
-				}
-
-				if (!isset($parameters[$parameter_key]))
-					continue;
-
-				$query_keywords = explode('+', $parameters[$parameter_key]);
-				foreach ($query_keywords as $keyword)
-				{
-					$keyword = urldecode($keyword);
-					if (isset($keywords[$keyword]))
-						$keywords[$keyword] += $row['n'];
-					else
-						$keywords[$keyword] = $row['n'];
-				}
+				$urls[$url['host'] . $url['path']] = array(
+					'url' => $url['scheme'] . '://' . $url['host'] . $url['path'],
+					'name' => $name,
+					'n' => 1
+				);
 			}
+
+			parse_str($url['query'], $query);
+			$parameter = self::organicSourceParameter($url['host']);
+			if (!isset($query[$parameter]))
+				continue;
+
+			$query_keywords = explode(' ', urldecode($query[$parameter]));
+			foreach ($query_keywords as $keyword)
+				if (isset($keywords[$keyword]))
+					$keywords[$keyword]['n']++;
+				else
+					$keywords[$keyword] = array(
+					'keyword' => $keyword,
+					'n' => 1
+				);
 		}
 
-		arsort($keywords);
+		$urls = array_values(array_slice($urls, 0, $limit));
+		$keywords = array_values(array_slice($keywords, 0, $limit));
 
-		$oldKeywords = $keywords;
-		$keywords = array();
-		foreach ($oldKeywords as $n => $keyword)
-			$keywords[] = array(
-				'keyword' => $keyword,
-				'n' => $n
-			);
+		usort($urls, array('self', 'rsort'));
+		usort($keywords, array('self', 'rsort'));
 
 		return array(
-			'urls' => array_slice($urls, 0, $limit),
-			'keywords' => array_slice($keywords, 0, $limit)
+			'urls' => $urls,
+			'keywords' => $keywords
 		);
 	}
 }
