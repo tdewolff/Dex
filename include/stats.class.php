@@ -122,7 +122,7 @@ class Stats
 	{
 		if ($a['n'] == $b['n'])
 			return 0;
-		return ($a['n'] < $b['n']) ? -1 : 1;
+		return ($a['n'] > $b['n']) ? -1 : 1;
 	}
 
 	public static function referralStats($limit = null)
@@ -133,17 +133,15 @@ class Stats
 		while ($row = $table->fetch())
 		{
 			$url = parse_url($row['referral']);
-			if (isset($urls[$url['host'] . $url['path']]))
-				$urls[$url['host'] . $url['path']]['n']++;
+			$name = $url['host'] . $url['path'];
+			if (isset($urls[$name]))
+				$urls[$name]['n']++;
 			else
 			{
-				$name = $url['host'] . $url['path'];
-				if (empty($name))
-					$name = '(' . __('direct') . ')';
-
-				$urls[$url['host'] . $url['path']] = array(
-					'url' => $url['scheme'] . '://' . $url['host'] . $url['path'],
-					'name' => $name,
+				$href = $url['scheme'] . '://' . $url['host'] . $url['path'];
+				$urls[$name] = array(
+					'url' => $href,
+					'name' => (empty($href) ? '(' . __('direct') . ')' : $name),
 					'n' => 1
 				);
 			}
