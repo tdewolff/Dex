@@ -136,8 +136,6 @@ class Stats
 			if (isset($url['scheme']) && isset($url['host']) && isset($url['path']))
 			{
 				$name = $url['host'] . $url['path'];
-				Log::notice($name);
-				Log::notice($_SERVER["SERVER_NAME"] . '/' . Common::$base_url);
 				if (strpos($name, $_SERVER["SERVER_NAME"] . '/' . Common::$base_url) === 0)
 					continue; // internal link
 

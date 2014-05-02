@@ -286,10 +286,6 @@ DexEdit.Text = function (root) {
 		var rect = DexEdit.Range.getRect(self.range);
 		var scrollY = window.scrollY || document.documentElement.scrollTop;
 
-		console.log(rect);
-		console.log(scrollY);
-		console.log(self.menu.height());
-
 		var top = scrollY + rect.top - self.menu.height() - 7;
 		if (top - scrollY < 38) { // include admin-bar
 			top = scrollY + rect.bottom + 7;
