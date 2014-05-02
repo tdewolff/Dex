@@ -1198,8 +1198,7 @@ body {
 }
 .dex-popup-wrapper #assets #upload #drop {
   position: relative;
-  margin: 30px 50px;
-  height: 70px;
+  margin: 30px 0;
   text-align: center;
 }
 .dex-popup-wrapper #assets #upload #drop span {
@@ -1380,6 +1379,12 @@ body {
   .dex-popup-wrapper #assets #images li img {
     max-width: 100px;
     max-height: 200px;
+  }
+  .dex-popup-wrapper #assets #upload #drop {
+    margin: 10px 0;
+  }
+  .dex-popup-wrapper #assets #upload #drop span {
+    font-size: 14px;
   }
 }
 .dex-popup-wrapper * {

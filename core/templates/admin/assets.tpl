@@ -331,11 +331,12 @@
 		$('.fancybox').fancybox({
 			closeClick: true,
 			autoScale: false,
-			openEffect : 'elastic',
-			openSpeed  : 150,
-			closeEffect : 'elastic',
-			closeSpeed  : 150,
-			helpers:  {
+			openEffect: 'elastic',
+			openSpeed: 150,
+			closeEffect: 'elastic',
+			closeSpeed: 150,
+			padding: 0,
+			helpers: {
 				overlay: {
 					locked: false
 				}

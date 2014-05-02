@@ -1051,8 +1051,7 @@ body {
 }
 #assets #upload #drop {
   position: relative;
-  margin: 30px 50px;
-  height: 70px;
+  margin: 30px 0;
   text-align: center;
 }
 #assets #upload #drop span {
@@ -1233,6 +1232,12 @@ body {
   #assets #images li img {
     max-width: 100px;
     max-height: 200px;
+  }
+  #assets #upload #drop {
+    margin: 10px 0;
+  }
+  #assets #upload #drop span {
+    font-size: 14px;
   }
 }
 #logs li:not(:first-of-type),
@@ -1794,7 +1799,7 @@ input.invalid {
     margin-left: 0;
   }
   .page-wrapper #links {
-    position: fixed;
+    position: relative;
     width: 100%;
     border-right: 0;
   }
@@ -1821,7 +1826,6 @@ input.invalid {
   .page-wrapper #main {
     margin-left: 0;
     margin-bottom: 0;
-    margin-top: 31px;
     padding: 10px;
   }
   .page-wrapper-slim {
@@ -1896,5 +1900,8 @@ input.invalid {
   }
   .mobile-hide {
     display: none;
+  }
+  .fancybox-skin {
+    padding: 0;
   }
 }
