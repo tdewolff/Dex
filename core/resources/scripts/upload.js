@@ -11,14 +11,14 @@ function addAlphabetically(list, item, name) {
 	var added = false;
 	list.each(function () {
 		if ($(this).attr('data-name') > name) {
-			item.insertBefore(this).slideDown('fast');
+			item.insertBefore(this).slideDown(100);
 			added = true;
 			return false;
 		}
 	});
 
 	if (!added) {
-		item.insertAfter(list.last()).slideDown('fast');
+		item.insertAfter(list.last()).slideDown(100);
 	}
 }
 
@@ -60,7 +60,7 @@ function initUpload(upload, append, progress, done, error) {
 			done_n++;
 		},
 		done: function (e, data) {
-			done(data.i, data.response().result);
+			done(data.i, data.files[0].name, data.response().result);
 		},
 		fail: function (e, data) {
 			error(data.i, data.response().jqXHR['responseText']);
@@ -94,26 +94,34 @@ function initAdminUpload(_upload, success) {
 	});
 
 	initUpload(_upload, function (i, name, refresh) {
+		removeMask();
 		upload.find('#knob').stop().fadeIn();
 		if (refresh) {
 			upload.find('ul li').remove();
 		}
-		$('<li id="upload_' + i + '"><i class="fa fa-fw fa-cog fa-spin"></i>&ensp;' + name + '</li>').hide().appendTo('#upload ul').slideDown();
+		$('<li id="upload_' + i + '"><i class="fa fa-fw fa-cog fa-spin"></i>' + name + '</li>').hide().appendTo('#upload ul').slideDown();
 	}, function (totalProgress, progress) {
 		upload.find('#big-knob input').val(totalProgress).change();
 		upload.find('#small-knob input').val(progress).change();
-	}, function (i, result) {
+	}, function (i, name, result) {
 		if (typeof result['upload_error'] !== 'undefined') {
 			upload.find('#upload_' + i).addClass('fail').append(' (' + result['upload_error'] + ')').find('i').attr('class', 'fa fa-fw fa-times');
 			upload.find('#knob').stop().hide();
 		} else {
 			upload.find('#upload_' + i).addClass('done').find('i').attr('class', 'fa fa-fw fa-check');
+			if (name !== result['file']['title']) {
+				$('#upload_' + i).append('&emsp;&#8658;&emsp;' + result['file']['title']);
+			}
 			success(result);
 		}
 	}, function (i, response) {
-		if (typeof response !== 'undefined') {
-			apiFatal(response);
+		response = $.parseJSON(response);
+		if (typeof response['error'] !== 'undefined') { // PHP error but still handled by API
+			apiFatal(response['error'].join('<br>'));
+		} else {
+			apiFatal(escapeHtml(response));
 		}
+
 		upload.find('#upload_' + i).addClass('fail').append(' (Unknown error)').find('i').attr('class', 'fa fa-fw fa-times');
 		upload.find('#knob').stop().hide();
 	});

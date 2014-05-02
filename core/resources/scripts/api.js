@@ -1,11 +1,13 @@
-$(function () {
-	if ($('.dex.admin-bar').length)
-		$('.dex.api .status').css('top', '+=33px');
-});
-
 function api(url, data, success, error) {
+	if (typeof sessionTimeout !== 'undefined') {
+		clearTimeout(sessionTimeout);
+		sessionTimeout = setTimeout(function () {
+			adminBarLogOut();
+		}, session_time * 1000);
+	}
+
 	if (!url)
-		apiFatal('no API URL set');
+		apiFatal('No API URL set');
 	else
 		$.ajax({
 			type: (data == null ? 'GET' : 'POST'),
@@ -13,92 +15,89 @@ function api(url, data, success, error) {
 			data: data,
 			dataType: 'json',
 			success: function (data) {
-				if (typeof data['error'] !== 'undefined')
-				{
-					if (typeof error !== 'undefined' && error)
-						if (error(data) === false)
-							return;
+				if (typeof data['_error'] !== 'undefined') {
+					if (typeof error !== 'undefined' && error && error(data) === false) {
+						return;
+					}
 
-					apiFatal(data['error'].join('<br>'));
-				}
-				else if (typeof success !== 'undefined' && success)
-				{
+					apiFatal(data['_error'].join('<br>'));
+				} else if (typeof success !== 'undefined' && success)	{
 					success(data);
-					if (typeof applyTooltips !== 'undefined')
+					if (typeof applyTooltips !== 'undefined') {
 						applyTooltips();
+					}
 				}
 			},
 			error: function (data) {
-				if (typeof error !== 'undefined' && error)
-					if (error(data) === false)
-						return;
+				if (typeof error !== 'undefined' && error && error(data) === false) {
+					return;
+				}
 
-				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['error'] !== 'undefined') // PHP error but still handled by API
-					apiFatal(data['responseJSON']['error'].join('<br>'));
-				else if (typeof data['responseText'] !== 'undefined') // Non-JSON response
-					apiFatal(data['responseText']);
-				else if (typeof data['statusText'] !== 'undefined') // Some XHR thing went wrong
-					apiFatal(data['statusText']);
-				else // ...shrugs
-					apiFatal(data);
+				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['_error'] !== 'undefined') { // PHP error but still handled by API
+					apiFatal(data['responseJSON']['_error'].join('<br>'));
+				} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
+					apiFatal(escapeHtml(data['responseText']));
+				} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
+					apiFatal(escapeHtml(data['statusText']));
+				} else { // ...shrugs
+					apiFatal(escapeHtml(data));
+				}
 			}
 		});
 }
 
 function apiFatal(message) {
-	$.fancybox.open({
-		content: '<h2 class="error">Error</h2>' + message,
-		closeBtn: false,
-		beforeShow: function () {
-			this.skin.css({
-				'background': '#F2DEDE',
-				'color': '#B94A48',
-				'border': 'solid 1px #EED3D7'
-			});
-		},
-		overlay: {
-			closeClick: true,
-			locked: false
-		}
-	});
+	if (!$('div.fancybox-wrap').length) {
+		$.fancybox.open({
+			content: '<h2>Error</h2>' + message,
+			autoScale: false,
+			beforeShow: function () {
+				this.skin.addClass('dex-api-error');
+			},
+			overlay: {
+				closeClick: true,
+				locked: false
+			}
+		});
+	}
 }
 
 function apiStatusClear() {
-	$('.dex.api .status div').stop(true).hide();
+	$('.dex-api .status div').stop(true).hide();
 }
 
 function apiStatusFade() {
-	$('.dex.api .status div').stop(true).fadeOut('fast');
+	$('.dex-api .status div').stop(true).fadeOut(100);
 }
 
 function apiStatusWorking(message) {
 	apiStatusClear();
-	$('.dex.api .status div.working').delay(800).fadeIn('fast');
+	$('.dex-api .status div.working').delay(800).fadeIn(100);
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.working span').delay(800).show().html(message);
+		$('.dex-api .status div.working span').delay(800).show().html(message);
 	} else {
-		$('.dex.api .status div.working span').hide();
+		$('.dex-api .status div.working span').hide();
 	}
 }
 
 function apiStatusSuccess(message) {
 	apiStatusClear();
-	$('.dex.api .status div.success').fadeIn('fast');
+	$('.dex-api .status div.success').fadeIn(100);
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.success span').show().html(message);
-		setTimeout(apiStatusFade, 5000);
+		$('.dex-api .status div.success span').show().html(message);
+		//setTimeout(apiStatusFade, 5000);
 	} else {
-		$('.dex.api .status div.success span').hide();
+		$('.dex-api .status div.success span').hide();
 	}
 }
 
 function apiStatusError(message) {
 	apiStatusClear();
-	$('.dex.api .status div.error').fadeIn('fast');
+	$('.dex-api .status div.error').fadeIn(100);
 	if (typeof message !== 'undefined') {
-		$('.dex.api .status div.error span').show().html(message);
+		$('.dex-api .status div.error span').show().html(message);
 	} else {
-		$('.dex.api .status div.error span').hide();
+		$('.dex-api .status div.error span').hide();
 	}
 }
 
@@ -108,7 +107,7 @@ function apiLoadStatusClear(load) {
 
 function apiLoadStatusWorking(load) {
 	apiLoadStatusClear(load);
-	load.find('div.working').fadeIn('fast');
+	load.find('div.working').fadeIn(100);
 }
 
 function apiLoadStatusSuccess(load) {
@@ -117,12 +116,12 @@ function apiLoadStatusSuccess(load) {
 
 function apiLoadStatusEmpty(load) {
 	apiLoadStatusClear(load);
-	load.find('div.empty').fadeIn('fast');
+	load.find('div.empty').fadeIn(100);
 }
 
 function apiLoadStatusError(load) {
 	apiLoadStatusClear(load);
-	load.find('div.error').fadeIn('fast');
+	load.find('div.error').fadeIn(100);
 }
 
 var apiUpdateConsoleTimeout;
@@ -138,7 +137,7 @@ function apiUpdateConsole(dest) {
 			}
 			apiUpdateConsole(dest);
 		});
-	}, 200);
+	}, 100);
 }
 
 function apiStopConsole() {

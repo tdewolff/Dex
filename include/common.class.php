@@ -29,6 +29,11 @@ class Common
 		return strpos(self::$request_url, 'admin/') === 0 || !Db::isValid();
 	}
 
+	public static function requestAdminAuxiliary()
+	{
+		return strpos(self::$request_url, 'admin/auxiliary/') === 0;
+	}
+
 	public static function requestApi()
 	{
 		return strpos(self::$request_url, 'api/') === 0;
@@ -41,12 +46,11 @@ class Common
 
 	////////////////
 
-	public static function ensureWritableDirectory($directory)
+	public static function makeDirectory($directory)
 	{
 		if (!is_dir($directory))
-			mkdir($directory, 0755);
-		else if (substr(sprintf('%o', fileperms($directory)), -4) !== '0755')
-			chmod($directory, 0755);
+			if (!mkdir($directory))
+				user_error('Could not make directory "' . $directory . '"', WARNING);
 	}
 
 	public static function validUrl($input) // unused
@@ -115,19 +119,18 @@ class Common
 
 	public static function getDirectorySize($dir)
 	{
-		$size = 0;
-		if (!($handle = opendir($dir)))
+		if (!is_readable($dir) || !($handle = @opendir($dir)))
 			return false;
 
+		$size = 0;
 		while ($name = readdir($handle))
 		{
-			if (is_file($dir . $name))
+			if (is_file($dir . $name) && is_readable($dir))
 				$size += filesize($dir . $name);
 
-			if (is_dir($dir . $name) && $name != '.' && $name != '..')
+			if (is_dir($dir . $name) && is_readable($dir) && $name != '.' && $name != '..')
 				$size += self::getDirectorySize($dir . $name . '/');
 		}
-
 		closedir($handle);
 		return $size;
 	}
@@ -144,9 +147,42 @@ class Common
 		return isset($array[$index]) ? $array[$index] : 0;
 	}
 
-	public static function tryOrDefault($array, $index, $default)
+	////////////////
+
+	public static function getUrlContents($url)
 	{
-		return isset($array[$index]) ? $array[$index] : $default;
+		$contents = null;
+		$allow_url_fopen = preg_match('/1|yes|on|true/i', ini_get('allow_url_fopen'));
+		if ($allow_url_fopen)
+		{
+			try
+			{
+				$contents = file_get_contents($url, false, stream_context_create(array(
+					'http' => array(
+						'method' => 'GET',
+						'max_redirects' => 0,
+						'timeout' => 5,
+					)
+				)));
+			}
+			catch (Exception $e)
+			{
+				user_error('file_get_contents error: "' . $e->getMessages() . '"', WARNING);
+			}
+		}
+		elseif (extension_loaded('curl'))
+		{
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			$contents = curl_exec($ch);
+			curl_close($ch);
+
+			if ($contents === null)
+				user_error('cURL error: "' . curl_error($ch) . '"', WARNING);
+		}
+		return $contents;
 	}
 
 	////////////////
@@ -155,6 +191,17 @@ class Common
 	{
 		$s = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '');
 		return 'http' . $s . '://' . $_SERVER['HTTP_HOST'] . '/';
+	}
+
+	public static function responseCode($new_code = null)
+	{
+		static $code = 200;
+		if ($new_code != null && !headers_sent())
+		{
+			header('X-PHP-Response-Code: ' . $new_code, true, $new_code);
+			$code = $new_code;
+		}
+		return $code;
 	}
 
 	public static function outputFaviconIco()
@@ -181,23 +228,27 @@ class Common
 		header('Content-Type: text/xml');
 		echo '<?xml version="1.0" encoding="UTF-8"?>' .
 			 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-		$table = Db::query("SELECT * FROM link;");
+		$table = Db::query("SELECT link_id, url FROM link;");
 		while ($row = $table->fetch())
 		{
-			$slashes = preg_match_all('/', $row['url']);
-			$priority = '0.5';
-			if ($row['url'] == '')
-				$priority = '1';
-			else if ($slashes == 1)
-				$priority = '0.8';
-			else if ($slashes == 2)
-				$priority = '0.6';
+			$content = Db::singleQuery("SELECT modify_time FROM content WHERE link_id = '" . $row['link_id'] . "' ORDER BY modify_time DESC LIMIT 1;");
+			if ($content)
+			{
+				$slashes = preg_match_all('/\//', $row['url'], $matches); // $matches not used but required for old PHP versions
+				$priority = '0.5';
+				if ($row['url'] == '')
+					$priority = '1';
+				else if ($slashes == 1)
+					$priority = '0.8';
+				else if ($slashes == 2)
+					$priority = '0.6';
 
-			echo '<url>' .
-					 '<loc>' . self::fullBaseUrl() . self::$base_url . $row['url'] . '</loc>' .
-					 '<lastmod>' . date('Y-m-d', $row['modify_time']) . '</lastmod>' .
-					 '<priority>' . $priority . '</priority>' .
-				 '</url>';
+				echo '<url>' .
+						 '<loc>' . self::fullBaseUrl() . self::$base_url . $row['url'] . '</loc>' .
+						 '<lastmod>' . date('Y-m-d', $content['modify_time']) . '</lastmod>' .
+						 '<priority>' . $priority . '</priority>' .
+					 '</url>';
+			}
 		}
 		echo '</urlset>';
 		exit;
@@ -207,15 +258,15 @@ class Common
 ini_set('pcre.recursion_limit', '16777');
 function minifyHtml($text)
 {
-	if (!Common::isMinifying()) {
+	if (!Common::isMinifying())
 		return $text;
-	}
 
-	$re = '%# Collapse whitespace everywhere but in blacklisted elements.
+	$text = trim(preg_replace('/(?<=>)\s+(?=<)/Ssi', '', $text)); // remove any whitespace between tags except one space
+
+	$regex = '%# Collapse whitespace everywhere but in blacklisted elements.
 		(?>             # Match all whitespans other than single space.
-		  [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
-		| \s{2,}        # or two or more consecutive-any-whitespace.
-		) # Note: The remaining regex consumes no text at all...
+		  \s+           # or two or more consecutive-any-whitespace.
+		)               # Note: The remaining regex consumes no text at all...
 		(?=             # Ensure we are not in a blacklist tag.
 		  [^<]*+        # Either zero or more non-"<" {normal*}
 		  (?:           # Begin {(special normal*)*} construct
@@ -230,12 +281,14 @@ function minifyHtml($text)
 		  )             # End alternation group.
 		)  # If we made it here, we are not in a blacklist tag.
 		%Six';
-
-	$text = preg_replace($re, ' ', $text);
+	$text = preg_replace($regex, ' ', $text);
 	if ($text === null)
 		user_error('Output HTML too large');
 
+	// TODO: remove unneccessary quotes around HTML attributes NEEDS TO BE IMPROVED! Is this save?
+	//$text = preg_replace('/(\s\w+=)"([^"\'`=<>\s]+)"/S', '\1\2', $text); // remove any whitespace between tags except one space
+
+	// TODO: minify inline JS
+
 	return $text;
 }
-
-?>

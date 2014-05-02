@@ -20,7 +20,7 @@
 
 
 	<?php else: // input elements with a label ?>
-	<p>
+	<div>
 		<label><?php echo $item['title']; ?></label>
 
 
@@ -89,7 +89,7 @@
 			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 			<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>>
 			<?php foreach ($item['options'] as $id => $name): ?>
-			<option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>><?php echo $name; ?></option>
+			<option value="<?php echo $id; ?>" <?php echo ($id == $item['value'] ? 'selected' : ''); ?>><?php echo $name; ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -102,7 +102,7 @@
 				value="<?php echo $id; ?>"
 				<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 				<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
-				<?php echo ($id == $item['value'] ? 'selected="selected"' : ''); ?>>
+				<?php echo ($id == $item['value'] ? 'checked' : ''); ?>>
 			<?php echo $name; ?>
 		</label>
 		<?php endforeach; ?>
@@ -112,12 +112,13 @@
 		<input type="hidden"
 			name="<?php echo $item['name']; ?>"
 			value='<?php echo $item['value']; ?>'
-			placeholder='<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>'
 			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
 			<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
 			data-type="array"
 			data-template="template_<?php echo $item['name']; ?>"
-			data-ul="ul_<?php echo $item['name']; ?>">
+			data-ul="ul_<?php echo $item['name']; ?>"
+			data-placeholder='<?php echo (isset($item['placeholder']) ? $item['placeholder'] : ''); ?>'>
+
 		<ul
 			id="ul_<?php echo $item['name']; ?>"
 			<?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>></ul>
@@ -136,41 +137,10 @@
 		</script>
 
 
-		<?php elseif ($item['type'] == 'parameters'): ?>
-		<input type="hidden"
-			name="<?php echo $item['name']; ?>"
-			value='<?php echo $item['value']; ?>'
-			<?php if (isset($item['id'])): ?>id="<?php echo $item['id']; ?>"<?php endif; ?>
-			<?php if (isset($item['class'])): ?>class="<?php echo $item['class']; ?>"<?php endif; ?>
-			data-type="parameters"
-			data-template="template_<?php echo $item['name']; ?>"
-			data-ul="ul_<?php echo $item['name']; ?>">
-		<ul
-			id="ul_<?php echo $item['name']; ?>"
-			<?php if (!empty($item['subtitle'])) { echo 'data-tooltip="' . $item['subtitle'] . '"'; } ?>></ul>
-		<div class="clear"></div>
-
-		<script id="template_<?php echo $item['name']; ?>" type="text/x-dot-template">
-			<li>
-				<input type="text"
-					value='{{=it.key}}'
-					maxlength="<?php echo $item['preg']['max']; ?>"
-					class="parameter-key"
-					data-name="<?php echo $item['name']; ?>">
-				<span class="equal">=</span>
-				<input type="text"
-					value='{{=it.value}}'
-					maxlength="<?php echo $item['preg']['max']; ?>"
-					class="parameter-val"
-					data-name="<?php echo $item['name']; ?>">
-			</li>
-		</script>
-
-
 		<?php endif; ?>
-	</p>
+	</div>
 
-	<div class="error" data-for-name="<?php echo $item['name']; ?>">
+	<div class="inline-error-below" data-for-name="<?php echo $item['name']; ?>">
 		<div class="box">
 			<div class="arrow"></div>
 			<div class="arrow-border"></div>

@@ -1,30 +1,21 @@
-@font-face {
-  font-family: "SourceSansRegular";
-  src: url('../core/fonts/sourcesanspro-regular-webfont.eot');
-  src: url('../core/fonts/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-regular-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-regular-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-regular-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "SourceSansLight";
-  src: url('../core/fonts/sourcesanspro-light-webfont.eot');
-  src: url('../core/fonts/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), url('../core/fonts/sourcesanspro-light-webfont.svg') format('svg'), url('../core/fonts/sourcesanspro-light-webfont.woff') format('woff'), url('../core/fonts/sourcesanspro-light-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
 [data-dexeditable] {
   outline: 0;
 }
-img {
-  display: block;
+[contenteditable="true"] img {
+  vertical-align: middle;
 }
-.dexedit_img_resize_nwse {
+[contenteditable="true"] blockquote,
+[contenteditable="true"] h3,
+[contenteditable="true"] h4 {
+  overflow: hidden;
+}
+.dexedit-img-resize-nwse {
   cursor: nwse-resize;
 }
-.dexedit_img_resize_nesw {
+.dexedit-img-resize-nesw {
   cursor: nesw-resize;
 }
-.dexedit_img_placeholder {
+.dexedit-img-placeholder {
   display: none;
   z-index: -1;
   border: dashed 1px black;
@@ -32,43 +23,43 @@ img {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.dexedit_img {
+.dexedit-img {
   display: inline-block;
   position: relative;
   white-space: nowrap;
   margin: -10px;
   padding: 10px;
 }
-.dexedit_img > div.dexedit_img_resize {
+.dexedit-img > div.dexedit-img-resize {
   display: none;
 }
-.dexedit_img > div.dexedit_img_resize > div {
+.dexedit-img > div.dexedit-img-resize > div {
   position: absolute;
   width: 6px;
   height: 6px;
   background-color: #404040;
 }
-.dexedit_img > div.dexedit_img_resize > div.dexedit_img_resize_tl {
+.dexedit-img > div.dexedit-img-resize > div.dexedit-img-resize-tl {
   top: 7px;
   left: 7px;
   cursor: nwse-resize;
 }
-.dexedit_img > div.dexedit_img_resize > div.dexedit_img_resize_tr {
+.dexedit-img > div.dexedit-img-resize > div.dexedit-img-resize-tr {
   top: 7px;
   right: 7px;
   cursor: nesw-resize;
 }
-.dexedit_img > div.dexedit_img_resize > div.dexedit_img_resize_bl {
+.dexedit-img > div.dexedit-img-resize > div.dexedit-img-resize-bl {
   bottom: 7px;
   left: 7px;
   cursor: nesw-resize;
 }
-.dexedit_img > div.dexedit_img_resize > div.dexedit_img_resize_br {
+.dexedit-img > div.dexedit-img-resize > div.dexedit-img-resize-br {
   bottom: 7px;
   right: 7px;
   cursor: nwse-resize;
 }
-.dexedit_img > div.dexedit_img_menu {
+.dexedit-img > div.dexedit-img-menu {
   display: none;
   position: absolute;
   z-index: 1000;
@@ -90,10 +81,13 @@ img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  -webkit-box-shadow: 0 0 3px 0 #ffffff;
+  -moz-box-shadow: 0 0 3px 0 #ffffff;
+  box-shadow: 0 0 3px 0 #ffffff;
   height: 24px;
-  font-size: 80%;
+  font-size: 13px;
 }
-.dexedit_img > div.dexedit_img_menu > span {
+.dexedit-img > div.dexedit-img-menu > span {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -106,7 +100,7 @@ img {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
-.dexedit_img > div.dexedit_img_menu > span:not(.enabled):hover {
+.dexedit-img > div.dexedit-img-menu > span:not(.enabled):hover {
   border-left: 1px solid #4c5961;
   border-right: 1px solid #414D54;
   background-color: #414d54;
@@ -116,14 +110,14 @@ img {
   background-image: -o-linear-gradient(top, #4c5961, #414d54);
   background-image: linear-gradient(to bottom, #4c5961, #414d54);
 }
-.dexedit_img > div.dexedit_img_menu > span.enabled,
-.dexedit_img > div.dexedit_img_menu > span.enabled:hover {
+.dexedit-img > div.dexedit-img-menu > span.enabled,
+.dexedit-img > div.dexedit-img-menu > span.enabled:hover {
   border-left: 1px solid #282F33;
   border-right: 1px solid #282F33;
   background-color: #282F33;
 }
-.dexedit_img > div.dexedit_img_menu > span:first-of-type,
-.dexedit_img > div.dexedit_img_menu > span:hover:first-of-type {
+.dexedit-img > div.dexedit-img-menu > span:first-of-type,
+.dexedit-img > div.dexedit-img-menu > span:hover:first-of-type {
   padding-left: 2px;
   border-left: 0;
   -webkit-border-top-left-radius: 4px;
@@ -133,8 +127,8 @@ img {
   -moz-border-bottom-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.dexedit_img > div.dexedit_img_menu > span:last-of-type,
-.dexedit_img > div.dexedit_img_menu > span:hover:last-of-type {
+.dexedit-img > div.dexedit-img-menu > span:last-of-type,
+.dexedit-img > div.dexedit-img-menu > span:hover:last-of-type {
   padding-right: 2px;
   border-right: 0;
   -webkit-border-top-right-radius: 4px;
@@ -144,12 +138,12 @@ img {
   -moz-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-.dexedit_img > div.dexedit_img_menu > span {
+.dexedit-img > div.dexedit-img-menu > span {
   width: 24px;
   line-height: 24px;
 }
-.dexedit_img > div.dexedit_img_menu > span:first-of-type,
-.dexedit_img > div.dexedit_img_menu > span:hover:first-of-type {
+.dexedit-img > div.dexedit-img-menu > span:first-of-type,
+.dexedit-img > div.dexedit-img-menu > span:hover:first-of-type {
   -webkit-border-top-left-radius: 3px;
   -moz-border-top-left-radius: 3px;
   border-top-left-radius: 3px;
@@ -157,8 +151,8 @@ img {
   -moz-border-bottom-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.dexedit_img > div.dexedit_img_menu > span:last-of-type,
-.dexedit_img > div.dexedit_img_menu > span:hover:last-of-type {
+.dexedit-img > div.dexedit-img-menu > span:last-of-type,
+.dexedit-img > div.dexedit-img-menu > span:hover:last-of-type {
   -webkit-border-top-right-radius: 3px;
   -moz-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
@@ -166,16 +160,16 @@ img {
   -moz-border-bottom-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-.dexedit_img > img {
+.dexedit-img > img {
   cursor: move;
 }
-.dexedit_img > img.dexedit_img_resize_nwse {
+.dexedit-img > img.dexedit-img-resize-nwse {
   cursor: nwse-resize;
 }
-.dexedit_img > img.dexedit_img_resize_nesw {
+.dexedit-img > img.dexedit-img-resize-nesw {
   cursor: nesw-resize;
 }
-.dexedit_menu {
+.dexedit-menu {
   display: none;
   position: absolute;
   z-index: 1000;
@@ -195,7 +189,7 @@ img {
   -moz-box-shadow: 0 0 2px 0 #262625;
   box-shadow: 0 0 2px 0 #262625;
 }
-.dexedit_menu > span {
+.dexedit-menu > span {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -208,7 +202,7 @@ img {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
-.dexedit_menu > span:not(.enabled):hover {
+.dexedit-menu > span:not(.enabled):hover {
   border-left: 1px solid #4c5961;
   border-right: 1px solid #414D54;
   background-color: #414d54;
@@ -218,14 +212,14 @@ img {
   background-image: -o-linear-gradient(top, #4c5961, #414d54);
   background-image: linear-gradient(to bottom, #4c5961, #414d54);
 }
-.dexedit_menu > span.enabled,
-.dexedit_menu > span.enabled:hover {
+.dexedit-menu > span.enabled,
+.dexedit-menu > span.enabled:hover {
   border-left: 1px solid #282F33;
   border-right: 1px solid #282F33;
   background-color: #282F33;
 }
-.dexedit_menu > span:first-of-type,
-.dexedit_menu > span:hover:first-of-type {
+.dexedit-menu > span:first-of-type,
+.dexedit-menu > span:hover:first-of-type {
   padding-left: 2px;
   border-left: 0;
   -webkit-border-top-left-radius: 4px;
@@ -235,8 +229,8 @@ img {
   -moz-border-bottom-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.dexedit_menu > span:last-of-type,
-.dexedit_menu > span:hover:last-of-type {
+.dexedit-menu > span:last-of-type,
+.dexedit-menu > span:hover:last-of-type {
   padding-right: 2px;
   border-right: 0;
   -webkit-border-top-right-radius: 4px;
@@ -246,12 +240,12 @@ img {
   -moz-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-.dexedit_menu > span.dexedit_menu_h4 {
+.dexedit-menu > span.dexedit-menu-h4 {
   font-size: 80%;
   vertical-align: top;
 }
-.dexedit_menu > .dexedit_menu_arrow,
-.dexedit_menu > .dexedit_menu_arrow_upsidedown {
+.dexedit-menu > .dexedit-menu-arrow,
+.dexedit-menu > .dexedit-menu-arrow-upsidedown {
   position: absolute;
   bottom: -5px;
   margin-left: -5px;
@@ -262,7 +256,7 @@ img {
   width: 0;
   height: 0;
 }
-.dexedit_menu > .dexedit_menu_arrow_upsidedown {
+.dexedit-menu > .dexedit-menu-arrow-upsidedown {
   top: -5px;
   bottom: 0;
   border-top: 0;

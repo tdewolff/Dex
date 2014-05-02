@@ -32,7 +32,10 @@ class API
 				$filename = 'templates/' . $url[2] . '/api/' . implode('/', array_splice($url, 3)) . '.php';
 
 		if (empty($filename))
+		{
+			Common::responseCode(404);
 			user_error('Could not expand URL "' . implode('/', $url) . '" to API', ERROR);
+		}
 
 		return $filename;
 	}
@@ -58,18 +61,18 @@ class API
 
 	public static function error($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 		self::finish();
 	}
 
 	public static function warning($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 	}
 
 	public static function notice($message)
 	{
-		self::$response['error'][] = $message;
+		self::$response['_error'][] = $message;
 	}
 
 	////////////////
@@ -84,5 +87,3 @@ class API
 		exit;
 	}
 }
-
-?>

@@ -20,9 +20,9 @@ a, button {
 		.box-shadow-inset(0, 0, 3px, 0, lighten(@base, 16%));
 
 		&:hover, &:focus {
-		  	border: 1px solid darken(@base, 13%);
-		  	border-top-color: darken(@base, 20%);
-		 	border-left-color: darken(@base, 20%);
+			border: 1px solid darken(@base, 13%);
+			border-top-color: darken(@base, 20%);
+			border-left-color: darken(@base, 20%);
 			color: white;
 			.css-gradient(darken(@base, 5%), darken(@base, 10%));
 		}
@@ -72,7 +72,7 @@ a, button {
 
 	&.list-button, &.list-button:visited {
 		display: inline-block;
-		padding: 2px 8px;
+		padding: 4px 8px;
 
 		border: 1px solid darken(@light, 13%);
 		border-top-color: darken(@light, 7%);
@@ -82,6 +82,7 @@ a, button {
 		text-decoration: none;
 		text-shadow: 0 1px 1px rgba(256, 256, 256, .75);
 		cursor: pointer;
+		line-height: 100%;
 
 		.transition();
 		.border-radius(4px);
@@ -90,14 +91,18 @@ a, button {
 
 		&:hover, &:focus {
 			color: black;
-		  	border: 1px solid darken(@light, 13%);
-		  	border-top-color: darken(@light, 20%);
-		 	border-left-color: darken(@light, 20%);
+			border: 1px solid darken(@light, 13%);
+			border-top-color: darken(@light, 20%);
+			border-left-color: darken(@light, 20%);
 			.css-gradient(darken(@light, 5%), darken(@light, 10%));
 		}
 
 		&:active {
 			.css-gradient(darken(@light, 5%), @light);
+		}
+
+		&.dropdown-select {
+			border-right: 0;
 		}
 	}
 }

@@ -1,200 +1,194 @@
 var Draggable = function (ul) {
-    var self = this;
+	var self = this;
 
-    this.ul = $(ul);
-    this.hasChange = false;
-    this.saveTimeout = null;
+	this.ul = $(ul);
+	this.draggee = false;
+	this.draggee_x_start = 0;
+	this.draggee_y_offset = 0;
+	this.placeholder = false;
 
-    this.draggee = false;
-    this.draggee_x_start = 0;
-    this.draggee_y_offset = 0;
-    this.placeholder = false;
+	this.save = new Save(this.ul);
 
-    this.drag = function (e) {
-        if (self.draggee !== false) {
-            var elements = self.ul.find('li:not(:first)').filter(function () {
-                return $(this).css('position') == 'static';
-            });
+	this.drag = function (e) {
+		if (self.draggee !== false) {
+			var elements = self.ul.find('li:not(:first)').filter(function () {
+				return $(this).css('position') == 'static';
+			});
 
-            // restrain Y movement within the list
-            var top = e.pageY - self.draggee_y_offset;
-            var min_top = elements.first().offset().top + 1;
-            var max_top = elements.last().offset().top + 1;
-            if (top < min_top)
-                top = min_top;
-            else if (top > max_top)
-                top = max_top;
+			// restrain Y movement within the list
+			var top = e.pageY - self.draggee_y_offset;
+			var min_top = elements.first().offset().top + 1;
+			var max_top = elements.last().offset().top + 1;
+			if (top < min_top) {
+				top = min_top;
+			} else if (top > max_top) {
+				top = max_top;
+			}
 
-            // placement
-            var places = elements.filter(function () {
-                 return !$(this).hasClass('placeholder');
-            });
+			// placement
+			var places = elements.filter(function () {
+				 return !$(this).hasClass('placeholder');
+			});
 
-            if (places.length) {
-                var y = top + 0.5 * places.first().outerHeight();
-                places.each(function () {
-                    var place = $(this);
-                    if (y >= place.offset().top && y < place.offset().top + place.outerHeight()) {
-                        if (top < self.placeholder.offset().top)
-                            self.placeholder.insertBefore(place);
-                        else
-                            self.placeholder.insertAfter(place);
-                        return false;
-                    }
-                });
-            }
+			if (places.length) {
+				var y = top + 0.5 * places.first().outerHeight();
+				places.each(function () {
+					var place = $(this);
+					if (y >= place.offset().top && y < place.offset().top + place.outerHeight()) {
+						if (top < self.placeholder.offset().top) {
+							self.placeholder.insertBefore(place);
+						} else {
+							self.placeholder.insertAfter(place);
+						}
+						return false;
+					}
+				});
+			}
 
-            // X movement determines level of the item
-            var level = 0;
-            var previous = false;
-            elements.each(function () {
-                var element = $(this);
-                if (element.hasClass('placeholder'))
-                    return false;
-                previous = element;
-            });
+			// X movement determines level of the item
+			var level = 0;
+			var previous = false;
+			elements.each(function () {
+				var element = $(this);
+				if (element.hasClass('placeholder')) {
+					return false;
+				}
+				previous = element;
+			});
 
-            if (previous !== false && typeof previous.attr('data-level') !== 'undefined')
-            {
-                level = Math.floor((e.pageX - self.draggee_x_start + 20.0) / 40.0);
-                var previous_level = previous.attr('data-level');
-                if (level >= previous_level + 2)
-                    level = previous_level + 1;
-            }
+			if (previous !== false && typeof previous.attr('data-level') !== 'undefined') {
+				level = Math.floor((e.pageX - self.draggee_x_start + 20.0) / 40.0);
+				var previous_level = previous.attr('data-level');
+				if (level >= previous_level + 2) {
+					level = previous_level + 1;
+				}
+			}
 
-            self.draggee.find('.fa-long-arrow-right').hide();
-            for (var i = 0; i < level; i++)
-                self.draggee.find('.fa-long-arrow-right').eq(i).show();
+			self.draggee.find('.fa-long-arrow-right').hide();
+			for (var i = 0; i < level; i++) {
+				self.draggee.find('.fa-long-arrow-right').eq(i).show().css('display', 'inline-block');
+			}
 
-            // apply CSS
-            self.draggee.css('top', top + 'px');
-            self.draggee.attr('data-level', level);
-        }
-        else
-            $(document).unbind('mousemove', self.drag);
-    };
+			// apply CSS
+			self.draggee.css('top', top + 'px');
+			self.draggee.attr('data-level', level);
+		}  else {
+			$(document).unbind('mousemove', self.drag);
+		}
+	};
 
-    this.ul.on('mousedown', '.fa-eye', function (e) {
-        e.preventDefault();
-        apiStatusClear();
+	this.ul.on('mousedown', '.fa-eye', function (e) {
+		e.preventDefault();
+		apiStatusClear();
 
-        var li = $(this).closest('li');
-        li.toggleClass('unused');
-        li.find('input').toggleClass('unused');
+		var li = $(this).closest('li');
+		var parent = self.getParent(li);
+		if (parent && parent.hasClass('unused') && li.hasClass('unused'))
+			return;
 
-        var level = li.attr('data-level');
-        var elements = li.nextAll('li').filter(function () {
-            return !$(this).hasClass('placeholder');
-        }).each(function () {
-            var element = $(this);
-            if (element.attr('data-level') <= level)
-                return false;
+		li.toggleClass('unused');
+		li.find('input').toggleClass('unused');
 
-            if (element.hasClass('unused') != li.hasClass('unused'))
-            {
-                element.toggleClass('unused');
-                element.find('input').toggleClass('unused');
-            }
-        });
-        self.needsSave();
-    });
+		// childs
+		var level = li.attr('data-level');
+		var elements = li.nextAll('li').filter(function () {
+			return !$(this).hasClass('placeholder');
+		}).each(function () {
+			var element = $(this);
+			if (element.attr('data-level') <= level) {
+				return false;
+			}
 
-    this.ul.on('mousedown', '.fa-bars', function (e) {
-        e.preventDefault();
-        apiStatusClear();
+			if (element.hasClass('unused') != li.hasClass('unused')) {
+				element.toggleClass('unused');
+				element.find('input').toggleClass('unused');
+			}
+		});
+		self.save.save();
+	});
 
-        if (self.draggee === false && e.which == 1) {
-            self.draggee = $(this).closest('li');
+	this.ul.on('mousedown', '.fa-bars', function (e) {
+		e.preventDefault();
+		apiStatusClear();
 
-            self.draggee_x_start = e.pageX - $('.fa-long-arrow-right:visible', self.draggee).length * 40.0;
-            self.draggee_y_offset = e.pageY - (self.draggee.offset().top + 1);
+		if (self.draggee === false && e.which == 1) {
+			self.draggee = $(this).closest('li');
 
-            self.placeholder = $('<li>').addClass('placeholder').insertAfter(self.draggee);
-            self.draggee.addClass('draggee').css({
-                'top': (self.draggee.offset().top + 1) + 'px',
-                'left': self.draggee.offset().left + 'px'
-            });
+			self.draggee_x_start = e.pageX - $('.fa-long-arrow-right:visible', self.draggee).length * 40.0;
+			self.draggee_y_offset = e.pageY - (self.draggee.offset().top + 1);
 
-            $(document).bind('mousemove', self.drag);
-        }
-    });
+			var width = self.draggee.width();
+			self.placeholder = $('<li>').addClass('placeholder').insertAfter(self.draggee);
+			self.draggee.addClass('draggee').css({
+				'top': (self.draggee.offset().top + 1) + 'px',
+				'left': self.draggee.offset().left + 'px',
+				'width': width + 'px'
+			});
 
-    $('html').mouseup(function (e) {
-        if (self.draggee !== false) {
-            e.preventDefault();
-            $(document).unbind('mousemove', self.drag);
+			$(document).bind('mousemove', self.drag);
+		}
+	});
 
-            self.draggee.insertAfter(self.placeholder).animate({
-                'top': (self.placeholder.offset().top + 1) + 'px'
-            }, 'fast', function () {
-                self.placeholder.remove();
-                $(this).removeClass('draggee').css({
-                    'top': '',
-                    'left': ''
-                });
-            });
+	$('html').mouseup(function (e) {
+		if (self.draggee !== false) {
+			e.preventDefault();
+			$(document).unbind('mousemove', self.drag);
 
-            // toggle unused class
-            if (self.draggee.prev('li').attr('data-level') < self.draggee.attr('data-level') && self.draggee.prev('li').hasClass('unused') && !self.draggee.hasClass('unused'))
-            {
-                self.draggee.toggleClass('unused');
-                self.draggee.find('input').toggleClass('unused');
-            }
-            self.draggee = false;
-            self.needsSave();
-        }
-    });
+			self.draggee.insertAfter(self.placeholder).animate({
+				'top': (self.placeholder.offset().top + 1) + 'px'
+			}, 100, function () {
+				self.placeholder.remove();
+				$(this).removeClass('draggee').css({
+					'top': '',
+					'left': '',
+					'width': ''
+				});
+			});
 
-    this.ul.on('keyup', 'input', function () {
-        apiStatusClear();
-        self.needsSave();
-    });
+			// toggle unused class
+			var parent = self.getParent(self.draggee);
+			if (parent && parent.hasClass('unused') && !self.draggee.hasClass('unused')) {
+				self.draggee.toggleClass('unused');
+				self.draggee.find('input').toggleClass('unused');
+			}
 
-    this.ul.on('change', 'input', function (e) {
-        if (self.hasChange)
-        {
-            clearTimeout(self.saveTimeout);
-            self.save();
-            self.hasChange = false;
-        }
-    });
+			// childs
+			var level = self.draggee.attr('data-level');
+			var elements = self.draggee.nextAll('li').filter(function () {
+				return !$(this).hasClass('placeholder');
+			}).each(function () {
+				var element = $(this);
+				if (element.attr('data-level') <= level) {
+					return false;
+				}
 
-    this.needsSave = function () {
-        self.hasChange = true;
-        clearTimeout(self.saveTimeout);
-        self.saveTimeout = setTimeout(self.save, 1000);
-    };
+				if (element.hasClass('unused') != self.draggee.hasClass('unused')) {
+					element.toggleClass('unused');
+					element.find('input').toggleClass('unused');
+				}
+			});
 
-    this.save = function () {
-        apiStatusWorking('Saving...');
-        self.hasChange = false;
+			self.draggee = false;
+			self.save.save();
+		}
+	});
 
-        var i = 0;
-        var data = {};
-        var elements = $('li:not(:first)', self.ul).filter(function () {
-            return !$(this).hasClass('placeholder');
-        }).each(function () {
-            var element = $(this);
-            data[i] = {
-                link_id: element.attr('data-link-id'),
-                level: element.attr('data-level'),
-                name: element.find('input').val(),
-                enabled: (element.hasClass('unused') ? '0' : '1')
-            };
-            i++;
-        });
+	this.ul.on('keydown', 'input', function () {
+		apiStatusClear();
+	});
 
-        api('/' + base_url + 'api/module/menu/index/', {
-            action: 'modify_menu',
-            menu: data
-        }, function () {
-            apiStatusSuccess('Saved');
-        }, function () {
-            apiStatusError('Saving failed');
-        });
-    };
+	this.getParent = function (item) {
+		var prev = item.prev('li');
+		while (prev.length) {
+			if (prev.attr('data-level') < item.attr('data-level')) {
+				return prev;
+			}
+			prev = prev.prev('li');
+		}
+		return false;
+	};
 }
 
 $('ul.draggable').each(function (i, ul) {
-    new Draggable(ul);
+	new Draggable(ul);
 });

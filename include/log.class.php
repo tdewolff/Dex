@@ -46,44 +46,48 @@ class Log
 	{
 		$all = preg_replace("/\r\n|\r/", "\n", trim(file_get_contents(self::$filename)));
 		if (!$all)
-	    	return array();
-	    return explode("\n", $all);
+			return array();
+		return explode("\n", $all);
 	}
 
 	public static function getLastLines($n)
 	{
-	    $buffer_size = 1024;
+		$buffer_size = 1024;
 
-	    if (!($fp = fopen(self::$filename, 'r')))
-	        return array();
+		if (!($fp = fopen(self::$filename, 'r')))
+			return array();
 
-	    fseek($fp, 0, SEEK_END);
-	    $pos = ftell($fp);
+		fseek($fp, 0, SEEK_END);
+		$pos = ftell($fp);
 
-	    $input = '';
-	    $line_count = 0;
-	    while ($line_count < $n + 1)
-	    {
-	        // read the previous block of input
-	        $read_size = $pos >= $buffer_size ? $buffer_size : $pos;
-	        fseek($fp, $pos - $read_size, SEEK_SET);
+		$input = '';
+		$line_count = 0;
+		while ($line_count < $n + 1)
+		{
+			// read the previous block of input
+			$read_size = $pos >= $buffer_size ? $buffer_size : $pos;
+			fseek($fp, $pos - $read_size, SEEK_SET);
 
-	        // prepend the current block, and count the new lines
-	        $input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
-	        //$line_count = substr_count(ltrim($input), "\n");
+			// prepend the current block, and count the new lines
+			if ($read_size > 0)
+				$input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
+			//$line_count = substr_count(ltrim($input), "\n");
 
-	        // if $pos is == 0 we are at start of file
-	        $pos -= $read_size;
-	        if (!$pos)
-	            break;
-	    }
-	    fclose($fp);
-	    return array_slice(explode("\n", rtrim($input)), -$n);
+			// if $pos is == 0 we are at start of file
+			$pos -= $read_size;
+			if (!$pos)
+				break;
+		}
+		fclose($fp);
+		return array_slice(explode("\n", rtrim($input)), -$n);
 	}
 
 	public static function getLoglineDetails($logline)
 	{
 		$details = array('message' => '', 'location' => '', 'backtrace' => '');
+
+		if (strlen($logline) == 0)
+			return false;
 
 		$backtrace_pos = strpos($logline, '[', 1);
 		if ($backtrace_pos !== false)
@@ -99,17 +103,17 @@ class Log
 			$logline = substr($logline, 0, $location_pos - 1);
 		}
 
-		$logline = explode(' ', $logline);
-		if (count($logline) < 4)
+		$logline_array = explode(' ', $logline);
+		if (count($logline_array) < 4)
 			return false;
 
-		$details['datetime'] = substr($logline[0], 1) . ' ' . substr($logline[1], 0, -1);
-		$details['ipaddress'] = $logline[2];
-		$details['type'] = $logline[3];
+		$details['datetime'] = substr($logline_array[0], 1) . ' ' . substr($logline_array[1], 0, -1);
+		$details['ipaddress'] = $logline_array[2];
+		$details['type'] = $logline_array[3];
 
-		$message = implode(' ', array_slice($logline, 3));
+		$message = implode(' ', array_slice($logline_array, 3));
 		if (strlen($message) > 8)
-			$details['message'] = preg_replace(array('/&lbrack;/', '/&rbrack;/'), array('[', ']'), substr($message, 8));
+			$details['message'] = preg_replace(array('/&lpar;/', '/&rpar;/', '/&lbrack;/', '/&rbrack;/'), array('(', ')', '[', ']'), substr($message, 8));
 
 		return $details;
 	}
@@ -141,7 +145,7 @@ class Log
 	{
 		if (self::$file)
 		{
-			$message = preg_replace(array('/\[/', '/\]/'), array('&lbrack;', '&rbrack;'), $message);
+			$message = preg_replace(array('/\(/', '/\)/', '/\[/', '/\]/', "/\r\n|\r|\n/"), array('&lpar;', '&rpar;', '&lbrack;', '&rbrack;', ' '), $message);
 			if (strlen($location))
 				$location = ' (' . preg_replace(array('/\(/', '/\)/'), array('&lpar;', '&rpar;'), $location) . ')';
 
@@ -152,15 +156,13 @@ class Log
 			{
 				if (flock(self::$file, LOCK_EX))
 				{
-			    	fwrite(self::$file, $message);
-			    	fflush(self::$file);
-			    	flock(self::$file, LOCK_UN);
-			    	break;
-			    }
-			    usleep(1);
+					fwrite(self::$file, $message);
+					fflush(self::$file);
+					flock(self::$file, LOCK_UN);
+					break;
+				}
+				usleep(1);
 			}
 		}
 	}
 }
-
-?>

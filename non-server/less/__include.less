@@ -9,7 +9,7 @@
 @contrast:			#5A1F00;
 @alert:				#D1570D;
 
-@sans-serif:        /*"Helvetica Neue", Helvetica, Arial,*/ sans-serif;
+@sans-serif:        "Helvetica Neue", Helvetica, Arial, sans-serif;
 @serif:             Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
 @dex-heading:		SourceSansRegular, Helvetica, Arial, sans-serif;
 @dex-heading2:		SourceSansLight, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -26,18 +26,22 @@
 	font-style: normal;
 }
 
-@font-face {
-    .fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
-}
-
-@font-face {
-    .fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
+.clearfix() {
+  zoom: 1;
+	&:before, &:after { content: ""; display: table; }
+	&:after { clear: both; }
 }
 
 .border-box() {
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+			box-sizing: border-box;
+}
+
+.content-box() {
+	-webkit-box-sizing: content-box;
+	   -moz-box-sizing: content-box;
+			box-sizing: content-box;
 }
 
 .border-radius(@radius: 4px) {
@@ -84,6 +88,14 @@
 		-ms-transition: @what @time @transition;
 		 -o-transition: @what @time @transition;
 			transition: @what @time @transition;
+}
+
+.transform(@val) {
+	-webkit-transform: @val;
+	-moz-transform: @val;
+	-ms-transform: @val;
+	-o-transform: @val;
+	transform: @val;
 }
 
 .css-gradient(@from: #dfdfdf, @to: #f8f8f8) {

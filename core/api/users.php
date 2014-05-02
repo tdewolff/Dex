@@ -1,14 +1,9 @@
 <?php
 
 // doesn't have to be logged in for these functions
-if (API::action('forget'))
+if (API::action('timeleft'))
 {
-	User::forget();
-	API::finish();
-}
-else if (API::action('logout'))
-{
-	User::logOut();
+	API::set('timeleft', User::getTimeleft());
 	API::finish();
 }
 else if (API::action('forget'))
@@ -16,9 +11,20 @@ else if (API::action('forget'))
 	User::forget();
 	API::finish();
 }
+else if (API::action('logout'))
+{
+	if (API::has('admin') && API::get('admin') == 1 && isset($_SESSION['last_site_request']))
+		unset($_SESSION['last_site_request']);
+
+	User::logOut();
+	API::finish();
+}
 
 if (!User::isAdmin())
+{
+	Common::responseCode(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('delete_user'))
 {
@@ -41,5 +47,3 @@ else if (API::action('get_users'))
 	API::set('users', $users);
 	API::finish();
 }
-
-?>

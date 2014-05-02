@@ -1,16 +1,18 @@
-<div class="dex popup-wrapper">
+<div class="dex-popup-wrapper">
 	<div class="popup">
 		<div id="assets">
-			<h2>Images</h2>
+			<h2><?php echo __('Images'); ?></h2>
 			<div id="external-link">
-				<input type="text" placeholder="http://www.domain.com/"><a href="#" class="properties inline-button">Properties&ensp;<i class="fa fa-arrow-right"></i></a>
+				<a href="#" class="properties inline-button"><?php echo __('Properties'); ?>&ensp;<i class="fa fa-arrow-right"></i></a>
+				<div class="external-link-input"><input type="text" placeholder="http://www.domain.com/"></div>
 			</div>
 
 			<form id="upload" method="post" action="/<?php echo $_['base_url']; ?>api/core/assets/" enctype="multipart/form-data">
 				<input type="hidden" name="dir" value="">
+				<input type="hidden" name="max_width" value="100">
 				<div id="drop">
-					<span>Drop Here</span><br>
-					<a class="inline-button"><i class="fa fa-search"></i>&ensp;Browse</a>
+					<span><?php echo __('Drop here'); ?></span><br>
+					<a class="inline-button"><i class="fa fa-search"></i>&ensp;<?php echo __('Browse'); ?></a>
 					<input type="file" name="upload" multiple>
 					<div id="knob">
 						<div id="big-knob"><input type="text" value="0" data-width="64" data-height="64" data-thickness=".23" data-fgColor="#477725" data-readOnly="1" data-displayInput=false data-bgColor="#FFFFFF"></div>
@@ -20,30 +22,38 @@
 				<ul></ul>
 			</form>
 
-			<div id="breadcrumbs"></div>
-			<ul id="directories-assets" class="small-table">
+			<div id="breadcrumbs"><a href="#" data-dir=""><?php echo __('Assets'); ?></a></div>
+			<ul id="directories-assets" class="table">
 				<li>
-					<div>Filename</div>
-					<div>Size</div>
+					<div><?php echo __('File name'); ?></div>
+					<div><?php echo __('Size'); ?></div>
 					<div></div>
 				</li>
-				<li id="load_directories_assets" class="dex api load-status">
+				<li id="load_status_directories" class="dex-api load-status">
 					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 					<div class="error"><i class="fa fa-times"></i></div>
-					<div class="empty">empty</div>
+					<div class="empty"><?php echo __('empty'); ?></div>
 				</li>
 			</ul>
-			<ul id="images" class="grid"></ul>
+			<ul id="images" class="grid">
+				<li id="load_status_images" class="dex-api load-status">
+					<div class="working"><i class="fa fa-cog fa-spin"></i></div>
+					<div class="error"><i class="fa fa-times"></i></div>
+					<div class="empty"><?php echo __('empty'); ?></div>
+				</li>
+			</ul>
 		</div>
 		<div>
-			<h2>Properties</h2>
+			<a href="#" class="back button left"><i class="fa fa-chevron-left"></i>&ensp;<?php echo __('Back'); ?></a>
+			<h2><?php echo __('Image properties'); ?></h2>
 			<form>
 				<input id="insert_url" type="hidden">
-				<p><label>Description</label><input id="insert_title" type="text" data-tooltip="Shown when hovering"></p>
-				<p><label>Alternative text</label><input id="insert_alt" type="text" data-tooltip="Shown when image is unavailable"></p>
-				<p><label>Caption</label><textarea id="insert_caption"></textarea></p>
+				<input id="insert_width" type="hidden" value="50">
+				<p><label><?php echo __('Description'); ?></label><input id="insert_title" type="text" data-tooltip="<?php echo __('Shown when hovering'); ?>"></p>
+				<p><label><?php echo __('Alternative text'); ?></label><input id="insert_alt" type="text" data-tooltip="<?php echo __('Shown when image is unavailable'); ?>"></p>
+				<p><label><?php echo __('Caption'); ?></label><textarea id="insert_caption"></textarea></p>
 				<input id="insert_submit" type="hidden">
-				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;Done</a>
+				<a href="#" class="insert button"><i class="fa fa-plus-square"></i>&ensp;<?php echo __('Done'); ?></a>
 			</form>
 		</div>
 	</div>
@@ -58,15 +68,15 @@
 </script>
 
 <script id="image_item" type="text/x-dot-template">
-	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}">
+	<li data-title="{{=it.title}}" data-url="/<?php echo $_['base_url']; ?>res/{{=it.url}}" data-width="{{=it.width}}">
 		<div class="caption"><strong>{{=it.title}}</strong></div>
 		{{? it.width > 100}}
-		<img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}?w=100"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w=100/t={{=it.mtime}}/"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}>
 		{{??}}
-		<img src="/<?php echo $_['base_url']; ?>res/assets/{{=it.url}}"
+		<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}"
 			 alt="{{=it.name}}"
 			 title="{{=it.title}}"
 			 {{=it.attr}}
@@ -85,53 +95,74 @@
 	var image_item = doT.template($('#image_item').text());
 
 	// loading initial data
-	var first_load = true;
 	function loadDir(dir) {
-		if (!first_load) {
-			directories_assets.find('li:not(:first)').slideUp('fast', function () { $(this).remove(); });
-			images.find('li').slideUp('fast', function () { $(this).remove(); });
-		}
-		first_load = false;
+		$('#upload input[name="dir"]').val(dir);
+		$('#upload').find('#knob').stop().fadeOut();
+		$('#upload').find('ul li').remove();
 
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_breadcrumbs',
-			dir: dir
-		}, function (data) {
-			breadcrumbs.empty();
-			$.each(data['breadcrumbs'], function (i) {
-				if (i)
-					breadcrumbs.append('&gt;');
-				breadcrumbs.append('<a href="#" data-dir="' + this.dir + '">' + this.name + '</a>');
+		directories_assets.find('li:not(:first):not(.load-status)').slideUp(100, function () { $(this).remove(); });
+		images.find('li:not(.load-status)').slideUp(100, function () { $(this).remove(); });
+
+		setTimeout(function () {
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_breadcrumbs',
+				dir: dir
+			}, function (data) {
+				breadcrumbs.find('*:not(a:first)').remove();
+				var items = '';
+				$.each(data['breadcrumbs'], function (i) {
+					items += '<span>&gt;</span><a href="#" data-dir="' + this.dir + '">' + this.name + '</a>';
+				});
+				breadcrumbs.append(items);
 			});
-		});
 
-		apiLoadStatusWorking($('#load_directories_assets'));
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_directories',
-			dir: dir
-		}, function (data) {
-			if (!data['directories'].length) {
-				apiLoadStatusEmpty($('#load_directories_assets'));
-				return;
-			}
+			apiLoadStatusWorking($('#load_status_directories'));
+			$('#load_status_directories').show();
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_directories',
+				dir: dir
+			}, function (data) {
+				if (!data['directories'].length) {
+					apiLoadStatusEmpty($('#load_status_directories'));
+					return;
+				}
+				$('#load_status_directories').hide();
 
-			apiLoadStatusSuccess($('#load_directories_assets'));
-			$.each(data['directories'], function () {
-				$(directory_item(this)).hide().appendTo(directories_assets).slideDown('fast');
+				var items = '';
+				$.each(data['directories'], function () {
+					items += directory_item(this);
+				});
+				$(items).hide().appendTo(directories_assets).slideDown(100, function () {
+					parent.$.fancybox.update();
+				});
+			}, function () {
+				apiLoadStatusError($('#load_status_directories'));
 			});
-		}, function () {
-			apiLoadStatusError($('#load_directories_assets'));
-		});
 
-		api('/' + base_url + 'api/core/assets/', {
-			action: 'get_images',
-			dir: dir,
-			max_width: 100
-		}, function (data) {
-			$.each(data['images'], function () {
-				$(image_item(this)).hide().appendTo(images).slideDown('fast');
+			apiLoadStatusWorking($('#load_status_images'));
+			$('#load_status_images').show();
+			api('/' + base_url + 'api/core/assets/', {
+				action: 'get_images',
+				dir: dir,
+				max_width: 100
+			}, function (data) {
+				if (!data['images'].length) {
+					apiLoadStatusEmpty($('#load_status_images'));
+					return;
+				}
+				$('#load_status_images').hide();
+
+				var items = '';
+				$.each(data['images'], function () {
+					items += image_item(this);
+				});
+				$(items).hide().appendTo(images).slideDown(100, function () {
+					parent.$.fancybox.update();
+				});
+			}, function () {
+				apiLoadStatusError($('#load_status_images'));
 			});
-		});
+		}, 100);
 	}
 	loadDir('');
 
@@ -140,24 +171,48 @@
 		loadDir($(this).attr('data-dir'));
 	});
 
-	directories_assets.on('click', '.directory a', function () {
+	directories_assets.on('click', '.directory', function (e) {
+		e.stopPropagation();
+		$(this).find('a').click();
+	});
+
+	directories_assets.on('click', '.directory a', function (e) {
+		e.stopPropagation();
 		loadDir($(this).attr('data-dir'));
 	});
 
 	var popup = $('.popup');
+	$('a.back').on('click', function () {
+		switchBackPopupFrame(popup);
+	});
+
 	images.on('click', 'li', function () {
 		$('#insert_title').val($(this).attr('data-title'));
 		$('#insert_url').val($(this).attr('data-url'));
+		$('#insert_width').val($(this).attr('data-width'));
 		switchPopupFrame(popup);
 	});
 
 	popup.on('click', '#external-link a', function () {
 		$('#insert_url').val($('#external-link input').val());
+		$('<img src="' + $('#external-link input').val() + '">').one('load', function() {
+			$('#insert_width').val(this.width);
+		});
 		switchPopupFrame(popup);
+	});
+
+	$('html').on('keyup', function (e) {
+		if (e.keyCode === 13 && currentPopupFrame === 1) {
+			popup.find('a.insert').click();
+		}
 	});
 
 	popup.on('click', 'a.insert', function () {
 		$('#insert_submit').val('1');
+		var width = $('#insert_width').val();
+		if (width > 500) {
+			$('#insert_url').val($('#insert_url').val() + '/w=500/');
+		}
 		parent.$.fancybox.close();
 	});
 
@@ -168,14 +223,14 @@
 				if (directories_assets.find('li.asset').length) {
 					addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
 				} else {
-					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown('fast');
+					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown(100);
 				}
 			} else {
 				var item = image_item(data['file']);
 				if (images.find('li').length) {
 					addAlphabetically(images.find('li'), item, data['file']['name']);
 				} else {
-					$(item).hide().appendTo(images).slideDown('fast');
+					$(item).hide().appendTo(images).slideDown(100);
 				}
 			}
 		});

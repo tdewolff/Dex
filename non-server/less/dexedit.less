@@ -4,19 +4,25 @@
 	outline: 0;
 }
 
-img {
-	display: block;
+[contenteditable="true"] {
+	img {
+		vertical-align: middle;
+	}
+
+	blockquote, h3, h4 {
+		overflow: hidden;
+	}
 }
 
-.dexedit_img_resize_nwse {
+.dexedit-img-resize-nwse {
 	cursor: nwse-resize;
 }
 
-.dexedit_img_resize_nesw {
+.dexedit-img-resize-nesw {
 	cursor: nesw-resize;
 }
 
-.dexmenu() {
+.dexedit-menu-base() {
 	display:none;
 	position: absolute;
 	z-index: 1000;
@@ -72,7 +78,7 @@ img {
 	}
 }
 
-.dexedit_img_placeholder {
+.dexedit-img-placeholder {
 	display: none;
 	z-index: -1;
 	border: dashed 1px black;
@@ -80,7 +86,7 @@ img {
 	.border-box();
 }
 
-.dexedit_img {
+.dexedit-img {
 	display: inline-block;
 	position: relative;
 	white-space: nowrap;
@@ -88,7 +94,7 @@ img {
 	margin: -10px;
 	padding: 10px;
 
-	>div.dexedit_img_resize {
+	>div.dexedit-img-resize {
 		display: none;
 
 		>div {
@@ -99,37 +105,38 @@ img {
 			background-color: #404040;
 		}
 
-		>div.dexedit_img_resize_tl {
+		>div.dexedit-img-resize-tl {
 			top: 7px;
 			left: 7px;
 			cursor: nwse-resize;
 		}
 
-		>div.dexedit_img_resize_tr {
+		>div.dexedit-img-resize-tr {
 			top: 7px;
 			right: 7px;
 			cursor: nesw-resize;
 		}
 
-		>div.dexedit_img_resize_bl {
+		>div.dexedit-img-resize-bl {
 			bottom: 7px;
 			left: 7px;
 			cursor: nesw-resize;
 		}
 
-		>div.dexedit_img_resize_br {
+		>div.dexedit-img-resize-br {
 			bottom: 7px;
 			right: 7px;
 			cursor: nwse-resize;
 		}
 	}
 
-	>div.dexedit_img_menu {
-		.dexmenu();
+	>div.dexedit-img-menu {
+		.dexedit-menu-base();
 		.border-radius(3px);
+		.box-shadow(0, 0, 3px, 0, white);
 
 		height: 24px;
-		font-size: 80%;
+		font-size: 13px;
 
 		>span {
 			width: 24px;
@@ -150,25 +157,25 @@ img {
 	>img {
 		cursor: move;
 
-		&.dexedit_img_resize_nwse {
+		&.dexedit-img-resize-nwse {
 			cursor: nwse-resize;
 		}
 
-		&.dexedit_img_resize_nesw {
+		&.dexedit-img-resize-nesw {
 			cursor: nesw-resize;
 		}
 	}
 }
 
-.dexedit_menu {
-	.dexmenu();
+.dexedit-menu {
+	.dexedit-menu-base();
 
-	>span.dexedit_menu_h4 {
+	>span.dexedit-menu-h4 {
 		font-size:80%;
 		vertical-align: top;
 	}
 
-	>.dexedit_menu_arrow, >.dexedit_menu_arrow_upsidedown {
+	>.dexedit-menu-arrow, >.dexedit-menu-arrow-upsidedown {
 		position: absolute;
 		bottom: -5px;
 
@@ -182,7 +189,7 @@ img {
 		height: 0;
 	}
 
-	>.dexedit_menu_arrow_upsidedown {
+	>.dexedit-menu-arrow-upsidedown {
 		top: -5px;
 		bottom:0;
 		border-top: 0;

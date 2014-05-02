@@ -9,6 +9,8 @@ class Resource
 		'css' => 'text/css',
 		'htm' => 'text/html',
 		'html' => 'text/html',
+		'xml' => 'application/xml',
+		'txt' => 'text/plain',
 
 		'svg' => 'image/svg+xml',
 		'eot' => 'application/vnd.ms-fontobject',
@@ -16,18 +18,32 @@ class Resource
 		'otf' => 'application/octet-stream',
 		'ttf' => 'application/x-font-ttf',
 
+		'bmp' => 'image/bmp',
 		'png' => 'image/png',
 		'gif' => 'image/gif',
 		'jpg' => 'image/jpeg',
 		'jpeg' => 'image/jpeg',
+		'tif' => 'image/tiff',
+		'tiff' => 'image/tiff',
 
+		'wav' => 'audio/x-wav',
+		'avi' => 'video/x-msvideo',
 		'mp3' => 'audio/mpeg',
+		'mp4' => 'video/mp4',
+		'mov' => 'video/quicktime',
+		'mpe' => 'video/mpeg',
+		'mpeg' => 'video/mpeg',
+		'mpg' => 'video/mpeg',
+		'swf' => 'application/x-shockwave-flash',
 
 		'doc' => 'application/msword',
+		'ppt' => 'application/vnd.ms-powerpoint',
+		'xls' => 'application/vnd.ms-excel',
 		'pdf' => 'application/pdf',
 		'zip' => 'application/zip',
 		'rar' => 'application/x-rar-compressed',
-		'7z' => 'application/x-7z-compressed'
+		'7z' => 'application/x-7z-compressed',
+		'tar' => 'application/x-tar',
 	);
 
 	public static function setCaching($caching) {
@@ -47,7 +63,23 @@ class Resource
 	public static function isImage($extension)
 	{
 		$extension = strtolower($extension);
-		return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg');
+		return ($extension == 'png' || $extension == 'gif' || $extension == 'jpg' || $extension == 'jpeg'); // only types that can be resized
+	}
+
+	public static function getMinified($filename)
+	{
+		$min = Common::insertMinExtension($filename);
+		if (is_file($min) && filemtime($filename) < filemtime($min))
+			return $min;
+
+		// SmushIt gif -> png case
+		if (substr($filename, strrpos($filename, '.') + 1) == 'gif')
+		{
+			$min .= '.png';
+			if (is_file($min) && filemtime($filename) < filemtime($min))
+				$filename = $min;
+		}
+		return $filename;
 	}
 
 	private static function cacheFilename($filenames, $cache_formatted_filename)
@@ -113,7 +145,7 @@ class Resource
 		return $filename;
 	}
 
-	public static function imageSize($filename, $max_width, $max_height = 0, $scale = 0)
+	public static function imageSize($filename, $max_width, $max_height = 0)
 	{
 		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
 		{
@@ -145,29 +177,24 @@ class Resource
 				$new_height = floor($height * ($new_width / $width));
 			}
 		}
-		else if ($scale != 0)
-		{
-			$new_width = floor($scale * $width);
-			$new_height = floor($scale * $height);
-		}
 		return array($new_width, $new_height);
 	}
 
-	public static function imageSizeAttributes($request_url, $max_width, $max_height = 0, $scale = 0)
+	public static function imageSizeAttributes($request_url, $max_width, $max_height = 0)
 	{
 		$filename = self::expandUrl($request_url);
-		list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
+		list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height);
 		return 'width="' . $new_width . '" height="' . $new_height . '"';
 	}
 
-	public static function imageResize($filename, $max_width, $max_height = 0, $scale = 0)
+	public static function imageResize($filename, $max_width, $max_height = 0)
 	{
 		$starttime_local = explode(' ', microtime());
-		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . $scale . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
+		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
 		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename))
 		{
 			list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
-			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height, $scale);
+			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height);
 
 			switch (image_type_to_mime_type($mime_type))
 			{
@@ -209,5 +236,3 @@ class Resource
 		return $cache_filename;
 	}
 }
-
-?>

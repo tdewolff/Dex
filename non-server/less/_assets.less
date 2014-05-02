@@ -1,114 +1,132 @@
 #assets {
 	#upload {
-	    margin: 0 auto;
-	    margin-bottom: 20px;
-	    border: 1px dashed @base;
-	    .border-radius(3px);
+		width: 100%;
+		max-width: 600px;
+		margin-bottom: 20px;
+		border: 1px dashed @base;
+		.border-radius(3px);
 
-	    background-color: @auxiliary;
-	    width: 600px;
+		background-color: @auxiliary;
 
 		&.drag {
-	    	background-color: lighten(@auxiliary, 10%);
+			background-color: lighten(@auxiliary, 10%);
 		}
 
 		>#drop-mask {
-		    display: none;
-		    margin: -1px;
+			display: none;
+			margin: -1px;
 			position: absolute;
-		    z-index: 99;
+			z-index: 99;
 		}
 
 		#drop {
-		    position: relative;
-		    margin: 30px 50px;
-		    height: 70px;
-		    text-align: center;
+			position: relative;
+			margin: 30px 50px;
+			height: 70px;
+			text-align: center;
 
-		    span {
-			    line-height: 200%;
-			    font-family: @serif;
-			    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-			    font-size: 18px;
-			    color: #303030;
+			span {
+				line-height: 200%;
+				font-family: @serif;
+				text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+				font-size: 18px;
+				color: #303030;
 			}
 		}
 
 		ul {
-		    margin: 0 20px;
-		    margin-bottom: 20px;
+			margin: 0 20px;
 			font-family: @serif;
-		    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-		    font-size: 12px;
-		    color: #303030;
+			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+			font-size: 12px;
+			color: #303030;
 
-		    li {
-			    height: 16px;
-			    line-height: 16px;
+			li {
+				height: 16px;
+				line-height: 16px;
+				padding-left: 2em;
 
-			    i {
-				    vertical-align: middle;
+				i {
+					float: left;
+					margin-left: -2em;
+					vertical-align: middle;
+					height: 16px;
+					line-height: 16px;
 				}
 			}
 
+			li:last-of-type {
+				margin-bottom: 20px;
+			}
+
 			li.done {
-			    color: @base;
+				color: @base;
 			}
 
 			li.fail {
-			    color: #B94A48;
+				color: #B94A48;
 			}
 		}
 
 		input {
-		    display: none;
+			display: none;
 		}
 
 		#knob {
 			display: none;
-		    position: absolute;
-		    top: 50%;
-		    right: 0;
-		    margin-top: -32px;
-		    width: 64px;
-		    height: 64px;
+			position: absolute;
+			top: 50%;
+			right: 0;
+			margin-top: -32px;
+			width: 64px;
+			height: 64px;
 		}
 
 		#big-knob {
-		    position: absolute;
-		    top: 0;
-		    left: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
 
 		#small-knob {
-		    position: absolute;
-		    top: 8px;
-		    left: 8px;
+			position: absolute;
+			top: 8px;
+			left: 8px;
 		}
 	}
 
 	#create-directory {
+		.clearfix();
+
+		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 20px;
-		width: 600px;
+		overflow: hidden;
+
+		div.create-directory-input {
+			overflow: hidden;
+		}
 
 		input {
-			float: none;
+			width: 100%;
 			margin: 0;
-			width: 440px;
+			float: none;
 		}
 
 		a {
+			height: 27px;
 			margin-left: 10px;
 			margin-right: 0;
-			width: 150px;
+			margin-top: 1px;
+			line-height: 19px;
+			float: right;
 		}
 	}
 
 	#breadcrumbs {
+		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 5px;
-		width: 600px;
 		font-size: 90%;
 
 		a {
@@ -117,18 +135,28 @@
 	}
 
 	#directories-assets {
+		max-width: 600px;
 		margin-bottom: 20px;
-		width: 602px;
 
 		li {
+			background-color: darken(@light, 2%);
+			&:nth-child(odd) {
+				background-color: @light;
+			}
+
 			&.directory > div:first-of-type {
 				cursor: pointer;
 			}
 
 			img {
-				display: inline;
+				display: inline-block;
+				position: relative;
 				margin-right: 10px;
-				vertical-align: middle;
+				top: 3px;
+			}
+
+			a {
+				text-decoration: none;
 			}
 
 			div:last-of-type {
@@ -178,15 +206,33 @@
 			}
 
 			img {
+				display: block;
+				max-width:200px;
+				max-height:400px;
+				width: auto;
+				height: auto;
+
 				margin: 10px 0;
-			    .border-radius(3px);
-			    .box-shadow(0, 1px, 1px);
+				.border-radius(3px);
+				.box-shadow(0, 1px, 1px);
 			}
 
 			img.small {
 				margin: 10px 0;
-			    .border-radius(0);
+				.border-radius(0);
 			}
 		}
 	}
+}
+
+@media (max-width: 1205px) {
+	#assets {
+		#images li img {
+			max-width:100px;
+			max-height:200px;
+		}
+	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
 }

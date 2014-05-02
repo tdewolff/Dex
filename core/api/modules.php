@@ -1,7 +1,10 @@
 <?php
 
 if (!User::isAdmin())
+{
+	Common::responseCode(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('enable_module') || API::action('disable_module'))
 {
@@ -27,18 +30,13 @@ else if (API::action('get_modules'))
 	$table = Db::query("SELECT * FROM module ORDER BY module_name ASC;");
 	while ($row = $table->fetch())
 	{
-		$ini_filename = 'modules/' . $row['module_name'] . '/config.ini';
+		$config = new Config('modules/' . $row['module_name'] . '/module.conf');
 		$row['module_id'] = count($modules);
-		if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-		{
-			$row['title'] = Common::tryOrEmpty($ini, 'title');
-			$row['author'] = Common::tryOrEmpty($ini, 'author');
-			$row['description'] = Common::tryOrEmpty($ini, 'description');
-		}
+		$row['title'] = $config->get('title');
+		$row['author'] = $config->get('author');
+		$row['description'] = $config->get('description');
 		$modules[] = $row;
 	}
 	API::set('modules', $modules);
 	API::finish();
 }
-
-?>

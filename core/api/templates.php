@@ -1,7 +1,10 @@
 <?php
 
 if (!User::isAdmin())
+{
+	Common::responseCode(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('get_templates'))
 {
@@ -10,19 +13,16 @@ if (API::action('get_templates'))
 	while (($template_name = readdir($handle)) !== false)
 		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
 		{
-			$ini_filename = 'templates/' . $template_name . '/config.ini';
-			if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-				$templates[] = array(
-					'name' => $template_name,
-					'title' => Common::tryOrEmpty($ini, 'title'),
-					'author' => Common::tryOrEmpty($ini, 'author'),
-					'description' => Common::tryOrEmpty($ini, 'description')
-				);
+			$config = new Config('templates/' . $template_name . '/template.conf');
+			$templates[] = array(
+				'name' => $template_name,
+				'title' => $config->get('title'),
+				'author' => $config->get('author'),
+				'description' => $config->get('description')
+			);
 		}
 	Common::sortOn($templates, 'name');
 
 	API::set('templates', $templates);
 	API::finish();
 }
-
-?>

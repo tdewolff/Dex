@@ -9,13 +9,15 @@ ini_set('display_errors', false);
 
 class Error
 {
-	private static $display = false;
+	private static $display_errors = false;
+	private static $display_notices = false;
 	private static $messages = array();
 
-	public static function setDisplay($display)
+	public static function setDisplay($display_errors, $display_notices)
 	{
-		self::$display = $display;
-		if (self::$display)
+		self::$display_errors = $display_errors;
+		self::$display_notices = $display_notices;
+		if (self::$display_errors)
 			ini_set('error_reporting', E_ALL | E_STRICT);
 		else
 			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
@@ -23,9 +25,9 @@ class Error
 
 	public static function getErrors()
 	{
-		if (!self::$display)
-			return '<span class="error">An error occurred, check the logs for additional information</span>';
-		return implode('', self::$messages) . '!';
+		if (!self::$display_errors)
+			return '<p class="error">' . (function_exists('_') ? __('A server error occurred') : 'A server error occurred') . '</p>';
+		return implode('', self::$messages);
 	}
 
 	public static function stripBacktrace($backtrace)
@@ -36,15 +38,15 @@ class Error
 		$stripped_backtrace = array();
 		foreach ($backtrace as $row)
 			$stripped_backtrace[] = array(
-				'file' => (isset($row['file']) ? $row['file'] : '') . (isset($row['line']) ? ':' . $row['line'] : ''),
-				'function' => (isset($row['class']) ? $row['class'] : '') . (isset($row['type']) ? $row['type'] : '') . (isset($row['function']) ? $row['function'] : '')
+				'file' => (isset($row['file']) ? $row['file'] : '-') . (isset($row['line']) ? ':' . $row['line'] : ''),
+				'function' => (isset($row['class']) ? $row['class'] : '') . (isset($row['type']) ? $row['type'] : '') . (isset($row['function']) ? $row['function'] : '-')
 			);
 		return $stripped_backtrace;
 	}
 
 	public static function formatError($message, $location, $backtrace)
 	{
-		$formatted_message = '<span class="error"><strong>' . $message . '</strong></span><span class="error-source">' . $location . '</span>';
+		$formatted_message = '<p class="error"><strong>' . $message . '</strong><br><small>' . $location . '</small></p>';
 
 		$formatted_backtrace = '';
 		if (is_array($backtrace))
@@ -60,11 +62,14 @@ class Error
 
 	public static function report($type, $message, $file, $line)
 	{
+		if (error_reporting() === 0) // ignore error when prepended with @
+			return true;
+
 		$location = ($file && $line ? $file . ':' . $line : '');
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
 
-		$display_message = self::$display ? $formatted_message : '<span class="error">An error occurred, check the logs for additional information</span>';
+		$display_message = self::$display_errors ? $formatted_message : '<p class="error">' . (function_exists('_') ? __('A server error occurred') : 'A server error occurred') . '</p>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))
@@ -78,12 +83,12 @@ class Error
 			case E_USER_WARNING:
 			case E_RECOVERABLE_ERROR:
 				Log::warning($message, $location, $backtrace);
-				if (self::$display && !Common::requestResource())
+				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::warning($message);
+						API::warning($formatted_message);
 					else if (Common::requestAdmin())
-						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
+						echo $formatted_message;
 				}
 				break;
 
@@ -93,12 +98,12 @@ class Error
 			case E_DEPRECATED:
 			case E_USER_DEPRECATED:
 				Log::notice($message, $location, $backtrace);
-				if (self::$display && !Common::requestResource())
+				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::notice($message);
+						API::notice($formatted_message);
 					else if (Common::requestAdmin())
-						echo $formatted_message . (strlen($location) ? ' (' . $location . ')' : '');
+						echo $formatted_message;
 				}
 				break;
 
@@ -109,24 +114,25 @@ class Error
 			case E_USER_ERROR:
 			default:
 				Log::error($message, $location, $backtrace);
-				if (!Common::requestResource())
+				if (Common::responseCode() == 200)
+					Common::responseCode(500);
+
+				if (Common::requestResource())
+					header('Content-Type: text/html; charset: UTF-8');
+
+				if (Common::requestAjax())
+					API::error($display_message);
+				else if (class_exists('Hooks'))
 				{
-					if (Common::requestAjax())
-						API::error($display_message);
-					else if (class_exists('Hooks'))
-					{
-						if (Common::requestAdmin())
-							Hooks::emit('admin-error');
-						else
-							Hooks::emit('error');
-					}
+					if (Common::requestAdmin())
+						Hooks::emit('admin-error');
 					else
-						echo $display_message;
+						Hooks::emit('site-error');
 				}
+				else
+					echo $display_message;
 				exit;
 		}
 		return true;
 	}
 }
-
-?>

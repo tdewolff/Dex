@@ -31,11 +31,15 @@ class Db
 
 		// absolute path needed for register_shutdown_function()
 		self::$filename = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename;
-		self::$handle = new SQLite3($filename);
-		self::$handle->createFunction('REGEXP', '_sqliteRegexp', 2);
-
-		if (is_file($filename) === false)
+		try
+		{
+			self::$handle = new SQLite3($filename);
+		}
+		catch (Exception $e)
+		{
 			user_error('Database file never created at "' . $filename . '"', ERROR);
+		}
+		self::$handle->createFunction('REGEXP', '_sqliteRegexp', 2);
 	}
 
 	public static function close()
@@ -118,14 +122,4 @@ class Result
 		$ret = $this->result->fetchArray(SQLITE3_ASSOC);
 		return ($ret && isset($ret[$key]) ? $ret[$key] : false);
 	}
-
-	public function fetchAll($key = '')
-	{
-		$result = array();
-		while ($result[] = $this->fetch($key));
-		array_pop($result); // TODO: why?
-		return $result;
-	}
 }
-
-?>

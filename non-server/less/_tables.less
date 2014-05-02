@@ -3,11 +3,11 @@ ul {
 	list-style-type: none;
 }
 
-ul.table, ul.small-table {
+ul.table {
 	margin: 0 auto;
 	border: 1px solid darken(@light, 10%);
 	.border-radius(5px);
-	width: 902px;
+	width: 100%;
 
 	>li {
 		border-top: 1px solid darken(@light, 10%);
@@ -17,12 +17,12 @@ ul.table, ul.small-table {
 	}
 
 	>li:after {
-	    display: block;
-	    content: " ";
-	    visibility: hidden;
-	    clear: both;
-	    height: 0;
-	    font-size: 0;
+		display: block;
+		content: " ";
+		visibility: hidden;
+		clear: both;
+		height: 0;
+		font-size: 0;
 	}
 
 	>li:nth-child(odd) {
@@ -39,11 +39,11 @@ ul.table, ul.small-table {
 		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 
 		>div:first-of-type {
-			.border-top-left-radius(4px);
+			.border-top-left-radius(3px);
 		}
 
 		>div:last-of-type {
-			.border-top-right-radius(4px);
+			.border-top-right-radius(3px);
 		}
 	}
 
@@ -52,11 +52,11 @@ ul.table, ul.small-table {
 		.border-bottom-right-radius(4px);
 
 		>div:first-of-type {
-			.border-bottom-left-radius(4px);
+			.border-bottom-left-radius(3px);
 		}
 
 		>div:last-of-type {
-			.border-bottom-right-radius(4px);
+			.border-bottom-right-radius(3px);
 		}
 	}
 
@@ -78,17 +78,12 @@ ul.table, ul.small-table {
 
 		vertical-align: middle;
 		white-space: nowrap;
-		text-overflow: ellipsis;
 		overflow: hidden;
 	}
 
 	>li > div * {
-		line-height: initial;
+		line-height: 100%;
 	}
-}
-
-ul.small-table {
-	width: 502px;
 }
 
 ul.grid {
@@ -99,10 +94,22 @@ ul.grid {
 	li {
 		display: inline-block;
 		padding: 25px 15px;
-	    border: darken(@light, 2%) 1px solid;
+		border: darken(@light, 2%) 1px solid;
 
-	    &:hover {
+		&:hover {
 			background-color: darken(@light, 5%);
-	    }
+		}
+	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
+	ul.table {
+		>li > div {
+			padding: 5px 5px;
+		}
+	}
+
+	ul.grid li {
+		padding: 15px 5px;
 	}
 }

@@ -1,20 +1,20 @@
-<h2>Logs</h2>
-<a href="/<?php echo $_['base_url']; ?>admin/" class="button indent"><i class="fa fa-chevron-left"></i> Back</a>
+<a href="/<?php echo $_['base_url']; ?>admin/" class="button left"><i class="fa fa-chevron-left"></i> <?php echo __('Back'); ?></a>
+<h2><?php echo __('Logs'); ?></h2>
 <ul id="logs" class="table">
 	<li>
-		<div>Date time</div>
-		<div>IP Address</div>
-		<div>Message</div>
+		<div><?php echo __('Date time'); ?></div>
+		<div><?php echo __('IP address'); ?></div>
+		<div><?php echo __('Message'); ?></div>
 	</li>
-	<li id="load_status" class="api load-status">
+	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 </ul>
 
 <script id="log_item" type="text/x-dot-template">
-	<li data-html="{{=it.html}}">
+	<li data-html="{{=it.html}}" class="{{=it.type.toLowerCase()}}">
 		<div>{{=it.datetime}}</div>
 		<div>{{=it.ipaddress}}</div>
 		<div>{{=it.message}}</div>
@@ -36,22 +36,11 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['logs'], function () {
-				var item = $(log_item(this));
-				if (this['type'] == 'ERROR')
-					item = item.addClass('error');
-				else if (this['type'] == 'WARNING')
-					item = item.addClass('warning');
-				else if (this['type'] == 'NOTICE')
-					item = item.addClass('notice');
-				else if (this['type'] == 'REQUEST')
-					item = item.addClass('request');
-				else if (this['type'] == 'CACHING')
-					item = item.addClass('caching');
-				else
-					item = item.addClass('empty');
-				logs.append(item);
+				items += log_item(this);
 			});
+			logs.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
@@ -59,7 +48,9 @@
 		logs.on('click', 'li', function () {
 			$.fancybox.open({
 				content: $(this).attr('data-html'),
-				closeBtn: false,
+				beforeShow: function () {
+					this.skin.addClass('dex-api-error');
+				},
 				overlay: {
 					closeClick: true,
 					locked: false

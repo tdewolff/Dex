@@ -1,19 +1,21 @@
 h1 {
-	margin: 0.4em 0;
+	padding: 0.4em 0;
+	margin: 0 auto;
 	font-family: @dex-heading;
 	font-size: 70px;
+	font-weight: normal;
 	text-align: center;
 	color: @light;
 }
 
 h2 {
-	font-family: @dex-heading2;
-	font-size: 2em;
-	color: @base;
-	text-align: center;
 	padding-top: 60px;
 	padding-bottom: 30px;
-
+	font-family: @dex-heading2;
+	font-size: 2em;
+	font-weight: normal;
+	color: @base;
+	text-align: center;
 	text-shadow: 0 1px 1px white;
 }
 
@@ -22,11 +24,12 @@ h2:first-of-type {
 }
 
 h3 {
-	font-family: @dex-heading;
-	color: @base;
-	font-size: 1.5em;
 	margin-top: 30px;
 	margin-bottom: 10px;
+	font-family: @dex-heading;
+	font-size: 1.5em;
+	font-weight: normal;
+	color: @base;
 }
 
 h3:first-of-type {
@@ -34,19 +37,20 @@ h3:first-of-type {
 }
 
 h4 {
-	font-family: @dex-heading;
-	color: @base;
-	text-align: center;
-	font-size: 1.1em;
 	margin-top: 10px;
 	margin-bottom: 0;
+	font-family: @dex-heading;
+	font-size: 1.1em;
+	font-weight: normal;
+	text-align: center;
+	color: @base;
 }
 
 p {
-	font-family: @sans-serif;
-	color: @text-black;
 	padding-top: 2px;
 	padding-bottom: 20px;
+	font-family: @sans-serif;
+	color: @text-black;
 }
 
 a {
@@ -58,5 +62,21 @@ a {
 
 	&:visited {
 		color: darken(@alert, 5%);
+	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
+	h1 {
+		padding: 0;
+		padding-top: 0.1em;
+	}
+
+	h2 {
+		padding-bottom: 0;
+		font-size: 1.6em;
+	}
+
+	h3 {
+		font-size: 1.2em;
 	}
 }

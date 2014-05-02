@@ -48,7 +48,7 @@ class Form
 
 	public function addText($name, $title, $subtitle, $placeholder, $preg)
 	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
+		$preg[3] = isset($preg[3]) ? $preg[3] : __('Unknown error');
 		$this->items[] = array(
 			'type' => 'text',
 			'name' => $this->name . '_' . $name,
@@ -62,7 +62,7 @@ class Form
 
 	public function addMultilineText($name, $title, $subtitle, $placeholder, $preg)
 	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
+		$preg[3] = isset($preg[3]) ? $preg[3] : __('Unknown error');
 		$this->items[] = array(
 			'type' => 'multiline_text',
 			'name' => $this->name . '_' . $name,
@@ -81,8 +81,8 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'placeholder' => 'user@domain.com',
-			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => 'Invalid emailaddress'),
+			'placeholder' => __('user@domain.com'),
+			'preg' => array('regex' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}', 'min' => 6, 'max' => 50, 'error' => __('Invalid email address')),
 			'value' => ''
 		);
 	}
@@ -95,7 +95,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => '+99 (9) 9999-9999',
-			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => 'Invalid telephone number'),
+			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => __('Invalid telephone number')),
 			'value' => ''
 		);
 	}
@@ -108,7 +108,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => 'password',
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => __('Unknown error')),
 			'value' => ''
 		);
 	}
@@ -122,7 +122,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => 'password',
-			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => 'Unknown error'),
+			'preg' => array('regex' => '[a-zA-Z0-9]*', 'min' => 40, 'max' => 40, 'error' => __('Unknown error')),
 			'value' => ''
 		);
 	}
@@ -135,7 +135,7 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => '',
-			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => 'Must be valid local URL'),
+			'preg' => array('regex' => '([a-zA-Z0-9\s_\\\\\/\[\]\(\)\|\?\+\-\*\{\},:\^=!\<\>#\$]*\/)?', 'min' => 0, 'max' => 50, 'error' => __('Must be a valid local URL without special characters')),
 			'value' => ''
 		);
 	}
@@ -147,7 +147,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid radiobutton'),
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => __('Unknown error')),
 			'value' => '',
 			'options' => $options
 		);
@@ -160,7 +160,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => 'Invalid dropdown item'),
+			'preg' => array('regex' => '.*', 'min' => 1, 'max' => 50, 'error' => __('Unknown error')),
 			'value' => '',
 			'options' => $options
 		);
@@ -175,19 +175,6 @@ class Form
 			'title' => $title,
 			'subtitle' => $subtitle,
 			'placeholder' => json_encode($placeholder),
-			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
-			'value' => ''
-		);
-	}
-
-	public function addParameters($name, $title, $subtitle, $preg)
-	{
-		$preg[3] = isset($preg[3]) ? $preg[3] : 'Unknown error';
-		$this->items[] = array(
-			'type' => 'parameters',
-			'name' => $this->name . '_' . $name,
-			'title' => $title,
-			'subtitle' => $subtitle,
 			'preg' => array('regex' => $preg[0], 'min' => $preg[1], 'max' => $preg[2], 'error' => $preg[3]),
 			'value' => ''
 		);
@@ -270,7 +257,7 @@ class Form
 	{
 		if (!isset($this->data['nonce']) || !isset($_SESSION['form_nonce_' . $this->name]) || $this->data['nonce'] != $_SESSION['form_nonce_' . $this->name])
 		{
-			$this->errors[] = 'Form submission from external source is forbidden';
+			$this->errors[] = __('Form submission from external source is forbidden');
 			return false;
 		}
 
@@ -302,27 +289,31 @@ class Form
 						$value_confirm = (isset($this->data[$item['name_confirm']]) ? $this->data[$item['name_confirm']] : '');
 
 						if ($value != $value_confirm)
-							$error = 'Does not confirm';
+							$this->item_errors[] = array('name' => $item['name'], 'error' => __('Does not confirm'));
 					}
-					else if ($item['preg']['min'] > 0 && strlen($value) == 0)
-						$error = 'Cannot be empty';
-					else if ($item['type'] == 'password' && $value == 'tooshort')
-						$error = 'Too short, must be atleast 8 characters long';
-					else if ($item['type'] == 'password' && $value == 'incomplex')
-						$error = 'Needs at least one lowercase, one uppercase and one numeric character';
-					else if (strlen($value) < $item['preg']['min'])
-						$error = 'Too short, must be atleast ' . $item['preg']['min'] . ' characters long';
-					else if (strlen($value) > $item['preg']['max'])
-						$error = 'Too long, must be atmost ' . $item['preg']['max'] . ' characters long';
-					else if (!preg_match('/^' . $item['preg']['regex'] . '$/', $value))
-						$error = $item['preg']['error'];
-
-					if ($error)
+					else if (($error = self::validateItem($value, $item['preg'], $item['type'])) !== false)
 						$this->item_errors[] = array('name' => $item['name'], 'error' => $error);
 				}
 			}
 		}
 		return count($this->item_errors) == 0;
+	}
+
+	public static function validateItem($value, $preg, $type = 'text')
+	{
+		if ($preg['min'] > 0 && strlen($value) == 0)
+			return __('Cannot be empty');
+		else if ($type == 'password' && $value == 'tooshort')
+			return __('Too short, must be atleast %s characters long', 8);
+		else if ($type == 'password' && $value == 'incomplex')
+			return __('Needs at least one lowercase, one uppercase and one numeric character');
+		else if (strlen($value) < $preg['min'])
+			return __('Too short, must be atleast %s characters long', $preg['min']);
+		else if (strlen($value) > $preg['max'])
+			return __('Too long, can be atmost %s characters long', $preg['max']);
+		else if (!preg_match('/^' . $preg['regex'] . '$/', $value))
+			return $preg['error'];
+		return false;
 	}
 
 	private function clearSession()
@@ -348,11 +339,10 @@ class Form
 
 	public function render()
 	{
+		$_SESSION['form_nonce_' . $this->name] = random();
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
-
-		$_SESSION['form_nonce_' . $this->name] = random();
 
 		$form = array(
 			'name' => $this->name,
@@ -361,7 +351,6 @@ class Form
 			'optionals' => json_encode($this->optionals),
 			'nonce' => $_SESSION['form_nonce_' . $this->name]
 		);
-
 		include('core/templates/include/form.tpl');
 	}
 
@@ -383,7 +372,7 @@ class Form
 	public function get($name)
 	{
 		return (isset($this->data[$this->name . '_' . $name])
-		            ? $this->data[$this->name . '_' . $name]
+					? $this->data[$this->name . '_' . $name]
 						: false);
 	}
 
@@ -409,5 +398,3 @@ class Form
 		$this->errors[] = $error;
 	}
 }
-
-?>

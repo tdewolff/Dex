@@ -2,38 +2,40 @@
 
 $form = new Form('settings');
 
-$form->addSection('Settings', 'General site settings');
-$form->addText('title', 'Title', 'Displayed in the titlebar and site header', 'CubicMelonFirm', array('[a-zA-Z0-9\s]*', 1, 25, 'Only alphanumeric characters and spaces allowed'));
-$form->addMultilineText('subtitle', 'Slogan', 'Displayed below the title in the site header', 'Regain vacant space now!', array('(.|\n)*', 0, 200, 'Unknown error'));
-$form->addMultilineText('description', 'Description', 'Only visible for search engines<br>Describe your site concisely', 'Using cubic melons stacking and transport will be more efficient and economical', array('.*', 0, 80, 'Unknown error'));
-$form->addArray('keywords', 'Keywords', 'Only visible for search engines<br>Enter keywords defining your site', array('cubic', 'melons', 'efficient', 'stacking'), array('.*', 0, 80, 'Unknown error'));
-
+$form->addSection(__('Settings'), __('General site settings'));
+$form->addText('title', __('Title'), __('Displayed in the titlebar and site header'), '', array('.*', 1, 30, __('Unknown error')));
+$form->addMultilineText('subtitle', __('Slogan'), __('Displayed below the title in the site header'), '', array('(.|\n)*', 0, 200, __('Unknown error')));
+$form->addMultilineText('description', __('Description'), __('Only visible for search engines<br>Describe your site concisely'), '', array('.*', 0, 80, __('Unknown error')));
+$form->addArray('keywords', __('Keywords'), __('Only visible for search engines<br>Enter keywords defining your site'), array(), array('.*', 0, 80, __('Unknown error')));
 $form->addSeparator();
 
-$form->setResponse('Saved', 'Not saved');
+$form->addDropdown('language', __('Language'), '', Language::getAll());
+$form->addSeparator();
+
+$form->setResponse(__('Saved'), __('Not saved'));
 
 if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('title')) . "' WHERE key = 'title';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';");
-		Db::exec("UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';");
+		Db::exec("BEGIN;
+			UPDATE setting SET value = '" . Db::escape($form->get('title')) . "' WHERE key = 'title';
+			UPDATE setting SET value = '" . Db::escape($form->get('subtitle')) . "' WHERE key = 'subtitle';
+			UPDATE setting SET value = '" . Db::escape($form->get('description')) . "' WHERE key = 'description';
+			UPDATE setting SET value = '" . Db::escape($form->get('keywords')) . "' WHERE key = 'keywords';
+			UPDATE setting SET value = '" . Db::escape($form->get('language')) . "' WHERE key = 'language';
+		COMMIT;");
 	}
 	$form->finish();
 }
 
-$settings = Db::query("SELECT * FROM setting;");
-while ($setting = $settings->fetch())
-	$form->set($setting['key'], $setting['value']);
+foreach ($settings as $key => $value)
+	$form->set($key, $value);
 
 Hooks::emit('admin-header');
 
-Core::assign('settings', $form);
+Core::set('settings', $form);
 Core::render('admin/settings.tpl');
 
 Hooks::emit('admin-footer');
 exit;
-
-?>

@@ -1,7 +1,10 @@
 <?php
 
 if (!User::isAdmin())
+{
+	Common::responseCode(403);
 	user_error('Forbidden access', ERROR);
+}
 
 if (API::action('clear_logs'))
 {
@@ -21,6 +24,15 @@ else if (API::action('clear_cache'))
 	while (($cache_name = readdir($handle)) !== false)
 		if (is_file('cache/' . $cache_name))
 			unlink('cache/' . $cache_name);
+	API::finish();
+}
+else if (API::action('solve_warning'))
+{
+	if (!API::has('warning'))
+		user_error('No warning set', ERROR);
+
+	$dex_conf->set(API::get('warning'), $dex_conf->getDefault(API::get('warning')));
+	$dex_conf->save();
 	API::finish();
 }
 else if (API::action('get_logs'))
@@ -61,8 +73,10 @@ else if (API::action('get_logs'))
 else if (API::action('diskspace_usage'))
 {
 	$total = Common::getDirectorySize('./');
-	$rest = $total;
+	if (!$total)
+		user_error('Dex uses no diskspace but I don\'t believe it', WARNING);
 
+	$rest = $total;
 	$diskspace = array(null);
 	$directories = array('modules/', 'templates/', 'themes/', 'assets/', 'cache/');
 	foreach ($directories as $directory)
@@ -84,5 +98,3 @@ else if (API::action('diskspace_usage'))
 	API::set('diskspace_total', $total);
 	API::finish();
 }
-
-?>

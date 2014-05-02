@@ -1,0 +1,157 @@
+@import "../__include.less";
+@import "../_content.less";
+
+@font-face {
+	.fontface("SourceSansRegular", "../core/fonts/sourcesanspro-regular-webfont");
+}
+
+@font-face {
+	.fontface("SourceSansLight", "../core/fonts/sourcesanspro-light-webfont");
+}
+
+
+@font-face {
+	.fontface("OpenSans", "../theme/default/fonts/OpenSans-Regular-webfont");
+}
+
+* {
+	.border-box();
+}
+
+body {
+	background: @dark;
+	color: @light;
+	font-size: 100%;
+	font-family: @sans-serif;
+	text-align: justify;
+}
+
+.page-wrapper {
+	header, nav, article {
+		width: 1000px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	header {
+		position: relative;
+
+		h1 {
+			padding-left: 1em;
+			text-align: left;
+			margin-top: 0.5em;
+		}
+
+		h2 {
+			padding: 0;
+			padding-left: 5em;
+			text-align: left;
+			text-shadow: none;
+		}
+
+		.contact {
+			position: absolute;
+			top: 1em;
+			right: 4em;
+
+			text-align: right;
+			font-size:90%;
+			line-height:150%;
+			color:#d0d0d0;
+
+			a {
+				text-decoration: none;
+				color:#d0d0d0;
+			}
+
+			.org {
+				font-variant: small-caps;
+			}
+		}
+	}
+
+	footer .contact {
+		display: none;
+	}
+
+	nav {
+		background: darken(@light, 5%);
+		color: @text-black;
+		border-bottom: 1px solid darken(@light, 11%);
+		padding: 0 5px;
+		margin-top: 2em;
+
+		.border-top-left-radius(3px);
+		.border-top-right-radius(3px);
+	}
+
+	nav ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		font-family: "SourceSansLight";
+	}
+
+	nav a {
+		text-decoration: none;
+	}
+
+	nav > ul > li {
+		display: inline-block;
+		border-right: 1px solid darken(@light, 8%);
+	}
+
+	nav > ul > li:first-of-type {
+		border-left: 1px solid darken(@light, 8%);
+	}
+
+	nav > ul > li > a {
+		display: inline-block;
+		padding: 0.6em 2em;
+		font-size: 110%;
+	}
+
+	nav > ul > li > a:hover {
+		background: darken(@light, 11%);
+	}
+
+	nav > ul > li > ul {
+		display: none;
+	}
+
+	article {
+		.clearfix();
+
+		background: @light;
+		color: @text-black;
+		padding: 3em 6em;
+		margin-bottom: 1em;
+
+		.border-bottom-left-radius(3px);
+		.border-bottom-right-radius(3px);
+
+		hr {
+			border:0;
+			border-top: 1px solid darken(@light, 10%);
+			width: 94%;
+			margin: 3em auto;
+		}
+
+		blockquote {
+			margin-left: 1em;
+			padding-left: 1em;
+			border-left: 3px solid @base;
+		}
+
+		figure {
+			margin: 10px;
+			figcaption {
+				text-align: center;
+			}
+		}
+	}
+
+	article.error {
+		text-align: center;
+	}
+}

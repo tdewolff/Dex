@@ -2,7 +2,7 @@ label {
 	display: block;
 	float: left;
 	margin-top: 8px;
-	padding-top: 5px;
+	padding-top: 6px;
 
 	width: 200px;
 
@@ -62,6 +62,7 @@ input, select, textarea {
 
 textarea {
 	min-height: 5em;
+	max-width: 680px;
 }
 
 form {
@@ -69,13 +70,13 @@ form {
 	width: 500px;
 
 	>h3 {
-		padding-top: 10px;
+		margin-top: 10px;
 	}
 
-	>p {
+	>div {
 		margin: 0;
 		padding: 0;
-		overflow: hidden;
+		.clearfix();
 	}
 
 	.separator {
@@ -108,79 +109,12 @@ form {
 		color: #B94A48;
 	}
 
-	.error {
-		display: none;
-		margin-top: -2px;
-		margin-bottom: 8px;
+	.inline-error-below {
 		margin-left: 210px;
 
 		.box {
-			display: inline-block;
-			padding: 5px 10px;
-			border: solid 1px #EED3D7;
-			.border-radius(5px);
-
-			background: #F2DEDE;
-			position: relative;
-			z-index: 999;
-
-			p {
-				margin: 0;
-				padding: 0;
-
-				text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-				color: #B94A48;
-				font-size: 70%;
-				font-family: @serif;
-				font-weight: bold;
-				white-space: nowrap;
-
-				i {
-					font-size: 150%;
-					vertical-align: middle;
-				}
-
-				span {
-					vertical-align: middle;
-				}
-			}
-
-			.arrow {
-				border-left: 6px solid transparent;
-				border-right: 6px solid transparent;
-				border-bottom: 6px solid #F2DEDE;
-
-				width: 0;
-				height: 0;
-
-				position: absolute;
-				top: -5px;
-				left: 5px;
-				z-index: 1001;
-			}
-
-			.arrow-border {
-				border-left: 6px solid transparent;
-				border-right: 6px solid transparent;
-				border-bottom: 6px solid #EED3D7;
-
-				width: 0;
-				height: 0;
-
-				position: absolute;
-				top: -7px;
-				left: 5px;
-				z-index: 1000;
-			}
+			top: -2px;
 		}
-	}
-
-	span.equal {
-		float: left;
-		padding-top: 13px;
-		width: 3em;
-		color: #666666;
-		text-align: center;
 	}
 
 	span.comma {
@@ -192,15 +126,17 @@ form {
 	}
 
 	ul {
+		.clearfix();
+
 		margin: -32px 30px 0 200px;
 		padding: 0;
 
-		>li input {
-			margin: 8px 0 0 10px;
+		>li {
+			float: left;
 		}
 
-		>li:last-of-type input {
-		    float: none;
+		>li input {
+			margin: 8px 0 0 10px;
 		}
 
 		>li:last-of-type span.comma {
@@ -215,35 +151,60 @@ form {
 		}
 	}
 
-	input.parameter-key {
-		width: 75px;
-
-		/* all but first key */
-		input.parameter_val + & {
-			margin-top: -10px;
-			margin-left: 210px;
-		}
-	}
-
-	input.parameter-val + input.parameter-key + span {
-		margin-top: -5px;
-	}
-
-	input.parameter-val {
-		margin-left: 0;
-		width: 150px;
-
-		/* all but first value */
-		& + input.parameter-key + span + & {
-			margin-top: -10px;
-		}
-	}
-
 	.button {
 		float: left;
 		margin-left: 210px;
 		margin-right: 10px;
 		padding-left: 20px;
 		padding-right: 20px;
+	}
+}
+
+@media (max-width: 767px), (max-device-width: 1205px) {
+	form {
+		width: 100%;
+
+		.section-text {
+			margin-top: 0;
+			margin-bottom: 10px;
+		}
+
+		.separator {
+			margin: 10px 0;
+		}
+
+		ul {
+			margin: 0;
+
+			>li {
+				float: none;
+
+				input {
+					margin: 0;
+					margin-top: 8px;
+				}
+
+				span.comma {
+					display: none;
+				}
+			}
+		}
+
+		.button {
+			margin-left: 0px;
+		}
+	}
+
+	label {
+		float: none;
+		text-align: left;
+		padding-left: 0.5em;
+		width: 100%;
+	}
+
+	input, select, textarea {
+		float: none;
+		margin-left: 0;
+		width: 100%;
 	}
 }

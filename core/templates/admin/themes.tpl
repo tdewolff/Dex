@@ -1,17 +1,17 @@
-<h2>Themes</h2>
+<h2><?php echo __('Themes'); ?></h2>
 <ul id="themes" class="grid">
-	<li id="load_status" class="api load-status">
+	<li id="load_status" class="dex-api load-status">
 		<div class="working"><i class="fa fa-cog fa-spin"></i></div>
 		<div class="error"><i class="fa fa-times"></i></div>
-		<div class="empty">empty</div>
+		<div class="empty"><?php echo __('empty'); ?></div>
 	</li>
 </ul>
 
 <script id="theme_item" type="text/x-dot-template">
-	<li id="theme_{{=it.name}}" data-theme-name="{{=it.name}}" {{?it.current}}class="current"{{?}}>
+	<li id="theme_{{=it.name}}" data-theme-name="{{=it.name}}"{{?it.name == '<?php echo $_['current_theme']; ?>'}} class="current"{{?}}>
 		<h4>{{=it.title}}</h4>
 		<div>({{=it.author}})</div>
-		<img src="/<?php echo $_['base_url']; ?>res/theme/{{=it.name}}/preview.png" alt="{{=it.name}}" width="256" height="256">
+		<img src="/<?php echo $_['base_url']; ?>res/theme/{{=it.name}}/preview.png/t={{=it.mtime}}/" alt="{{=it.name}}" width="256" height="256">
 	</li>
 </script>
 
@@ -29,27 +29,30 @@
 			}
 
 			apiLoadStatusSuccess($('#load_status'));
+			var items = '';
 			$.each(data['themes'], function () {
-				themes.append(theme_item(this));
+				items += theme_item(this);
 			});
+			themes.append(items);
 		}, function () {
 			apiLoadStatusError($('#load_status'));
 		});
 
 		themes.on('click', 'li', function () {
-			apiStatusWorking('Switching theme...');
 			var item = $(this);
-			if (!item.hasClass('current'))
+			if (!item.hasClass('current')) {
+				apiStatusWorking('<?php echo __('Switching theme...'); ?>');
 				api('/' + base_url + 'api/core/themes/', {
 					action: 'change_theme',
 					theme_name: item.attr('data-theme-name')
 				}, function () {
-					apiStatusSuccess('Switched theme');
+					apiStatusSuccess('<?php echo __('Switched theme'); ?>');
 					themes.find('li.current').removeClass('current');
 					item.addClass('current');
 				}, function () {
-					apiStatusError('Switching theme failed');
+					apiStatusError('<?php echo __('Switching theme failed'); ?>');
 				});
+			}
 		});
 	});
 </script>

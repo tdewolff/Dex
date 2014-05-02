@@ -1,14 +1,14 @@
 <?php
 
-Core::addTitle('Admin panel');
-Core::addTitle('Recover');
+Core::addTitle(__('Admin panel'));
+Core::addTitle(__('Password recovery'));
 
 // information pages
 if (isset($url[2]) && ($url[2] == 'sent' || $url[2] == 'success'))
 {
 	Hooks::emit('admin-header');
 
-	Core::assign($url[2], true);
+	Core::set($url[2], true);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');
@@ -19,23 +19,24 @@ else if (isset($url[2]) && $url[2] == 'reset')
 {
 	// even if token doesn't exist, show password change form so hackers never know whether they're right or wrong
 	$recover = false;
-	if (isset($_GET['i']) && isset($_GET['t']))
+	if (isset($url[3]) && isset($url[4]))
 	{
-		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($_GET['i']) . "' LIMIT 1;");
-		if (!Bcrypt::verify($_GET['t'], $recover['token']))
+		$url[4] = rawurldecode($url[4]);
+		$recover = Db::singleQuery("SELECT * FROM recover WHERE recover_id = '" . Db::escape($url[3]) . "' LIMIT 1;");
+		if ($recover && !Bcrypt::verify($url[4], $recover['token']))
 			$recover = false;
 	}
 
 	$form = new Form('reset');
 
-	$form->addSection('Reset', 'Fill out your new password to reset it.');
-	$form->addPassword('password', 'Password', '');
-	$form->addPasswordConfirm('password2', 'password', 'Confirm password', '');
+	$form->addSection(__('Reset'), __('Fill out your new password to reset it.'));
+	$form->addPassword('password', __('Password'), '');
+	$form->addPasswordConfirm('password2', 'password', __('Confirm password'), '');
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-refresh"></i>&ensp;Reset');
-	$form->setResponse('', 'Not reset');
+	$form->setSubmit('<i class="fa fa-refresh"></i>&ensp;' . __('Reset'));
+	$form->setResponse('', __('Not reset'));
 
 	if ($form->submitted())
 	{
@@ -49,24 +50,24 @@ else if (isset($url[2]) && $url[2] == 'reset')
 				WHERE user_id = '" . Db::escape($recover['user_id']) . "';");
 			}
 			else if ($recover)
-				$form->appendError('Token has expired, request a new one at the <a href="/' . $_['base_url'] . 'admin/recover/">password recovery</a>.');
+				$form->appendError(__('Token has expired, request a new one at the %spassword recovery%s.', '<a href="/' . $_['base_url'] . 'admin/recover/">', '</a>'));
 
 			$form->setRedirect('/' . Common::$base_url . 'admin/recover/success/');
 		}
 		$form->finish();
 	}
 
-	if (($recover && $recover['expiry_time'] <= time()) || !isset($_GET['i']) || !isset($_GET['t']) || strlen($_GET['t']) != 24)
+	if (($recover && $recover['expiry_time'] <= time()) || !isset($url[3]) || !isset($url[4]) || strlen($url[4]) != 24)
 	{
 		Hooks::emit('admin-header');
 
 		if ($recover && $recover['expiry_time'] <= time())
 		{
 			Db::exec("DELETE FROM recover WHERE recover_id = '" . Db::escape($recover['recover_id']) . "';");
-			Core::assign('expired', true);
+			Core::set('expired', true);
 		}
 		else
-			Core::assign('malformed', true);
+			Core::set('malformed', true);
 		Core::render('admin/recover.tpl');
 
 		Hooks::emit('admin-footer');
@@ -75,7 +76,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 
 	Hooks::emit('admin-header');
 
-	Core::assign('reset', $form);
+	Core::set('reset', $form);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');
@@ -88,13 +89,13 @@ else
 
 	$form = new Form('recover');
 
-	$form->addSection('Recover', 'Fill out your email address to receive an email containing information on how to recover your password.');
-	$form->addEmail('email', 'Email address', '');
+	$form->addSection(__('Recover'), __('Fill out your email address to receive an email containing information on how to recover your password.'));
+	$form->addEmail('email', __('Email address'), '');
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-reply"></i>&ensp;Recover');
-	$form->setResponse('', 'Not sent');
+	$form->setSubmit('<i class="fa fa-reply"></i>&ensp;' . __('Recover'));
+	$form->setResponse('', __('Not sent'));
 
 	if ($form->submitted())
 	{
@@ -104,30 +105,31 @@ else
 			if ($user)
 			{
 				$token = random(24);
-				Db::exec("
-				DELETE FROM recover WHERE user_id = '" . Db::escape($user['user_id']) . "';
-				INSERT INTO recover (user_id, token, expiry_time) VALUES (
-					'" . Db::escape($user['user_id']) . "',
-					'" . Db::escape(Bcrypt::hash($token)) . "',
-					'" . Db::escape(time() + (60 * 30)) . "'
-				);");
+				Db::exec("BEGIN;
+					DELETE FROM recover WHERE user_id = '" . Db::escape($user['user_id']) . "';
+					INSERT INTO recover (user_id, token, expiry_time) VALUES (
+						'" . Db::escape($user['user_id']) . "',
+						'" . Db::escape(Bcrypt::hash($token)) . "',
+						'" . Db::escape(time() + (60 * 30)) . "'
+					);
+				COMMIT;");
 
-				$link = 'http://' . substr($_SERVER['HTTP_HOST'], 4) . '/' . Common::$base_url . 'admin/reset/?i=' . Db::lastId() . '&t=' . urlencode($token);
+				$link = Common::fullBaseUrl() . Common::$base_url . 'admin/recover/reset/' . Db::lastId() . '/' . rawurlencode($token) . '/';
 
 				require_once('vendor/swift-mailer/swift_required.php');
 
 				$transport = Swift_SmtpTransport::newInstance('localhost', 25);
 				$mailer = Swift_Mailer::newInstance($transport);
-				$message = Swift_Message::newInstance('Dex password recovery')
+				$message = Swift_Message::newInstance(__('Dex password recovery'))
 					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
 					->setTo(array($user['email']))
-					->setBody('A password recovery request has been made for \'' . $user['username'] . '\' at ' . $_SERVER['HTTP_HOST'] . "\n" .
-						      'Click the link below to change your password. If you did not request a password recovery you can ignore this email.' . "\n\n" .
-						      $link . "\n\n" .
-						      'Dex');
+					->setBody(__('A password recovery request has been made for \'%s\' at %s', $user['username'], $_SERVER['HTTP_HOST']) . "\n" .
+							  __('Click the link below to reset your password. If you did not request a password recovery you can ignore this email.') . "\n\n" .
+							  $link . "\n\n" .
+							  'Dex');
 
 				if (!$mailer->send($message))
-					user_error('Email to \'' . $user['email'] . '\' failed to send', WARNING);
+					user_error('Email to \'' . $user['email'] . '\' failed to send', ERROR);
 			}
 
 			// even if user doesn't exist, redirect to sent page so hackers never know whether they're right or wrong
@@ -138,11 +140,9 @@ else
 
 	Hooks::emit('admin-header');
 
-	Core::assign('recover', $form);
+	Core::set('recover', $form);
 	Core::render('admin/recover.tpl');
 
 	Hooks::emit('admin-footer');
 	exit;
 }
-
-?>

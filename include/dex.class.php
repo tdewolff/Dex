@@ -2,20 +2,21 @@
 
 class Dex
 {
-	public static $vars = array();
-	public static $titles = array();
-	public static $externalStyles = array();
-	public static $styles = array();
-	public static $externalScripts = array('header' => array(), 'footer' => array());
-	public static $scripts = array('header' => array(), 'footer' => array());
+	protected static $vars = array();
+	protected static $titles = array();
+	protected static $externalStyles = array();
+	protected static $styles = array();
+	protected static $externalScripts = array('header' => array(), 'footer' => array());
+	protected static $scripts = array('header' => array(), 'footer' => array());
 
-	public static $link_id = 0;
-	public static $theme_name = '';
-	public static $template_name = '';
+	protected static $link_id = 0;
+	protected static $theme_name = '';
+	protected static $template_name = '';
+	protected static $module_name = '';
 
 	////////////////
 
-	public static function assign($key, $value) {
+	public static function set($key, $value) {
 		self::$vars[$key] = $value;
 	}
 
@@ -73,6 +74,30 @@ class Dex
 			user_error('Template name not set', ERROR);
 
 		return self::$template_name;
+	}
+
+	public static function getModuleName()
+	{
+		if (self::$module_name == '')
+			user_error('Module name not set', ERROR);
+
+		return self::$module_name;
+	}
+
+	public static function setLinkId($link_id) {
+		self::$link_id = $link_id;
+	}
+
+	public static function setThemeName($theme_name) {
+		self::$theme_name = $theme_name;
+	}
+
+	public static function setTemplateName($template_name) {
+		self::$template_name = $template_name;
+	}
+
+	public static function setModuleName($module_name) {
+		self::$module_name = $module_name;
 	}
 }
 
@@ -138,14 +163,14 @@ class Core extends Dex
 		while (($module_name = readdir($handle)) !== false)
 			if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
 			{
-				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/config.ini';
+				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/module.conf';
 				if (is_file($module_file))
 					$fs_modules[$module_name] = 1;
 			}
 
 		// check with database
 		$remove_modules = array();
-		$db_modules = Db::query("SELECT * FROM module;");
+		$db_modules = Db::query("SELECT module_name FROM module;");
 		while ($db_module = $db_modules->fetch())
 			if (isset($fs_modules[$db_module['module_name']])) // file exists and the db entry too
 				unset($fs_modules[$db_module['module_name']]);
@@ -157,10 +182,11 @@ class Core extends Dex
 		{
 			user_error('Module with module_name "' . $db_module['module_name'] . '" doesn\'t exist in the filesystem and is removed from the database', NOTICE);
 
-			Db::exec("
-			DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
-			DELETE FROM link_module WHERE module_name = '" . Db::escape($module_name) . "';
-			DELETE FROM module WHERE module_name = '" . Db::escape($module_name) . "';");
+			Db::exec("BEGIN;
+				DROP TABLE IF EXISTS module_" . Db::escape($module_name) . ";
+				DELETE FROM link_module WHERE module_name = '" . Db::escape($module_name) . "';
+				DELETE FROM module WHERE module_name = '" . Db::escape($module_name) . "';
+			COMMIT;");
 		}
 
 		foreach ($fs_modules as $module_name => $enabled) // file exists but db entry does not
@@ -180,14 +206,14 @@ class Core extends Dex
 	public static function verifyLinkUrl($url, $link_id = 0)
 	{
 		if (!Common::validUrl($url))
-			return 'Must be valid URL';
+			return __('Must be valid URL');
 
 		if (Db::singleQuery("SELECT * FROM link WHERE url = '" . Db::escape($url) . "' AND link_id != '" . Db::escape($link_id) . "' LIMIT 1;"))
-			return 'Already used';
+			return __('Already used');
 
 		$url_base = substr($url, 0, strpos($url, '/') + 1);
 		if ($url_base == 'admin/' || $url_base == 'res/' || $url_base == 'api/')
-			return 'Cannot start with "' . $url_base . '"';
+			return __('Cannot start with %s', '"' . $url_base . '"');
 
 		return true;
 	}
@@ -195,12 +221,6 @@ class Core extends Dex
 
 class Module extends Dex
 {
-	public static $module_name = '';
-
-	public static function set($module_name) {
-		self::$module_name = $module_name;
-	}
-
 	public static function render($_template) {
 		if (self::$module_name == '')
 			user_error('Module name not set', ERROR);
@@ -330,5 +350,3 @@ class Template extends Dex
 			user_error('Deferred script "' . $script . '" already added', NOTICE);
 	}
 }
-
-?>

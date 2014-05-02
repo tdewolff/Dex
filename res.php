@@ -1,42 +1,55 @@
 <?php
 
-Resource::setCaching(Common::tryOrDefault($config, 'caching', true));
-
 $filename = Resource::expandUrl($url);
-
-// remove querystring
-$querystring_position = strrpos($filename, '?');
-if ($querystring_position !== false)
-	$filename = substr($filename, 0, $querystring_position);
-
-// check extension
 $extension_position = strrpos($filename, '.');
-$extension = strtolower($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
+$extension = ($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
+
+$parameters_position = strpos($extension, '/');
+if ($parameters_position !== false)
+{
+	$url_parameters = explode('/', substr($extension, $parameters_position + 1));
+	$parameters = array();
+	foreach ($url_parameters as $parameter)
+		if (($value_position = strpos($parameter, '=')))
+			$parameters[substr($parameter, 0, $value_position)] = substr($parameter, $value_position + 1);
+
+	$filename = substr($filename, 0, $extension_position + 1 + $parameters_position);
+	$extension = substr($extension, 0, $parameters_position);
+}
 
 if (!Resource::isResource($extension))
+{
+	Common::responseCode(403);
 	user_error('Resource file extension "' . $extension . '" invalid of "' . Common::$request_url . '"', ERROR);
+}
 else if (!is_file($filename))
+{
+	Common::responseCode(404);
 	user_error('Could not find resource file "' . $filename . '"', ERROR);
+}
 else
 {
 	if (Resource::isImage($extension))
 	{
-		if (is_file(Common::insertMinExtension($filename)) && filemtime($filename) < filemtime(Common::insertMinExtension($filename)))
-			$filename = Common::insertMinExtension($filename);
-
-		if ($querystring_position !== false)
+		$filename = Resource::getMinified($filename);
+		if (isset($parameters))
 		{
-			// resize images
-			$w = Common::tryOrZero($_GET, 'w');
-			$h = Common::tryOrZero($_GET, 'h');
-			$s = Common::tryOrZero($_GET, 's');
-			$filename = Resource::imageResize($filename, $w, $h, $s);
+			$w = Common::tryOrZero($parameters, 'w');
+			$h = Common::tryOrZero($parameters, 'h');
+			$filename = Resource::imageResize($filename, $w, $h);
 		}
 	}
 
-	header('Content-Type: ' . Resource::getMime($extension));
-	echo file_get_contents($filename);
+	header('Cache-Control: public');
+	header('Content-Type: ' . Resource::getMime($extension) . '; charset: UTF-8');
+	$headers = apache_request_headers();
+	if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == filemtime($filename)))
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 304);
+	else
+	{
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filename)) . ' GMT', true, 200);
+		header('Content-Length: ' . filesize($filename));
+		print file_get_contents($filename);
+	}
 }
 exit;
-
-?>

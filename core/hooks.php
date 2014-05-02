@@ -12,9 +12,9 @@ Hooks::attach('site', 0, function () {
 	Hooks::emit('navigation');
 	echo '</nav>';
 
-	//echo '<article class="main" role="main">';
+	echo '<article class="main" role="main">';
 	Hooks::emit('main');
-	//echo '</article>';
+	echo '</article>';
 
 	echo '<footer>';
 	Hooks::emit('footer');
@@ -26,7 +26,7 @@ Hooks::attach('site', 0, function () {
 
 $error_loop = false;
 
-Hooks::attach('error', 0, function () {
+Hooks::attach('site-error', 0, function () {
 	ob_clean();
 
 	global $error_loop;
@@ -35,7 +35,7 @@ Hooks::attach('error', 0, function () {
 	$error_loop = true;
 
 	Core::addTitle('Error');
-	Core::assign('error', Error::getErrors());
+	Core::set('error', Error::getErrors());
 
 	Hooks::emit('site-header');
 	echo '<section class="page-wrapper">';
@@ -48,8 +48,8 @@ Hooks::attach('error', 0, function () {
 	Hooks::emit('navigation');
 	echo '</nav>';
 
-	echo '<article class="main" role="main">';
-	Core::render('error.tpl');
+	echo '<article class="main error" role="main">';
+	Core::render('admin/error.tpl');
 	echo '</article>';
 
 	echo '<footer>';
@@ -69,7 +69,7 @@ Hooks::attach('admin-error', 0, function () {
 	$error_loop = true;
 
 	Core::addTitle('Error');
-	Core::assign('error', Error::getErrors());
+	Core::set('error', Error::getErrors());
 
 	Hooks::emit('admin-header');
 	Core::render('admin/error.tpl');
@@ -101,31 +101,35 @@ Hooks::attach('admin-footer', 0, function () {
 ////////////////////////////////////////////////////////////////
 
 function site_header() {
+	global $settings;
+
 	$titles = Core::getTitles();
 	$externalStyles = Core::getExternalStyles();
 	$styles = Core::getStyles();
 	$externalScripts = Core::getExternalScripts('header');
 	$scripts = Core::getScripts('header');
 
+	Core::set('header_description', Common::tryOrEmpty($settings, 'description'));
+	if (strlen($settings['keywords']))
+		Core::set('header_keywords', implode(',', json_decode($settings['keywords'])));
+
 	if (count($titles))
-		Core::assign('header_title', implode(' - ', array_reverse($titles)));
-	Core::assign('header_external_styles', $externalStyles);
+		Core::set('header_title', implode(' - ', array_reverse($titles)));
+	Core::set('header_external_styles', $externalStyles);
 	if (count($styles))
-		Core::assign('header_style', Resource::cacheFiles($styles, 'css'));
-	Core::assign('header_external_scripts', $externalScripts);
+		Core::set('header_style', Resource::cacheFiles($styles, 'css'));
+	Core::set('header_external_scripts', $externalScripts);
 	if (count($scripts))
-		Core::assign('header_script', Resource::cacheFiles($scripts, 'js'));
+		Core::set('header_script', Resource::cacheFiles($scripts, 'js'));
 }
 
 function site_footer() {
 	$externalScripts = Core::getExternalScripts('footer');
 	$scripts = Core::getScripts('footer');
 
-	Core::assign('footer_external_scripts', $externalScripts);
+	Core::set('footer_external_scripts', $externalScripts);
 	if (count($scripts))
-		Core::assign('footer_script', Resource::cacheFiles($scripts, 'js'));
+		Core::set('footer_script', Resource::cacheFiles($scripts, 'js'));
 }
 
 ////////////////////////////////////////////////////////////////
-
-?>

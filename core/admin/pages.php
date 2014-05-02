@@ -9,16 +9,13 @@ if (!isset($url[2]))
 	Hooks::emit('admin-footer');
 	exit;
 }
-else
+else if ($url[2] == 'new')
 {
-	if ($url[2] != 'new')
-		user_error('Page ID "' . $url[2] . '" doesn\'t exist', ERROR);
-
 	$form = new Form('page');
 
-	$form->addSection(($url[2] == 'new' ? 'New page' : 'Edit page'), '');
-	$form->addText('title', 'Title', 'As displayed in the titlebar', '', array('[a-zA-Z0-9\s]*', 1, 20, 'Only alphanumeric characters and spaces allowed'));
-	$form->addLinkUrl('url', 'Link', 'Leave empty for homepage');
+	$form->addSection(__('New page'), '');
+	$form->addText('title', __('Title'), __('As displayed in the titlebar'), '', array('.*', 1, 25, __('Unknown error')));
+	$form->addLinkUrl('url', __('Link'), __('Leave empty for homepage'));
 
 	$form->setId('title', 'url-feed');
 	$form->setId('url', 'url');
@@ -28,16 +25,15 @@ else
 	while (($template_name = readdir($handle)) !== false)
 		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
 		{
-			$ini_filename = 'templates/' . $template_name . '/config.ini';
-			if (is_file($ini_filename) && ($ini = parse_ini_file($ini_filename)) !== false)
-				$templates[$template_name] = Common::tryOrEmpty($ini, 'title');
+			$config = new Config('templates/' . $template_name . '/template.conf');
+			$templates[$template_name] = $config->get('title');
 		}
-	$form->addDropdown('template_name', 'Template', 'Determine page type', $templates);
+	$form->addDropdown('template_name', __('Template'), __('Determine page type'), $templates);
 
 	$form->addSeparator();
 
-	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;Create');
-	$form->setResponse('Created page', 'Not created');
+	$form->setSubmit('<i class="fa fa-asterisk"></i>&ensp;' . __('Create'));
+	$form->setResponse('', __('Not created'));
 
 	if ($form->submitted())
 	{
@@ -47,27 +43,24 @@ else
 			else
 			{
 				$link_id = 0;
-				$link = Db::singleQuery("
-					SELECT * FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
+				$link = Db::singleQuery("SELECT link_id, title FROM link WHERE url = '" . Db::escape($form->get('url')) . "' LIMIT 1");
 				if ($link)
 				{
 					if ($form->get('title') != $link['title'])
 						Db::exec("
 							UPDATE link SET
 								title = '" . Db::escape($form->get('title')) . "',
-								template_name = '" . Db::escape($form->get('template_name')) . "',
-								modify_time = '" . Db::escape(time()) . "'
+								template_name = '" . Db::escape($form->get('template_name')) . "'
 							WHERE link_id = '" . Db::escape($link['link_id']) . "';");
 					$link_id = $link['link_id'];
 				}
 				else
 				{
 					Db::exec("
-						INSERT INTO link (url, title, template_name, modify_time) VALUES (
+						INSERT INTO link (url, title, template_name) VALUES (
 							'" . Db::escape($form->get('url')) . "',
 							'" . Db::escape($form->get('title')) . "',
-							'" . Db::escape($form->get('template_name')) . "',
-							'" . Db::escape(time()) . "'
+							'" . Db::escape($form->get('template_name')) . "'
 						);");
 					$link_id = Db::lastId();
 				}
@@ -78,11 +71,9 @@ else
 
 	Hooks::emit('admin-header');
 
-	Core::assign('page', $form);
+	Core::set('page', $form);
 	Core::render('admin/page.tpl');
 
 	Hooks::emit('admin-footer');
 	exit;
 }
-
-?>

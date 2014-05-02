@@ -4,6 +4,13 @@ define('SESSION_TIME', 1800); // 30 minutes
 
 class User
 {
+	private static $valid = false;
+
+	public static function validate()
+	{
+		self::$valid = isset($_SESSION['user']) && Db::isValid() && Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;");
+	}
+
 	public static function logIn($user_id)
 	{
 		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
@@ -17,6 +24,7 @@ class User
 			'role' => $user['role'],
 			'time' => time()
 		);
+		self::$valid = true;
 	}
 
 	public static function logOut()
@@ -28,17 +36,15 @@ class User
 	public static function forget()
 	{
 		unset($_SESSION['user']);
+		unset($_SESSION['last_site_request']);
+		unset($_SESSION['last_admin_request']);
+		self::$valid = false;
 	}
 
 	public static function loggedIn()
 	{
-		if (!isset($_SESSION['user']))
-			return false;
-
-		if ($_SESSION['user']['time'] + SESSION_TIME > time())
-			if (Db::isValid() && Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;"))
-				return true;
-
+		if (self::$valid && $_SESSION['user']['time'] + SESSION_TIME > time())
+			return true;
 		return false;
 	}
 
@@ -104,5 +110,3 @@ class User
 			Db::exec("UPDATE bruteforce SET n = n + 1, time = '" . Db::escape(time()) . "' WHERE bruteforce_id = '" . Db::escape($bruteforce['bruteforce_id']) . "';");
 	}
 }
-
-?>
