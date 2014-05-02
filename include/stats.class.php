@@ -132,9 +132,9 @@ class Stats
 		$table = Db::query("SELECT referral FROM stats;");
 		while ($row = $table->fetch())
 		{
+			$url = parse_url($row['referral']);
 			if (isset($url['scheme']) && isset($url['host']) && isset($url['path']))
 			{
-				$url = parse_url($row['referral']);
 				$name = $url['host'] . $url['path'];
 				Log::notice($name);
 				Log::notice($_SERVER["SERVER_NAME"] . '/' . Common::$base_url);

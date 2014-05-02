@@ -94,10 +94,8 @@
 			action: 'get_referrals',
 			limit: 10
 		}, function (data) {
-			console.log(data);
 			if (!data['referrals']['urls'].length) {
 				apiLoadStatusEmpty($('#load_referral_urls'));
-				return;
 			} else {
 				apiLoadStatusSuccess($('#load_referral_urls'));
 
@@ -110,7 +108,6 @@
 
 			if (!data['referrals']['keywords'].length) {
 				apiLoadStatusEmpty($('#load_referral_keywords'));
-				return;
 			} else {
 				apiLoadStatusSuccess($('#load_referral_keywords'));
 

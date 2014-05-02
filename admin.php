@@ -9,7 +9,7 @@ Core::addStyle('vendor/font-awesome.css');
 Core::addStyle('vendor/jquery-ui.css');
 Core::addStyle('vendor/fancybox.css');
 Core::addStyle('admin.css');
-Core::addStyle('site-admin.css');
+Core::addStyle('site-admin.css'); // TODO: don't include
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js');
 Core::addDeferredScript('vendor/jquery.fancybox.min.js');
@@ -22,7 +22,7 @@ Core::addDeferredScript('upload.js');
 Core::addDeferredScript('tooltips.js');
 Core::addDeferredScript('save.js');
 Core::addDeferredScript('admin.js');
-Core::addDeferredScript('site-admin.js');
+Core::addDeferredScript('site-admin.js'); // TODO: don't include
 
 // setup
 if (!Db::isValid())
