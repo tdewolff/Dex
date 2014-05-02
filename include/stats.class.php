@@ -132,31 +132,42 @@ class Stats
 		$table = Db::query("SELECT referral FROM stats;");
 		while ($row = $table->fetch())
 		{
-			$url = parse_url($row['referral']);
-			$name = $url['host'] . $url['path'];
-			if (isset($urls[$name]))
-				$urls[$name]['n']++;
-			else
-				$urls[$name] = array(
-					'url' => (empty($name) ? '' : $url['scheme'] . '://' . $url['host'] . $url['path']),
-					'name' => (empty($name) ? '(' . __('direct') . ')' : $name),
-					'n' => 1
-				);
+			if (isset($url['scheme']) && isset($url['host']) && isset($url['path']))
+			{
+				$url = parse_url($row['referral']);
+				$name = $url['host'] . $url['path'];
+				Log::notice($name);
+				Log::notice($_SERVER["SERVER_NAME"] . '/' . Common::$base_url);
+				if (strpos($name, $_SERVER["SERVER_NAME"] . '/' . Common::$base_url) === 0)
+					continue; // internal link
 
-			parse_str($url['query'], $query);
-			$parameter = self::organicSourceParameter($url['host']);
-			if (!isset($query[$parameter]))
-				continue;
-
-			$query_keywords = explode(' ', urldecode($query[$parameter]));
-			foreach ($query_keywords as $keyword)
-				if (isset($keywords[$keyword]))
-					$keywords[$keyword]['n']++;
+				if (isset($urls[$name]))
+					$urls[$name]['n']++;
 				else
-					$keywords[$keyword] = array(
-					'keyword' => $keyword,
-					'n' => 1
-				);
+					$urls[$name] = array(
+						'url' => (empty($name) ? '' : $url['scheme'] . '://' . $url['host'] . $url['path']),
+						'name' => (empty($name) ? '(' . __('direct') . ')' : $name),
+						'n' => 1
+					);
+			}
+
+			if (isset($url['query']))
+			{
+				parse_str($url['query'], $query);
+				$parameter = self::organicSourceParameter($url['host']);
+				if (!isset($query[$parameter]))
+					continue;
+
+				$query_keywords = explode(' ', urldecode($query[$parameter]));
+				foreach ($query_keywords as $keyword)
+					if (isset($keywords[$keyword]))
+						$keywords[$keyword]['n']++;
+					else
+						$keywords[$keyword] = array(
+						'keyword' => $keyword,
+						'n' => 1
+					);
+			}
 		}
 
 		$urls = array_values(array_slice($urls, 0, $limit));
