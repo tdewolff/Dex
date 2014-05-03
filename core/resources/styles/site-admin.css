@@ -1321,6 +1321,8 @@
     max-width: 100px;
     max-height: 200px;
   }
+}
+@media (max-width: 767px), (max-device-width: 1205px) {
   .dex-popup-wrapper #assets #upload #drop {
     margin: 10px 0;
   }
