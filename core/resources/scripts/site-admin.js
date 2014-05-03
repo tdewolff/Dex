@@ -75,7 +75,7 @@ $(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'logout',
 			'admin': admin
-		}, function(data) {
+		}, function() {
 			if (admin === 0) {
 				adminBarLogOut();
 			} else {
@@ -87,7 +87,7 @@ $(function () {
 	$('.dex-admin-bar .logged-out .current-user a').click(function () {
 		api('/' + base_url + 'api/core/users/', {
 			'action': 'forget'
-		}, function (data) {
+		}, function () {
 			adminBarForget();
 		});
 	});

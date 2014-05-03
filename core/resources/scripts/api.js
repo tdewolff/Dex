@@ -20,7 +20,9 @@ function api(url, data, success, error) {
 						return;
 					}
 
-					apiFatal(data['_error'].join('<br>'));
+					if (data['status'] !== 403) {
+						apiFatal(data['_error'].join('<br>'));
+					}
 				} else if (typeof success !== 'undefined' && success)	{
 					success(data);
 					if (typeof applyTooltips !== 'undefined') {
@@ -33,14 +35,16 @@ function api(url, data, success, error) {
 					return;
 				}
 
-				if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['_error'] !== 'undefined') { // PHP error but still handled by API
-					apiFatal(data['responseJSON']['_error'].join('<br>'));
-				} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
-					apiFatal(escapeHtml(data['responseText']));
-				} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
-					apiFatal(escapeHtml(data['statusText']));
-				} else { // ...shrugs
-					apiFatal(escapeHtml(data));
+				if (data['status'] !== 403) {
+					if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['_error'] !== 'undefined') { // PHP error but still handled by API
+						apiFatal(data['responseJSON']['_error'].join('<br>'));
+					} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
+						apiFatal(escapeHtml(data['responseText']));
+					} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
+						apiFatal(escapeHtml(data['statusText']));
+					} else { // ...shrugs
+						apiFatal(escapeHtml(data));
+					}
 				}
 			}
 		});

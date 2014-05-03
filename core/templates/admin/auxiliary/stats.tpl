@@ -69,27 +69,46 @@ circle.unique {
 				d.unique_visits = +d.unique_visits;
 			});
 
-			var margin = {top: 10, right: 80, bottom: 30, left: 40},
+			var h = d3.max(visits, function (d) { return d.visits; });
+			var hLog = Math.floor(Math.log(h) / Math.log(10));
+
+			var margin = {top: 10, right: 75, bottom: 23, left: 20 + hLog * 8},
 				width = parseInt(d3.select('body').style('width')) - margin.left - margin.right,
 				height = 200 - margin.top - margin.bottom;
+
+			var format = d3.locale({
+				'decimal': '<?php echo __('.'); ?>',
+				'thousands': '<?php echo __(','); ?>',
+				'grouping': [3],
+				'currency': ['$', ''],
+				'dateTime': '%a %b %e %X %Y',
+				'date': '%m/%d/%Y',
+				'time': '%H:%M:%S',
+				'periods': ['AM', 'PM'],
+				'days': ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+				'shortDays': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+				'months': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+				'shortMonths': <?php echo __("['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"); ?>
+			});
 
 			var xDomain = d3.extent(visits, function (d) { return d.date; });
 			var x = d3.time.scale.utc().range([0, width]).domain(xDomain);
 			var xAxis = d3.svg.axis()
 				.scale(x)
 				.orient('bottom')
-				.ticks(d3.time.days(xDomain[0], xDomain[1]).length)
+				.ticks(Math.min(Math.max(width / 80, 2), d3.time.days(xDomain[0], xDomain[1]).length))
 				.tickSize(-height + 1)
-				.tickFormat(d3.time.format('%b %e'));
+				.tickFormat(format.timeFormat('%b %e'));
 
-			var h = d3.max(visits, function (d) { return d.visits; });
 			var yDomain = (h > 10 ? [0, d3.round(h * 1.10)] : [0, h]);
 			var y = d3.scale.linear().range([height, 0]).domain(yDomain);
 			var yAxis = d3.svg.axis()
 				.scale(y)
 				.orient('left')
+				.ticks(Math.min(h, 10))
 				.tickSize(-width - 1)
-				.tickPadding(6);
+				.tickPadding(8)
+				.tickFormat(format.numberFormat('n'));
 			if (visits.length < 2) {
 				yAxis.ticks(1);
 			}
@@ -220,6 +239,7 @@ circle.unique {
 					width = newWidth;
 
 					x.range([0, width]);
+					xAxis.ticks(Math.min(Math.max(width / 80, 2), d3.time.days(xDomain[0], xDomain[1]).length));
 					svg.select('.x').call(xAxis)
 						.selectAll('text').attr('y', '1em');
 

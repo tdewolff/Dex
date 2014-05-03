@@ -1891,6 +1891,18 @@ input.invalid {
   #templates li > div:nth-child(3) {
     width: 50%;
   }
+  #pages li > div:nth-child(1) {
+    width: 28%;
+  }
+  #pages li > div:nth-child(2) {
+    width: 10%;
+  }
+  #pages li > div:nth-child(3) {
+    width: 31%;
+  }
+  #pages li > div:nth-child(4) {
+    width: 31%;
+  }
   #warnings {
     margin: 0;
   }

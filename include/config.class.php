@@ -26,8 +26,12 @@ class Config
 		foreach ($this->lines as $i => $line)
 		{
 			$line = trim($line);
+			$semicolon_position = strpos($line, ';');
+			if ($semicolon_position !== false)
+				$line = substr($line, 0, $semicolon_position);
+
 			$is_position = strpos($line, '=');
-			if ($is_position === false || $line[0] == ';')
+			if ($is_position === false)
 				continue;
 
 			$key = trim(substr($line, 0, $is_position));

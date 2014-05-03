@@ -83,7 +83,7 @@ else if (API::action('diskspace_usage'))
 	{
 		$size = Common::getDirectorySize($directory);
 		$diskspace[] = array(
-			'name' => ucfirst(substr($directory, 0, -1)),
+			'name' => __(ucfirst(substr($directory, 0, -1))),
 			'size' => Common::formatBytes($size),
 			'percentage' => $size / $total * 100.0);
 		$rest -= $size;
