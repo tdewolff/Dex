@@ -195,6 +195,7 @@ if (User::getTimeLeft() !== false)
 	Core::addStyle('vendor/font-awesome.css');
 	Core::addStyle('vendor/jquery-ui.css');
 	Core::addStyle('vendor/fancybox.css');
+	Core::addStyle('admin-bar.css');
 	Core::addStyle('site-admin.css');
 	Core::addStyle('dexedit.css');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
@@ -208,6 +209,7 @@ if (User::getTimeLeft() !== false)
 	Core::addDeferredScript('upload.js');
 	Core::addDeferredScript('tooltips.js');
 	Core::addDeferredScript('save.js');
+	Core::addDeferredScript('admin-bar.js');
 	Core::addDeferredScript('site-admin.js');
 	Core::addDeferredScript('dexedit.js');
 }
