@@ -58,6 +58,28 @@
   height: 250px;
   font-size: 12px;
 }
+.dex-api-error {
+  background: #F2DEDE;
+  border: solid 1px #EED3D7;
+}
+.dex-api-error h1 {
+  color: #B94A48;
+  font-size: 200%;
+  text-align: center;
+}
+.dex-api-error h2 {
+  padding: 0;
+  color: #B94A48;
+  text-align: center;
+}
+.dex-api-error p.error {
+  color: #B94A48;
+  text-align: center;
+}
+.dex-api-error table.backtrace {
+  width: 100%;
+  color: #B94A48;
+}
 @font-face {
   font-family: "SourceSansRegular";
   src: url('../core/fonts/sourcesanspro-regular-webfont.eot');
@@ -1018,7 +1040,6 @@
 }
 .dex-popup-wrapper ul.table > li {
   border-top: 1px solid #e6e6e6;
-  height: 33px;
   background-color: #ffffff;
   font-size: 90%;
 }

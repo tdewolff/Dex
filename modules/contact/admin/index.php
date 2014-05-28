@@ -16,7 +16,6 @@ $form->addText('adr_postal-code', __('Postal code'), '', __('91316'), array('.*'
 $form->addText('adr_country-name', __('Country'), '', __('U.S.A'), array('.*', 0, 20));
 
 $form->addSeparator();
-
 $form->setResponse(__('Saved'), __('Not saved'));
 
 $form->optional(array('org', 'url', 'email', 'tel'));

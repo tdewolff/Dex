@@ -9,7 +9,19 @@ if (!isset($url[2]))
 	Hooks::emit('admin-footer');
 	exit;
 }
-else if ($url[2] == 'new')
+else if ($url[2] != 'new')
+{
+	$link = Db::singleQuery("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1");
+	if (!$link)
+		user_error('Page with link_id "' . $url[2] . '" not found', ERROR);
+
+	if (!is_file('templates/' . $link['template_name'] . '/admin/index.php'))
+		user_error('Template admin page "templates/' . $link['template_name'] . '/admin/index.php" not found', ERROR);
+
+	Core::setTemplateName($link['template_name']);
+	require_once('templates/' . $link['template_name'] . '/admin/index.php');
+}
+else
 {
 	$form = new Form('page');
 

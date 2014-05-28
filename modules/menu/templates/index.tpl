@@ -4,6 +4,9 @@ function listRecursion(&$menu, $level)
 {
 	while (count($menu))
 	{
+		if ($menu[0]['level'] < $level)
+			break;
+
 		if ($menu[0]['enabled'])
 		{
 			echo '<li' . ($menu[0]['selected'] == '1' ? ' class="selected"' : '') . '>';

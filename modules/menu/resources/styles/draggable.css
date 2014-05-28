@@ -9,6 +9,7 @@ ul.draggable > li:not(:first-of-type) > div:first-of-type + div + div {
 
 ul.draggable > li.placeholder {
 	background-color: #A9CC66;
+	height: 33px;
 }
 
 ul.draggable > li.draggee {

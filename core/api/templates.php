@@ -16,9 +16,9 @@ if (API::action('get_templates'))
 			$config = new Config('templates/' . $template_name . '/template.conf');
 			$templates[] = array(
 				'name' => $template_name,
-				'title' => $config->get('title'),
+				'title' => __($config->get('title')),
 				'author' => $config->get('author'),
-				'description' => $config->get('description')
+				'description' => __($config->get('description'))
 			);
 		}
 	Common::sortOn($templates, 'name');

@@ -3,9 +3,7 @@
 <ul id="pages" class="table">
 	<li>
 		<div></div>
-		<div></div>
-		<div><?php echo __('Title'); ?></div>
-		<div><?php echo __('Link'); ?></div>
+		<div><?php echo __('Title'); ?>&ensp;-&ensp;<?php echo __('Link'); ?></div>
 		<div><?php echo __('Content'); ?></div>
 		<div></div>
 	</li>
@@ -19,13 +17,10 @@
 <script id="page_item" type="text/x-dot-template">
 	<li id="page_{{=it.link_id}}" {{?it.url==''}}class="home"{{?}}>
 		<div>
-			<a href="/<?php echo $_['base_url']; ?>{{=it.url}}" class="list-button">
-				<i class="fa fa-pencil"></i>&ensp;<?php echo __('Edit'); ?>
-			</a>
+			<a href="/<?php echo $_['base_url']; ?>{{=it.url}}" class="list-button">{{?it.has_site_admin === '1'}}<i class="fa fa-pencil"></i>&ensp;<?php echo __('Edit'); ?>{{??}}<i class="fa fa-eye"></i>&ensp;<?php echo __('View'); ?>{{?}}</a>
+			{{?it.has_admin === '1'}}<br><a href="/<?php echo $_['base_url']; ?>admin/pages/{{=it.link_id}}/" class="list-button"><i class="fa fa-cog"></i>&ensp;<?php echo __('Settings'); ?></a>{{?}}
 		</div>
-		<div><i class="fa fa-home"></i></div>
-		<div><input name="title" type="text" value="{{=it.title}}" maxlength="25" data-link-id="{{=it.link_id}}" data-error-position="left"></div>
-		<div><input name="url" type="text" value="{{=it.url}}" placeholder="(home)" maxlength="50" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}" data-error-position="right"{{?it.url==''}} disabled{{?}}></div>
+		<div><i class="fa fa-home"></i><div><input name="title" type="text" value="{{=it.title}}" maxlength="25" data-link-id="{{=it.link_id}}" data-error-position="left"><input name="url" type="text" value="{{=it.url}}" placeholder="(home)" maxlength="50" data-link-id="{{=it.link_id}}" data-use-feed="{{?it.url=='' || it.url !== titleToUrl(it.title)}}false{{??}}true{{?}}" data-error-position="right"{{?it.url==''}} disabled{{?}}></div></div>
 		<div>{{=it.content}}</div>
 		<div>
 			<a href="#" class="halt inline-rounded"><i class="fa fa-trash-o"></i></a>

@@ -70,7 +70,7 @@ else if (API::action('edit_pages'))
 				'" . Db::escape($page['title']) . "',
 				'" . Db::escape($template_names[$page['link_id']]) . "'
 			);";
-		Db::exec($query . "COMMIT;");
+		Db::exec($query . " COMMIT;");
 	}
 
 	API::set('errors', $errors);
@@ -79,12 +79,16 @@ else if (API::action('edit_pages'))
 else if (API::action('get_pages'))
 {
 	$pages = array();
-	$table = Db::query("SELECT * FROM link;");
+	$table = Db::query("SELECT * FROM link ORDER BY url;");
 	while ($row = $table->fetch())
 	{
 		$config = new Config('templates/' . $row['template_name'] . '/template.conf');
-		$row['template_name'] = $config->get('title');
+		$config->setDefault('has_admin', '1');
+		$config->setDefault('has_site_admin', '0');
+		$row['has_admin'] = $config->get('has_admin');
+		$row['has_site_admin'] = $config->get('has_site_admin');
 
+		$row['template_name'] = $config->get('title');
 		$row['title'] = htmlspecialchars($row['title']);
 
 		$row['content'] = '';
@@ -93,7 +97,7 @@ else if (API::action('get_pages'))
 			$row['content'] .= ' ' . $row2['content'];
 		$row['content'] = preg_replace('/<[^>]+>/', ' ', $row['content']);
 		$row['content'] = trim(preg_replace('/\s{2,}/', ' ', $row['content']));
-		$row['content'] = strlen($row['content']) > 100 ? substr($row['content'], 0, 100) . '...' : $row['content'];
+		$row['content'] = strlen($row['content']) > 140 ? substr($row['content'], 0, 140) . '...' : $row['content'];
 
 		$row['length'] = Common::formatBytes(strlen($row['content']));
 		$pages[] = $row;

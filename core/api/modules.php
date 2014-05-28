@@ -32,9 +32,9 @@ else if (API::action('get_modules'))
 	{
 		$config = new Config('modules/' . $row['module_name'] . '/module.conf');
 		$row['module_id'] = count($modules);
-		$row['title'] = $config->get('title');
+		$row['title'] = __($config->get('title'));
 		$row['author'] = $config->get('author');
-		$row['description'] = $config->get('description');
+		$row['description'] = __($config->get('description'));
 		$modules[] = $row;
 	}
 	API::set('modules', $modules);
