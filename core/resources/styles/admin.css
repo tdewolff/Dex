@@ -670,12 +670,10 @@ ul {
   list-style-type: none;
 }
 ul.table {
-  margin: 0 auto;
   border: 1px solid #e6e6e6;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  width: 100%;
 }
 ul.table > li {
   border-top: 1px solid #e6e6e6;
@@ -758,7 +756,6 @@ ul.table > li > div * {
   line-height: 100%;
 }
 ul.grid {
-  margin: 0 auto;
   overflow: hidden;
   text-align: center;
 }
@@ -959,7 +956,7 @@ body {
 .stats-frame {
   display: none;
   width: 100%;
-  height: 200px;
+  height: 250px;
   border: 0;
 }
 .view-logs {
@@ -986,27 +983,27 @@ body {
 #referrals ul:last-of-type {
   float: right;
 }
-#referrals ul li > div:nth-child(1) {
+#referrals ul li:not(.load-status) > div:nth-child(1) {
   width: 80%;
 }
-#referrals ul li > div:nth-child(2) {
+#referrals ul li:not(.load-status) > div:nth-child(2) {
   width: 20%;
   text-align: right;
 }
-#themes li {
+#themes li:not(.load-status) {
   cursor: pointer;
   vertical-align: top;
 }
-#themes li h4,
-#themes li div {
+#themes li:not(.load-status) h4,
+#themes li:not(.load-status) div {
   width: 256px;
   overflow: hidden;
   text-align: center;
 }
-#themes li div {
+#themes li:not(.load-status) div {
   font-size: 90%;
 }
-#themes li img {
+#themes li:not(.load-status) img {
   width: 256px;
   height: 256px;
   margin: 10px 0;
@@ -1068,6 +1065,7 @@ body {
   color: #303030;
 }
 #assets #upload ul li {
+  float: none;
   height: 16px;
   line-height: 16px;
   padding-left: 2em;
@@ -1096,7 +1094,8 @@ body {
   position: absolute;
   top: 50%;
   right: 0;
-  margin-top: -32px;
+  margin-top: -30px;
+  margin-right: 30px;
   width: 64px;
   height: 64px;
 }
@@ -1241,8 +1240,8 @@ body {
     font-size: 14px;
   }
 }
-#logs li:not(:first-of-type),
-#latest-logs li:not(:first-of-type) {
+#logs li:not(:first-of-type):not(.load-status),
+#latest-logs li:not(:first-of-type):not(.load-status) {
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 10px;
   border: 0;
@@ -1250,115 +1249,115 @@ body {
   background-color: white;
   cursor: pointer;
 }
-#logs li:not(:first-of-type).error,
-#latest-logs li:not(:first-of-type).error {
+#logs li:not(:first-of-type):not(.load-status).error,
+#latest-logs li:not(:first-of-type):not(.load-status).error {
   background-color: #5a1f00;
   color: white;
 }
-#logs li:not(:first-of-type).warning,
-#latest-logs li:not(:first-of-type).warning {
+#logs li:not(:first-of-type):not(.load-status).warning,
+#latest-logs li:not(:first-of-type):not(.load-status).warning {
   background-color: #B94A48;
   color: white;
 }
-#logs li:not(:first-of-type).notice,
-#latest-logs li:not(:first-of-type).notice {
+#logs li:not(:first-of-type):not(.load-status).notice,
+#latest-logs li:not(:first-of-type):not(.load-status).notice {
   background-color: #f4f9ec;
   color: #808080;
 }
-#logs li:not(:first-of-type).request,
-#latest-logs li:not(:first-of-type).request {
+#logs li:not(:first-of-type):not(.load-status).request,
+#latest-logs li:not(:first-of-type):not(.load-status).request {
   background-color: #dfecc6;
   color: #808080;
 }
-#logs li:not(:first-of-type).caching,
-#latest-logs li:not(:first-of-type).caching {
+#logs li:not(:first-of-type):not(.load-status).caching,
+#latest-logs li:not(:first-of-type):not(.load-status).caching {
   background-color: #eaf2d9;
   color: #808080;
 }
-#logs li:not(:first-of-type).empty,
-#latest-logs li:not(:first-of-type).empty {
+#logs li:not(:first-of-type):not(.load-status).empty,
+#latest-logs li:not(:first-of-type):not(.load-status).empty {
   border-top: #b4d279 1px solid;
   border-bottom: #b4d279 1px solid;
 }
-#logs li:not(:first-of-type):hover,
-#latest-logs li:not(:first-of-type):hover {
+#logs li:not(:first-of-type):not(.load-status):hover,
+#latest-logs li:not(:first-of-type):not(.load-status):hover {
   color: #303030;
 }
-#logs li:not(:first-of-type) > div,
-#latest-logs li:not(:first-of-type) > div {
+#logs li:not(:first-of-type):not(.load-status) > div,
+#latest-logs li:not(:first-of-type):not(.load-status) > div {
   line-height: 10px;
   height: 20px;
 }
-#latest-logs li > div:nth-child(1) {
+#latest-logs li:not(.load-status) > div:nth-child(1) {
   width: 17%;
 }
-#latest-logs li > div:nth-child(2) {
+#latest-logs li:not(.load-status) > div:nth-child(2) {
   width: 83%;
   text-overflow: ellipsis;
 }
-#logs li > div:nth-child(1) {
+#logs li:not(.load-status) > div:nth-child(1) {
   width: 17%;
 }
-#logs li > div:nth-child(2) {
+#logs li:not(.load-status) > div:nth-child(2) {
   width: 14%;
   text-overflow: ellipsis;
 }
-#logs li > div:nth-child(3) {
+#logs li:not(.load-status) > div:nth-child(3) {
   width: 69%;
   text-overflow: ellipsis;
 }
-#pages li > div:nth-child(1) {
+#pages li:not(.load-status) > div:nth-child(1) {
   width: 17%;
 }
-#pages li > div:nth-child(2) {
+#pages li:not(.load-status) > div:nth-child(2) {
   width: 38%;
   padding-left: 1.5em;
 }
-#pages li > div:nth-child(3) {
+#pages li:not(.load-status) > div:nth-child(3) {
   width: 40%;
   text-align: left;
   white-space: normal;
 }
-#pages li > div:nth-child(4) {
+#pages li:not(.load-status) > div:nth-child(4) {
   width: 5%;
 }
-#pages li:not(:first-of-type) > div {
+#pages li:not(:first-of-type):not(.load-status) > div {
   height: 72px;
 }
-#pages li:not(:first-of-type) > div:nth-child(1) {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(1) {
   overflow: visible;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-#pages li:not(:first-of-type) > div:nth-child(1) a {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(1) a {
   display: inline-block;
   width: 120px;
 }
-#pages li:not(:first-of-type) > div:nth-child(1) a:not(:first-of-type) {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(1) a:not(:first-of-type) {
   margin-top: 4px;
 }
-#pages li:not(:first-of-type).home > div:nth-child(2) i.fa-home {
+#pages li:not(:first-of-type):not(.load-status).home > div:nth-child(2) i.fa-home {
   color: inherit;
 }
-#pages li:not(:first-of-type):not(.home) > div:nth-child(2) i.fa-home {
+#pages li:not(:first-of-type):not(.load-status):not(.home) > div:nth-child(2) i.fa-home {
   cursor: pointer;
 }
-#pages li:not(:first-of-type) > div:nth-child(2) {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(2) {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 0;
 }
-#pages li:not(:first-of-type) > div:nth-child(2) i.fa-home {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(2) i.fa-home {
   float: left;
   margin-top: 28px;
   padding-right: 0.5em;
   line-height: 24px;
   color: #A0A0A0;
 }
-#pages li:not(:first-of-type) > div:nth-child(2) > div {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(2) > div {
   overflow: hidden;
 }
-#pages li:not(:first-of-type) > div:nth-child(2) > div input {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(2) > div input {
   display: block;
   float: none;
   margin: 0;
@@ -1366,60 +1365,60 @@ body {
   height: 24px;
   font-size: 14px;
 }
-#pages li:not(:first-of-type) > div:nth-child(2) > div input:nth-child(2) {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(2) > div input:nth-child(2) {
   margin-top: 4px;
 }
-#pages li:not(:first-of-type) > div:nth-child(4) {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(4) {
   display: none;
   text-align: right;
 }
-#pages li:not(:first-of-type) > div:nth-child(4) a {
+#pages li:not(:first-of-type):not(.load-status) > div:nth-child(4) a {
   line-height: 58px;
 }
-#pages li:not(:first-of-type):hover > div:nth-child(4) {
+#pages li:not(:first-of-type):not(.load-status):hover > div:nth-child(4) {
   display: block;
 }
-#users li > div:nth-child(1) {
+#users li:not(.load-status) > div:nth-child(1) {
   width: 17%;
   padding-top: 4px;
   padding-bottom: 4px;
   overflow: visible;
   text-align: center;
 }
-#users li > div:nth-child(1) > div {
+#users li:not(.load-status) > div:nth-child(1) > div {
   display: inline-block;
 }
-#users li > div:nth-child(2) {
+#users li:not(.load-status) > div:nth-child(2) {
   width: 25%;
 }
-#users li > div:nth-child(3) {
+#users li:not(.load-status) > div:nth-child(3) {
   width: 38%;
 }
-#users li > div:nth-child(4) {
+#users li:not(.load-status) > div:nth-child(4) {
   width: 20%;
 }
-#modules li > div:nth-child(1),
-#templates li > div:nth-child(1) {
+#modules li:not(.load-status) > div:nth-child(1),
+#templates li:not(.load-status) > div:nth-child(1) {
   width: 17%;
   padding-top: 4px;
   padding-bottom: 4px;
   overflow: visible;
   text-align: center;
 }
-#modules li > div:nth-child(1) > div,
-#templates li > div:nth-child(1) > div {
+#modules li:not(.load-status) > div:nth-child(1) > div,
+#templates li:not(.load-status) > div:nth-child(1) > div {
   display: inline-block;
 }
-#modules li > div:nth-child(2),
-#templates li > div:nth-child(2) {
+#modules li:not(.load-status) > div:nth-child(2),
+#templates li:not(.load-status) > div:nth-child(2) {
   width: 14%;
 }
-#modules li > div:nth-child(3),
-#templates li > div:nth-child(3) {
+#modules li:not(.load-status) > div:nth-child(3),
+#templates li:not(.load-status) > div:nth-child(3) {
   width: 14%;
 }
-#modules li > div:nth-child(4),
-#templates li > div:nth-child(4) {
+#modules li:not(.load-status) > div:nth-child(4),
+#templates li:not(.load-status) > div:nth-child(4) {
   width: 55%;
   text-overflow: ellipsis;
 }

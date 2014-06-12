@@ -73,8 +73,14 @@
 		$('.stats-frame').load(function () {
 			$('.stats-frame').ready(function () {
 				api('/' + base_url + 'api/core/stats/', {
-					action: 'get_visits'
+					action: 'get_visits',
+					days: 60
 				}, function (data) {
+					if (typeof $('.stats-frame')[0].contentWindow.drawStats === "undefined") {
+						apiLoadStatusError($('#load_stats'));
+						return
+					}
+
 					apiLoadStatusSuccess($('#load_stats'));
 					$('.stats-frame').slideDown(100);
 					$('.stats-frame')[0].contentWindow.drawStats(data['visits']);

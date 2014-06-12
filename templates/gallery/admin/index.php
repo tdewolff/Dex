@@ -1,23 +1,24 @@
 <?php
 
+if (!isset($url[2]))
+	user_error('No link_id set', ERROR);
+
+$link = Db::singleQuery("SELECT * FROM link WHERE link_id = '" . Db::escape($url[2]) . "' LIMIT 1");
+if (!$link)
+	user_error('Page with link_id "' . $url[2] . '" not found', ERROR);
+
 $form = new Form('settings');
 
 $form->addSection(__('Settings'), '');
 
-$contact = array();
-$table = Db::query("SELECT * FROM module_contact;");
-while ($row = $table->fetch())
-	$contact[$row['key']] = $row['value'];
-
-$directories = array();
+$directories = array('' => '--- ' . __('Select directory') . ' ---');
 $assets = new RecursiveDirectoryIterator('assets/');
-foreach (new RecursiveIteratorIterator($assets) as $directory_name => $info)
-{
-	if ($info->isDir() && !$info->isDot())
+foreach (new RecursiveIteratorIterator($assets, FilesystemIterator::SKIP_DOTS) as $directory_name => $info)
+	if ($info->isDir() && $info->getFilename() != "." && $info->getFilename() != "..")
 	{
+		$directory_name = str_replace('\\', '/', $directory_name);
 		$directories[$directory_name] = $directory_name;
 	}
-}
 $form->addDropdown('directory', __('Directory'), '', $directories);
 
 $form->addSeparator();
@@ -26,17 +27,29 @@ $form->setResponse(__('Saved'), __('Not saved'));
 if ($form->submitted())
 {
 	if ($form->validate())
-		/*foreach ($contact as $key => $value)
-			Db::exec("
-			UPDATE module_contact SET
-				value = '" . Db::escape($form->get($key)) . "'
-			WHERE key = '" . Db::escape($key) . "';");*/
+		Db::exec("BEGIN;
+			DELETE FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings';
+			INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
+				'" . Db::escape($url[2]) . "',
+				'" . Db::escape(User::getUserId()) . "',
+				'settings',
+				'" . Db::escape(json_encode(array(
+					'directory' => $form->get('directory')
+				))) . "',
+				'" . Db::escape(time()) . "'
+			);
+		COMMIT;");
 	$form->finish();
 }
 
+if ($settings = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings' LIMIT 1;"))
+	foreach (json_decode($settings['content'], true) as $key => $value)
+		$form->set($key, $value);
+
 Hooks::emit('admin-header');
 
-Module::set('settings', $form);
+Template::set('url', $link['url']);
+Template::set('settings', $form);
 Template::render('admin/index.tpl');
 
 Hooks::emit('admin-footer');

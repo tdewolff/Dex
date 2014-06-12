@@ -1031,12 +1031,10 @@
   list-style-type: none;
 }
 .dex-popup-wrapper ul.table {
-  margin: 0 auto;
   border: 1px solid #e6e6e6;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  width: 100%;
 }
 .dex-popup-wrapper ul.table > li {
   border-top: 1px solid #e6e6e6;
@@ -1119,7 +1117,6 @@
   line-height: 100%;
 }
 .dex-popup-wrapper ul.grid {
-  margin: 0 auto;
   overflow: hidden;
   text-align: center;
 }
@@ -1178,6 +1175,7 @@
   color: #303030;
 }
 .dex-popup-wrapper #assets #upload ul li {
+  float: none;
   height: 16px;
   line-height: 16px;
   padding-left: 2em;
@@ -1206,7 +1204,8 @@
   position: absolute;
   top: 50%;
   right: 0;
-  margin-top: -32px;
+  margin-top: -30px;
+  margin-right: 30px;
   width: 64px;
   height: 64px;
 }

@@ -70,11 +70,11 @@ circle.unique {
 			});
 
 			var h = d3.max(visits, function (d) { return d.visits; });
-			var hLog = Math.floor(Math.log(h) / Math.log(10));
+			var hLog = (h > 0 ? Math.floor(Math.log(h) / Math.log(10)) : 0);
 
-			var margin = {top: 10, right: 75, bottom: 23, left: 20 + hLog * 8},
+			var margin = {top: 10, right: 75, bottom: 55, left: 20 + hLog * 8},
 				width = parseInt(d3.select('body').style('width')) - margin.left - margin.right,
-				height = 200 - margin.top - margin.bottom;
+				height = 250 - margin.top - margin.bottom;
 
 			var format = d3.locale({
 				'decimal': '<?php echo __('.'); ?>',
@@ -96,9 +96,9 @@ circle.unique {
 			var xAxis = d3.svg.axis()
 				.scale(x)
 				.orient('bottom')
-				.ticks(Math.min(Math.max(width / 80, 2), d3.time.days(xDomain[0], xDomain[1]).length))
+				.ticks(d3.time.days, 3)
 				.tickSize(-height + 1)
-				.tickFormat(format.timeFormat('%b %e'));
+				.tickFormat(format.timeFormat('%e %b'));
 
 			var yDomain = (h > 10 ? [0, d3.round(h * 1.10)] : [0, h]);
 			var y = d3.scale.linear().range([height, 0]).domain(yDomain);
@@ -160,7 +160,12 @@ circle.unique {
 				.attr('transform', 'translate(0,' + height + ')')
 				.call(xAxis)
 			.selectAll('text')
-				.attr('y', '1em');
+				.style("text-anchor", "end")
+				.attr("dx", "-.8em")
+				.attr("dy", ".15em")
+				.attr("transform", function(d) {
+					return "rotate(-60)"
+				});
 
 			if (visits.length > 1) {
 				// paths and points

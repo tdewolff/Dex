@@ -191,7 +191,7 @@ body {
 .stats-frame {
 	display: none;
 	width: 100%;
-	height: 200px;
+	height: 250px;
 	border: 0;
 }
 
@@ -214,7 +214,7 @@ body {
 			float: right;
 		}
 
-		li {
+		li:not(.load-status) {
 			>div:nth-child(1) {
 				width: 80%;
 			}
@@ -228,7 +228,7 @@ body {
 }
 
 #themes {
-	li {
+	li:not(.load-status) {
 		cursor: pointer;
 		vertical-align: top;
 
@@ -265,7 +265,7 @@ body {
 @import "_assets.less";
 
 #logs, #latest-logs {
-	li:not(:first-of-type) {
+	li:not(:first-of-type):not(.load-status) {
 		font-family: "Lucida Console", Monaco, monospace;
 		font-size: 10px;
 		border: 0;
@@ -315,7 +315,7 @@ body {
 	}
 }
 
-#latest-logs li {
+#latest-logs li:not(.load-status) {
 	>div:nth-child(1) {
 		width: 17%;
 	}
@@ -326,7 +326,7 @@ body {
 	}
 }
 
-#logs li {
+#logs li:not(.load-status) {
 	>div:nth-child(1) {
 		width: 17%;
 	}
@@ -342,7 +342,7 @@ body {
 	}
 }
 
-#pages li {
+#pages li:not(.load-status) {
 	>div:nth-child(1) {
 		width: 17%;
 	}
@@ -363,7 +363,7 @@ body {
 	}
 }
 
-#pages li:not(:first-of-type) {
+#pages li:not(:first-of-type):not(.load-status) {
 	>div {
 		height: 72px;
 	}
@@ -436,7 +436,7 @@ body {
 	}
 }
 
-#users li {
+#users li:not(.load-status) {
 	>div:nth-child(1) {
 		width: 17%;
 		padding-top: 4px;
@@ -462,7 +462,7 @@ body {
 	}
 }
 
-#modules li, #templates li {
+#modules li:not(.load-status), #templates li:not(.load-status) {
 	>div:nth-child(1) {
 		width: 17%;
 		padding-top: 4px;

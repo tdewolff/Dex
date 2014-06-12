@@ -10,7 +10,11 @@ if (!User::loggedIn())
 
 if (API::action('get_visits'))
 {
-	API::set('visits', Stats::pageVisitChart());
+	$days = null;
+	if (API::has('days'))
+		$days = API::get('days');
+
+	API::set('visits', Stats::pageVisitChart($days));
 	API::finish();
 }
 else if (API::action('get_referrals'))

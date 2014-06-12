@@ -24,10 +24,14 @@ class Stats
 			Db::exec("UPDATE stats SET n = n + 1, end_time = '" . Db::escape(time()) . "' WHERE stat_id = '" . Db::escape($stat['stat_id']) . "';");
 	}
 
-	public static function pageVisitChart()
+	public static function pageVisitChart($days)
 	{
+		$before = 0;
+		if (is_numeric($days))
+			$before = time() - 60 * 60 * 24 * $days;
+
 		$visits = array();
-		$table = Db::query("SELECT * FROM stats ORDER BY time ASC;");
+		$table = Db::query("SELECT * FROM stats WHERE time >= '" . $before . "' ORDER BY time ASC;");
 		while ($row = $table->fetch())
 		{
 			$time = floor($row['time'] / 86400) * 86400;
