@@ -1,11 +1,11 @@
 <?php
 
 $filename = Resource::expandUrl($url);
-$is_position = strrpos($filename, '=');
-if ($is_position !== false)
-	$filename = substr($filename, 0, $is_position);
 
 $extension_position = strrpos($filename, '.');
+$is_position = strpos($filename, '=');
+if ($is_position !== false)
+	$extension_position = strrpos(substr($filename, 0, $is_position), '.');
 $extension = ($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
 
 $parameters_position = strpos($extension, '/');
