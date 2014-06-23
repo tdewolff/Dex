@@ -6,9 +6,13 @@ if (!User::loggedIn())
 	user_error('Forbidden access', ERROR);
 }
 
+echo 'choose';
+echo API::action('get');
+
 if (API::action('get'))
 {
-	$errors_only = API::has('errors') ? API::get('errors') : false;
+echo 'WHAT!?';
+	$errors_only = API::has('errors_only') ? API::get('errors_only') : false;
 	$loglines = Log::getLastLines(API::get('lines'), $errors_only || !API::has('lines'));
 
 	$logs = array();

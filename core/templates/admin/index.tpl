@@ -134,7 +134,7 @@
 		api('/' + base_url + 'api/core/logs/', {
 			action: 'get',
 			lines: 10,
-			errors: true
+			errors_only: true
 		}, function (data) {
 			if (!data['logs'].length) {
 				apiLoadStatusEmpty($('#load_logs'));
