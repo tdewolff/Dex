@@ -6,9 +6,6 @@ function api(url, data, success, error) {
 		}, session_time * 1000);
 	}
 
-	console.log(url);
-	console.log(data);
-
 	if (!url)
 		apiFatal('No API URL set');
 	else
@@ -18,7 +15,6 @@ function api(url, data, success, error) {
 			data: data,
 			dataType: 'json',
 			success: function (data) {
-				console.log(data);
 				if (typeof data['_error'] !== 'undefined') {
 					if (typeof error !== 'undefined' && error && error(data) === false) {
 						return;
@@ -35,7 +31,6 @@ function api(url, data, success, error) {
 				}
 			},
 			error: function (data) {
-				console.log(data);
 				if (typeof error !== 'undefined' && error && error(data) === false) {
 					return;
 				}
