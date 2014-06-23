@@ -15,7 +15,6 @@ class API
 
 	public static function action($action)
 	{
-		user_error(print_r(self::$data, true), NOTICE);
 		if (isset(self::$data['action']))
 			return ($action == self::$data['action']);
 		return false;

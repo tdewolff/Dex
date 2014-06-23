@@ -6,8 +6,6 @@ if (!User::loggedIn())
 	user_error('Forbidden access', ERROR);
 }
 
-user_error(API::action('get'), NOTICE);
-
 if (API::action('get'))
 {
 	$errors_only = API::has('errors_only') ? API::get('errors_only') : false;
