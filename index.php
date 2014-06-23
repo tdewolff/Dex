@@ -149,7 +149,6 @@ if (Common::requestApi())
 		Common::responseCode(404);
 		user_error('Could not find API file "' . $filename . '"', ERROR);
 	}
-user_error($filename, NOTICE);
 
 	require_once($filename); // exits
 	user_error('API not handled in "' . $filename . '"', ERROR);

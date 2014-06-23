@@ -6,12 +6,10 @@ if (!User::loggedIn())
 	user_error('Forbidden access', ERROR);
 }
 
-user_error('choose', NOTICE);
 user_error(API::action('get'), NOTICE);
 
 if (API::action('get'))
 {
-user_error('WHAT', NOTICE);
 	$errors_only = API::has('errors_only') ? API::get('errors_only') : false;
 	$loglines = Log::getLastLines(API::get('lines'), $errors_only || !API::has('lines'));
 
