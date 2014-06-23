@@ -17,6 +17,7 @@ Core::addDeferredScript('vendor/jquery.iframe-transport.min.js');
 Core::addDeferredScript('vendor/jquery.fileupload.min.js');
 Core::addDeferredScript('vendor/jquery.knob.min.js');
 Core::addDeferredScript('vendor/doT.min.js');
+Core::addDeferredScript('common.js');
 Core::addDeferredScript('api.js');
 Core::addDeferredScript('upload.js');
 Core::addDeferredScript('tooltips.js');

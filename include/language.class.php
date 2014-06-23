@@ -13,7 +13,7 @@ function __($string)
 
 class Language
 {
-	private static $language = null;
+	private static $language = array();
 
 	public static function getAll()
 	{
@@ -37,20 +37,26 @@ class Language
 			if (!is_file('languages/' . $locale . '.conf'))
 				user_error('Language file "languages/' . $locale . '.conf" doesn\'t exist', WARNING);
 			else
-				self::$language = new Config('languages/' . $locale . '.conf');
+				self::$language['core'] = new Config('languages/' . $locale . '.conf');
 		}
+	}
+
+	public static function extend($domain, $root, $locale)
+	{
+		if ($locale != 'en.English')
+			if (is_file($root . 'languages/' . $locale . '.conf'))
+				self::$language[$domain] = new Config($root . 'languages/' . $locale . '.conf');
 	}
 
 	public static function translate($string, $parameters)
 	{
-		$translation = $string;
-		if (self::$language !== null)
+		if (count(self::$language) > 0)
 		{
-			if (!self::$language->has($string))
-				user_error('Translation for "' . $string . '" doesn\'t exist', NOTICE);
-			else
-				$translation = self::$language->get($string);
+			foreach (self::$language as $domain => $language)
+				if ($language->has($string))
+					return vsprintf($language->get($string), $parameters);
+			user_error('Translation for "' . $string . '" doesn\'t exist', NOTICE);
 		}
-		return vsprintf($translation, $parameters);
+		return vsprintf($string, $parameters);
 	}
 }

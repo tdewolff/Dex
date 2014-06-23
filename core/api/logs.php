@@ -8,40 +8,33 @@ if (!User::loggedIn())
 
 if (API::action('get'))
 {
-	$errors = API::has('errors') ? API::get('errors') : false;
-	if ($errors || !API::has('lines'))
-		$loglines = array_reverse(Log::getAllLines());
-	else
-		$loglines = array_reverse(Log::getLastLines(API::get('lines')));
+	$errors_only = API::has('errors') ? API::get('errors') : false;
+	$loglines = Log::getLastLines(API::get('lines'), $errors_only || !API::has('lines'));
 
 	$logs = array();
-	foreach ($loglines as $logline)
+	foreach (array_reverse($loglines) as $logline)
 	{
-		$details = Log::getLoglineDetails($logline);
-		if (!$details)
-			continue;
-
 		try
 		{
-			$datetime = new DateTime($details['datetime']);
+			$datetime = new DateTime($logline['datetime']);
 		}
 		catch (Exception $e)
 		{
 			continue;
 		}
 
-		if ($errors)
+		if ($errors_only)
 		{
 			if (count($logs) >= API::get('lines') || $datetime->diff(new DateTime())->m > 0)
 				break;
 
-			if ($details['type'] != 'ERROR' && $details['type'] != 'WARNING')
+			if ($logline['type'] != 'ERROR' && $logline['type'] != 'WARNING')
 				continue;
 		}
 
-		$details['message'] = htmlentities($details['message']);
-		$details['html'] = htmlentities(Error::formatError($details['message'], $details['location'], $details['backtrace']));
-		$logs[] = $details;
+		$logline['message'] = htmlentities($logline['message']);
+		$logline['html'] = htmlentities(Error::formatError($logline['message'], $logline['location'], $logline['backtrace']));
+		$logs[] = $logline;
 	}
 	API::set('logs', $logs);
 	API::finish();

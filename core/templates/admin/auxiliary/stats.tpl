@@ -142,17 +142,10 @@ circle.unique {
 				.attr('d', area(visits))
 				.style('fill', function(d) { return color(1); });
 
-			// y axis + text
+			// y axis
 			svg.append('g')
 				.attr('class', 'y axis')
-				.call(yAxis)
-			.append('text')
-				.attr('transform', 'rotate(-90)')
-				.attr('x', -5)
-				.attr('y', 6)
-				.attr('dy', '.71em')
-				.style('text-anchor', 'end')
-				.text('<?php echo __('Visits'); ?>');
+				.call(yAxis);
 
 			// x axis
 			svg.append('g')
@@ -166,6 +159,15 @@ circle.unique {
 				.attr("transform", function(d) {
 					return "rotate(-60)"
 				});
+
+			// y axis text
+			svg.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('x', -5)
+				.attr('y', 6)
+				.attr('dy', '.71em')
+				.style('text-anchor', 'end')
+				.text('<?php echo __('Visits'); ?>');
 
 			if (visits.length > 1) {
 				// paths and points

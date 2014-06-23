@@ -180,9 +180,10 @@
 		function hashchange() {
 			// use copy-pastable AJAX links for directory navigation
 			if (window.location.hash.substr(0, 6) == '#!dir=') {
-				dir = window.location.hash.substr(6);
+				loadDir(window.location.hash.substr(6));
+			} else {
+				loadDir('');
 			}
-			loadDir(dir);
 		}
 		window.onhashchange = hashchange;
 		hashchange();

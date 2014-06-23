@@ -92,7 +92,7 @@ else if (API::action('get_pages'))
 		$row['title'] = htmlspecialchars($row['title']);
 
 		$row['content'] = '';
-		$table2 = Db::query("SELECT content FROM content WHERE link_id = '" . $row['link_id'] . "';");
+		$table2 = Db::query("SELECT content FROM content WHERE link_id = '" . $row['link_id'] . "' AND name = 'content';");
 		while ($row2 = $table2->fetch())
 			$row['content'] .= ' ' . $row2['content'];
 		$row['content'] = preg_replace('/<[^>]+>/', ' ', $row['content']);

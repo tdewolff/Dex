@@ -15,13 +15,13 @@
 		<?php foreach ($_['header_external_scripts'] as $external_script): ?><script src="<?php echo $external_script; ?>"></script><?php endforeach; ?>
 		<?php if (isset($_['header_script'])): ?><script src="/<?php echo $_['base_url'] . $_['header_script']; ?>"></script><?php endif; ?>
 
-		<?php if (User::getTimeLeft() !== false) { ?>
 		<script>
 			var base_url = '<?php echo $_['base_url']; ?>';
 			var link_id = '<?php echo (isset($_['link_id']) ? $_['link_id'] : 0); ?>';
+			<?php if (User::getTimeLeft() !== false) { ?>
 			var session_time = '<?php echo $_['session_time']; ?>';
+			<?php } ?>
 		</script>
-		<?php } ?>
 	</head>
 
 	<?php ob_flush(); flush(); ?>

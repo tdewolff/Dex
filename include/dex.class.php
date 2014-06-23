@@ -64,7 +64,6 @@ class Dex
 	{
 		if (self::$theme_name == '')
 			user_error('Theme name not set', ERROR);
-
 		return self::$theme_name;
 	}
 
@@ -72,7 +71,6 @@ class Dex
 	{
 		if (self::$template_name == '')
 			user_error('Template name not set', ERROR);
-
 		return self::$template_name;
 	}
 
@@ -80,7 +78,6 @@ class Dex
 	{
 		if (self::$module_name == '')
 			user_error('Module name not set', ERROR);
-
 		return self::$module_name;
 	}
 
@@ -89,15 +86,21 @@ class Dex
 	}
 
 	public static function setThemeName($theme_name) {
+		global $settings;
 		self::$theme_name = $theme_name;
+		Language::extend('theme', 'themes/' . $theme_name . '/', Common::tryOrEmpty($settings, 'language'));
 	}
 
 	public static function setTemplateName($template_name) {
+		global $settings;
 		self::$template_name = $template_name;
+		Language::extend('template', 'templates/' . $template_name . '/', Common::tryOrEmpty($settings, 'language'));
 	}
 
 	public static function setModuleName($module_name) {
+		global $settings;
 		self::$module_name = $module_name;
+		Language::extend('module_' . $module_name, 'modules/' . $$module_name . '/', Common::tryOrEmpty($settings, 'language'));
 	}
 }
 

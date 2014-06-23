@@ -42,47 +42,62 @@ class Log
 		return 'logs/' . date('Y-m M') . '.log';
 	}
 
-	public static function getAllLines()
-	{
-		$all = preg_replace("/\r\n|\r/", "\n", trim(file_get_contents(self::$filename)));
-		if (!$all)
-			return array();
-		return explode("\n", $all);
-	}
-
-	public static function getLastLines($n)
+	public static function getLastLines($n, $errors_only)
 	{
 		$buffer_size = 1024;
 
 		if (!($fp = fopen(self::$filename, 'r')))
 			return array();
-
 		fseek($fp, 0, SEEK_END);
-		$pos = ftell($fp);
+		$size = ftell($fp);
 
-		$input = '';
-		$line_count = 0;
-		while ($line_count < $n + 1)
-		{
-			// read the previous block of input
-			$read_size = $pos >= $buffer_size ? $buffer_size : $pos;
-			fseek($fp, $pos - $read_size, SEEK_SET);
+		$pos = -min($buffer_size, $size);
+		$carry = "";
 
-			// prepend the current block, and count the new lines
-			if ($read_size > 0)
-				$input = preg_replace("/\r\n|\r/", "\n", fread($fp, $read_size), -1, $line_count) . $input;
-			//$line_count = substr_count(ltrim($input), "\n");
-
-			// if $pos is == 0 we are at start of file
-			$pos -= $read_size;
-			if (!$pos)
+		$lines = array();
+		while ($n > 0) {
+			if (fseek($fp, $pos, SEEK_END))
 				break;
+
+			$buffer = fread($fp, $buffer_size);
+			$buffer_lines = explode("\n", $buffer);
+			if ($carry != "")
+				$buffer_lines[count($buffer_lines) - 1] .= $carry;
+			$carry = array_shift($buffer_lines);
+
+			$read_lines = array();
+			for ($i = 0; $i < count($buffer_lines); $i++)
+			{
+				$line = self::getLoglineDetails($buffer_lines[$i]);
+				if ($line && (!$errors_only || $line['type'] == 'ERROR' || $line['type'] == 'WARNING'))
+					$read_lines[] = $line;
+			}
+
+			$m = count($read_lines);
+			if ($m >= $n) // read too much
+			{
+				$lines = array_merge(array_slice($read_lines, $m - $n), $lines);
+				break;
+			}
+			else if (-$pos >= $size) // arrived at file start
+			{
+				$lines = array_merge($carry, $read_lines, $lines);
+				break;
+			}
+			else // continue
+			{
+				$lines = array_merge($read_lines, $lines);
+				$n -= $m;
+
+				$pos -= $buffer_size;
+				$pos = max($pos, -$size);
+			}
 		}
 		fclose($fp);
-		return array_slice(explode("\n", rtrim($input)), -$n);
+		return $lines;
 	}
 
-	public static function getLoglineDetails($logline)
+	private static function getLoglineDetails($logline)
 	{
 		$details = array('message' => '', 'location' => '', 'backtrace' => '');
 

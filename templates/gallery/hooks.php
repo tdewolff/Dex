@@ -1,9 +1,15 @@
 <?php
 
-Hooks::attach('main', 0, function () {
+Hooks::attach('site-header', -1, function () {
 	Core::addStyle('vendor/fancybox.css');
+	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 	Core::addDeferredScript('vendor/jquery.fancybox.min.js');
+	Core::addDeferredScript('vendor/doT.min.js');
+	Core::addDeferredScript('common.js');
+	Core::addDeferredScript('api.js');
+});
 
+Hooks::attach('main', 0, function () {
 	$link_id = Core::getLinkId();
 	$content = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'settings' LIMIT 1;");
 	if ($content)

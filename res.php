@@ -1,6 +1,10 @@
 <?php
 
 $filename = Resource::expandUrl($url);
+$is_position = strrpos($filename, '=');
+if ($is_position !== false)
+	$filename = substr($filename, 0, $is_position);
+
 $extension_position = strrpos($filename, '.');
 $extension = ($extension_position === false ? '' : strtolower(substr($filename, $extension_position + 1)));
 
