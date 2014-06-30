@@ -38,10 +38,10 @@ if (!is_writable('cache/'))
 if (!is_writable('logs/'))
 	$warnings[] = __('Directory %s is not writable', '"logs/"');
 
-$handle = opendir('assets/');
-while (($name = readdir($handle)) !== false)
-	if (is_dir('assets/' . $name) && $name != '.' && $name != '..' && !is_writable('assets/' . $name))
-		$warnings[] = __('Directory %s is not writable', '"assets/' . $name . '"');
+if (($handle = opendir('assets/')) !== false)
+	while (($name = readdir($handle)) !== false)
+		if (is_dir('assets/' . $name) && $name != '.' && $name != '..' && !is_writable('assets/' . $name))
+			$warnings[] = __('Directory %s is not writable', '"assets/' . $name . '"');
 
 Hooks::emit('admin-header');
 

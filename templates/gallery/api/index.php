@@ -6,8 +6,8 @@ if (!API::has('link_id'))
 $content = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape(API::get('link_id')) . "' AND name = 'settings' LIMIT 1;");
 if (!$content)
 	user_error('No settings found', ERROR);
-
 $settings = json_decode($content['content'], true);
+
 if (API::action('get_album'))
 {
 	if (!API::has('album'))
@@ -25,36 +25,36 @@ if (API::action('get_album'))
 		user_error('Directory does not exist', ERROR);
 
 	$images = array();
-	$handle = opendir($dir);
-	while (($name = readdir($handle)) !== false)
-	{
-		if (is_file($dir . $name) && !Common::hasMinExtension($name))
+	if (($handle = opendir($dir)) !== false)
+		while (($name = readdir($handle)) !== false)
 		{
-			$filename = $name;
-			if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
-				$filename = Common::insertMinExtension($filename);
-
-			$last_slash = strrpos($name, '/');
-			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
-			$extension = substr($name, strrpos($name, '.') + 1);
-
-			if (Resource::isImage($extension))
+			if (is_file($dir . $name) && !Common::hasMinExtension($name))
 			{
-				list($width, $height, $type, $attribute) = getimagesize($dir . $name);
-				$width = min($width, $max_width);
-				$height = min($height, $max_height);
-				$images[] = array(
-					'url' => $dir . $filename,
-					'name' => $name,
-					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title),
-					'width' => $width,
-					'height' => $height,
-					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $filename), $max_width, $max_height),
-					'mtime' => filemtime($dir . $filename)
-				);
+				$filename = $name;
+				if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
+					$filename = Common::insertMinExtension($filename);
+
+				$last_slash = strrpos($name, '/');
+				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
+				$extension = substr($name, strrpos($name, '.') + 1);
+
+				if (Resource::isImage($extension))
+				{
+					list($width, $height, $type, $attribute) = getimagesize($dir . $name);
+					$width = min($width, $max_width);
+					$height = min($height, $max_height);
+					$images[] = array(
+						'url' => $dir . $filename,
+						'name' => $name,
+						'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title),
+						'width' => $width,
+						'height' => $height,
+						'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $filename), $max_width, $max_height),
+						'mtime' => filemtime($dir . $filename)
+					);
+				}
 			}
 		}
-	}
 	Common::sortOn($images, 'name');
 	API::set('images', $images);
 	API::finish();
@@ -69,42 +69,42 @@ else if (API::action('get_albums'))
 		user_error('Directory does not exist', ERROR);
 
 	$albums = array();
-	$handle = opendir($dir);
-	while (($name = readdir($handle)) !== false)
-	{
-		if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.' && $name != '..')
+	if (($handle = opendir($dir)) !== false)
+		while (($name = readdir($handle)) !== false)
 		{
-			$images = array();
-			$handle_sub = opendir($dir . $name);
-			while (($name_sub = readdir($handle_sub)) !== false)
-				if ($name_sub != '.' && $name_sub != '..' && is_file($dir . $name . '/' . $name_sub) && !Common::hasMinExtension($name_sub) && Resource::isImage(substr($name_sub, strrpos($name_sub, '.') + 1)))
-					$images[] = $name_sub;
-
-			if (count($images))
+			if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.' && $name != '..')
 			{
-				$image_name = $images[mt_rand(0, count($images)-1)];
-				$image_filename = $image_name;
-				if (is_file($dir . $name . '/' . Common::insertMinExtension($image_filename)) && filemtime($dir . $name . '/' . Common::insertMinExtension($image_filename)) > filemtime($dir . $name . '/' . $image_filename))
-					$image_filename = Common::insertMinExtension($image_filename);
+				$images = array();
+				if (($handle_sub = opendir($dir . $name)) !== false)
+					while (($name_sub = readdir($handle_sub)) !== false)
+						if ($name_sub != '.' && $name_sub != '..' && is_file($dir . $name . '/' . $name_sub) && !Common::hasMinExtension($name_sub) && Resource::isImage(substr($name_sub, strrpos($name_sub, '.') + 1)))
+							$images[] = $name_sub;
 
-				$last_slash = strrpos($image_name, '/');
-				$title = substr($image_name, $last_slash ? $last_slash + 1 : 0, strrpos($image_name, '.'));
+				if (count($images))
+				{
+					$image_name = $images[mt_rand(0, count($images)-1)];
+					$image_filename = $image_name;
+					if (is_file($dir . $name . '/' . Common::insertMinExtension($image_filename)) && filemtime($dir . $name . '/' . Common::insertMinExtension($image_filename)) > filemtime($dir . $name . '/' . $image_filename))
+						$image_filename = Common::insertMinExtension($image_filename);
 
-				list($width, $height, $type, $attribute) = getimagesize($dir . $name . '/' . $image_filename);
-				$width = min($width, $max_width);
-				$height = min($height, $max_height);
-				$albums[] = array(
-					'url' => $dir . $name . '/' . $image_filename,
-					'name' => $name,
-					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title),
-					'width' => $width,
-					'height' => $height,
-					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name . '/' . $image_filename), $max_width, $max_height),
-					'mtime' => filemtime($dir . $name . '/' . $image_filename)
-				);
+					$last_slash = strrpos($image_name, '/');
+					$title = substr($image_name, $last_slash ? $last_slash + 1 : 0, strrpos($image_name, '.'));
+
+					list($width, $height, $type, $attribute) = getimagesize($dir . $name . '/' . $image_filename);
+					$width = min($width, $max_width);
+					$height = min($height, $max_height);
+					$albums[] = array(
+						'url' => $dir . $name . '/' . $image_filename,
+						'name' => $name,
+						'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title),
+						'width' => $width,
+						'height' => $height,
+						'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $name . '/' . $image_filename), $max_width, $max_height),
+						'mtime' => filemtime($dir . $name . '/' . $image_filename)
+					);
+				}
 			}
 		}
-	}
 	Common::sortOn($albums, 'name');
 	API::set('albums', $albums);
 	API::finish();

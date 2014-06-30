@@ -136,12 +136,12 @@ if (Common::$request_url == 'sitemap.xml')
 // load all site settings
 if (Db::isValid())
 {
-	$settings = array();
+	$dex_settings = array();
 	$table = Db::query("SELECT * FROM setting;");
 	while ($row = $table->fetch())
-		$settings[$row['key']] = $row['value'];
+		$dex_settings[$row['key']] = $row['value'];
 
-	Language::load(Common::tryOrEmpty($settings, 'language'));
+	Language::load(Common::tryOrEmpty($dex_settings, 'language'));
 }
 
 // API; continued
@@ -190,8 +190,8 @@ if (Common::requestAdmin())
 if (User::loggedIn())
 	$_SESSION['last_site_request'] = Common::$request_url;
 
-Core::addTitle(Common::tryOrEmpty($settings, 'title'));
-Core::setThemeName(Common::tryOrEmpty($settings, 'theme'));
+Core::addTitle(Common::tryOrEmpty($dex_settings, 'title'));
+Core::setThemeName(Common::tryOrEmpty($dex_settings, 'theme'));
 
 // load in admin bar
 if (User::getTimeLeft() !== false)

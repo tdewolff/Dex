@@ -29,7 +29,7 @@ if ($form->submitted())
 	$form->finish();
 }
 
-foreach ($settings as $key => $value)
+foreach ($dex_settings as $key => $value)
 	$form->set($key, $value);
 
 Hooks::emit('admin-header');

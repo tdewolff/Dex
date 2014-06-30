@@ -33,13 +33,13 @@ else
 	$form->setId('url', 'url');
 
 	$templates = array();
-	$handle = opendir('templates/');
-	while (($template_name = readdir($handle)) !== false)
-		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
-		{
-			$config = new Config('templates/' . $template_name . '/template.conf');
-			$templates[$template_name] = $config->get('title');
-		}
+	if (($handle = opendir('templates/')) !== false)
+		while (($template_name = readdir($handle)) !== false)
+			if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
+			{
+				$config = new Config('templates/' . $template_name . '/template.conf');
+				$templates[$template_name] = $config->get('title');
+			}
 	$form->addDropdown('template_name', __('Template'), __('Determine page type'), $templates);
 
 	$form->addSeparator();

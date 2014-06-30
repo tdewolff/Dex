@@ -9,18 +9,19 @@ if (!User::isAdmin())
 if (API::action('get_templates'))
 {
 	$templates = array();
-	$handle = opendir('templates/');
-	while (($template_name = readdir($handle)) !== false)
-		if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
-		{
-			$config = new Config('templates/' . $template_name . '/template.conf');
-			$templates[] = array(
-				'name' => $template_name,
-				'title' => __($config->get('title')),
-				'author' => $config->get('author'),
-				'description' => __($config->get('description'))
-			);
-		}
+	if (($handle = opendir('templates/')) !== false)
+		while (($template_name = readdir($handle)) !== false)
+			if (is_dir('templates/' . $template_name) && $template_name != '.' && $template_name != '..')
+			{
+				Language::extend('templates', $template_name, Common::tryOrEmpty($dex_settings, 'language'));
+				$config = new Config('templates/' . $template_name . '/template.conf');
+				$templates[] = array(
+					'name' => $template_name,
+					'title' => $config->get('title'),
+					'author' => $config->get('author'),
+					'description' => ___('templates_' . $template_name, $config->get('description'))
+				);
+			}
 	Common::sortOn($templates, 'name');
 
 	API::set('templates', $templates);

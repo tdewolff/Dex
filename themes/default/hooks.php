@@ -6,10 +6,10 @@ Hooks::attach('site-header', -1, function () {
 });
 
 Hooks::attach('header', 0, function () {
-	global $settings;
+	global $dex_settings;
 
-	if (isset($settings['title']))
-		echo '<h1>' . $settings['title'] . '</h1>';
-	if (isset($settings['subtitle']) && strlen($settings['subtitle']))
-		echo '<h2>' . nl2br($settings['subtitle']) . '</h2>';
+	if (isset($dex_settings['title']))
+		echo '<h1>' . $dex_settings['title'] . '</h1>';
+	if (isset($dex_settings['subtitle']) && strlen($dex_settings['subtitle']))
+		echo '<h2>' . nl2br($dex_settings['subtitle']) . '</h2>';
 });

@@ -86,21 +86,21 @@ class Dex
 	}
 
 	public static function setThemeName($theme_name) {
-		global $settings;
+		global $dex_settings;
 		self::$theme_name = $theme_name;
-		Language::extend('theme', 'themes/' . $theme_name . '/', Common::tryOrEmpty($settings, 'language'));
+		Language::extend('themes', $theme_name, Common::tryOrEmpty($dex_settings, 'language'));
 	}
 
 	public static function setTemplateName($template_name) {
-		global $settings;
+		global $dex_settings;
 		self::$template_name = $template_name;
-		Language::extend('template', 'templates/' . $template_name . '/', Common::tryOrEmpty($settings, 'language'));
+		Language::extend('templates', $template_name, Common::tryOrEmpty($dex_settings, 'language'));
 	}
 
 	public static function setModuleName($module_name) {
-		global $settings;
+		global $dex_settings;
 		self::$module_name = $module_name;
-		Language::extend('module_' . $module_name, 'modules/' . $$module_name . '/', Common::tryOrEmpty($settings, 'language'));
+		Language::extend('modules', $module_name, Common::tryOrEmpty($dex_settings, 'language'));
 	}
 }
 
@@ -162,14 +162,14 @@ class Core extends Dex
 	public static function checkModules()
 	{
 		$fs_modules = array();
-		$handle = opendir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/');
-		while (($module_name = readdir($handle)) !== false)
-			if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
-			{
-				$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/module.conf';
-				if (is_file($module_file))
-					$fs_modules[$module_name] = 1;
-			}
+		if (($handle = opendir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/')) !== false)
+			while (($module_name = readdir($handle)) !== false)
+				if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
+				{
+					$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/module.conf';
+					if (is_file($module_file))
+						$fs_modules[$module_name] = 1;
+				}
 
 		// check with database
 		$remove_modules = array();

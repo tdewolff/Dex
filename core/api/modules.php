@@ -1,6 +1,5 @@
 <?php
 
-	user_error('Forbidden access', ERROR);
 if (!User::isAdmin())
 {
 	Common::responseCode(403);
@@ -33,9 +32,9 @@ else if (API::action('get_modules'))
 	{
 		$config = new Config('modules/' . $row['module_name'] . '/module.conf');
 		$row['module_id'] = count($modules);
-		$row['title'] = __($config->get('title'));
+		$row['title'] = $config->get('title');
 		$row['author'] = $config->get('author');
-		$row['description'] = __($config->get('description'));
+		$row['description'] = ___('modules_' . $row['module_name'], $config->get('description'));
 		$modules[] = $row;
 	}
 	API::set('modules', $modules);

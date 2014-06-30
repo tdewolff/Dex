@@ -454,6 +454,140 @@ a.list-button:visited.dropdown-select,
 button.list-button:visited.dropdown-select {
   border-right: 0;
 }
+.inline-error-left,
+.inline-error-right,
+.inline-error-above,
+.inline-error-below {
+  display: none;
+}
+.inline-error-left .box,
+.inline-error-right .box,
+.inline-error-above .box,
+.inline-error-below .box {
+  display: inline-block;
+  padding: 5px 10px;
+  border: solid 1px #E6CBCE;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #F2DEDE;
+  position: relative;
+  z-index: 999;
+}
+.inline-error-left .box p,
+.inline-error-right .box p,
+.inline-error-above .box p,
+.inline-error-below .box p {
+  margin: 0;
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #B94A48;
+  font-size: 70%;
+  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.inline-error-left .box p i,
+.inline-error-right .box p i,
+.inline-error-above .box p i,
+.inline-error-below .box p i {
+  font-size: 150%;
+  vertical-align: middle;
+}
+.inline-error-left .box p span,
+.inline-error-right .box p span,
+.inline-error-above .box p span,
+.inline-error-below .box p span {
+  vertical-align: middle;
+}
+.inline-error-left .box .arrow,
+.inline-error-right .box .arrow,
+.inline-error-above .box .arrow,
+.inline-error-below .box .arrow {
+  border: 6px solid transparent;
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 1001;
+}
+.inline-error-left .box .arrow-border,
+.inline-error-right .box .arrow-border,
+.inline-error-above .box .arrow-border,
+.inline-error-below .box .arrow-border {
+  border: 6px solid transparent;
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 1000;
+}
+.inline-error-left .box {
+  top: -25px;
+  right: 100%;
+  float: right;
+  margin-right: 6px;
+}
+.inline-error-left .box .arrow {
+  border-right: 0;
+  border-left: 6px solid #F2DEDE;
+  top: 6px;
+  right: -5px;
+}
+.inline-error-left .box .arrow-border {
+  border-right: 0;
+  border-left: 6px solid #E6CBCE;
+  top: 6px;
+  right: -7px;
+}
+.inline-error-right .box {
+  top: -25px;
+  left: 100%;
+  margin-left: 6px;
+}
+.inline-error-right .box .arrow {
+  border-left: 0;
+  border-right: 6px solid #F2DEDE;
+  top: 6px;
+  left: -5px;
+}
+.inline-error-right .box .arrow-border {
+  border-left: 0;
+  border-right: 6px solid #E6CBCE;
+  top: 6px;
+  left: -7px;
+}
+.inline-error-above .box {
+  bottom: 57px;
+  left: 0;
+}
+.inline-error-above .box .arrow {
+  border-bottom: 0;
+  border-top: 6px solid #F2DEDE;
+  bottom: -5px;
+  left: 5px;
+}
+.inline-error-above .box .arrow-border {
+  border-bottom: 0;
+  border-top: 6px solid #E6CBCE;
+  bottom: -7px;
+  left: 5px;
+}
+.inline-error-below .box {
+  top: 6px;
+  left: 0;
+  margin-bottom: 6px;
+}
+.inline-error-below .box .arrow {
+  border-top: 0;
+  border-bottom: 6px solid #F2DEDE;
+  top: -5px;
+  left: 5px;
+}
+.inline-error-below .box .arrow-border {
+  border-top: 0;
+  border-bottom: 6px solid #E6CBCE;
+  top: -7px;
+  left: 5px;
+}
 label {
   display: block;
   float: left;
@@ -1575,140 +1709,6 @@ table.backtrace {
 table.backtrace th,
 table.backtrace td {
   padding: 0 2em;
-}
-.inline-error-left,
-.inline-error-right,
-.inline-error-above,
-.inline-error-below {
-  display: none;
-}
-.inline-error-left .box,
-.inline-error-right .box,
-.inline-error-above .box,
-.inline-error-below .box {
-  display: inline-block;
-  padding: 5px 10px;
-  border: solid 1px #E6CBCE;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  background: #F2DEDE;
-  position: relative;
-  z-index: 999;
-}
-.inline-error-left .box p,
-.inline-error-right .box p,
-.inline-error-above .box p,
-.inline-error-below .box p {
-  margin: 0;
-  padding: 0;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: #B94A48;
-  font-size: 70%;
-  font-family: Georgia, Cambria, "Times New Roman", "Bitstream Charter", Times, serif;
-  font-weight: bold;
-  white-space: nowrap;
-}
-.inline-error-left .box p i,
-.inline-error-right .box p i,
-.inline-error-above .box p i,
-.inline-error-below .box p i {
-  font-size: 150%;
-  vertical-align: middle;
-}
-.inline-error-left .box p span,
-.inline-error-right .box p span,
-.inline-error-above .box p span,
-.inline-error-below .box p span {
-  vertical-align: middle;
-}
-.inline-error-left .box .arrow,
-.inline-error-right .box .arrow,
-.inline-error-above .box .arrow,
-.inline-error-below .box .arrow {
-  border: 6px solid transparent;
-  width: 0;
-  height: 0;
-  position: absolute;
-  z-index: 1001;
-}
-.inline-error-left .box .arrow-border,
-.inline-error-right .box .arrow-border,
-.inline-error-above .box .arrow-border,
-.inline-error-below .box .arrow-border {
-  border: 6px solid transparent;
-  width: 0;
-  height: 0;
-  position: absolute;
-  z-index: 1000;
-}
-.inline-error-left .box {
-  top: -25px;
-  right: 100%;
-  float: right;
-  margin-right: 6px;
-}
-.inline-error-left .box .arrow {
-  border-right: 0;
-  border-left: 6px solid #F2DEDE;
-  top: 6px;
-  right: -5px;
-}
-.inline-error-left .box .arrow-border {
-  border-right: 0;
-  border-left: 6px solid #E6CBCE;
-  top: 6px;
-  right: -7px;
-}
-.inline-error-right .box {
-  top: -25px;
-  left: 100%;
-  margin-left: 6px;
-}
-.inline-error-right .box .arrow {
-  border-left: 0;
-  border-right: 6px solid #F2DEDE;
-  top: 6px;
-  left: -5px;
-}
-.inline-error-right .box .arrow-border {
-  border-left: 0;
-  border-right: 6px solid #E6CBCE;
-  top: 6px;
-  left: -7px;
-}
-.inline-error-above .box {
-  bottom: 57px;
-  left: 0;
-}
-.inline-error-above .box .arrow {
-  border-bottom: 0;
-  border-top: 6px solid #F2DEDE;
-  bottom: -5px;
-  left: 5px;
-}
-.inline-error-above .box .arrow-border {
-  border-bottom: 0;
-  border-top: 6px solid #E6CBCE;
-  bottom: -7px;
-  left: 5px;
-}
-.inline-error-below .box {
-  top: 6px;
-  left: 0;
-  margin-bottom: 6px;
-}
-.inline-error-below .box .arrow {
-  border-top: 0;
-  border-bottom: 6px solid #F2DEDE;
-  top: -5px;
-  left: 5px;
-}
-.inline-error-below .box .arrow-border {
-  border-top: 0;
-  border-bottom: 6px solid #E6CBCE;
-  top: -7px;
-  left: 5px;
 }
 input.invalid {
   border-color: #c76e6d;

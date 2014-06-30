@@ -171,41 +171,41 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 	if (API::action('get_directories') || API::action('get_directories_assets'))
 	{
 		$directories = array();
-		$handle = opendir($dir);
-		while (($name = readdir($handle)) !== false)
-		{
-			if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.')
+		if (($handle = opendir($dir)) !== false)
+			while (($name = readdir($handle)) !== false)
 			{
-				$empty = true;
-				$url = $dir . $name . '/';
-				if ($name == '..')
+				if (is_readable($dir . $name) && is_dir($dir . $name) && $name != '.')
 				{
-					if ($dir == 'assets/')
-						continue;
+					$empty = true;
+					$url = $dir . $name . '/';
+					if ($name == '..')
+					{
+						if ($dir == 'assets/')
+							continue;
 
-					$url = substr($dir, 0, strlen($dir) - 1);
-					$last_slash = strrpos($url, '/');
-					$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
-				}
-				else
-				{
-					$handle_sub = opendir($dir . $name);
-					while (($name_sub = readdir($handle_sub)) !== false)
-						if ($name_sub != '.' && $name_sub != '..')
-						{
-							$empty = false;
-							break;
-						}
-				}
+						$url = substr($dir, 0, strlen($dir) - 1);
+						$last_slash = strrpos($url, '/');
+						$url = $last_slash ? substr($url, 0, $last_slash + 1) : '';
+					}
+					else
+					{
+						$handle_sub = opendir($dir . $name);
+						while (($name_sub = readdir($handle_sub)) !== false)
+							if ($name_sub != '.' && $name_sub != '..')
+							{
+								$empty = false;
+								break;
+							}
+					}
 
-				$directories[] = array(
-					'dir' => ($url == 'assets/' ? '' : substr($url, 7)), // remove leading "assets/"
-					'name' => $name,
-					'icon' => ($name == '..' ? 'dirup.png' : 'folder.png'),
-					'is_deletable' => $empty && $name != '..'
-				);
+					$directories[] = array(
+						'dir' => ($url == 'assets/' ? '' : substr($url, 7)), // remove leading "assets/"
+						'name' => $name,
+						'icon' => ($name == '..' ? 'dirup.png' : 'folder.png'),
+						'is_deletable' => $empty && $name != '..'
+					);
+				}
 			}
-		}
 		Common::sortOn($directories, 'name');
 		API::set('directories', $directories);
 	}
@@ -213,29 +213,29 @@ else if (API::action('get_directories') || API::action('get_assets') || API::act
 	if (API::action('get_assets') || API::action('get_directories_assets'))
 	{
 		$assets = array();
-		$handle = opendir($dir);
-		while (($name = readdir($handle)) !== false)
-		{
-			if (is_file($dir . $name) && !Common::hasMinExtension($name))
+		if (($handle = opendir($dir)) !== false)
+			while (($name = readdir($handle)) !== false)
 			{
-				$last_slash = strrpos($name, '/');
-				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
-				$extension = substr($name, strrpos($name, '.') + 1);
-
-				if (Resource::isResource($extension) && !Resource::isImage($extension))
+				if (is_file($dir . $name) && !Common::hasMinExtension($name))
 				{
-					list($width, $height, $type, $attribute) = getimagesize($dir . $name);
-					$assets[] = array(
-						'url' => $dir . $name,
-						'name' => $name,
-						'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
-						'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-						'size' => Common::formatBytes(filesize($dir . $name), 2),
-						'width' => $width
-					);
+					$last_slash = strrpos($name, '/');
+					$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
+					$extension = substr($name, strrpos($name, '.') + 1);
+
+					if (Resource::isResource($extension) && !Resource::isImage($extension))
+					{
+						list($width, $height, $type, $attribute) = getimagesize($dir . $name);
+						$assets[] = array(
+							'url' => $dir . $name,
+							'name' => $name,
+							'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+							'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+							'size' => Common::formatBytes(filesize($dir . $name), 2),
+							'width' => $width
+						);
+					}
 				}
 			}
-		}
 		Common::sortOn($assets, 'name');
 		API::set('assets', $assets);
 	}
@@ -246,35 +246,35 @@ else if (API::action('get_images'))
 	$max_width = API::has('max_width') ? API::get('max_width') : 0;
 
 	$images = array();
-	$handle = opendir($dir);
-	while (($name = readdir($handle)) !== false)
-	{
-		if (is_file($dir . $name) && !Common::hasMinExtension($name))
+	if (($handle = opendir($dir)) !== false)
+		while (($name = readdir($handle)) !== false)
 		{
-			$filename = $name;
-			if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
-				$filename = Common::insertMinExtension($filename);
-
-			$last_slash = strrpos($name, '/');
-			$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
-			$extension = substr($name, strrpos($name, '.') + 1);
-
-			if (Resource::isImage($extension))
+			if (is_file($dir . $name) && !Common::hasMinExtension($name))
 			{
-				list($width, $height, $type, $attribute) = getimagesize($dir . $name);
-				$images[] = array(
-					'url' => $dir . $filename,
-					'name' => $name,
-					'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
-					'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
-					'size' => Common::formatBytes(filesize($dir . $filename), 2),
-					'width' => $width,
-					'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $filename), $max_width),
-					'mtime' => filemtime($dir . $filename)
-				);
+				$filename = $name;
+				if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
+					$filename = Common::insertMinExtension($filename);
+
+				$last_slash = strrpos($name, '/');
+				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
+				$extension = substr($name, strrpos($name, '.') + 1);
+
+				if (Resource::isImage($extension))
+				{
+					list($width, $height, $type, $attribute) = getimagesize($dir . $name);
+					$images[] = array(
+						'url' => $dir . $filename,
+						'name' => $name,
+						'icon' => (is_file('core/resources/images/icons/' . $extension . '.png') ? $extension . '.png' : 'unknown.png'),
+						'title' => (strlen($title) > 40 ? substr($title, 0, 40) > '&mdash;' : $title) . '.' . $extension,
+						'size' => Common::formatBytes(filesize($dir . $filename), 2),
+						'width' => $width,
+						'attr' => Resource::imageSizeAttributes(explode('/', 'res/' . $dir . $filename), $max_width),
+						'mtime' => filemtime($dir . $filename)
+					);
+				}
 			}
 		}
-	}
 	Common::sortOn($images, 'name');
 
 	API::set('images', $images);

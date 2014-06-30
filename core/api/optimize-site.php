@@ -38,28 +38,28 @@ $style_directories = array('core/resources/styles/');
 $extension_directories = array('modules/', 'templates/', 'themes/');
 foreach ($extension_directories as $extension_directory)
 {
-	$handle = opendir($extension_directory);
-	while (($module_name = readdir($handle)) !== false)
-		if ($module_name != '.' && $module_name != '..' &&
-			is_dir($extension_directory . $module_name) &&
-			is_dir($extension_directory . $module_name . '/resources/'))
-		{
-			if (is_dir($extension_directory . $module_name . '/resources/scripts/'))
+	if (($handle = opendir($extension_directory)) !== false)
+		while (($module_name = readdir($handle)) !== false)
+			if ($module_name != '.' && $module_name != '..' &&
+				is_dir($extension_directory . $module_name) &&
+				is_dir($extension_directory . $module_name . '/resources/'))
 			{
-				if (is_writable($extension_directory . $module_name . '/resources/scripts/'))
-					$script_directories[] = $extension_directory . $module_name . '/resources/scripts/';
-				else
-					Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/scripts/'));
-			}
+				if (is_dir($extension_directory . $module_name . '/resources/scripts/'))
+				{
+					if (is_writable($extension_directory . $module_name . '/resources/scripts/'))
+						$script_directories[] = $extension_directory . $module_name . '/resources/scripts/';
+					else
+						Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/scripts/'));
+				}
 
-			if (is_dir($extension_directory . $module_name . '/resources/styles/'))
-			{
-				if (is_writable($extension_directory . $module_name . '/resources/styles/'))
-					$style_directories[] = $extension_directory . $module_name . '/resources/styles/';
-				else
-					Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/styles/'));
+				if (is_dir($extension_directory . $module_name . '/resources/styles/'))
+				{
+					if (is_writable($extension_directory . $module_name . '/resources/styles/'))
+						$style_directories[] = $extension_directory . $module_name . '/resources/styles/';
+					else
+						Console::appendLine(__('Directory "%s" is not writable', $extension_directory . $module_name . '/resources/styles/'));
+				}
 			}
-		}
 }
 
 foreach ($script_directories as $script_directory)

@@ -10,20 +10,20 @@ if (API::action('clear_logs'))
 {
 	Log::close();
 
-	$handle = opendir('logs/');
-	while (($log_name = readdir($handle)) !== false)
-		if (is_file('logs/' . $log_name))
-			unlink('logs/' . $log_name);
+	if (($handle = opendir('logs/')) !== false)
+		while (($log_name = readdir($handle)) !== false)
+			if (is_file('logs/' . $log_name))
+				unlink('logs/' . $log_name);
 
 	Log::open();
 	API::finish();
 }
 else if (API::action('clear_cache'))
 {
-	$handle = opendir('cache/');
-	while (($cache_name = readdir($handle)) !== false)
-		if (is_file('cache/' . $cache_name))
-			unlink('cache/' . $cache_name);
+	if (($handle = opendir('cache/')) !== false)
+		while (($cache_name = readdir($handle)) !== false)
+			if (is_file('cache/' . $cache_name))
+				unlink('cache/' . $cache_name);
 	API::finish();
 }
 else if (API::action('solve_warning'))

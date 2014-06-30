@@ -24,7 +24,7 @@
 		</script>
 	</head>
 
-	<?php ob_flush(); flush(); ?>
+	<?php //ob_flush(); flush(); ?>
 <?php endif; ?>
 
 	<body>

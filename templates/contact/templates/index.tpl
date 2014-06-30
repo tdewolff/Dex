@@ -1,0 +1,1 @@
+<?php $_['contact']->render(); ?>

@@ -66,6 +66,7 @@ $modules = array();
 $table = Db::query("SELECT module_name, enabled FROM module ORDER BY module_name ASC;");
 while ($row = $table->fetch())
 {
+	Language::extend('modules', $row['module_name'], Common::tryOrEmpty($dex_settings, 'language'));
 	$config = new Config('modules/' . $row['module_name'] . '/module.conf');
 	$admin_links[] = array(
 		'name' => 'module_' . $config->get('name'),
@@ -73,7 +74,7 @@ while ($row = $table->fetch())
 		'file' => 'modules/' . $row['module_name'] . '/admin/index.php',
 		'url' => $config->get('url'),
 		'icon' => $config->get('icon'),
-		'title' => __($config->get('title')),
+		'title' => $config->get('title'),
 		'admin_only' => $config->get('admin_only'),
 		'enabled' => $row['enabled']
 	);

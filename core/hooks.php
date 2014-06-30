@@ -101,7 +101,7 @@ Hooks::attach('admin-footer', 0, function () {
 ////////////////////////////////////////////////////////////////
 
 function site_header() {
-	global $settings;
+	global $dex_settings;
 
 	$titles = Core::getTitles();
 	$externalStyles = Core::getExternalStyles();
@@ -109,9 +109,9 @@ function site_header() {
 	$externalScripts = Core::getExternalScripts('header');
 	$scripts = Core::getScripts('header');
 
-	Core::set('header_description', Common::tryOrEmpty($settings, 'description'));
-	if (strlen($settings['keywords']))
-		Core::set('header_keywords', implode(',', json_decode($settings['keywords'])));
+	Core::set('header_description', Common::tryOrEmpty($dex_settings, 'description'));
+	if (strlen($dex_settings['keywords']))
+		Core::set('header_keywords', implode(',', json_decode($dex_settings['keywords'])));
 
 	if (count($titles))
 		Core::set('header_title', implode(' - ', array_reverse($titles)));

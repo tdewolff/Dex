@@ -2,13 +2,41 @@
 
 function __($string)
 {
+	$domain = 'core';
+	$base_path = substr(str_replace('\\', '/', __FILE__), 0, -strlen('include/language.class.php'));
+
+	$trace = debug_backtrace();
+	while (count($trace))
+	{
+		$file = str_replace('\\', '/', array_shift($trace)['file']);
+		$filepath = explode('/', substr($file, strlen($base_path)));
+		if (count($filepath) > 1 && ($filepath[0] == 'core' || $filepath[0] == 'modules' || $filepath[0] == 'templates' || $filepath[0] == 'themes'))
+		{
+			if ($filepath[0] != 'core')
+				$domain = $filepath[0] . '_' . $filepath[1];
+			break;
+		}
+	}
+
 	$parameters = array();
 	if (func_num_args() > 1)
 	{
 		$parameters = func_get_args();
 		array_shift($parameters);
 	}
-	return Language::translate($string, $parameters);
+	return Language::translate($domain, $string, $parameters);
+}
+
+function ___($domain, $string)
+{
+	$parameters = array();
+	if (func_num_args() > 2)
+	{
+		$parameters = func_get_args();
+		array_shift($parameters);
+		array_shift($parameters);
+	}
+	return Language::translate($domain, $string, $parameters);
 }
 
 class Language
@@ -18,13 +46,13 @@ class Language
 	public static function getAll()
 	{
 		$languages = array('en.English' => 'English');
-		$handle = opendir('languages/');
-		while (($name = readdir($handle)) !== false)
-			if (is_file('languages/' . $name) && substr($name, -5) == '.conf')
-			{
-				$dot_position = strpos($name, '.');
-				$languages[substr($name, 0, -5)] = substr($name, $dot_position + 1, -5);
-			}
+		if (($handle = opendir('languages/')) !== false)
+			while (($name = readdir($handle)) !== false)
+				if (is_file('languages/' . $name) && substr($name, -5) == '.conf')
+				{
+					$dot_position = strpos($name, '.');
+					$languages[substr($name, 0, -5)] = substr($name, $dot_position + 1, -5);
+				}
 
 		asort($languages);
 		return $languages;
@@ -32,7 +60,7 @@ class Language
 
 	public static function load($locale)
 	{
-		if ($locale != 'en.English')
+		if ($locale != '' && $locale != 'en.English')
 		{
 			if (!is_file('languages/' . $locale . '.conf'))
 				user_error('Language file "languages/' . $locale . '.conf" doesn\'t exist', WARNING);
@@ -41,21 +69,22 @@ class Language
 		}
 	}
 
-	public static function extend($domain, $root, $locale)
+	public static function extend($domain, $name, $locale)
 	{
-		if ($locale != 'en.English')
-			if (is_file($root . 'languages/' . $locale . '.conf'))
-				self::$language[$domain] = new Config($root . 'languages/' . $locale . '.conf');
+		if ($locale != '' && $locale != 'en.English' && !isset(self::$language[$domain . '_' . $name]))
+			if (is_file($domain . '/' . $name . '/languages/' . $locale . '.conf'))
+				self::$language[$domain . '_' . $name] = new Config($domain . '/' . $name . '/languages/' . $locale . '.conf');
 	}
 
-	public static function translate($string, $parameters)
+	public static function translate($domain, $string, $parameters)
 	{
 		if (count(self::$language) > 0)
 		{
-			foreach (self::$language as $domain => $language)
-				if ($language->has($string))
-					return vsprintf($language->get($string), $parameters);
-			user_error('Translation for "' . $string . '" doesn\'t exist', NOTICE);
+			if (isset(self::$language[$domain]) && self::$language[$domain]->has($string))
+				return vsprintf(self::$language[$domain]->get($string), $parameters);
+			if ($domain != 'core' && isset(self::$language['core']) && self::$language['core']->has($string))
+				return vsprintf(self::$language['core']->get($string), $parameters);
+			user_error('Translation for "' . $string . '" in domain "' . $domain . '" doesn\'t exist', NOTICE);
 		}
 		return vsprintf($string, $parameters);
 	}

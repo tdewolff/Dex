@@ -16,7 +16,7 @@
 
 	<?php elseif ($item['type'] == 'section'): ?>
 	<h3><?php echo $item['title']; ?></h3>
-	<p class="section-text"><?php echo $item['text']; ?></p>
+	<?php if (!empty($item['text'])): ?><p class="section-text"><?php echo $item['text']; ?></p><?php endif; ?>
 
 
 	<?php else: // input elements with a label ?>

@@ -94,7 +94,7 @@ class Form
 			'name' => $this->name . '_' . $name,
 			'title' => $title,
 			'subtitle' => $subtitle,
-			'placeholder' => '+99 (9) 9999-9999',
+			'placeholder' => __('+99 (9) 9999-9999'),
 			'preg' => array('regex' => '\+?[0-9- \(\)]*', 'min' => 10, 'max' => 20, 'error' => __('Invalid telephone number')),
 			'value' => ''
 		);
@@ -325,6 +325,7 @@ class Form
 
 	public function finish()
 	{
+		ob_clean();
 		if (!count($this->errors) && !count($this->item_errors))
 			$this->clearSession();
 
