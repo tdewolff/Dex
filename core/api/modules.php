@@ -1,5 +1,6 @@
 <?php
 
+	user_error('Forbidden access', ERROR);
 if (!User::isAdmin())
 {
 	Common::responseCode(403);

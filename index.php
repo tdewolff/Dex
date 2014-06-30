@@ -109,7 +109,11 @@ if (!session_start())
 
 Bcrypt::setRounds(8);
 Db::open('dex.db');
+
 User::validate();
+if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) // HTTP auth login for API; TODO: force digest instead of basic authentication
+	if (($error = User::logIn($_SERVER['PHP_AUTH_USER'], sha1($_SERVER['PHP_AUTH_PW']))) !== false)
+		user_error($error, ERROR);
 
 register_shutdown_function(function() {
 	global $starttime;

@@ -165,7 +165,7 @@ if ($form->submitted())
 			user_error('Could not setup site, database error', ERROR);
 		}
 
-		User::logIn(Db::lastId());
+		User::logIn($form->get('username'), $form->get('password'));
 		$form->setRedirect('/' . Common::$base_url . 'admin/');
 	}
 	$form->finish();

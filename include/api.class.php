@@ -59,20 +59,23 @@ class API
 
 	////////////////
 
-	public static function error($message)
+	public static function error($message, $formatted_message)
 	{
-		self::$response['_error'][] = $message;
+		self::$response['error'][] = $message;
+		self::$response['formatted_error'][] = $formatted_message;
 		self::finish();
 	}
 
-	public static function warning($message)
+	public static function warning($message, $formatted_message)
 	{
-		self::$response['_error'][] = $message;
+		self::$response['error'][] = $message;
+		self::$response['formatted_error'][] = $formatted_message;
 	}
 
-	public static function notice($message)
+	public static function notice($message, $formatted_message)
 	{
-		self::$response['_error'][] = $message;
+		self::$response['error'][] = $message;
+		self::$response['formatted_error'][] = $formatted_message;
 	}
 
 	////////////////

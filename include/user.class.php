@@ -11,20 +11,27 @@ class User
 		self::$valid = isset($_SESSION['user']) && Db::isValid() && Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $_SESSION['user']['user_id'] . "' LIMIT 1;");
 	}
 
-	public static function logIn($user_id)
+	public static function logIn($username, $password)
 	{
-		$user = Db::singleQuery("SELECT * FROM user WHERE user_id = '" . $user_id . "' LIMIT 1;");
-		if (!$user)
-			user_error('Could not login', ERROR);
+		if (User::isBlocked($username))
+			return __('Too many login attempts within short time, please wait 15 minutes');
+
+		$user = Db::singleQuery("SELECT * FROM user WHERE username = '" . Db::escape($username) . "' LIMIT 1;");
+		if (!$user || !Bcrypt::verify($password, $user['password']))
+		{
+			User::addAttempt($username);
+			return __('Username and password combination is incorrect');
+		}
 
 		$_SESSION['user'] = array(
-			'user_id' => $user_id,
+			'user_id' => $user['user_id'],
 			'username' => $user['username'],
 			'email' => $user['email'],
 			'role' => $user['role'],
 			'time' => time()
 		);
 		self::$valid = true;
+		return false;
 	}
 
 	public static function logOut()

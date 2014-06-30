@@ -26,7 +26,7 @@ class Error
 	public static function getErrors()
 	{
 		if (!self::$display_errors)
-			return '<p class="error">' . (function_exists('_') ? __('A server error occurred') : 'A server error occurred') . '</p>';
+			return '<p class="error">' . (function_exists('__') ? __('A server error occurred') : 'A server error occurred') . '</p>';
 		return implode('', self::$messages);
 	}
 
@@ -46,18 +46,15 @@ class Error
 
 	public static function formatError($message, $location, $backtrace)
 	{
-		$formatted_message = '<p class="error"><strong>' . $message . '</strong><br><small>' . $location . '</small></p>';
-
-		$formatted_backtrace = '';
-		if (is_array($backtrace))
+		$formatted_message = '<p class="error"><strong>' . $message . '</strong>' . ($location !== false ? '<br><small>' . $location . '</small>' : '') . '</p>';
+		if (is_array($backtrace) && count($backtrace))
 		{
-			$formatted_backtrace = '<table class="backtrace"><thead><tr><th>File</th><th>Function</th></tr></thead><tbody>';
+			$formatted_message .= '<table class="backtrace"><thead><tr><th>File</th><th>Function</th></tr></thead><tbody>';
 			foreach ($backtrace as $row)
-				$formatted_backtrace .= '<tr><td>' . (isset($row['file']) ? $row['file'] : '') . '</td><td>' . (isset($row['function']) ? $row['function'] : '') . '</td></tr>';
+				$formatted_message .= '<tr><td>' . (isset($row['file']) ? $row['file'] : '') . '</td><td>' . (isset($row['function']) ? $row['function'] : '') . '</td></tr>';
+			$formatted_message .= '</tbody></table>';
 		}
-		$formatted_backtrace .= '</tbody></table>';
-
-		return $formatted_message . $formatted_backtrace;
+		return $formatted_message;
 	}
 
 	public static function report($type, $message, $file, $line)
@@ -68,8 +65,6 @@ class Error
 		$location = ($file && $line ? $file . ':' . $line : '');
 		$backtrace = self::stripBacktrace(debug_backtrace());
 		$formatted_message = self::formatError($message, $location, $backtrace);
-
-		$display_message = self::$display_errors ? $formatted_message : '<p class="error">' . (function_exists('_') ? __('A server error occurred') : 'A server error occurred') . '</p>';
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))
@@ -86,7 +81,7 @@ class Error
 				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::warning($formatted_message);
+						API::warning($message, $formatted_message);
 					else if (Common::requestAdmin())
 						echo $formatted_message;
 				}
@@ -101,7 +96,7 @@ class Error
 				if (self::$display_notices && !Common::requestResource())
 				{
 					if (Common::requestAjax())
-						API::notice($formatted_message);
+						API::notice($message, $formatted_message);
 					else if (Common::requestAdmin())
 						echo $formatted_message;
 				}
@@ -120,8 +115,10 @@ class Error
 				if (Common::requestResource())
 					header('Content-Type: text/html; charset: UTF-8');
 
+				$display_message = self::$display_errors ? $message : (function_exists('__') ? __('A server error occurred') : 'A server error occurred');
+				$display_formatted_message = self::$display_errors ? $formatted_message : '<p class="error">' . $display_message . '</p>';
 				if (Common::requestAjax())
-					API::error($display_message);
+					API::error($display_message, $display_formatted_message);
 				else if (class_exists('Hooks'))
 				{
 					if (Common::requestAdmin())
@@ -130,7 +127,7 @@ class Error
 						Hooks::emit('site-error');
 				}
 				else
-					echo $display_message;
+					echo $display_formatted_message;
 				exit;
 		}
 		return true;

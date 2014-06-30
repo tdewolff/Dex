@@ -21,27 +21,16 @@ if ($form->submitted())
 {
 	if ($form->validate())
 	{
-		if (User::isBlocked($form->get('username')))
-			$form->appendError(__('Too many login attempts within short time, please wait 15 minutes'));
+		if (($error = User::logIn($form->get('username'), $form->get('password'))) !== false)
+			$form->appendError($error);
 		else
 		{
-			$user = Db::singleQuery("SELECT user_id, password FROM user WHERE username = '" . Db::escape($form->get('username')) . "' LIMIT 1;");
-			if ($user && Bcrypt::verify($form->get('password'), $user['password']))
-			{
-				User::logIn($user['user_id']);
-
-				if (isset($url[1]) && strpos($url[1], 'r=') === 0)
-					$form->setRedirect('/' . Common::$base_url . rawurldecode(substr($url[1], 2)));
-				else if (Common::$request_url == 'admin/logout/')
-					$form->setRedirect('/' . Common::$base_url . 'admin/');
-				else
-					$form->setRedirect('/' . Common::$base_url . Common::$request_url);
-			}
+			if (isset($url[1]) && strpos($url[1], 'r=') === 0)
+				$form->setRedirect('/' . Common::$base_url . rawurldecode(substr($url[1], 2)));
+			else if (Common::$request_url == 'admin/logout/')
+				$form->setRedirect('/' . Common::$base_url . 'admin/');
 			else
-			{
-				User::addAttempt($form->get('username'));
-				$form->appendError(__('Username and password combination is incorrect'));
-			}
+				$form->setRedirect('/' . Common::$base_url . Common::$request_url);
 		}
 	}
 	$form->finish();

@@ -179,7 +179,7 @@ $('form input[data-type="array"]').each(function (i, array) {
 		ul.append(items);
 	}
 
-	ul.on('keydown', 'input' , function (e) {
+	ul.on('keydown', 'input', function (e) {
 		if (e.keyCode === 188) {
 			var input = $(this),
 				li = input.closest('li');

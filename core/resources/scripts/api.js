@@ -15,15 +15,16 @@ function api(url, data, success, error) {
 			data: data,
 			dataType: 'json',
 			success: function (data) {
-				if (typeof data['_error'] !== 'undefined') {
+				// TODO: remove
+				/*if (typeof data['formatted_error'] !== 'undefined') {
 					if (typeof error !== 'undefined' && error && error(data) === false) {
 						return;
 					}
 
 					if (data['status'] !== 403) {
-						apiFatal(data['_error'].join('<br>'));
+						apiFatal(data['formatted_error'].join('<br>'));
 					}
-				} else if (typeof success !== 'undefined' && success)	{
+				} else */if (typeof success !== 'undefined' && success)	{
 					success(data);
 					if (typeof applyTooltips !== 'undefined') {
 						applyTooltips();
@@ -36,8 +37,8 @@ function api(url, data, success, error) {
 				}
 
 				if (data['status'] !== 403) {
-					if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['_error'] !== 'undefined') { // PHP error but still handled by API
-						apiFatal(data['responseJSON']['_error'].join('<br>'));
+					if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['formatted_error'] !== 'undefined') { // PHP error but still handled by API
+						apiFatal(data['responseJSON']['formatted_error'].join('<br>'));
 					} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
 						apiFatal(escapeHtml(data['responseText']));
 					} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
