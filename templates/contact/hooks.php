@@ -11,6 +11,10 @@ Hooks::attach('main', 0, function () {
 	require_once('include/form.class.php');
 
 	$link_id = Core::getLinkId();
+	$content = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'settings' LIMIT 1;");
+	if (!$content)
+		user_error('Cannot find settings in database', ERROR);
+	$settings = json_decode($content['content'], true);
 
 	$form = new Form('contact');
 
@@ -23,29 +27,25 @@ Hooks::attach('main', 0, function () {
 	$form->setSubmit(__('Send'));
 	$form->setResponse(__('Sent'), __('Not sent'));
 
-
 	if ($form->submitted())
 	{
 		if ($form->validate())
-			// Db::exec("BEGIN;
-			// 	DELETE FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings';
-			// 	INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
-			// 		'" . Db::escape($url[2]) . "',
-			// 		'" . Db::escape(User::getUserId()) . "',
-			// 		'settings',
-			// 		'" . Db::escape(json_encode(array(
-			// 			'directory' => $form->get('directory')
-			// 		))) . "',
-			// 		'" . Db::escape(time()) . "'
-			// 	);
-			// COMMIT;");
-	print_r('!!!!!!!!!!!!!!' . $form->submitted());
+		{
+			require_once('vendor/swift-mailer/swift_required.php');
+
+			$transport = Swift_SmtpTransport::newInstance('localhost', 25);
+			$mailer = Swift_Mailer::newInstance($transport);
+			$message = Swift_Message::newInstance($settings['title'] . $form->get('title'))
+				->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
+				->setTo(array($settings['email']))
+				->setReplyTo(array($form->get('email')))
+				->setBody($form->get('content'));
+
+			if (!$mailer->send($message))
+				$form->appendError('Email failed to send');
+		}
 		$form->finish();
 	}
-
-	// if ($settings = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings' LIMIT 1;"))
-	// 	foreach (json_decode($settings['content'], true) as $key => $value)
-	// 		$form->set($key, $value);
 
 	Template::set('contact', $form);
 	Template::render('index.tpl');

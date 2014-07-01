@@ -10,6 +10,8 @@ if (!$link)
 $form = new Form('settings');
 
 $form->addSection(__('Settings'), '');
+$form->addEmail('email', __('Email address'), '');
+$form->addText('title', __('Title prefix'), '', '', array('.*', 0, 20, __('Unknown error')));
 
 $form->addSeparator();
 $form->setResponse(__('Saved'), __('Not saved'));
@@ -17,18 +19,19 @@ $form->setResponse(__('Saved'), __('Not saved'));
 if ($form->submitted())
 {
 	if ($form->validate())
-		// Db::exec("BEGIN;
-		// 	DELETE FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings';
-		// 	INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
-		// 		'" . Db::escape($url[2]) . "',
-		// 		'" . Db::escape(User::getUserId()) . "',
-		// 		'settings',
-		// 		'" . Db::escape(json_encode(array(
-		// 			'directory' => $form->get('directory')
-		// 		))) . "',
-		// 		'" . Db::escape(time()) . "'
-		// 	);
-		// COMMIT;");
+		Db::exec("BEGIN;
+			DELETE FROM content WHERE link_id = '" . Db::escape($url[2]) . "' AND name = 'settings';
+			INSERT INTO content (link_id, user_id, name, content, modify_time) VALUES (
+				'" . Db::escape($url[2]) . "',
+				'" . Db::escape(User::getUserId()) . "',
+				'settings',
+				'" . Db::escape(json_encode(array(
+					'email' => $form->get('email'),
+					'title' => $form->get('title')
+				))) . "',
+				'" . Db::escape(time()) . "'
+			);
+		COMMIT;");
 	$form->finish();
 }
 

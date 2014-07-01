@@ -1,4 +1,4 @@
-<?php if (User::loggedIn()) { ?>
+<?php //if (User::loggedIn()) { ?>
 <div class="dex-api">
 	<div class="fatal"></div>
 	<div class="status">
@@ -7,7 +7,7 @@
 		<div class="error"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
 	</div>
 </div>
-<?php } ?>
+<?php //} ?>
 
 <?php if (User::getTimeLeft() !== false || Common::requestAdmin()) { ?>
 <div class="dex-admin-bar">

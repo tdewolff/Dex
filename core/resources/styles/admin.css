@@ -78,6 +78,8 @@
 }
 .dex-api-error table.backtrace {
   width: 100%;
+  max-width: 40em;
+  margin: 0 auto;
   color: #B94A48;
 }
 h1 {

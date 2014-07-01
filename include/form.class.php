@@ -243,6 +243,7 @@ class Form
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST')
 		{
+			ob_end_clean();
 			parse_str(file_get_contents("php://input"), $this->data); // retrieve input
 
 			foreach ($this->items as $item) // input to session
@@ -325,7 +326,6 @@ class Form
 
 	public function finish()
 	{
-		ob_clean();
 		if (!count($this->errors) && !count($this->item_errors))
 			$this->clearSession();
 

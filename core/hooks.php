@@ -27,7 +27,7 @@ Hooks::attach('site', 0, function () {
 $error_loop = false;
 
 Hooks::attach('site-error', 0, function () {
-	ob_clean();
+	ob_end_clean();
 
 	global $error_loop;
 	if ($error_loop)
@@ -61,7 +61,7 @@ Hooks::attach('site-error', 0, function () {
 });
 
 Hooks::attach('admin-error', 0, function () {
-	ob_clean();
+	ob_end_clean();
 
 	global $error_loop;
 	if ($error_loop)
