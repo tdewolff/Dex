@@ -8,7 +8,8 @@ function __($string)
 	$trace = debug_backtrace();
 	while (count($trace))
 	{
-		$file = str_replace('\\', '/', array_shift($trace)['file']);
+		$caller = array_shift($trace);
+		$file = str_replace('\\', '/', $caller['file']);
 		$filepath = explode('/', substr($file, strlen($base_path)));
 		if (count($filepath) > 1 && ($filepath[0] == 'core' || $filepath[0] == 'modules' || $filepath[0] == 'templates' || $filepath[0] == 'themes'))
 		{
