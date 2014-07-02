@@ -456,9 +456,10 @@ DexEdit.Text = function (root) {
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
 						var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
 						if (block == null) {
-							block = self.root;
+							figure.appendTo(self.root);
+						} else {
+							figure.insertAfter(block);
 						}
-						figure.insertAfter(block);
 						new DexEdit.Image(self.root, img);
 
 						DexEdit.Selection.removeAllRanges();

@@ -219,6 +219,8 @@
 	$(function () {
 		initAdminUpload('#upload', function (data) {
 			if (!data['file'].is_image) {
+				$('#load_status_directories_assets').hide();
+
 				var item = asset_item(data['file']);
 				if (directories_assets.find('li.asset').length) {
 					addAlphabetically(directories_assets.find('li.asset'), item, data['file']['name']);
@@ -226,6 +228,8 @@
 					$(item).hide().insertAfter(directories_assets.find('.directory:last')).slideDown(100);
 				}
 			} else {
+				$('#load_status_images').hide();
+
 				var item = image_item(data['file']);
 				if (images.find('li').length) {
 					addAlphabetically(images.find('li'), item, data['file']['name']);
