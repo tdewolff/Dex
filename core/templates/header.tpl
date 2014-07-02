@@ -28,4 +28,4 @@
 <?php endif; ?>
 
 	<body>
-		<?php include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/include/site-admin.tpl'); // absolute path needed for register_shutdown_function() ?>
+		<?php include(Common::$base_path . 'core/templates/include/site-admin.tpl'); // absolute path needed for register_shutdown_function() ?>

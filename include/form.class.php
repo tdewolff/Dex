@@ -292,7 +292,7 @@ class Form
 						if ($value != $value_confirm)
 							$this->item_errors[] = array('name' => $item['name'], 'error' => __('Does not confirm'));
 					}
-					else if (($error = self::validateItem($value, $item['preg'], $item['type'])) !== false)
+					else if (isset($item['preg']) && ($error = self::validateItem($value, $item['preg'], $item['type'])) !== false)
 						$this->item_errors[] = array('name' => $item['name'], 'error' => $error);
 				}
 			}
@@ -317,7 +317,16 @@ class Form
 		return false;
 	}
 
-	private function clearSession()
+	public function isBot()
+	{
+		if (!isset($this->data['honeypot']) || $this->data['honeypot'] != "")
+			return true;
+		if (!isset($_SESSION['form_time_' . $this->name]) || $_SESSION['form_time_' . $this->name] + 5 > time()) // submitted within 5 seconds
+			return true;
+		return false;
+	}
+
+	public function clearSession()
 	{
 		foreach ($this->items as $item)
 			if (isset($item['value']))
@@ -341,6 +350,8 @@ class Form
 	public function render()
 	{
 		$_SESSION['form_nonce_' . $this->name] = random();
+		$_SESSION['form_time_' . $this->name] = time();
+
 		foreach ($this->items as $k => $item) // session to form
 			if (isset($item['value']))
 				$this->items[$k]['value'] = (isset($_SESSION[$item['name']]) ? $_SESSION[$item['name']] : '');
@@ -361,12 +372,6 @@ class Form
 	public function set($name, $value)
 	{
 		$_SESSION[$this->name . '_' . $name] = $value;
-	}
-
-	public function setAll($all)
-	{
-		foreach ($all as $name => $value)
-			$_SESSION[$this->name . '_' . $name] = $value;
 	}
 
 	// get value of input element, use after validate()
@@ -394,7 +399,7 @@ class Form
 		$this->item_errors[] = array('name' => $this->name . '_' . $name, 'error' => $error);
 	}
 
-	public function appendError($error)
+	public function formError($error)
 	{
 		$this->errors[] = $error;
 	}

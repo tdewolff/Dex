@@ -49,6 +49,7 @@ if (!extension_loaded('sqlite3'))
 // form the request URI
 Log::request($_SERVER['REQUEST_URI']);
 
+Common::$base_path = dirname($_SERVER['SCRIPT_FILENAME']) . '/';
 Common::$base_url = substr($_SERVER['PHP_SELF'], 1, strrpos($_SERVER['PHP_SELF'], '/')); // remove filename
 Common::$base_url = preg_replace('/\/+$/', '/', Common::$base_url); // remove added slashes to base url
 

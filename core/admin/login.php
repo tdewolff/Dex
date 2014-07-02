@@ -22,7 +22,7 @@ if ($form->submitted())
 	if ($form->validate())
 	{
 		if (($error = User::logIn($form->get('username'), $form->get('password'))) !== false)
-			$form->appendError($error);
+			$form->formError($error);
 		else
 		{
 			if (isset($url[1]) && strpos($url[1], 'r=') === 0)

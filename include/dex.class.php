@@ -108,7 +108,7 @@ class Core extends Dex
 {
 	public static function render($_template) {
 		$_ = self::$vars;
-		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/core/templates/' . $_template);
+		include(Common::$base_path . 'core/templates/' . $_template);
 	}
 
 	public static function addStyle($style) {
@@ -162,11 +162,11 @@ class Core extends Dex
 	public static function checkModules()
 	{
 		$fs_modules = array();
-		if (($handle = opendir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/')) !== false)
+		if (($handle = opendir(Common::$base_path . 'modules/')) !== false)
 			while (($module_name = readdir($handle)) !== false)
-				if ($module_name != '.' && $module_name != '..' && is_dir(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name))
+				if ($module_name != '.' && $module_name != '..' && is_dir(Common::$base_path . 'modules/' . $module_name))
 				{
-					$module_file = dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/module.conf';
+					$module_file = Common::$base_path . 'modules/' . $module_name . '/module.conf';
 					if (is_file($module_file))
 						$fs_modules[$module_name] = 1;
 				}
@@ -194,7 +194,7 @@ class Core extends Dex
 
 		foreach ($fs_modules as $module_name => $enabled) // file exists but db entry does not
 		{
-			include_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . $module_name . '/admin/setup.php');
+			include_once(Common::$base_path . 'modules/' . $module_name . '/admin/setup.php');
 
 			user_error('Module with module_name "' . $module_name . '" is inserted into the database', NOTICE);
 
@@ -229,7 +229,7 @@ class Module extends Dex
 			user_error('Module name not set', ERROR);
 
 		$_ = self::$vars;
-		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/modules/' . self::$module_name . '/templates/' . $_template);
+		include(Common::$base_path . 'modules/' . self::$module_name . '/templates/' . $_template);
 	}
 
 	public static function addStyle($style) {
@@ -273,7 +273,7 @@ class Theme extends Dex
 			user_error('Theme name not set', ERROR);
 
 		$_ = self::$vars;
-		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/themes/' . self::$theme_name . '/templates/' . $_template);
+		include(Common::$base_path . 'themes/' . self::$theme_name . '/templates/' . $_template);
 	}
 
 	public static function addStyle($style) {
@@ -317,7 +317,7 @@ class Template extends Dex
 			user_error('Template name not set', ERROR);
 
 		$_ = self::$vars;
-		include(dirname($_SERVER['SCRIPT_FILENAME']) . '/templates/' . self::$template_name . '/templates/' . $_template);
+		include(Common::$base_path . 'templates/' . self::$template_name . '/templates/' . $_template);
 	}
 
 	public static function addStyle($style) {

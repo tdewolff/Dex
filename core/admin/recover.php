@@ -50,7 +50,7 @@ else if (isset($url[2]) && $url[2] == 'reset')
 				WHERE user_id = '" . Db::escape($recover['user_id']) . "';");
 			}
 			else if ($recover)
-				$form->appendError(__('Token has expired, request a new one at the %spassword recovery%s.', '<a href="/' . $_['base_url'] . 'admin/recover/">', '</a>'));
+				$form->formError(__('Token has expired, request a new one at the %spassword recovery%s.', '<a href="/' . $_['base_url'] . 'admin/recover/">', '</a>'));
 
 			$form->setRedirect('/' . Common::$base_url . 'admin/recover/success/');
 		}

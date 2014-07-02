@@ -16,7 +16,7 @@ $dir = html_entity_decode(urldecode($dir));
 $request_dir = substr($dir, 7);
 
 $dir = preg_replace('/\\\\/', '/', realpath($dir));
-$root = dirname($_SERVER['SCRIPT_FILENAME']) . '/assets';
+$root = Common::$base_path . 'assets';
 if (strlen($dir) < strlen($root) || substr($dir, 0, strlen($root)) !== $root)
 {
 	Common::responseCode(403);
@@ -251,10 +251,7 @@ else if (API::action('get_images'))
 		{
 			if (is_file($dir . $name) && !Common::hasMinExtension($name))
 			{
-				$filename = $name;
-				if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
-					$filename = Common::insertMinExtension($filename);
-
+				$filename = Resource::getMinified($name);
 				$last_slash = strrpos($name, '/');
 				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 				$extension = substr($name, strrpos($name, '.') + 1);

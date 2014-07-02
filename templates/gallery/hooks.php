@@ -25,10 +25,7 @@ Hooks::attach('main', 0, function () {
 		{
 			if (is_file($dir . $name) && !Common::hasMinExtension($name))
 			{
-				$filename = $name;
-				if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
-					$filename = Common::insertMinExtension($filename);
-
+				$filename = Resource::getMinified($name);
 				$last_slash = strrpos($name, '/');
 				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 				$extension = substr($name, strrpos($name, '.') + 1);
@@ -47,9 +44,9 @@ Hooks::attach('main', 0, function () {
 				}
 			}
 		}
-		Common::sortOn($images, 'name');
-		Template::set('images', $images);
-		Template::set('max_width', $max_width);
-	}
+
+	Common::sortOn($images, 'name');
+	Template::set('images', $images);
+	Template::set('max_width', $max_width);
 	Template::render('index.tpl');
 });

@@ -7,6 +7,11 @@
 		name="nonce"
 		value="<?php echo $form['nonce']; ?>">
 
+	<input type="text"
+		name="honeypot"
+		value=""
+		class="hidden">
+
 	<div class="errors"></div>
 
 	<?php foreach ($form['items'] as $item): ?>

@@ -30,7 +30,7 @@ class Db
 			self::close();
 
 		// absolute path needed for register_shutdown_function()
-		self::$filename = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename;
+		self::$filename = Common::$base_path . $filename;
 		try
 		{
 			self::$handle = new SQLite3($filename);

@@ -68,7 +68,7 @@ class Error
 		self::$messages[] = $formatted_message;
 
 		if (Common::requestAjax() && !class_exists('API'))
-			require_once(dirname($_SERVER['SCRIPT_FILENAME']) . '/include/api.class.php');
+			require_once(Common::$base_path . 'include/api.class.php');
 
 		switch ($type)
 		{

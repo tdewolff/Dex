@@ -15,7 +15,7 @@ class Log
 	public static function initialize()
 	{
 		// absolute path needed for register_shutdown_function()
-		self::$filename = dirname($_SERVER['SCRIPT_FILENAME']) . '/' . self::getFilename();
+		self::$filename = Common::$base_path . self::getFilename();
 		self::$ipaddress = Common::padIpAddress($_SERVER['REMOTE_ADDR']);
 
 		self::open();

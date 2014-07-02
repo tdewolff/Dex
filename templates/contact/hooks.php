@@ -1,6 +1,9 @@
 <?php
 
 Hooks::attach('site-header', -1, function () {
+	Core::addStyle('vendor/fancybox.css');
+	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
+	Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 	Core::addDeferredScript('vendor/doT.min.js');
 	Core::addDeferredScript('common.js');
 	Core::addDeferredScript('api.js');
@@ -31,21 +34,27 @@ Hooks::attach('main', 0, function () {
 	{
 		if ($form->validate())
 		{
-			require_once('vendor/swift-mailer/swift_required.php');
+			if ($form->isBot())
+				$form->formError('Bot');
+			else
+			{
+				require_once('vendor/swift-mailer/swift_required.php');
 
-			$transport = Swift_SmtpTransport::newInstance('localhost', 25);
-			$mailer = Swift_Mailer::newInstance($transport);
-			$message = Swift_Message::newInstance($settings['title'] . $form->get('title'))
-				->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
-				->setTo(array($settings['email']))
-				->setReplyTo(array($form->get('email')))
-				->setBody($form->get('content'));
+				$transport = Swift_SmtpTransport::newInstance('localhost', 25);
+				$mailer = Swift_Mailer::newInstance($transport);
+				$message = Swift_Message::newInstance($settings['title'] . $form->get('title'))
+					->setFrom(array('noreply@' . $_SERVER['HTTP_HOST']))
+					->setTo(array($settings['email']))
+					->setReplyTo(array($form->get('email')))
+					->setBody($form->get('content'));
 
-			if (!$mailer->send($message))
-				$form->appendError('Email failed to send');
+				if (!$mailer->send($message))
+					$form->formError('Email failed to send');
+			}
 		}
 		$form->finish();
 	}
+	$form->clearSession();
 
 	Template::set('contact', $form);
 	Template::render('index.tpl');

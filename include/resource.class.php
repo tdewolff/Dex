@@ -69,14 +69,14 @@ class Resource
 	public static function getMinified($filename)
 	{
 		$min = Common::insertMinExtension($filename);
-		if (is_file($min) && filemtime($filename) < filemtime($min))
+		if (is_file(Common::$base_path . $min) && filemtime(Common::$base_path . $filename) < filemtime(Common::$base_path . $min))
 			return $min;
 
 		// SmushIt gif -> png case
 		if (substr($filename, strrpos($filename, '.') + 1) == 'gif')
 		{
 			$min .= '.png';
-			if (is_file($min) && filemtime($filename) < filemtime($min))
+			if (is_file(Common::$base_path . $min) && filemtime(Common::$base_path . $filename) < filemtime(Common::$base_path . $min))
 				$filename = $min;
 		}
 		return $filename;
@@ -86,11 +86,11 @@ class Resource
 	{
 		$latest_modify_time = 0;
 		foreach ($filenames as $filename)
-			if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
+			if (!is_file(Common::$base_path . $filename))
 				user_error('File "' . $filename . '" could not be found', WARNING);
 			else
 			{
-				$modify_time = filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+				$modify_time = filemtime(Common::$base_path . $filename);
 				$latest_modify_time = max($modify_time, $latest_modify_time);
 			}
 
@@ -104,18 +104,18 @@ class Resource
 
 		if ($extension == 'js' || $extension == 'css') // use minified js and css when available
 			foreach ($filenames as $i => $filename)
-				if (is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . Common::insertMinExtension($filename)) &&
-					filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename) < filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . Common::insertMinExtension($filename)))
+				if (is_file(Common::$base_path . Common::insertMinExtension($filename)) &&
+					filemtime(Common::$base_path . $filename) < filemtime(Common::$base_path . Common::insertMinExtension($filename)))
 					$filenames[$i] = Common::insertMinExtension($filename);
 
 		$cache_filename = self::cacheFilename($filenames, 'cache/%s.' . $extension);
-		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename) || !self::$caching)
+		if (!is_file(Common::$base_path . $cache_filename) || !self::$caching)
 		{
 			$content = '';
 			foreach ($filenames as $filename)
-				if (is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
-					$content .= file_get_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
-			file_put_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename, $content);
+				if (is_file(Common::$base_path . $filename))
+					$content .= file_get_contents(Common::$base_path . $filename);
+			file_put_contents(Common::$base_path . $cache_filename, $content);
 
 			$endtime_local = explode(' ', microtime());
 			$totaltime = ($endtime_local[1] + $endtime_local[0] - $starttime_local[1] - $starttime_local[0]);
@@ -147,13 +147,13 @@ class Resource
 
 	public static function imageSize($filename, $max_width, $max_height = 0)
 	{
-		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename))
+		if (!is_file(Common::$base_path . $filename))
 		{
 			user_error('Could not find "' . $filename . '" to determine new image size', WARNING);
 			return array(0, 0);
 		}
 
-		list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+		list($width, $height, $mime_type, $attribute) = getimagesize(Common::$base_path . $filename);
 
 		$new_width = $width;
 		$new_height = $height;
@@ -190,26 +190,26 @@ class Resource
 	public static function imageResize($filename, $max_width, $max_height = 0)
 	{
 		$starttime_local = explode(' ', microtime());
-		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . filemtime(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename)) . '.png';
-		if (!is_file(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $cache_filename))
+		$cache_filename = 'cache/' . sha1($filename . '_' . $max_width . '_' . $max_height . '_' . filemtime(Common::$base_path . $filename)) . '.png';
+		if (!is_file(Common::$base_path . $cache_filename))
 		{
-			list($width, $height, $mime_type, $attribute) = getimagesize(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+			list($width, $height, $mime_type, $attribute) = getimagesize(Common::$base_path . $filename);
 			list($new_width, $new_height) = self::imageSize($filename, $max_width, $max_height);
 
 			switch (image_type_to_mime_type($mime_type))
 			{
 				case 'image/jpeg':
-					$image = imagecreatefromjpeg(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+					$image = imagecreatefromjpeg(Common::$base_path . $filename);
 					break;
 
 				case 'image/png':
-					$image = imagecreatefrompng(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+					$image = imagecreatefrompng(Common::$base_path . $filename);
 					imagealphablending($image, true);
 					imagesavealpha($image, true);
 					break;
 
 				case 'image/gif':
-					$image = imagecreatefromgif(dirname($_SERVER['SCRIPT_FILENAME']) . '/' . $filename);
+					$image = imagecreatefromgif(Common::$base_path . $filename);
 					break;
 
 				default:

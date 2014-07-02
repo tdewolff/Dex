@@ -4,6 +4,7 @@ class Common
 {
 	public static $request_url = '';
 	public static $base_url = '';
+	public static $base_path = '';
 
 	////////////////
 

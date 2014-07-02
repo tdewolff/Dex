@@ -36,6 +36,7 @@ var Form = function (form) {
 	this.updateUnused();
 
 	this.save = function () {
+		self.form.find('.errors').hide();
 		apiStatusWorking();
 
 		// put data of multi-input fields into single hidden input
@@ -73,7 +74,6 @@ var Form = function (form) {
 	};
 
 	this.success = function (data) {
-		self.form.find('.errors').hide();
 		if (data['errors'].length) {
 			var errors = data['errors'].join('<br>');
 			var form_errors = self.form.find('.errors');
