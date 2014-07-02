@@ -8,7 +8,7 @@
 			<a href="#!album={{=it.name}}" title="{{=it.title}}">
 				<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w={{=it.width}}/h={{=it.height}}/t={{=it.mtime}}/" {{=it.attr}}>
 			</a>
-			<figcaption>{{=it.title}}</figcation>
+			<figcaption>{{=it.name}}</figcation>
 		</figure>
 	</li>
 </script>
@@ -19,7 +19,6 @@
 			<a href="/<?php echo $_['base_url']; ?>res/{{=it.url}}" title="{{=it.title}}" rel="gallery" class="fancybox">
 				<img src="/<?php echo $_['base_url']; ?>res/{{=it.url}}/w={{=it.width}}/h={{=it.height}}/t={{=it.mtime}}/" {{=it.attr}}>
 			</a>
-			<figcaption>{{=it.title}}</figcation>
 		</figure>
 	</li>
 </script>

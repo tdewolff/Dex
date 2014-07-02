@@ -3,12 +3,15 @@
 function __($string)
 {
 	$domain = 'core';
-	$base_path = substr(str_replace('\\', '/', __FILE__), 0, -strlen('include/language.class.php'));
+	$base_path = substr(str_replace('\\', '/', __FILE__), 0, -strlen(Common::$base_path . 'include/language.class.php'));
 
 	$trace = debug_backtrace();
 	while (count($trace))
 	{
 		$caller = array_shift($trace);
+		if (!isset($caller['file']))
+			break;
+
 		$file = str_replace('\\', '/', $caller['file']);
 		$filepath = explode('/', substr($file, strlen($base_path)));
 		if (count($filepath) > 1 && ($filepath[0] == 'core' || $filepath[0] == 'modules' || $filepath[0] == 'templates' || $filepath[0] == 'themes'))

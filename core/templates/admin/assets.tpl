@@ -257,7 +257,7 @@
 				item.closest('li').slideUp(100, function () {
 					$(this).remove();
 
-					if (images.find('li').length == 2) {
+					if (images.find('li').length == 1) {
 						apiLoadStatusEmpty($('#load_status_images'));
 						$('#load_status_images').slideDown(100)
 					}

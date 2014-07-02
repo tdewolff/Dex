@@ -52,13 +52,15 @@ DexEdit.DOM = {
 	},
 
 	getClosestTag: function (node, tag, limit) {
-		while (node.parentNode) {
-			if (limit && node === limit) {
-				break;
-			} else if (DexEdit.DOM.getTag(node) === tag) {
-				return node;
+		if (node) {
+			while (node.parentNode) {
+				if (limit && node === limit) {
+					break;
+				} else if (DexEdit.DOM.getTag(node) === tag) {
+					return node;
+				}
+				node = node.parentNode;
 			}
-			node = node.parentNode;
 		}
 		return null;
 	},
@@ -452,7 +454,11 @@ DexEdit.Text = function (root) {
 						img.attr('width', this.width).attr('height', this.height);
 
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
-						figure.insertAfter(DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer));
+						var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
+						if (block == null) {
+							block = self.root;
+						}
+						figure.insertAfter(block);
 						new DexEdit.Image(self.root, img);
 
 						DexEdit.Selection.removeAllRanges();
@@ -1135,5 +1141,7 @@ DexEdit.destroy = function () {
 DexEdit.getContent = function (selector) {
 	var content = $(selector).clone().detach();
 	DexEdit.destroySingle(content);
-	return content.html();
+	if (typeof content.html() !== 'undefined')
+		return content.html();
+	return '';
 };

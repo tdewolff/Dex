@@ -52,7 +52,7 @@ class Log
 		$size = ftell($fp);
 
 		$pos = -min($buffer_size, $size);
-		$carry = array();
+		$carry = '';
 
 		$lines = array();
 		while ($n > 0) {
@@ -61,7 +61,7 @@ class Log
 
 			$buffer = fread($fp, $buffer_size);
 			$buffer_lines = explode("\n", $buffer);
-			if (count($carry))
+			if (strlen($carry))
 				$buffer_lines[count($buffer_lines) - 1] .= $carry;
 			$carry = array_shift($buffer_lines);
 
@@ -80,7 +80,7 @@ class Log
 			}
 			else if (-$pos >= $size) // arrived at file start
 			{
-				$lines = array_merge($carry, $read_lines, $lines);
+				$lines = array_merge(array($carry), $read_lines, $lines);
 				break;
 			}
 			else // continue

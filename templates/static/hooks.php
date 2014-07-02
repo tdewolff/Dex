@@ -7,7 +7,7 @@ Hooks::attach('main', 0, function () {
 	if ($content)
 	{
 		$content['content'] = preg_replace('/([src|href]=")\[base_url\]/', '\1/' . Common::$base_url, $content['content']);
-		if (empty($content['content']))
+		if (empty($content['content']) && User::loggedIn())
 			$content['content'] = __('Edit this&#x2026;');
 		Template::set('content', $content['content']);
 

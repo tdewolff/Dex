@@ -30,10 +30,7 @@ if (API::action('get_album'))
 		{
 			if (is_file($dir . $name) && !Common::hasMinExtension($name))
 			{
-				$filename = $name;
-				if (is_file($dir . Common::insertMinExtension($filename)) && filemtime($dir . Common::insertMinExtension($filename)) > filemtime($dir . $filename))
-					$filename = Common::insertMinExtension($filename);
-
+				$filename = Resource::getMinified($name);
 				$last_slash = strrpos($name, '/');
 				$title = substr($name, $last_slash ? $last_slash + 1 : 0, strrpos($name, '.'));
 				$extension = substr($name, strrpos($name, '.') + 1);
@@ -83,10 +80,7 @@ else if (API::action('get_albums'))
 				if (count($images))
 				{
 					$image_name = $images[mt_rand(0, count($images)-1)];
-					$image_filename = $image_name;
-					if (is_file($dir . $name . '/' . Common::insertMinExtension($image_filename)) && filemtime($dir . $name . '/' . Common::insertMinExtension($image_filename)) > filemtime($dir . $name . '/' . $image_filename))
-						$image_filename = Common::insertMinExtension($image_filename);
-
+					$image_filename = Resource::getMinified($image_name);
 					$last_slash = strrpos($image_name, '/');
 					$title = substr($image_name, $last_slash ? $last_slash + 1 : 0, strrpos($image_name, '.'));
 

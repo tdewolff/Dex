@@ -4,6 +4,8 @@ class Stats
 {
 	public static function registerPageVisit()
 	{
+		date_default_timezone_set('UTC');
+
 		if (!Db::isValid())
 			return false;
 
@@ -26,6 +28,8 @@ class Stats
 
 	public static function pageVisitChart($days)
 	{
+		date_default_timezone_set('UTC');
+
 		$before = 0;
 		if (is_numeric($days))
 			$before = time() - 60 * 60 * 24 * $days;
