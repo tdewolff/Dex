@@ -718,6 +718,27 @@ form .inline-error-below {
 form .inline-error-below .box {
   top: -2px;
 }
+form .response {
+  display: none;
+  white-space: nowrap;
+}
+form .response > span {
+  padding: 0 10px;
+  vertical-align: middle;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+form .response > span > i {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+  vertical-align: middle;
+  font-size: 24px;
+}
+form .response > .success {
+  color: #24c279;
+}
+form .response > .error {
+  color: #D11F49;
+}
 form span.comma {
   float: left;
   padding-top: 13px;

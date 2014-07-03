@@ -37,7 +37,13 @@ var Form = function (form) {
 
 	this.save = function () {
 		self.form.find('.errors').hide();
-		apiStatusWorking();
+		// if (typeof apiStatusWorking !== 'undefined') {
+		// 	apiStatusWorking();
+		// } else {
+			self.form.find('.response > span').hide();
+			self.form.find('.response > span.working').show();
+			self.form.find('.response').show();
+		//}
 
 		// put data of multi-input fields into single hidden input
 		self.form.find('input[type="hidden"]').each(function (i, hidden) {
@@ -98,20 +104,45 @@ var Form = function (form) {
 		}
 
 		if (data['errors'].length || data['item_errors'].length) {
-			apiStatusError(data['response']['error']);
+			// if (typeof apiStatusError !== 'undefined') {
+			// 	apiStatusError(data['response']['error']);
+			// } else {
+				self.form.find('.response > span').hide();
+				self.form.find('.response > span.error > span').text(data['response']['error']);
+				self.form.find('.response > span.error').show();
+				self.form.find('.response').show();
+			//}
 		} else if (data['redirect'].length > 0) {
 			window.location.href = data['redirect'];
 		} else {
-			apiStatusSuccess(data['response']['success']);
+			// if (typeof apiStatusSuccess !== 'undefined') {
+			// 	apiStatusSuccess(data['response']['success']);
+			// } else {
+				self.form.find('.response > span').hide();
+				self.form.find('.response > > span.success > span').text(data['response']['success']);
+				self.form.find('.response > span.success').show();
+				self.form.find('.response').show();
+			//}
 		}
 	};
 
 	this.error = function (data) {
-		apiStatusError();
+		// if (typeof apiStatusError !== 'undefined') {
+		// 	apiStatusError(apiRetrieveError(data));
+		// } else {
+			self.form.find('.response > span').hide();
+			self.form.find('.response > span.error > span').text('');
+			self.form.find('.response > span.error').show();
+			self.form.find('.response').show();
+		//}
 	};
 
 	this.form.on('input', 'input, textarea', function (e) {
-		apiStatusClear();
+		if (typeof apiStatusClear !== 'undefined') {
+			apiStatusClear();
+		} else {
+			self.form.find('.response').hide();
+		}
 
 		var input = $(e.currentTarget),
 			name = input.attr('name');

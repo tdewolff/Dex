@@ -2,9 +2,9 @@
 <div class="dex-api">
 	<div class="fatal"></div>
 	<div class="status">
-		<div class="working"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
-		<div class="success"><span></span>&ensp;<i class="fa fa-check fa-2x"></i></div>
-		<div class="error"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
+		<div class="working" style="display: none;"><span></span>&ensp;<i class="fa fa-cog fa-2x fa-spin"></i></div>
+		<div class="success" style="display: none;"><span></span>&ensp;<i class="fa fa-check fa-2x"></i></div>
+		<div class="error" style="display: none;"><span></span>&ensp;<i class="fa fa-times fa-2x"></i></div>
 	</div>
 </div>
 <?php //} ?>

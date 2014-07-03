@@ -1079,6 +1079,27 @@
 .dex-popup-wrapper form .inline-error-below .box {
   top: -2px;
 }
+.dex-popup-wrapper form .response {
+  display: none;
+  white-space: nowrap;
+}
+.dex-popup-wrapper form .response > span {
+  padding: 0 10px;
+  vertical-align: middle;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+.dex-popup-wrapper form .response > span > i {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+  vertical-align: middle;
+  font-size: 24px;
+}
+.dex-popup-wrapper form .response > .success {
+  color: #24c279;
+}
+.dex-popup-wrapper form .response > .error {
+  color: #D11F49;
+}
 .dex-popup-wrapper form span.comma {
   float: left;
   padding-top: 13px;

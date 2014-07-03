@@ -37,15 +37,7 @@ function api(url, data, success, error) {
 				}
 
 				if (data['status'] !== 403) {
-					if (typeof data['responseJSON'] !== 'undefined' && typeof data['responseJSON']['formatted_error'] !== 'undefined') { // PHP error but still handled by API
-						apiFatal(data['responseJSON']['formatted_error'].join('<br>'));
-					} else if (typeof data['responseText'] !== 'undefined') { // Non-JSON response
-						apiFatal(escapeHtml(data['responseText']));
-					} else if (typeof data['statusText'] !== 'undefined') { // Some XHR thing went wrong
-						apiFatal(escapeHtml(data['statusText']));
-					} else { // ...shrugs
-						apiFatal(escapeHtml(data));
-					}
+					apiFatal(ajaxRetrieveError(data));
 				}
 			}
 		});

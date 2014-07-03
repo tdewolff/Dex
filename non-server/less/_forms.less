@@ -264,6 +264,32 @@ form {
 		}
 	}
 
+	.response {
+		display: none;
+		white-space: nowrap;
+
+		>span {
+			padding: 0 10px;
+			vertical-align: middle;
+			font-family: @sans-serif;
+			font-size: 14px;
+
+			>i {
+				text-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+				vertical-align: middle;
+				font-size: 24px;
+			}
+		}
+
+		>.success {
+			color: #24c279;
+		}
+
+		>.error {
+			color: #D11F49;
+		}
+	}
+
 	span.comma {
 		float: left;
 		padding-top: 13px;

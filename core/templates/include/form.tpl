@@ -159,6 +159,11 @@
 
 	<?php if ($form['submit']): ?>
 	<button type="submit" class="button"><?php echo $form['submit']; ?></button>
+	<p class="response">
+		<span class="working"><i class="fa fa-cog fa-2x fa-spin"></i></span>
+		<span class="success"><i class="fa fa-check fa-2x"></i>&ensp;<span></span></span>
+		<span class="error"><i class="fa fa-times fa-2x"></i>&ensp;<span></span></span>
+	</p>
 	<?php endif; ?>
 
 	<div class="clear"></div>

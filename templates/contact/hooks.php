@@ -1,12 +1,12 @@
 <?php
 
 Hooks::attach('site-header', -1, function () {
+	Core::addStyle('vendor/font-awesome.css');
 	Core::addStyle('vendor/fancybox.css');
 	Core::addExternalScript('//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js');
 	Core::addDeferredScript('vendor/jquery.fancybox.min.js');
 	Core::addDeferredScript('vendor/doT.min.js');
 	Core::addDeferredScript('common.js');
-	Core::addDeferredScript('api.js');
 	Core::addDeferredScript('form.js');
 });
 
