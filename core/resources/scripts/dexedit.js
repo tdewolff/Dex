@@ -26,7 +26,7 @@ DexEdit.DOM = {
 			}
 			node = node.parentNode;
 		}
-		return null;
+		return limit;
 	},
 
 	getPreviousBlock: function (node) {
@@ -62,7 +62,7 @@ DexEdit.DOM = {
 				node = node.parentNode;
 			}
 		}
-		return null;
+		return limit;
 	},
 
 	hasParent: function (node, limit) {
@@ -576,8 +576,11 @@ DexEdit.Text = function (root) {
 
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
-			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0]) || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
-				var last = self.root.find('*:last');
+			var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+			console.log(block);
+			if (!self.range || !DexEdit.DOM.hasParent(block, self.root[0]) || block == self.root[0] || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
+				// nothing selected, append to root
+				var last = DexEdit.DOM.getClosestBlock(self.root.find('*:last'), self.root[0]);
 				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
 					last = $('<p></p>').appendTo(self.root);
 					while (last[0].firstChild) {
@@ -594,29 +597,22 @@ DexEdit.Text = function (root) {
 					self.removeLink();
 				}
 
-				var block = self.range.commonAncestorContainer;
-				if (!DexEdit.DOM.isBlock(block)) {
-					block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
-				}
-
-				if (block != self.root[0]) {
-					var tag = DexEdit.DOM.getTag(block);
-					if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
-						var figure = DexEdit.DOM.getClosestTag(block, 'figure');
-						if (!!figure) {
-							block = figure;
-						}
-
-						var p = $('<p></p>').after($(block));
-						while (p[0].firstChild) {
-						   p[0].removeChild(p[0].childNodes[0]);
-						}
-
-						var range = document.createRange();
-						range.selectNodeContents(p[0]);
-						range.collapse(false);
-						self.select(range);
+				var tag = DexEdit.DOM.getTag(block);
+				if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
+					var figure = DexEdit.DOM.getClosestTag(block, 'figure');
+					if (!!figure) {
+						block = figure;
 					}
+
+					var p = $('<p></p>').insertAfter($(block));
+					while (p[0].firstChild) {
+					   p[0].removeChild(p[0].childNodes[0]);
+					}
+
+					var range = document.createRange();
+					range.selectNodeContents(p[0]);
+					range.collapse(false);
+					self.select(range);
 				}
 			}
 
@@ -689,7 +685,7 @@ DexEdit.Text = function (root) {
 			}
 		}
 
-		if (DexEdit.Selection.isCollapsed) {
+		if (DexEdit.Selection.isCollapsed && DexEdit.Selection.anchorNode) {
 			if (DexEdit.DOM.getTag(DexEdit.Selection.anchorNode.parentNode) === 'p') {
 				var text = DexEdit.DOM.getText(DexEdit.Selection.anchorNode);
 				if (text.match(/^[-*]\s/)) {
