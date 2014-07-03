@@ -15,9 +15,9 @@ Hooks::attach('main', 0, function () {
 
 	$link_id = Core::getLinkId();
 	$content = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'settings' LIMIT 1;");
-	if (!$content)
-		user_error('Cannot find settings in database', ERROR);
-	$settings = json_decode($content['content'], true);
+	$settings = array('title' => '', 'email' => '');
+	if ($content)
+		$settings = json_decode($content['content'], true);
 
 	$form = new Form('contact');
 

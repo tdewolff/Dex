@@ -12,10 +12,10 @@ Hooks::attach('site-header', -1, function () {
 Hooks::attach('main', 0, function () {
 	$link_id = Core::getLinkId();
 	$content = Db::singleQuery("SELECT content FROM content WHERE link_id = '" . Db::escape($link_id) . "' AND name = 'settings' LIMIT 1;");
-	if (!$content)
-		user_error('Cannot find settings in database', ERROR);
+	$settings = array('directory' => 'assets');
+	if ($content)
+		$settings = json_decode($content['content'], true);
 
-	$settings = json_decode($content['content'], true);
 	$dir = $settings['directory'] . '/';
 	$max_width = 200;
 
