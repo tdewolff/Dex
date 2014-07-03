@@ -39,6 +39,7 @@ class Db
 		{
 			user_error('Database file never created at "' . $filename . '"', ERROR);
 		}
+		self::$handle->busyTimeout(5000);
 		self::$handle->createFunction('REGEXP', '_sqliteRegexp', 2);
 	}
 

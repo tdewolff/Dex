@@ -127,6 +127,7 @@ register_shutdown_function(function() {
 	$totaltime = ($endtime[1] + $endtime[0] - $starttime[1] - $starttime[0]);
 
 	Log::notice('Script took ' . number_format($totaltime, 4) . 's and ' . Db::queries() . ' queries'); // can't use user_error since we're shutting down
+	Db::close();
 });
 
 
