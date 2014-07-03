@@ -31,7 +31,11 @@ Hooks::attach('site-error', 0, function () {
 
 	global $error_loop;
 	if ($error_loop)
-		echo 'Error fired while displaying an error message, exiting loop';
+	{
+		user_error('Error fired while displaying an error message, exiting loop', NOTICE);
+		echo (function_exists('__') ? __('A server error occurred') : 'A server error occurred');
+		return;
+	}
 	$error_loop = true;
 
 	Core::addTitle('Error');
@@ -65,7 +69,11 @@ Hooks::attach('admin-error', 0, function () {
 
 	global $error_loop;
 	if ($error_loop)
-		echo 'Error fired while displaying an error message, exiting loop';
+	{
+		user_error('Error fired while displaying an error message, exiting loop', NOTICE);
+		echo (function_exists('__') ? __('A server error occurred') : 'A server error occurred');
+		return;
+	}
 	$error_loop = true;
 
 	Core::addTitle('Error');

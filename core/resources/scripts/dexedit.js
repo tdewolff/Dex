@@ -455,7 +455,7 @@ DexEdit.Text = function (root) {
 
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
 						var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
-						if (block == null) {
+						if (block === null || block == self.root[0]) {
 							figure.appendTo(self.root);
 						} else {
 							figure.insertAfter(block);
@@ -576,7 +576,6 @@ DexEdit.Text = function (root) {
 
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
-
 			if (!self.range || !DexEdit.DOM.hasParent(self.range.commonAncestorContainer, self.root[0]) || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
 				var last = self.root.find('*:last');
 				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
@@ -600,22 +599,24 @@ DexEdit.Text = function (root) {
 					block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
 				}
 
-				var tag = DexEdit.DOM.getTag(block);
-				if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
-					var figure = DexEdit.DOM.getClosestTag(block, 'figure');
-					if (!!figure) {
-						block = figure;
-					}
+				if (block != self.root[0]) {
+					var tag = DexEdit.DOM.getTag(block);
+					if (tag !== 'p' && tag !== 'h3' && tag !== 'h4' && tag !== 'blockquote') {
+						var figure = DexEdit.DOM.getClosestTag(block, 'figure');
+						if (!!figure) {
+							block = figure;
+						}
 
-					var p = $('<p></p>').after($(block));
-					while (p[0].firstChild) {
-					   p[0].removeChild(p[0].childNodes[0]);
-					}
+						var p = $('<p></p>').after($(block));
+						while (p[0].firstChild) {
+						   p[0].removeChild(p[0].childNodes[0]);
+						}
 
-					var range = document.createRange();
-					range.selectNodeContents(p[0]);
-					range.collapse(false);
-					self.select(range);
+						var range = document.createRange();
+						range.selectNodeContents(p[0]);
+						range.collapse(false);
+						self.select(range);
+					}
 				}
 			}
 
@@ -1142,7 +1143,7 @@ DexEdit.destroy = function () {
 DexEdit.getContent = function (selector) {
 	var content = $(selector).clone().detach();
 	DexEdit.destroySingle(content);
-	if (typeof content.html() !== 'undefined')
+	if (typeof content.html() !== 'undefined' && content.text() !== '')
 		return content.html();
 	return '';
 };
