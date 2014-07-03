@@ -1138,7 +1138,7 @@ DexEdit.destroy = function () {
 DexEdit.getContent = function (selector) {
 	var content = $(selector).clone().detach();
 	DexEdit.destroySingle(content);
-	if (typeof content.html() !== 'undefined' && content.text() !== '')
+	if (typeof content.html() !== 'undefined' && (content.text() !== '' || root.find('figure, hr').length > 0))
 		return content.html();
 	return '';
 };
