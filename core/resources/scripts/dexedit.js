@@ -576,7 +576,7 @@ DexEdit.Text = function (root) {
 
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
-			var block = (self.range.commonAncestorContainer ? DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]) : self.root[0]);
+			var block = (self.range ? DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]) : self.root[0]);
 			if (!self.range || !DexEdit.DOM.hasParent(block, self.root[0]) || block == self.root[0] || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
 				// nothing selected, append to root
 				var last = DexEdit.DOM.getClosestBlock(self.root.find('*:last'), self.root[0]);
