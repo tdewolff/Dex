@@ -726,7 +726,7 @@ DexEdit.Text = function (root) {
 			content = e.clipboardData.getData('text/plain');
 		}
 
-		content = $('<div>').html(content).html();
+		content = $('<p>').html(content).html();
 
 		// remove Word or other formatting
 		content = content.replace(/(<!--[^]*?-->|\s{2,}|\r|\n)/gi, '');
@@ -1121,7 +1121,6 @@ DexEdit.init = function () {
 };
 
 DexEdit.destroySingle = function (root) {
-	$('body').find('.dexedit-menu').remove();
 	root.find('.dexedit-img-placeholder, .dexedit-img-resize, .dexedit-img-menu').remove();
 	root.find('figure, hr').attr('contenteditable', null);
 	root.find('.dexedit-img > img').unwrap();
@@ -1130,6 +1129,7 @@ DexEdit.destroySingle = function (root) {
 };
 
 DexEdit.destroy = function () {
+	$('body').find('.dexedit-menu').remove();
 	$('[data-dexeditable]').each(function (i, root) {
 		DexEdit.destroySingle($(root));
 	});
