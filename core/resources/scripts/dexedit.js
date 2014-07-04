@@ -62,7 +62,7 @@ DexEdit.DOM = {
 				node = node.parentNode;
 			}
 		}
-		return limit;
+		return false;
 	},
 
 	hasParent: function (node, limit) {
