@@ -339,16 +339,13 @@ DexEdit.Text = function (root) {
 	};
 
 	this.toggleFormatBlock = function (tag) {
-		var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
-		if (block) {
-			if (!DexEdit.Range.isSurroundedBy(self.range, tag)) {
-				document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
-			} else {
-				document.execCommand('formatBlock', false, '<P>');
-				document.execCommand('outdent', false);
-			}
-			self.select(DexEdit.Range.get());
+		if (!DexEdit.Range.isSurroundedBy(self.range, tag)) {
+			document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
+		} else {
+			document.execCommand('formatBlock', false, '<P>');
+			document.execCommand('outdent', false);
 		}
+		self.select(DexEdit.Range.get());
 	};
 
 	this.removeLink = function (link) {
@@ -454,8 +451,8 @@ DexEdit.Text = function (root) {
 						img.attr('width', this.width).attr('height', this.height);
 
 						var figure = $('<figure contenteditable="false"></figure>').append(img);
-						var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
-						if (block === null || block == self.root[0]) {
+						var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+						if (block == self.root[0]) {
 							figure.appendTo(self.root);
 						} else {
 							figure.insertAfter(block);
@@ -577,10 +574,10 @@ DexEdit.Text = function (root) {
 		if (e.which === 1) {
 			self.select(DexEdit.Range.get());
 			var block = (self.range ? DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]) : self.root[0]);
-			if (!self.range || !DexEdit.DOM.hasParent(block, self.root[0]) || block == self.root[0] || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
+			if (!self.range || block == self.root[0] || !DexEdit.DOM.hasParent(block, self.root[0]) || (DexEdit.isFirefox && DexEdit.DOM.getTag(block) === 'figure')) {
 				// nothing selected, append to root
 				var last = DexEdit.DOM.getClosestBlock(self.root.find('*:last'), self.root[0]);
-				if (!last || DexEdit.DOM.getTag(last[0]) !== 'p') {
+				if (last == self.root[0] || DexEdit.DOM.getTag(last[0]) !== 'p') {
 					last = $('<p></p>').appendTo(self.root);
 					while (last[0].firstChild) {
 						last[0].removeChild(last[0].childNodes[0]);
@@ -631,8 +628,8 @@ DexEdit.Text = function (root) {
 		if (e.keyCode === 8 || e.keyCode === 46) { // backspace or delete
 			self.hideMenu();
 
-			var block = DexEdit.DOM.getClosestBlock(DexEdit.Range.get().commonAncestorContainer);
-			if (block) {
+			var block = DexEdit.DOM.getClosestBlock(DexEdit.Range.get().commonAncestorContainer, self.root[0]);
+			if (block != self.root[0]) {
 				var sibling = (e.keyCode === 8 ? block.previousSibling : block.nextSibling);
 				if (sibling) {
 					if (DexEdit.DOM.getTag(sibling) === 'figure') {
@@ -670,8 +667,8 @@ DexEdit.Text = function (root) {
 			var range = DexEdit.Range.getForward();
 			self.select(range);
 
-			var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer);
-			if (DexEdit.DOM.getTag(block) === 'div' || DexEdit.DOM.getTag(block) === 'blockquote') {
+			var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+			if (block != self.root[0] && (DexEdit.DOM.getTag(block) === 'div' || DexEdit.DOM.getTag(block) === 'blockquote')) {
 				self.toggleFormatBlock('p');
 			}
 		}
