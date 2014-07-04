@@ -339,13 +339,16 @@ DexEdit.Text = function (root) {
 	};
 
 	this.toggleFormatBlock = function (tag) {
-		if (!DexEdit.Range.isSurroundedBy(self.range, tag)) {
-			document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
-		} else {
-			document.execCommand('formatBlock', false, '<P>');
-			document.execCommand('outdent', false);
+		var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
+		if (DexEdit.DOM.getTag(block) !== 'li') {
+			if (!DexEdit.Range.isSurroundedBy(self.range, tag)) {
+				document.execCommand('formatBlock', false, '<' + tag.toUpperCase() + '>');
+			} else {
+				document.execCommand('formatBlock', false, '<P>');
+				document.execCommand('outdent', false);
+			}
+			self.select(DexEdit.Range.get());
 		}
-		self.select(DexEdit.Range.get());
 	};
 
 	this.removeLink = function (link) {
