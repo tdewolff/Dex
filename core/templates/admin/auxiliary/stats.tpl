@@ -96,7 +96,7 @@ circle.unique {
 			var xAxis = d3.svg.axis()
 				.scale(x)
 				.orient('bottom')
-				.ticks(d3.time.days, 3)
+				.ticks(d3.time.days.utc, 3)
 				.tickSize(-height + 1)
 				.tickFormat(format.timeFormat('%e %b'));
 

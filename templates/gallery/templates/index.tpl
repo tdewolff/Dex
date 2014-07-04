@@ -24,8 +24,8 @@
 </script>
 
 <script type="text/javascript">
-	var max_width = (document.documentElement.clientWidth < 1206 ? 133 : 266);
-	var max_height = max_width / 1.75;
+	var max_width = (document.documentElement.clientWidth < 1206 ? 150 : 300);
+	var max_height = max_width / 3;
 	$(function () {
 		var gallery = $('#gallery');
 
