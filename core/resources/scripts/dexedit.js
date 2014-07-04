@@ -12,9 +12,9 @@ DexEdit.DOM = {
 
 	isBlock: function (node) {
 		node = DexEdit.DOM.getTag(node);
-		return (node === 'div'	|| node === 'hr'	|| node === 'ul'	|| node === 'ol'
-			 || node === 'p'	|| node === 'h3'	|| node === 'h4'	|| node === 'blockquote'
-			 || node === 'figure');
+		return (node === 'div'	  || node === 'hr'	|| node === 'ul'	|| node === 'ol'
+			 || node === 'p'	  || node === 'h3'	|| node === 'h4'	|| node === 'blockquote'
+			 || node === 'figure' || node === 'li');
 	},
 
 	getClosestBlock: function (node, limit) {
@@ -365,9 +365,9 @@ DexEdit.Text = function (root) {
 		self.select(DexEdit.Range.get()); // somehow this is needed
 	};
 
-	this.insertList = function (tag) {
+	this.insertList = function (tag, text) {
 		document.execCommand(tag === 'ol' ? 'insertOrderedList' : 'insertUnorderedList');
-		DexEdit.DOM.setText(DexEdit.Selection.anchorNode, '');
+		DexEdit.DOM.setText(DexEdit.Selection.anchorNode, text);
 		self.select(DexEdit.Range.get());
 	};
 
@@ -625,10 +625,10 @@ DexEdit.Text = function (root) {
 
 	// keyboard
 	this.root.on('keydown', function (e) {
+		var block = DexEdit.DOM.getClosestBlock(DexEdit.Range.get().commonAncestorContainer, self.root[0]);
 		if (e.keyCode === 8 || e.keyCode === 46) { // backspace or delete
 			self.hideMenu();
 
-			var block = DexEdit.DOM.getClosestBlock(DexEdit.Range.get().commonAncestorContainer, self.root[0]);
 			if (block != self.root[0]) {
 				var sibling = (e.keyCode === 8 ? block.previousSibling : block.nextSibling);
 				if (sibling) {
@@ -649,6 +649,15 @@ DexEdit.Text = function (root) {
 					}
 				}
 			}
+		} else {
+			if (block == self.root[0]) {
+				var last = $('<p><br></p>').appendTo(self.root);
+
+				var range = document.createRange();
+				range.selectNodeContents(last[0]);
+				range.collapse(false);
+				self.select(range);
+			}
 		}
 	});
 
@@ -668,8 +677,21 @@ DexEdit.Text = function (root) {
 			self.select(range);
 
 			var block = DexEdit.DOM.getClosestBlock(self.range.commonAncestorContainer, self.root[0]);
-			if (block != self.root[0] && (DexEdit.DOM.getTag(block) === 'div' || DexEdit.DOM.getTag(block) === 'blockquote')) {
-				self.toggleFormatBlock('p');
+			if (block != self.root[0]) {
+				if (DexEdit.DOM.getTag(block) === 'div' || DexEdit.DOM.getTag(block) === 'blockquote') {
+					self.toggleFormatBlock('p');
+				} else if (DexEdit.DOM.getTag(block) === 'li') {
+					if (block.previousSibling && DexEdit.DOM.getTag(block.previousSibling) === 'li' && DexEdit.DOM.getText(block.previousSibling).trim() === '') {
+						var last = $('<p>' + DexEdit.DOM.getText(block) + '</p>').insertAfter(block.parentNode);
+						block.previousSibling.remove();
+						block.remove();
+
+						var range = document.createRange();
+						range.selectNodeContents(last[0]);
+						range.collapse(true);
+						self.select(range);
+					}
+				}
 			}
 		}
 
@@ -685,9 +707,9 @@ DexEdit.Text = function (root) {
 			if (DexEdit.DOM.getTag(DexEdit.Selection.anchorNode.parentNode) === 'p') {
 				var text = DexEdit.DOM.getText(DexEdit.Selection.anchorNode);
 				if (text.match(/^[-*]\s/)) {
-					self.insertList('ul');
+					self.insertList('ul', text.slice(2));
 				} else if (text.match(/^1\.\s/)) {
-					self.insertList('ol');
+					self.insertList('ol', text.slice(3));
 				}
 			}
 

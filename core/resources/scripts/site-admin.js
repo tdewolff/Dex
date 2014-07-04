@@ -10,7 +10,9 @@ $(function () {
 			$('[contenteditable="true"]').each(function () {
 				var bg = $(this).css('backgroundColor');
 				$(this).animate({'backgroundColor': '#A9CC66'}, 50, function () {
-					$(this).animate({'backgroundColor': bg}, 2000);
+					$(this).animate({'backgroundColor': bg}, 2000, 'swing', function () {
+						$(this).css('backgroundColor', '')
+					});
 				});
 			});
 
